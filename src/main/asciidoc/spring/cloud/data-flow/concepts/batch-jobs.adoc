@@ -1,0 +1,4 @@
+include::{docdir}/_attributes.adoc[]
+= Batch Processing
+:revnumber: {spring-cloud-data-flow-version}
+

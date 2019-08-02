@@ -1,0 +1,75 @@
+include::{docdir}/_attributes.adoc[]
+= Stream Processing
+:revnumber: {spring-cloud-data-flow-version}
+
+Stream processing은 상호 작용이나 중단없이 무한한 양의 데이터를 처리하는 것으로 정의됩니다.
+Stream processing 사용 사례로 실시간 신용카드 사기 탐지 또는 예측 분석이 있습니다.
+
+Data Flow의 Stream processing는 구조적으로 RabbitMQ 또는 Apache Kafka와 같은 messaging middleware를 사용하여 연결하는 독립적인 이벤트 기반 streaming application 모음으로 구현됩니다.
+application collection은 streaming data pipeline이라고 합니다.
+pipeline은 application 간 data flow에 따라 선형 또는 비선형일 수 있습니다.
+
+== Messaging Middleware
+
+배포된 stream application은 messaging middleware product를 통해 통신합니다.
+RabbitMQ 또는 Kafka를 통해 통신하고 다양한 data 제품과 통합하는데 사용할 수 있는 사전 제작된 stream application을 제공합니다.
+
+다음 messaging middleware 제품도 지원합니다.
+
+* Kafka Streams
+* Amazon Kinesis
+* Google Pub/Sub
+* Solace PubSub+
+* Azure Event Hubs
+
+사용할 middleware는 application에 대한 종속성으로 Spring Cloud Stream Binder 라이브러리를 추가함으로써 결정됩니다.
+
+== Spring Cloud Stream
+
+Spring 개발자에게는 Spring Cloud Stream framework를 사용하여 Stream application을 작성하는 것이 좋습니다.
+Spring Cloud Stream을 사용하면 공유 messaging system과 연결된 확장성이 뛰어난 event-driven microservice를 쉽게 구축할 수 있습니다.
+
+개발자로서 Spring Cloud Stream에 message broker와 함께 기본 API 복잡성 및 연결 보일러 플레이트를 위임하면서 application의 비즈니스 로직 개발에 집중할 수 있습니다.
+
+높은 수준에서 streaming application은 messaging middlewar를 통해 이벤트를 생성하거나 소비할 수 있습니다.
+
+== Running Streaming Apps in the Cloud
+
+Cloud Foundry와 Kubernetes는 플랫폼에서 long-lived application을 실행하는 컨셉을 지원합니다.
+Cloud Foundry는 각각을 Long Running Process (LRP)라고 부릅니다.
+kubernetes에서는 batch resource를 사용할 수 있으며 이는 Batch의 지정된 수를 유지하여 application을 실행하는 replica set을 관리합니다.
+
+streaming application을 작성할 때 Spring Cloud Stream은  life를 단순화 할 수 있지만 독립적인 Spring Cloud Streaming application 모음이 배포되기 위해선 다음이 필요합니다.
+
+* 모든 applicatino의 input과 output 대상을 설정해야합니다.
+* 대상에서 경쟁하는 consumer가 있을 수 있도록 공유된 consumer group property의 공통 name을 구성합니다.
+* 모니터링 목적으로 application을 식별하고 metric 정보를 publishing 할 수 있는 몇가지 properties를 구성합니다.
+* messaging middleware에 대한 연결을 구성합니다.
+* application을 실행하는데 필요한 platform을 생성합니다. 
+
+Spring Cloud Data Flow를 사용하여 stream을 배포하면 모든 설정 task를 처리하고 대상 플랫폼에서 application을 실행하는데 필요한 플랫폼 resource를 작성합니다.
+다양한 배포 properties를 사용하여 배포를 사용자 정의 할 수 있습니다. (예: 메모리 리소스, Cloud Foundry의 buildpack 과 같은 플랫폼 별 속성 또는 kubernetes 배포시 label 설정 같은 공통 속성 설정)
+
+== Orchestrating Streaming Apps
+
+image::SCDF-stream-orchestration.webp[]
+
+Spring Cloud Stream을 사용하여 stream application을 작성하거나 미리 만들어진 많은 Spring Cloud Stream application 중 하나를 사용하면 어떻게 streaming data pipeline을 구성하는 application을 정의하고 모든 application의 launcing을 조정할 수 있습니까?
+Spring Cloud Data Flow가 도움이 될 수 있는 곳입니다.
+
+Spring Cloud Data Flow를 사용하면 drag-and-drop 디자이너를 사용하거나 익숙한 pipe 및 filter 구문과 함께 text 기반 Domain Specific language를 사용하여 stream을 정의할 수 있습니다.
+자세한 내용은 Tooling guide를 참조하세요.
+
+그런 다음 Kubernetes 또는 Cloud Foundry에 배포할 수 있습니다.
+배포가 완료되면 개별 application을 업데이트 해야하므로 Spring Cloud Data Flow는 플랫폼에서 청색/녹색 배치를 트리거하는 간단한 업그레이드 명령을 제공하여 이를 용이하게 합니다.
+자세한 내용은 Continuous Delivery guide를 참조하세요.
+
+널리 사용되는 다양한 모니터링 시스템을 사용하여 stream을 모니터링 할 수 있으며 Prometheus 및 InfluxDB를 시연합니다.
+그런 다음 제공된 grafana dashboard template으로 stream을 볼 수 있습니다.
+자세한 내용은 Monitoring을 참조하세요.
+
+== Next Steps
+
+사전 구축된 application을 사용하여 streaming data pipeline을 만드는데 관심이 있다면 Stream Getting Started Guide를 참조하세요.
+
+Spring Cloud Stream을 사용하여 사용자 정의 stream processing application을 작성하고 배포하는데 관심이 있다면 Stream Developer Guilde를 참조하세요.

@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>한글 문서</title>
+<title>Getting Started with Stream Processing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -517,39 +517,81 @@ table.CodeRay td.code>pre{padding:0}
 </body>
 </html>
 </head>
-<body class="book">
+<body class="book toc2 toc-left">
 <div id="header">
-<h1>한글 문서</h1>
+<h1>Getting Started with Stream Processing</h1>
+<div class="details">
+<span id="revnumber">version 2.2.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#stream-dsl-overview">1. Stream DSL overview</a></li>
+<li><a href="#creating-the-stream">2. Creating the Stream</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="sidebarblock">
-<div class="content">
 <div class="paragraph">
-<p>발번역.<br>
-공부하면서 작성</p>
+<p>Spring Cloud Dat Flow는 일반적인 streaming use case를 구현하기 위해 즉시 사용할 수 있는 70가지 이상의 미리 작성된 streaming application을 제공합니다.<br>
+이 가이드에서는 두 가지 application을 사용하여 외부 HTTP 요청에서 보낸 데이터를 생성하고 payload를 터미널에 기록하여 해당 데이터를 소비하는 간단한 데이터 파이프 라인을 구성합니다.</p>
+</div>
+<div class="paragraph">
+<p>이러한 미리 작성된 응용 프로그램을 Data Flow에 등록하는 방법은 installation guide에 나와 있습니다.</p>
 </div>
 </div>
 </div>
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-<a href="spring/cloud/data-flow/index.html">reference</a> 
-</td>
-<td class="hdlist2">
-<p>Spring Cloud Data Flow</p>
-</td>
-</tr>
-</table>
+<div class="sect1">
+<h2 id="stream-dsl-overview"><a class="anchor" href="#stream-dsl-overview"></a>1. Stream DSL overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Shell 또는 Dashboard를 통해 DSL (Domain Specific Language)를 사용하거나 Java 에서 programming 방식으로 stream을 만들 수 있습니다.<br>
+또한 Dashboard를 사용하여 시각적으로 appliation을 드래그 앤 드롭으로 palate에 배치하고 연결할 수 있씁니다.<br>
+Dashboard는 양방향으로 동작하며, 시각적 동작은 DSL을 업데이트 하고 DSL을 편집하면 stream 보기를 업데이트 합니다.</p>
+</div>
+<div class="paragraph">
+<p>DSL은 unix 파이프와 필터 구문을 모델로 합니다.<br>
+예를 들어, 정의된 stream DSL은 HTTP post에서 수신한 데이터를 messaging middleware로 보내는 application을 http | log와 같이 나타냅니다.<br>
+log application은 messaging middleware로 부터 데이터 메세지를 수신하고 터미널에 출력합니다.<br>
+DSL의 각 이름은 application 등록 프로세스를 통해 application과 연결됩니다.<br>
+application은 application 사이의 '파이프' 역할을 하는 massaging middleware를 나타내는 기호 '|' 로 연결됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-the-stream"><a class="anchor" href="#creating-the-stream"></a>2. Creating the Stream</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>stream을 만들려면</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>메뉴에서 Streams를 클릭합니다.</p>
+</li>
+<li>
+<p>Create Stream(s) 버튼을 클릭합니다.<br>
+화면이 다음 이미지로 바뀝니다.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/dataflow-stream-create-start.webp" alt="dataflow stream create start">
+</div>
+</div>
+</li>
+<li>
+<p>text area에 <code>http | log</code> 를 입력하세요</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-01 14:45:47 KST
+Version 2.2.0.RELEASE<br>
+Last updated 2019-08-04 18:23:53 KST
 </div>
 </div>
 </body>

@@ -508,6 +508,14 @@ table.CodeRay td.code>pre{padding:0}
 .CodeRay .change .change{color:#66f}
 .CodeRay .head .head{color:#f4f}
 </style>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body>
+</body>
+</html>
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
@@ -517,16 +525,138 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-
+<ul class="sectlevel1">
+<li><a href="#spring-batch">1. Spring Batch</a></li>
+<li><a href="#running-batch-apps-in-the-cloud">2. Running Batch Apps in the Cloud</a></li>
+<li><a href="#orchestrating-batch-apps">3. Orchestrating Batch apps</a></li>
+<li><a href="#next-steps">4. Next Steps</a></li>
+</ul>
 </div>
 </div>
 <div id="content">
-
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Batch processing은 상호 작용이나 중단 없이 한정된 양의 데이터를 처리하는 것으로 정의됩니다.<br>
+Batch processing을 구현하는 application은 일시적 또는 수명이 짧은(short-lived) application이라고 합니다.<br>
+Batch processing의 예로는 billing application이 있습니다.<br>
+다음 이미지는 이러한 application을 보여줍니다.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/batch-app-flow.webp" alt="batch app flow">
+</div>
+</div>
+<div class="paragraph">
+<p>이 application은 야간에 실행되어 flat file에서 고객 사용데이터를 읽고 해당 레코드에 대한 가격 정보를 생성한 다음 결제 정보를 결제 테이블에 insert 합니다.<br>
+모든 사용자 데이터가 읽혀지고 가격이 책정되고 결제 테이블에 insert되면 application이 중지됩니다.</p>
+</div>
+<div class="paragraph">
+<p>꽤 간단하게 들릴지 모르지만 database에서 table 공간이 부족하여 application이 4시간에서 6시간 실행에 실패하면 어떻게 되는지 생각해야 합니다.<br>
+일단 테이블 공간이 추가되면 처음부터 다시 시작하지 않아도 됩니다.<br>
+따라서 billing application이 중지된 곳에서 부터 다시 시작할 수 있어야 합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-batch"><a class="anchor" href="#spring-batch"></a>1. Spring Batch</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>이전 섹션에서는 batch billing application의 최소 요구사항을 설명했습니다<br>
+.그러나 우리는 재시작 가능성 기능, reader와 writer를 코딩하기 전에 Spring Batch를 살펴보아야 합니다.<br>
+Spring Batch는 로깅 및 추적, 트랜잭션 관리, 작업 처리 통계, 작업 다시 시작, 건너뛰기 및 자원 관리를 포함하여 많은 양의 레코드를 처리하는데 필수적인 재사용 가능한 기능을 제공합니다.<br>
+Spring Batch는 Batch Job 재시작 가능성을 처리하고 FlatFileItemReader와 JdbcBatchItemWriter를 제공하므로 이러한 상용구 코드(boilerplate code)를 작성할 필요가 없습니다.<br>
+이렇게 하면 데이터를 이용해 가격을 책정하는 비즈니스 로직에 집중할 수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="running-batch-apps-in-the-cloud"><a class="anchor" href="#running-batch-apps-in-the-cloud"></a>2. Running Batch Apps in the Cloud</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Batch가 batch application을 작성할 때 우리의 삶을 단순화 하는 방법을 알 수 있습니다.<br>
+하지만 어떻게 cloud에서 batch application을 실행할 수 있을까요?<br>
+Cloud Foundry와 Kubernetes는 플랫폼에서 short-lived app을 실행하는 개념을 지원합니다.<br>
+Cloud Foundry는 일시적인 앱을 task로 지칭하며 kubernetes는 job으로 간주합니다.<br>
+그러나 cloud에서 일시적인 앱을 실행하려면 몇 가지 기본 기능이 필요합니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>application이 시작되고 중지 될 때 기록</p>
+</li>
+<li>
+<p>application의 종료 코드를 기록</p>
+</li>
+<li>
+<p>application에서 리턴된 종료 메시지 또는 오류 메시지 기록</p>
+</li>
+<li>
+<p>이미 실행 중인 application이 실행되지 않도록 하는 기능 필요</p>
+</li>
+<li>
+<p>application이 특정 처리 단계에 도달했음을 다른 application에 알리는 기능 필요</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>이것은 많은 일처럼 들리지만 Spring Cloud Tasks는 더 많은 일을 합니다.<br>
+Spring Cloud Task를 사용하면 local또는 cloud에서 short-lived microservice를 개발하고 실행할 수 있습니다.<br>
+@EnableTask annotation을 추가하기만 하면 됩니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="orchestrating-batch-apps"><a class="anchor" href="#orchestrating-batch-apps"></a>3. Orchestrating Batch apps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>다음 이미지는 Data Flow Server가 여러 cloud의 application을 관리하는 방법을 보여줍니다.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SCDF-task-orchestration.webp" alt="SCDF task orchestration">
+</div>
+</div>
+<div class="paragraph">
+<p>Spring Batch와 Spring Cloud Task로 batch application을 작성하나 후에는 어떻게 application의 launching을 조절할 수 있을까요?<br>
+Spring Cloud Data Flow가 도움이 될 수 있는 지점입니다.<br>
+Spring Cloud Data Flow를 사용하면 ad-hoc request이나 batch-job scheduler를 통해 batch application을 시작할 수 있습니다.<br>
+또한 다음 플랫폼에서 batch application을 시작할 수 있습니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cloud Foundry</p>
+</li>
+<li>
+<p>Kubernetes</p>
+</li>
+<li>
+<p>Local server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Spring Cloud Data Flow를 사용하면 UI, RESTful api 또는 Spring Cloud Data Flow Shell을 통해 batch application의 실행을 시작하거나 예약할 수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next-steps"><a class="anchor" href="#next-steps"></a>4. Next Steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>미리 작성된 application을 사용하여 batch processing data pipeline을 만드는 방법에 대한 자세한 내용은 Batch Getting Started Guild를 참조하세요.</p>
+</div>
+<div class="paragraph">
+<p>첫 번째 custom batch processing을 작성하고 배포하는데 관심이 있는 경우 Batch Developer Guildes를 참조하세요.</p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0.RELEASE<br>
-Last updated 2019-08-02 04:10:59 KST
+Last updated 2019-08-02 19:26:54 KST
 </div>
 </div>
 </body>

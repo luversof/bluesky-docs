@@ -1,0 +1,32 @@
+include::_attributes.adoc[]
+= Getting Started with Stream Processing
+:revnumber: {spring-cloud-data-flow-version}
+
+Spring Cloud Dat Flow는 일반적인 streaming use case를 구현하기 위해 즉시 사용할 수 있는 70가지 이상의 미리 작성된 streaming application을 제공합니다.
+이 가이드에서는 두 가지 application을 사용하여 외부 HTTP 요청에서 보낸 데이터를 생성하고 payload를 터미널에 기록하여 해당 데이터를 소비하는 간단한 데이터 파이프 라인을 구성합니다.
+
+이러한 미리 작성된 응용 프로그램을 Data Flow에 등록하는 방법은 installation guide에 나와 있습니다.
+
+== Stream DSL overview
+
+Shell 또는 Dashboard를 통해 DSL (Domain Specific Language)를 사용하거나 Java 에서 programming 방식으로 stream을 만들 수 있습니다.
+또한 Dashboard를 사용하여 시각적으로 appliation을 드래그 앤 드롭으로 palate에 배치하고 연결할 수 있씁니다.
+Dashboard는 양방향으로 동작하며, 시각적 동작은 DSL을 업데이트 하고 DSL을 편집하면 stream 보기를 업데이트 합니다.
+
+DSL은 unix 파이프와 필터 구문을 모델로 합니다.
+예를 들어, 정의된 stream DSL은 HTTP post에서 수신한 데이터를 messaging middleware로 보내는 application을 http | log와 같이 나타냅니다.
+log application은 messaging middleware로 부터 데이터 메세지를 수신하고 터미널에 출력합니다.
+DSL의 각 이름은 application 등록 프로세스를 통해 application과 연결됩니다.
+application은 application 사이의 '파이프' 역할을 하는 massaging middleware를 나타내는 기호 '|' 로 연결됩니다.
+
+== Creating the Stream
+
+stream을 만들려면
+
+1. 메뉴에서 Streams를 클릭합니다.
+2. Create Stream(s) 버튼을 클릭합니다. 
+화면이 다음 이미지로 바뀝니다.
++
+image::dataflow-stream-create-start.webp[]
+
+3. text area에 `http | log` 를 입력하세요

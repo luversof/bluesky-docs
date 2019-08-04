@@ -1,4 +1,66 @@
-include::{docdir}/_attributes.adoc[]
+include::_attributes.adoc[]
 = Batch Processing
 :revnumber: {spring-cloud-data-flow-version}
 
+Batch processing은 상호 작용이나 중단 없이 한정된 양의 데이터를 처리하는 것으로 정의됩니다.
+Batch processing을 구현하는 application은 일시적 또는 수명이 짧은(short-lived) application이라고 합니다.
+Batch processing의 예로는 billing application이 있습니다.
+다음 이미지는 이러한 application을 보여줍니다. 
+
+image::batch-app-flow.webp[]
+
+이 application은 야간에 실행되어 flat file에서 고객 사용데이터를 읽고 해당 레코드에 대한 가격 정보를 생성한 다음 결제 정보를 결제 테이블에 insert 합니다.
+모든 사용자 데이터가 읽혀지고 가격이 책정되고 결제 테이블에 insert되면 application이 중지됩니다.
+
+꽤 간단하게 들릴지 모르지만 database에서 table 공간이 부족하여 application이 4시간에서 6시간 실행에 실패하면 어떻게 되는지 생각해야 합니다.
+일단 테이블 공간이 추가되면 처음부터 다시 시작하지 않아도 됩니다.
+따라서 billing application이 중지된 곳에서 부터 다시 시작할 수 있어야 합니다.
+
+== Spring Batch
+
+이전 섹션에서는 batch billing application의 최소 요구사항을 설명했습니다
+.그러나 우리는 재시작 가능성 기능, reader와 writer를 코딩하기 전에 Spring Batch를 살펴보아야 합니다.
+Spring Batch는 로깅 및 추적, 트랜잭션 관리, 작업 처리 통계, 작업 다시 시작, 건너뛰기 및 자원 관리를 포함하여 많은 양의 레코드를 처리하는데 필수적인 재사용 가능한 기능을 제공합니다.
+Spring Batch는 Batch Job 재시작 가능성을 처리하고 FlatFileItemReader와 JdbcBatchItemWriter를 제공하므로 이러한 상용구 코드(boilerplate code)를 작성할 필요가 없습니다.
+이렇게 하면 데이터를 이용해 가격을 책정하는 비즈니스 로직에 집중할 수 있습니다.
+
+== Running Batch Apps in the Cloud
+
+Spring Batch가 batch application을 작성할 때 우리의 삶을 단순화 하는 방법을 알 수 있습니다.
+하지만 어떻게 cloud에서 batch application을 실행할 수 있을까요?
+Cloud Foundry와 Kubernetes는 플랫폼에서 short-lived app을 실행하는 개념을 지원합니다.
+Cloud Foundry는 일시적인 앱을 task로 지칭하며 kubernetes는 job으로 간주합니다.
+그러나 cloud에서 일시적인 앱을 실행하려면 몇 가지 기본 기능이 필요합니다.
+
+* application이 시작되고 중지 될 때 기록
+* application의 종료 코드를 기록
+* application에서 리턴된 종료 메시지 또는 오류 메시지 기록
+* 이미 실행 중인 application이 실행되지 않도록 하는 기능 필요
+* application이 특정 처리 단계에 도달했음을 다른 application에 알리는 기능 필요
+
+이것은 많은 일처럼 들리지만 Spring Cloud Tasks는 더 많은 일을 합니다.
+Spring Cloud Task를 사용하면 local또는 cloud에서 short-lived microservice를 개발하고 실행할 수 있습니다.
+@EnableTask annotation을 추가하기만 하면 됩니다.
+
+== Orchestrating Batch apps
+
+다음 이미지는 Data Flow Server가 여러 cloud의 application을 관리하는 방법을 보여줍니다.
+
+image::SCDF-task-orchestration.webp[]
+
+Spring Batch와 Spring Cloud Task로 batch application을 작성하나 후에는 어떻게 application의 launching을 조절할 수 있을까요?
+Spring Cloud Data Flow가 도움이 될 수 있는 지점입니다.
+Spring Cloud Data Flow를 사용하면 ad-hoc request이나 batch-job scheduler를 통해 batch application을 시작할 수 있습니다.
+또한 다음 플랫폼에서 batch application을 시작할 수 있습니다.
+
+* Cloud Foundry
+* Kubernetes
+* Local server
+
+Spring Cloud Data Flow를 사용하면 UI, RESTful api 또는 Spring Cloud Data Flow Shell을 통해 batch application의 실행을 시작하거나 예약할 수 있습니다.
+
+== Next Steps
+
+미리 작성된 application을 사용하여 batch processing data pipeline을 만드는 방법에 대한 자세한 내용은 Batch Getting Started Guild를 참조하세요.
+
+첫 번째 custom batch processing을 작성하고 배포하는데 관심이 있는 경우 Batch Developer Guildes를 참조하세요.

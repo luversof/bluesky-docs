@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>한글 문서</title>
+<title>Configuration</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -517,39 +517,73 @@ table.CodeRay td.code>pre{padding:0}
 </body>
 </html>
 </head>
-<body class="book">
+<body class="book toc2 toc-left">
 <div id="header">
-<h1>한글 문서</h1>
+<h1>Configuration</h1>
+<div class="details">
+<span id="revnumber">version 2.2.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+
+</div>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="sidebarblock">
-<div class="content">
 <div class="paragraph">
-<p>발번역.<br>
-공부하면서 작성</p>
+<p><a href="https://docs.spring.io/spring-cloud-dataflow/docs/2.2.0.RELEASE/reference/htmlsingle/#getting-started" class="bare">docs.spring.io/spring-cloud-dataflow/docs/2.2.0.RELEASE/reference/htmlsingle/#getting-started</a><br>
+== Maven<br>
+maven configuration properties를 재정의 하고 싶은 경우(remote repositories, proxies, 기타 등등) 또는 Data Flow Server를 proxy 뒤에 실행하고 싶은 경우 다음처럼 이런  속성들을 command line argument로 정의할 수 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">java -jar spring-cloud-dataflow-server-2.2.0.RELEASE.jar --spring.config.additional-location=/home/joe/maven.yml</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>maven.yaml은 다음과 같습니다.</p>
 </div>
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-<a href="spring/cloud/data-flow/index.html">reference</a> 
-</td>
-<td class="hdlist2">
-<p>Spring Cloud Data Flow</p>
-</td>
-</tr>
-</table>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">maven</span>
+  <span class="key">localRepository</span>: <span class="string"><span class="content">mylocal</span></span>
+  <span class="key">remote-repositories</span>:
+    <span class="key">repo1</span>:
+      <span class="key">url</span>: <span class="string"><span class="content">https://repo1</span></span>
+      <span class="key">auth</span>:
+        <span class="key">username</span>: <span class="string"><span class="content">user1</span></span>
+        <span class="key">password</span>: <span class="string"><span class="content">pass1</span></span>
+      <span class="key">snapshot-policy</span>:
+        <span class="key">update-policy</span>: <span class="string"><span class="content">daily</span></span>
+        <span class="key">checksum-policy</span>: <span class="string"><span class="content">warn</span></span>
+      <span class="key">release-policy</span>:
+        <span class="key">update-policy</span>: <span class="string"><span class="content">never</span></span>
+        <span class="key">checksum-policy</span>: <span class="string"><span class="content">fail</span></span>
+    <span class="key">repo2</span>:
+      <span class="key">url</span>: <span class="string"><span class="content">https://repo2</span></span>
+      <span class="key">policy</span>:
+        <span class="key">update-policy</span>: <span class="string"><span class="content">always</span></span>
+        <span class="key">checksum-policy</span>: <span class="string"><span class="content">fail</span></span>
+  <span class="key">proxy</span>:
+    <span class="key">host</span>: <span class="string"><span class="content">proxy1</span></span>
+    <span class="key">port</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">9010</span><span class="delimiter">&quot;</span></span>
+    <span class="key">auth</span>:
+      <span class="key">username</span>: <span class="string"><span class="content">proxyuser1</span></span>
+      <span class="key">password</span>: <span class="string"><span class="content">proxypass1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>protocol은 http가 기본 설정입니다.<br>
+proxy에 사용자 이름과 암호가 필요하지 않으면 auth properties를 생략할 수 있습니다.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-01 14:45:47 KST
+Version 2.2.0.RELEASE<br>
+Last updated 2019-08-04 17:59:35 KST
 </div>
 </div>
 </body>

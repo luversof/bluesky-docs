@@ -1,0 +1,44 @@
+include::_attributes.adoc[]
+= Configuration
+:revnumber: {spring-cloud-data-flow-version}
+
+https://docs.spring.io/spring-cloud-dataflow/docs/2.2.0.RELEASE/reference/htmlsingle/#getting-started
+== Maven
+maven configuration properties를 재정의 하고 싶은 경우(remote repositories, proxies, 기타 등등) 또는 Data Flow Server를 proxy 뒤에 실행하고 싶은 경우 다음처럼 이런  속성들을 command line argument로 정의할 수 있습니다.
+
+```bash
+java -jar spring-cloud-dataflow-server-2.2.0.RELEASE.jar --spring.config.additional-location=/home/joe/maven.yml
+``` 
+
+maven.yaml은 다음과 같습니다.
+
+```yaml
+maven
+  localRepository: mylocal
+  remote-repositories:
+    repo1:
+      url: https://repo1
+      auth:
+        username: user1
+        password: pass1
+      snapshot-policy:
+        update-policy: daily
+        checksum-policy: warn
+      release-policy:
+        update-policy: never
+        checksum-policy: fail
+    repo2:
+      url: https://repo2
+      policy:
+        update-policy: always
+        checksum-policy: fail
+  proxy:
+    host: proxy1
+    port: "9010"
+    auth:
+      username: proxyuser1
+      password: proxypass1
+```
+
+protocol은 http가 기본 설정입니다. 
+proxy에 사용자 이름과 암호가 필요하지 않으면 auth properties를 생략할 수 있습니다.

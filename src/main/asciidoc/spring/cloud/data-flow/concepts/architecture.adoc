@@ -1,4 +1,4 @@
-include::{docdir}/_attributes.adoc[]
+include::_attributes.adoc[]
 = Architecture
 :revnumber: {spring-cloud-data-flow-version}
 
@@ -20,7 +20,7 @@ include::{docdir}/_attributes.adoc[]
 Data Flow는 2개의 main components를 가지고 있습니다.
 
 * Data Flow Server
-* Skipper SErver
+* Skipper Server
 
 Data Flow에 접근하는 주요 진입점은 Data Flow Server의 RESTFul API 입니다.
 web dashboard는 Data Flow Server에서 제공됩니다.

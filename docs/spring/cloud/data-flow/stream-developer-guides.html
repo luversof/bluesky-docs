@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>한글 문서</title>
+<title>Developer guides</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -517,39 +517,45 @@ table.CodeRay td.code>pre{padding:0}
 </body>
 </html>
 </head>
-<body class="book">
+<body class="book toc2 toc-left">
 <div id="header">
-<h1>한글 문서</h1>
+<h1>Developer guides</h1>
+<div class="details">
+<span id="revnumber">version 2.2.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+
+</div>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<div class="sidebarblock">
-<div class="content">
 <div class="paragraph">
-<p>발번역.<br>
-공부하면서 작성</p>
+<p>이 섹션에는 여러가지 가이드가 있지만 공통 시작 경로는 다음 단계로 구성됩니다.</p>
 </div>
-</div>
-</div>
-<div class="hdlist">
-<table>
-<tr>
-<td class="hdlist1">
-<a href="spring/cloud/data-flow/index.html">reference</a> 
-</td>
-<td class="hdlist2">
-<p>Spring Cloud Data Flow</p>
-</td>
-</tr>
-</table>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>미리 작성된 applciation을 사용하여 Data Flow를 사용하며 stream을 만들고 배포하는 방법을 보여주는 시작 guide를 따릅니다.<br>
+이를 통해 Dashboard를 사용하여 stream을 만들고 배포하고 로그를 보는 방벙을 빠르게 알 수 있습니다.</p>
+</li>
+<li>
+<p>Spring Cloud Stream을 사용하여 source, processor 및 sink application을 직접 개발하고, 플랫폼에 수동으로 배포하고 RabbitMQ 및 Apache Kafka의 message broker에서 일어나는 일을 살펴보십시오.</p>
+</li>
+<li>
+<p>개발한 source, processor, sink application을 사용하고 Data Flow를 사용하여 stream을 만들고 이를 플랫폼에 배포합니다.<br>
+이러한 방식으로 완전히 수동 개발 및 배포 방식과 비교할 때 전체 개발 및 배포 work flow에서 Data Flow가 처리하는 부분을 보다 명확하게 파악할 수 있습니다.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-01 14:45:47 KST
+Version 2.2.0.RELEASE<br>
+Last updated 2019-08-04 18:11:28 KST
 </div>
 </div>
 </body>

@@ -1,0 +1,187 @@
+include::_attributes.adoc[]
+= Getting Started with Stream Processing
+:revnumber: {spring-cloud-data-flow-version}
+
+Spring Cloud Dat Flow는 일반적인 streaming use case를 구현하기 위해 즉시 사용할 수 있는 70가지 이상의 미리 작성된 streaming application을 제공합니다.
+이 가이드에서는 두 가지 application을 사용하여 외부 HTTP 요청에서 보낸 데이터를 생성하고 payload를 터미널에 기록하여 해당 데이터를 소비하는 간단한 데이터 파이프 라인을 구성합니다.
+
+이러한 미리 작성된 응용 프로그램을 Data Flow에 등록하는 방법은 installation guide에 나와 있습니다.
+
+== Stream DSL overview
+
+Shell 또는 Dashboard를 통해 DSL (Domain Specific Language)를 사용하거나 Java 에서 programming 방식으로 stream을 만들 수 있습니다.
+또한 Dashboard를 사용하여 시각적으로 appliation을 드래그 앤 드롭으로 palate에 배치하고 연결할 수 있씁니다.
+Dashboard는 양방향으로 동작하며, 시각적 동작은 DSL을 업데이트 하고 DSL을 편집하면 stream 보기를 업데이트 합니다.
+
+DSL은 unix 파이프와 필터 구문을 모델로 합니다.
+예를 들어, 정의된 stream DSL은 HTTP post에서 수신한 데이터를 messaging middleware로 보내는 application을 http | log와 같이 나타냅니다.
+log application은 messaging middleware로 부터 데이터 메세지를 수신하고 터미널에 출력합니다.
+DSL의 각 이름은 application 등록 프로세스를 통해 application과 연결됩니다.
+application은 application 사이의 '파이프' 역할을 하는 massaging middleware를 나타내는 기호 '|' 로 연결됩니다.
+
+== Creating the Stream
+
+stream을 만들려면
+
+1. 메뉴에서 Streams를 클릭합니다.
+2. Create Stream(s) 버튼을 클릭합니다. 
+화면이 다음 이미지로 바뀝니다.
++
+image::dataflow-stream-create-start.webp[]
+3. text area에 `http | log` 를 입력하세요
+4. Create Stream을 클릭하세요
+5. strean 이름으로 http-ingest를 다음처럼 입력합니다.
++
+image::dataflow-stream-create.webp[]
+6. Create the stream 버튼을 클릭하면 definition 페이지가 나타납니다.
+
+
+== Deploying a Stream
+
+Stream을 정의했으므로 이제 배포할 수 있습니다.
+
+1. 이전 섹션에서 생성한 `http-ingest` 행의 오른쪽에 있는 play (deploy) 버튼을 클릭하세요
++
+image::dataflow-stream-definition-deploy.webp[]
++
+UI는 http-ingest 스트림의 앱에 적용할 수 있는 사용가능한 속성을 표시합니다.
+다음 이미지에 표시된 이 예제는 기본값을 사용합니다.
++
+image::dataflow-deploy-http-ingest.webp[]
++
+로컬 Data Flow server를 사용하는 경우 포트 충돌을 피하기 위해 다음 배포 속성을 추가하여 포트를 설정합니다.
++
+image::dataflow-unique-port.webp[]
+2. Deploy Stream 버튼을 클릭합니다.
+UI가 definition page로 이동합니다.
+스트림이 이제 "Deploying" 상태가 되고 완료되면 "Deployed"로 바뀝니다.
+업데이트 된 상태를 보려면 브라우저를 새로고침 해야 합니다.
+
+== Verifying Output
+
+application이 배포되면 해당 출력을 확인할 수 있습니다.
+이렇게 하는 방법은 application을 어디서 실행하는지에 따라 다릅니다.
+
+* local
+* Cloud Foundry
+* Kubernetes
+
+=== Local
+
+이 섹션에서는 application이 local server에서 실행될 때 출력을 확인하는 방법에 대해 자세히 설명합니다.
+
+=== Test Data
+
+스트림이 배포되어 실행되면 이제 일부 데이터를 게시할 수 있습니다.
+다음 curl 명령을 사용하여 이렇게 할 수 있습니다.
+
+```bash
+curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"
+```
+
+==== Results
+
+스트림이 배포되면 로그를 볼 수 있습니다.
+
+1. 메뉴에서 Runtime을 클릭하세요
+2. `http-ingest.log`를 클릭하세요
+3. dashboard의 `stdout` 텍스트 상자안의 경로를 복사하세요.
+4. 다른 콘솔 창에서 다음을 입력하세요.
++
+```bash
+docker exec -it skipper tail -f [경로]
+```
++
+로그 싱크의 출력이 새 창에 나타납니다. 아래와 같은 출력을 볼 수 있습니다.
++
+```bash
+log-sink                                 : Happy streaming
+```
+
+=== Cloud Foundry
+
+이 섹션에서는 application이 Cloud Foundry에서 실행될 때 출력을 확인하는 방법에 대해 자세히 설명합니다.
+
+==== Test Data
+
+Cloud Foundry에서는 스트림이 배포 및 실행되면 이제 일부 데이터를 게시할 수 있습니다
+다음 curl 명령을 사용하여 이렇게 할 수 있습니다.
+
+```bash
+curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"
+```
+
+==== Results
+
+이제 다음 예제와 같이 실행 중인 application을 다시 나열하고 목록에서 application을 볼 수 있습니다.
+
+```bash
+$ cf apps                                                                                                                                                                                                                                         [1h] ✭
+Getting apps in org ORG / space SPACE as email@pivotal.io...
+
+name                         requested state   instances   memory   disk   urls
+http-ingest-314-log-v1       started           1/1         1G       1G     http-ingest-314-log-v1.cfapps.io
+http-ingest-314-http-v1      started           1/1         1G       1G     http-ingest-314-http-v1.cfapps.io
+skipper-server               started           1/1         1G       1G     skipper-server.cfapps.io
+dataflow-server              started           1/1         1G       1G     dataflow-server.cfapps.io
+```
+
+이제 다음 예제와 같이 로그를 확인할 수 있습니다.
+
+```bash
+cf logs http-ingest-314-log-v1
+...
+...
+2017-11-20T15:39:43.76-0800 [APP/PROC/WEB/0] OUT 2017-11-20 23:39:43.761  INFO 12 --- [ http-ingest-314.ingest-314-1] log-sink                                 : Happy streaming
+```
+
+=== Kubernetes
+
+이 섹션에서는 application이 Kubernetes에서 실행될 때 출력을 확인하는 방법에 대해 자세히 설명합니다.
+
+==== Test Data
+
+Kubernetes 에서 스트림이 배포 및 실행되면 이제 일부 데이터를 게시 할 수 있습니다.
+다음 curl 명령을 사용하여 이렇게 할 수 있습니다.
+
+```bash
+curl http://<EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE> -H "Content-type: text/plain" -d "Happy streaming"
+```
+
+==== Results
+
+```bash
+kubectl get pods
+NAME                              READY     STATUS    RESTARTS   AGE
+http-ingest-log-v1-0-2k4r8          1/1       Running   0          2m
+http-ingest-http-v1-qhdqq           1/1       Running   0          2m
+mysql-777890292-z0dsw               1/1       Running   0          49m
+rabbitmq-317767540-2qzrr            1/1       Running   0          49m
+scdf-server-2734071167-bjd3g        1/1       Running   0          12m
+skipper-2408247821-50z31            1/1       Running   0          15m
+```
+
+이제 로그를 확인할 수 있습니다.
+
+```bash
+kubectl logs -f http-ingest-log-v1-0-2k4r8
+...
+...
+2017-10-30 22:59:04.966  INFO 1 --- [ http-ingest.http.http-ingest-1] log-sink                                 : Happy streaming
+```
+
+=== Deleting a Stream
+
+이제 생성한 스트림을 삭제할 수 있습니다.
+1. 메뉴에서 Stream을 클릭하세요
+2. `http-ingest` 행의 아래쪽 갈매기 모양을 클릭하세요.
+3. Destroy Stream을 클릭하세요.
+4. 확인 메시지가 나타나면 Destroy Stream Definition(s)를 클릭합니다.
+
+=== Updating and Rolling back a Stream
+
+이 정보는 Continous Delivery guide에서 찾을 수 있습니다.
+
+=== Monitoring
+
+이 정보는 Stream Monitoring guide에서 찾을 수 있습니다.

@@ -1,0 +1,17 @@
+include::_attributes.adoc[]
+= Spring Cloud Data Flow Documentation
+:revnumber: {spring-cloud-data-flow-version}
+
+
+== Concepts
+
+include::spring/cloud/data-flow/concepts/architecture.adoc[leveloffset=+2]
+include::spring/cloud/data-flow/concepts/streams.adoc[leveloffset=+2]
+include::spring/cloud/data-flow/concepts/batch-jobs.adoc[leveloffset=+2]
+include::spring/cloud/data-flow/concepts/monitoring.adoc[leveloffset=+2]
+include::spring/cloud/data-flow/concepts/tooling.adoc[leveloffset=+2]
+
+== Stream Developer guides
+
+include::spring/cloud/data-flow/stream-developer-guides/index.adoc[leveloffset=+2]
+include::spring/cloud/data-flow/stream-developer-guides/getting-started/index.adoc[leveloffset=+2]

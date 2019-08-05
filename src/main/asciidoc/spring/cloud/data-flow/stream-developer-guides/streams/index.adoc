@@ -1,0 +1,10 @@
+include::_attributes.adoc[]
+= Stream Development
+:revnumber: {spring-cloud-data-flow-version}
+
+이 stream processing guide는 다음 작업을 수행하는 방법에 대해 설명합니다.
+
+* Spring Cloud Data Flow 없이 개별 streaming application을 설계, 개발, 태스트 및 배치
+* Spring Cloud Data Flow에서 이러한 개별 application을 사용하여 streaming data pipeline을 생성 
+
+link:standalone-stream-rabbitmq.html[Stream Application Development on RabbitMQ] :: RabbitMQ를 사용하여 Stream processing을 위한 자체 microservice를 생성하고 수동으로 배포하십시오.

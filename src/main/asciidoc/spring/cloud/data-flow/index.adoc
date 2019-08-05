@@ -5,13 +5,14 @@ include::_attributes.adoc[]
 
 == Concepts
 
-include::spring/cloud/data-flow/concepts/architecture.adoc[leveloffset=+2]
-include::spring/cloud/data-flow/concepts/streams.adoc[leveloffset=+2]
-include::spring/cloud/data-flow/concepts/batch-jobs.adoc[leveloffset=+2]
-include::spring/cloud/data-flow/concepts/monitoring.adoc[leveloffset=+2]
-include::spring/cloud/data-flow/concepts/tooling.adoc[leveloffset=+2]
+link:concepts/architecture.html[Architecture]
+link:concepts/streams.html[Stream Processing]
+link:concepts/batch-jobs.html[Batch Processing]
+link:concepts/monitoring.html[Monitoring]
+link:concepts/tooling.html[Tooling]
 
 == Stream Developer guides
 
-include::spring/cloud/data-flow/stream-developer-guides.adoc[leveloffset=+2]
-include::spring/cloud/data-flow/getting-started/stream.adoc[leveloffset=+2]
+link:stream-developer-guides/index.html[Stream Developer Guides]
+link:stream-developer-guides/getting-started/index.html[Getting Started]
+link:stream-developer-guides/streams/index.html[Stream Development]

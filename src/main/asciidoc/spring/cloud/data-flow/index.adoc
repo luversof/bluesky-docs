@@ -1,6 +1,7 @@
 include::_attributes.adoc[]
 = Spring Cloud Data Flow Documentation
 :revnumber: {spring-cloud-data-flow-version}
+:toc!:
 
 
 == Concepts

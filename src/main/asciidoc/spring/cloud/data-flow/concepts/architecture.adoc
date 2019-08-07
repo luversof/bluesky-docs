@@ -4,18 +4,18 @@ include::_attributes.adoc[]
 
 이 가이드에서는 Data Flow architecture의 주요 개념을 설명합니다.
 
-* Data Flow의 server components
+* Data Flow의 서버 구성 요소
 * server components는 stream과 batch Job을 배포할 수 있는 application type 입니다.
 * 배포된 application과 microservice architecture와 DLS을 사용하여 정의하는 방법
-* 배포되는 playform
+* 배포되는 platform
 
 가이드의 다른 섹션에서는 아래의 내용을 설명합니다.
 
-* server component의 보안과 툴링을 사용하여 상호 작용하는 방법
+* 서버 구성 요소와 보안하는 방법과 서버 구성 요소와 상호 작용하는데 사용되는 도구(Tooling)
 * Streming data pipeline의 실시간 모니터링
 * Stream 과 Batch data pipeline 개발하는데 사용할 수 있는 Spring project
  
-== Server Components
+== 서버 구성 요소 (Server Components)
 
 Data Flow는 2개의 main components를 가지고 있습니다.
 
@@ -35,8 +35,8 @@ image::arch-overview.webp[]
 
 Data Flow Server는 다음의 역할을 합니다.
 
-* Stream과 Batch Job DSL(Domain-Specific Language) 기반의  정의 파싱
-* Stream, Task, Batch Job 정의의 검증과 지속성
+* DSL(Domain-Specific Language)에 기반하여 Stream과 Batch Job 정의 파싱 
+* Stream, Task, Batch Job 정의를 검증하고 지속합니다.
 * jar, docker image와 같은 artifact를 DSL에 사용되는 이름에 등록
 * 배치 작업을 하나 이상의 플랫폼에 배치
 * 플랫폼에 작업 스케줄링 위임
@@ -54,7 +54,7 @@ Skipper Server는 다음의 역할을 합니다.
 
 === Database
 
-Data Flow Server와 Skipper Server는 RDBMS가 필요하빈다.
+Data Flow Server와 Skipper Server는 RDBMS가 필요합니다.
 기본 설정은 H2 내장 Database를 사용합니다.
 외부 database를 사용하도록 서버를 구성할 수 있습니다.
 지원되는 database는 H2, HSQLDB, MySQL, Oracle, PostgreSQL, DB2 및 SqlServer 입니다.

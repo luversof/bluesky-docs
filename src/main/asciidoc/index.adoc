@@ -9,3 +9,4 @@ include::{docdir}/_attributes.adoc[]
 
 [horizontal]
 link:spring/cloud/data-flow/index.html[reference] :: Spring Cloud Data Flow
+link:spring/cloud/task/index.html[reference] :: Spring Cloud Task

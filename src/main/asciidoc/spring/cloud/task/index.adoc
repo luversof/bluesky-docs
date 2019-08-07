@@ -1,0 +1,445 @@
+include::_attributes.adoc[]
+= Spring Cloud Task Documentation
+:revnumber: {spring-cloud-task-version}
+:toc!:
+
+
+== Features
+
+이 섹션에서는 사용 방법, 구성 방법 및 적절한 확장 point를 포함하여 Spring Cloud Task에 대해 자세히 설명합니다.
+
+=== The lifecycle of a Spring Cloud Task
+
+대부분의 경우 modern cloud 환경은 종료되지 않은 프로세스의 실행을 중심으로 설계되었습니다.
+종료되면 일반적으로 다시 시작됩니다.
+대부분의 플랫폼에는 프로세스가 종료될 때 다시 시작되지 않는 프로세스를 실행할 수 있는 방법이 있지만, 그 실행 결과는 일반적으로 소모품 방식으로 유지되지 않습니다.
+Spring Cloud Task는 환경에서 short-lived 프로세스를 실행하고 그 결과를 기록하는 기능을 제공합니다.
+이렇게 하면 메시지로 작업을 통합하여 수명이 짧은 프로세스를 중심으로 microservice archetecture를 구축하고 서비스를 더 오래 실행할 수 있습니다. 
+
+이 기능은 cloud 환경에서 유용하지만 기존 배포 모델에서도 동일한 문제가 발생할 수 있습니다.
+cron과 같은 스케쥴러를 사용하여 Spring Boot application을 실행할 때 application이 완료된 후 application의 결과를 모니터링하는 것이 유용할 수 있습니다.
+
+Spring Cloud Task는 Spring Boot 응용 프로그램이 시작과 끝을 가질 수 있지만 여전히 성공할 수 있는 접근 방식을 취합니다.
+Batch application은 종료될 것으로 예상되는 프로세스가 도움이 될 수 있는 방법의 한 예입니다.
+
+Spring Cloud Task는 주어진 task의 lifecycle event를 기록합니다.
+대부분의 web application으로 대표되는 장기 실행 프로세스는 lifecycle event를 저장하지 않습니다.
+Spring Cloud Task의 핵심이 바로 이 작업입니다.
+
+lifecycle은 single task 실행으로 구성됩니다.
+이것은 task로 구성된 Spring Boot application의 실제 실행입니다. (즉 Spring Cloud Task dependency가 있습니다.)
+
+작업 시작 시 `ConnamdLineRunner` 또는 `ApplicationRunner` 구현이 실행되기 전에 `TaskRepository` 시작 이벤트를 기록하는 entry가 작성됩니다.
+이 이벤트는 Spring Framework에 의해 `SmartLifecycle#start` 가 트리거 됩니다.
+모든 bean을 사용할 준비가 되고 `CommandLineRunner` 또는 `ApplicationRunner` 구현이 Spring Boot에 의에 실행되기 전에  표시됩니다.
+
+NOTE: task 기록은 ApplicationContext의 bootstrapping 성공시에만 발생합니다. 만약 context가 전혀 bootstrap 되지 않으면 task 기록이 실행되지 않습니다.
+
+Spring Boot 에서 모든 호출이 완료 되거나  `ApplicationContext` 의 실패가 발생하면(`ApplicationFailEvent` 로 표시) task 실행이 repository의 결과에 업데이트 됩니다.
+
+NOTE: `ApplicationContext` task가 완료 시 application을 종료해야 하는 경우 (모든 `*Runner#run` 메서드가 호출되고 task repository가 업데이트 된 경우) `spring.cloud.task.closecontext_enabled` 속성을 true로 설정하세요.
+
+==== The TaskExecution
+
+`TaskRepository` 에 저장된 정보는 `TaskExecution` class로 모델링되며 다음 정보로 구성됩니다.
+
+|===
+|Field|Description
+
+| `executionid` | task 실행의 unique ID
+
+| `exitCode` | `ExitCodeExceptionMapper` 구현에서 생성된 exitCode.
+만약 exitCode가 생성되지 않은 경우 `ApplicationFailedEvent` 가 발생하면 1로 설정, 그외의 경우 0으로 설정됨
+
+| `taskName` | `TaskNameResolver` 설정에 의해 결정된 task의 이름
+| `startTime` | `SmartLifecycle#start` 호출에 의해 표시되는 task가 시작된 시간
+| `endTime` | `ApplicationReadyEvent` 에 의해 로 표시되는 task가 종료된 시간
+| `exitMessage` | 종료 시 사용 가능한 모든 정보. `TaskExecutionListener` 로 프로그래밍 방식으로 설정할 수 있습니다.
+| `errorMessage` | 예외로 task가 종료된 경우 (`ApplicationFailedEvent` 로 표시됨) 해당 예외의 stacktrace가 여기에 저장됨
+| `arguments` | boot application 실행에 전달된 command line argument 목록 
+|===
+
+==== Mapping Exit Codes
+
+task가 완료되면 exit code를 OS에 반환하려고 합니다.
+link:https://docs.spring.io/spring-cloud-task/docs/2.1.1.RELEASE/reference/htmlsingle/#getting-started-developing-first-task[original example]을 살펴보면 application의 해당 측면을 제어하지 않는 것을 알 수 있습니다.
+따라서 에외가 발생하면 JVM은 디버깅에 사용하거나 사용하지 않을 수 있는 코드를 반환합니다.
+
+결과적으로 Spring Boot는 `ExitCodeExceptionMapper` interface를 제공하여 포착되지 않은 exception을 exit code에 맵핑할 수 있게 합니다.
+또한 exit code level에서 문제점을 표시할 수 있습니다.
+이러한 방식으로 exit code를 맵핑하여 Spring Cloud Task는 반환된 exit code를 기록합니다.
+
+NOTE: task가 실행되는 동안 exit code는 repository에 null로 저장됩니다. task가 완료되면 섹션의 앞부분에서 설명한 지침에 따라 적절한 exit code가 저장됩니다.
+
+=== Configuration
+
+Spring Cloud Task는 `DefaultTaskConfigurer` 및 `SimpleTaskCponfiguration` class에 정의된 대로 즉시 사용가능한 설정을 제공합니다.
+이 섹션에서는 기본 값과 필요에 따라 Spring Cloud Task를 customize 하는 방법을 안내합니다.
+
+==== DataSource
+
+Spring Cloud TAsk 는 datasource를 사용하여 task 실행 결과를 저장합니다.
+기본적으로 우리는 간단한 bootstrap 개발 방법을 제공하기 위해 H2 in-memory instance를 제공합니다.
+그러나 production 환경에서 `DataSource` 자체 구성을 원할 수 있습니다.
+
+application이 `DataSource`를 하나만 사용하고 비즈니스 schema와 task repository 역할을 모두 수행하는 경우 `DataSouctr`만 제공하면 됩니다. (Spring Boot의 configuration을 사용하면 가장 간단합니다.)
+Spring Cloud Task가 `DataSource`를 repository로 자동 사용하게 됩니다.
+
+application이 둘 이상의 `DataSource`를 사용하는 경우 적절한 task repository를 설정해야 합니다.
+`TaskConfigurer` 구현을 통해 customize 할 수 있습니다.
+
+==== Table Prefix
+
+`TaskRepository` 의 수정 가능한 속성 중 하나는 task table의 table prefix 입니다.
+기본적으로 모두 앞에 머리말이 `TASK_`, `TASK_EXECUTION`, `TASK_EXECUTION_PARAMS` 이 있습니다.
+그러나 prefix를 수정해야 할 경우가 있습니다.
+schema 이름 앞에 table 이름을 추가하거나 동일한 schema 내에 둘 이상의 task table set 이 필요한 경우 table prefix를 변경해야 합니다.
+`spring.cloud.task.tablePrefix` 를 다음과 같이 설정하면 됩니다.
+
+```
+spring.cloud.task.tablePrefix=yourPrefix
+```
+
+==== Enable/Disable table Initialization
+
+Spring Cloud Task가 task 시작 시 task table을 생성하지 않으려는 경우 다음과 같이 `spring.cloud.task.initialize.enable` 속성을 설정하세요.
+
+```
+spring.cloud.task.initialize.enable=false
+```
+
+기본값은 `true` 입니다.
+
+==== Externally Generated Task ID
+
+경우에 따라 task가 요청된 시간과 infrastructure가 시작된 시간 사이의 시간 차이를 허용할 수 있습니다.
+Spring Cloud Task를 사용하면 task가 요청될 때  `TaskExecution` 을 생성할 수 있습니다.
+그런 다음 task의 lifecycle 을 통해  생성된 `TaskExecution` 의 execution ID 를 task로 전달하여 `TaskExecution` 을 update할 수 있습니다.
+
+`TaskExecution` 은  구현된 `TaskRepository` 의 `createTaskExecution` 을 호출하여 생성될 수 있습니다.
+A `TaskExecution` can be created by calling the `createTaskExecution` method on an implementation of the `TaskRepository` that references the datastore that holds the `TaskExecution` objects.
+
+생성된 `TaskExecutionId` 를 사용하도록 다음 속성을 설정하세요.
+
+```
+spring.coud.task.executionid=yourtaskId
+```
+
+==== External Task Id
+
+Spring Cloud Task는 각각의 `TaskExecution` 에 대해 external task ID를 저장할 수 있습니다.
+플랫폼에서 task를 시작할 때 Cloud Foundry가 제공한 task ID가 그 예입니다.
+생성된 `TaskExecutionId` 를 사용하도록 task를 구성하려면 다음 속성을 설정하세요.
+
+```
+spring.cloud.task.external-execution-id=<externalTaskId>
+```
+
+==== Parent Task Id
+
+Spring cloud Task를 사용하면 각각의 `TaskExecution` 에 대한 상위 task ID를 저장할 수 있습니다.
+다른 task를 실행하는 task가 있거나 각 하위 task를 시작한 task를 기록하는 경우가 그 예입니다.
+상위 `TaskExecutionId` 를 설정하도록 task 를 구성하려면 하위 task에 다음 속성을 설정하세요.
+
+```
+spring.cloud.task.parent-execution-id=<parentExecutionTaskId>
+```
+
+==== TaskConfigurer
+
+`TaskConfirurer` 는 Spring Cloud Task의 구성 요소 구성 방식을 사용자가 정의할 수 있는 전략 interface 입니다.
+기본적으로 `DefaultTaskConfigurer` 논리 기본값을 제공하는 것을 제공합니다.
+`Map` 기반인 in-memory 구성 요소 (`DataSource` 가 제공되지 않는 경우 개발에 유용) 및 JDBC 기반 구성 요소 (`DataSource` 사용 가능한 경우 유용)
+
+`TaskConfigurer` 는 다음 3가지 주요 구성 요소를 설정할 수 있습니다.
+
+|===
+|Component|Description|Default (provided by `DefaultTaskConfigurer` )
+
+|`TaskRepository` | 사용할 `TaskRepository` 의 구현 | `SimpleTaskRepository`
+|`TaskExplorer` | 사용할 `TaskExplorer` 의 구현 (task repository에 읽기 전용으로 엑세스 하기 위한 component) | `SimpleTaskExplorer`
+|`PlatformTransactionManager` | task를 update 할 때 사용되는 transaction manager | `DataSource` 를 사용하는 경우 `DataSourceTransactionManager`, 그 외에는 `ResourcelessTransactionManager` 
+|===
+
+`TaskConfigurer` interface의 사용자 정의 구현을 작성하여 이전 표에 설명된 구성 요소를 사용자 정의할 수 있습니다.
+일반적으로 `DefaultTaskConfigurer` (`TaskConfigurer` 를 찾을 수 없는 경우 제공됨)를 확장하고 필요한 getter를 정의하면 충분합니다.
+하지만 처움부터 직접 구현해야 할 수도 있습니다.
+
+NOTE: Spring Bea으로 노출되는 구현을 제공하는데 사용하지 않는 한 사용자는 `TaskConfigurer` 에서 getter method를 직접 사용해서는 안됩니다.
+
+==== Task Name
+
+대부분의 경우 task name은 Spring Boot에 구성된 application의 이름입니다.
+하지만 task 실행을 다른 이름으로 매핑하려는 경우가 있습니다.
+Spring Cloud Data Flow 는 이에 대한 예 입니다. (task 정의 이름으로 task를 실행하기를 원할 수 있기 때문)
+`TaskNameResolver` 인터페이스를 통해 task name을 지정할 수 있습니다.
+
+기본적으로 Spring Cloud Task 는 `SimpleTaskNameResolver` 를 제공하여 다음 옵션을 우선 순위로 사용합니다.
+
+1. Spring Boot 속성 (Spring Boot가 허용하는 방식으로 구성) 호출 `spring.cloud.task.name`
+2. Spring Boot 규칙을 통해 확인된 application name (`ApplicationContext#getId` 를 통해 획득)
+
+==== Task Execution Listener
+
+`TaskExecutionListener` 는  task lifecycle 동안 발생하는 특정 event에 대한 listener를 등록할 수 있습니다.
+그렇게 하려면 `TaskExecutionListener` interface를 구현하는 class를 만듭니다.
+`TaskExecutionListener` interfacer를 구현하는 class에 다음 event가 전파됩니다.
+
+* `onTaskStartup` : `TaskRepository` 로 `TaskExecution` 이 저장되기 전
+* `onTaskEnd` : `TaskRepository` 로 `TaskExecution` 항목을 업데이트 하고 작업의 최종 상태를 표시하기 전
+* `onTaskFaiiled` : 처리되지 않은 예외가 task에 의해 발생할 때 메서드가 호출되기 전
+
+Spring Cloud Task는 또한 다음 annotation을 사용하여 method에 `TaskExecution` listener를 추가할 수 있습니다.
+
+* `@BeforeTask` : `TaskRepository` 로 `TaskExecution` 이 저장되기 전
+* `@AfterTask` : `TaskRepository` 로 `TaskExecution` 항목을 업데이트 하고 작업의 최종 상태를 표시하기 전
+* `@FailedTask` : 처리되지 않은 예외가 task에 의해 발생할 때 메서드가 호출되기 전
+
+다음 예제는 세 annotation을 사용한 예입니다.
+
+```java
+public class MyBean {
+	@BeforeTask
+	public void methodA(TaskExecution taskExecution) {
+	}
+	
+	@AfterTask
+	public void methodB(TaskExecution taskExecution) {
+	}
+	
+	@FailedTask
+	public void methodC(TaskExecution, taskExecution, Throwable throwable) {
+	}
+}
+```
+
+==== Exception Thrown by Task Execution Listener
+
+`TaskExecutionListener` event handler에서 exception이 발생하면 해당 event handler 에 대한 모든 listener 처리가 중지됩니다.
+예를 들어 3개의 `onTaskStartup` listener가 시작되었고 첫 번째 `onTaskStartup` event handler에서 exception이 발생하면 다른 두 `onTaskStartup` method는 호출되지 않습니다.
+그러나 `TaskExecutionListener` 가 호출된 다른 event hander (`onTaskEnd` 와 `onTaskFailed` ) 는 호출됩니다.
+
+`TaskExecutionListener` event handler가 exception이 호출된 경우 반환되는 exit code는 ExitCodeEvent 에서 보고된 exit code입니다.
+만약 아무 `ExitCodeEvent`도 반환되지 않은 경우 ExitCodeGenerator 로 계산된 exit code가 반횐됩니다.
+`ExitCodeGenerator` 로 exit code 가 반환되는 경우가 아니면 1이 반환됩니다.
+
+`onTaskStartup` 메서드에서 예외가 발생하는 경우 application의 exit code는 1 입니다.
+`onTaskEnd` 또는 `onTaskFailed` 메서드 에서 예외가 발생하면 application의 exit code는 위에 나열된 규칙을 사용하여 설정된 code입니다.
+
+NOTE: 예외가 `onTaskStartup`, `onTaskEnd` 또는 `onTaskFailed` 에서 발생하는 경우 `ExitCodeExceptionMapper` 를 사용하여 exit code를 재정의 할 수 없습니다.
+
+==== Exit Messages
+
+`TaskExecutionListener` 를 사용하여 프로그래밍 방식으로 task에 대한 exit message를 설정할 수 있습니다.
+`TaskEXecutionListener` 에 설정된 `TaskExecution's exit message` 에 의해 수행됩니다.
+다음 예제는 `@AfterTask ExecutionListener` 를 사용한 annotation을 보여줍니다.
+
+```java
+@AfterTask
+public void afterMe(TaskExecution taskExecution) {
+	taskExecution.setExitMessage("AFTER EXIT MESSAGE");
+}
+```
+
+`ExitMessage` 는 listener event 아무것이나 설정할 수 있습니다. (`onTaskStartup` , `onTaskFailed` , `onTaskEnd` )
+세 listener의 우선 순위는 다음과 같습니다.
+
+1. `onTaskEnd`
+2. `onTaskFailed`
+3. `onTaskStartup`
+
+예를들어 `exitMessage` 를 `onTaskStartup` 과 `onTaskFailed` listener에 설정하고 실패 없이 task가 종료되면 `onTaskStartup` 에 설정된 `exitMessage` 가 repository에 저장됩니다.
+하지만 에러가 발생하면 `onTaskFailed` 에서 반환된 `exitMessage` 가 저장됩니다.
+또한 `onTaskEnd` listener 에도 `exitMessage` 를 설정한 경우 `onTaskEnd` 에 설정한 `exitMessage` 가 `onTaskStartup` 과 `onTaskFailed` 의 메시지를 대체합니다.
+
+==== Restricting Spring Cloud Task Instances
+
+Spring Cloud Task를 사용하면 주어진 task 이름으로 한 번에 하나의 task 만 실행할 수 있도록 설정할 수 있습니다.
+이렇게 하려면 task name과 `spring.cloud.task.single-instance-enable=true` 를 각 task execution 마다 설정해야합니다.
+첫 번째 task가 실행되는 동안 동일한 task name 과 `spring.cloud.task.single-instance-enable=true` 로 task를 실행하려고 하면 다음과 같은 오류 메세지와 함께 task가 실패합니다.
+`Task with name "application" is already running.`
+`spring.cloud.task.single-instance-enabl` 의 기본 설정 값은 `false` 입니다.
+
+이 기능을 사용하려면 application에 다음 Spring Integration dependencies 가 추가되어야 합니다.
+
+```
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-core</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-jdbc</artifactId>
+</dependency>
+```
+
+NOTE: 이 옵션을 설정하고 동일한 task name으로 다른 task가 실행되는 동안 task를 실행한 경우 application의 exit code는 1이 반환됩니다.
+
+==== Disabling Spring Cloud Task Auto Configuration
+
+Spring Cloud Task 가 구현을 위해 자동 구성되지 않아야 하는 경우 task의 자동 구성을 비활성화 할 수 있습니다.
+application에 다음 annotation을 추가하여 수행할 수 있습니다.
+
+```
+@EnableAutoConfiguartion(exclude = {SimpleTaskAutoConfiguration.class})
+```
+
+또는 `spring.cloud.task.autoconfiguration.enabled` 속성을 사용해서 비활성화 할 수도 있습니다.
+
+== Batch
+
+이 섹션에서는 Spring Cloud Task와 Spring Batch의 통합에 대해 자세히 설명합니다.
+Spring Cloud Deployer를 통한 원격 파티셔닝 뿐만 아니라 작업 실행과 작업 실행 간의 연관성 추적에 대해서 이 섹션에서 다룹니다.
+
+=== Associating a Job Execution to the Task in witch It was Executed
+
+Spring Boot는 container내에서 배치 작업을 실행하는 기능을 제공합니다
+Spring Boot는 이 기능을 지원하므로 개발자는 해당 실행 내에서 여러 배치 작업을 실행할 수 있습니다.
+Spring Cloud Task는 execution of a job (a job execution)을 task's execution과 연관시켜 하나의 task를 다른task로 다시 추적 할 수 있는 기능을 제공합니다.
+
+Spring Cloud Task는 `TaskBatchExecutionListener` 를 사용하여 이 기능을 수행합니다.
+기본적으로 Spring Batch Job이 구성되어 있고 (`Job` type의 bean이 context에 정의되어 있음) `spring-cloud-tash-batck` jar 가 classpath아 있는 경우 자동으로 해당 listener라 설정됩니다.
+listener는 해당 조건을 만족하는 모든 job에 주입됩니다.
+
+==== Overriding the TaskBatchExecutionListener
+
+현재 Context 내에서 listener가 batch job에 삽입되는 것을 방지하기 위해 standard Spring Boot mechanism을 사용하여 자동 구성을 비활성화 할 수 있습니다.
+
+listner가 context 내에서 특정 job에 주입되도록 하려면 `batchTaskExecutionListenerBeanPostProcessor` 를 override하고 job bean ID를 제공하면 됩니다.
+다음 예제와 같습니다.
+
+```java
+public TaskBatchExecutionListenerBeanPostProcessor batchTaskExecutionListenerBeanPostProcessor() {
+	TaskBatchExecutionListenerBeanPostProcessor postProcessor = new TashBatchExecutionListenerBeanPostProcessor();
+	postProcessor.setJobNames(Arrays.asList(new String[] {"job1", "job2"}));
+	return postProcessor;
+}
+```
+
+NOTE: Spring Cloud Task Project의 link:https://github.com/spring-cloud/spring-cloud-task/tree/master/spring-cloud-task-samples/batch-job[sample 모듈]에서 sample batch application을 찾을 수 있습니다.
+
+=== Remote Partitioning
+
+Spring Cloud Deployer는 대부분의 Cloud infrastructor에서 Spring Boot 기반 application을 실행하기 위한 기능을 제공합니다.
+`DeployerPartitionHandler` 와 `DeployerStepExecutionHandler` 는 Spring Cloud Deployer 로 worker step execution의 실행을 위임(deletage) 합니다.
+
+`DeployerStepExecutionListener` 를 설정하려면 Spring Boot uber-jar가 `TaskLauncher` 와 `JobExplorer` 를 실행하기 위한 `Resource` 를 제공해야 합니다.
+한 번에 실행할 최대 worker 수, poll 간격 (기본 값은 10초) 및 timeout (기본 값은 -1, timeout 없음) 뿐만 아니라 모든 environment properties를 구성 할 수 있습니다.
+다음 예제는 `PartitionHandler`를 구성하는 방법을 보여줍니다.
+
+```java
+@Bean
+public PartitionHandler partitionHandler(TaskLauncher taskLauncher, JobExplorer jobExplorer) throws Exception {
+	MavenProperties mavenProperties = new MavenProperties();
+	mavenProperties.setRemoteRepositories(new HashMap<>(Collections.singleMap("springRepo", new MavenRepositoris.RemoteRepository(repository))));
+	
+	Resource resource = MavenResource.parse(String.format("%s:%s:%s", "io.spring.cloud", "partitioned-batch-job", "1.1.0.RELEASE"), mavenProperties);
+	
+	DeployerPartitionHandler partitionHandler = new DeployerPartitionHandler(taskLauncher, jobExplorer, resource, "workerStep");
+	
+	List<String> commandLineArgs = new ArrayList<>(3);
+	commandLineArgs.add("--spring.profiles.active=worker");
+	commandLineArgs.add("--spring.cloud.task.initialize.enable=false");
+	commandLineArgs.add("--spring.batch.initializer.enabled=false");
+	
+	partitionHandler.setCommandLineArgsProvider(new PassThroughCommandLineArgsPRovider(commandLineArgs));
+	partitionHandler.setEnvironmentVariablesProvider(new NoOpEnvironmentVariablesProvider());
+	partitionHandler.setMaxWorkers(2);
+	partitionHandler.setApplicationName("PartitionBatchJobTask");
+	
+	return partitionHandler;
+}
+```
+
+NOTE: 환경 변수를 파티션에 전달할 때 각 파티션은 환경 설정이 다른 시스템에 있을 수 있습니다. 결과적으로 필요한 환경 변수만 전달해야 합니다.
+
+실행될 `Resource` 는 현재 context에서 `CommandLineRunner` 로 구성된 `DeployerStepExecutionHandler` 를 갖춘 Spring Boot uber-jar가 될 것으로 예상됩니다.
+앞의 예제에서 열거된 저장소는 uber-jar가 있는 원격 저장소여야 합니다.
+master와 slave는 모두 task repository 와 job repository로 사용되는 동일한 data 저장소를 볼수 있어야 합니다.
+기본 infrastructure가 Spring Boot jar를 bootstrap 하고  Spring Boot 가 `DeployerStepExecutionHandler`를 실행하면 step handler는 요청된 `Step` 을 실행합니다.
+다음 예제는 `DefaultStepExecutionHandler`를 설정하는 방법을 보여줍니다.
+
+```java
+@Bean
+public DeployerStepExecutionHandler stepExecutionHander(JobExplorer jobExplorer) {
+	DeployerStepExecutionHandler handler = new DeployerStepExecutionHandler(this.context, jobExplorer, this.jobRepository);
+	return handler;
+}
+```
+
+NOTE: Spring Cloud Task 프로젝트의 link:https://github.com/spring-cloud/spring-cloud-task/tree/master/spring-cloud-task-samples/partitioned-batch-job[sample module]에서 sample remote partition application을 찾을 수 있습니다.
+
+==== Notes on Developing a Batch-partitioned application for the Kubernetes Platform
+
+* Kubernetes 플랫폼에서 분할된 app을 배포할 때 Spring Cloud Kubernetes Deployer에 대해 다음 종속성을 사용해야 합니다.
++
+```
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-deployer-kubernetes</artifactId>
+</dependency>
+```
+
+* task application 및 해당 파티션의 application name은 다음 정규식 패턴을 따라야 합니다.
+`[a-z0-9]([-a-z0-9]*[a-z0-9])` 그렇지 않으면 예외가 발생합니다.
+
+==== Notes on Developing a Batch-partitioned Application for the Cloud Foundry Platform
+
+* Cloud Foundry 플랫폼에서 분할된 app을 배포할 때 Spring Cloud Foundry Deployer에 대해 다음 종속성을 사용해야 합니다.
++
+```
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-deployer-cloudfoundry</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.projectreactor</groupId>
+    <artifactId>reactor-core</artifactId>
+    <version>3.1.5.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>io.projectreactor.ipc</groupId>
+    <artifactId>reactor-netty</artifactId>
+    <version>0.7.5.RELEASE</version>
+</dependency>
+```
+
+* 파티션 핸들러를 구성할 때 파티션 핸들러가 파티션을 시작할 수 있도록 Cloud Foundry Deployment 환경 변수를 설정해야 합니다.
+다음 목록은 필수 환경 변수를 보여줍니다.
+** `spring_cloud_deployer_cloudfoundry_url`
+** `spring_cloud_deployer_cloudfoundry_org`
+** `spring_cloud_deployer_cloudfoundry_space`
+** `spring_cloud_deployer_cloudfoundry_domain`
+** `spring_cloud_deployer_cloudfoundry_username`
+** `spring_cloud_deployer_cloudfoundry_password`
+** `spring_cloud_deployer_cloudfoundry_services`
+** `spring_cloud_deployer_cloudfoundry_taskTimeout`
+
+`mysql` 데이터베이스 서비스를 사용하는 파티션 된 task의 배치 환경 변수 예제는 다음과 유사합니다.
+
+```
+spring_cloud_deployer_cloudfoundry_url=https://api.local.pcfdev.io
+spring_cloud_deployer_cloudfoundry_org=pcfdev-org
+spring_cloud_deployer_cloudfoundry_space=pcfdev-space
+spring_cloud_deployer_cloudfoundry_domain=local.pcfdev.io
+spring_cloud_deployer_cloudfoundry_username=admin
+spring_cloud_deployer_cloudfoundry_password=admin
+spring_cloud_deployer_cloudfoundry_services=mysql
+spring_cloud_deployer_cloudfoundry_taskTimeout=300
+```
+
+NOTE: PCF-Dev 를 사용할 때 다음 환경 변수도 필요합니다.
+`spring_cloud_deployer_cloudfoundry_skipSslValidation=true`
+
+=== Batch Informational Messages
+
+Spring Cloud Task는 batch job이 informational message를 생성하는 기능을 제공합니다.
+Spring Batch Events 섹션에서 자세히 설명합니다.
+
+=== Batch Job Exit Codes
+
+이전에 논의된 바와 같이, Spring Cloud Task application은 task 실행의 exit code를 기록할 수 있는 기능을 제공합니다.
+그러나 batch job 실행이 완료되는 방식에 관계없이 task 내에서 Spring Batch Job을 실행하는 경우 기본 Batch/Boot 동작을 사용할 때 작업 결과는 항상 0 입니다.
+task 는 boot application이고 task에서 반환되는 exit code는 boot application과 동일합니다.
+이 동작을 무시하고 batch job 이 BatchStatus를 리턴할 때 task가 0이 아닌 exit code를 리턴하도록 하려면 `spring.cloud.task.batch.fail-on-job-failure` 를 `true` 로 설정하세요.
+그런 다음 exit code는 1(기본 값)이거나 지정된 ExitCodeGenerator를 기반으로 할 수 있습니다. 

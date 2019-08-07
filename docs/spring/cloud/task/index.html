@@ -520,11 +520,60 @@ body {
 </body>
 </html>
 </head>
-<body class="book">
+<body class="book toc2 toc-left">
 <div id="header">
 <h1>Spring Cloud Task Documentation</h1>
 <div class="details">
 <span id="revnumber">version 2.1.1.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#features">1. Features</a>
+<ul class="sectlevel2">
+<li><a href="#the-lifecycle-of-a-spring-cloud-task">1.1. The lifecycle of a Spring Cloud Task</a>
+<ul class="sectlevel3">
+<li><a href="#the-taskexecution">1.1.1. The TaskExecution</a></li>
+<li><a href="#mapping-exit-codes">1.1.2. Mapping Exit Codes</a></li>
+</ul>
+</li>
+<li><a href="#configuration">1.2. Configuration</a>
+<ul class="sectlevel3">
+<li><a href="#datasource">1.2.1. DataSource</a></li>
+<li><a href="#table-prefix">1.2.2. Table Prefix</a></li>
+<li><a href="#enable-disable-table-initialization">1.2.3. Enable/Disable table Initialization</a></li>
+<li><a href="#externally-generated-task-id">1.2.4. Externally Generated Task ID</a></li>
+<li><a href="#external-task-id">1.2.5. External Task Id</a></li>
+<li><a href="#parent-task-id">1.2.6. Parent Task Id</a></li>
+<li><a href="#taskconfigurer">1.2.7. TaskConfigurer</a></li>
+<li><a href="#task-name">1.2.8. Task Name</a></li>
+<li><a href="#task-execution-listener">1.2.9. Task Execution Listener</a></li>
+<li><a href="#exception-thrown-by-task-execution-listener">1.2.10. Exception Thrown by Task Execution Listener</a></li>
+<li><a href="#exit-messages">1.2.11. Exit Messages</a></li>
+<li><a href="#restricting-spring-cloud-task-instances">1.2.12. Restricting Spring Cloud Task Instances</a></li>
+<li><a href="#disabling-spring-cloud-task-auto-configuration">1.2.13. Disabling Spring Cloud Task Auto Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#batch">2. Batch</a>
+<ul class="sectlevel2">
+<li><a href="#associating-a-job-execution-to-the-task-in-witch-it-was-executed">2.1. Associating a Job Execution to the Task in witch It was Executed</a>
+<ul class="sectlevel3">
+<li><a href="#overriding-the-taskbatchexecutionlistener">2.1.1. Overriding the TaskBatchExecutionListener</a></li>
+</ul>
+</li>
+<li><a href="#remote-partitioning">2.2. Remote Partitioning</a>
+<ul class="sectlevel3">
+<li><a href="#notes-on-developing-a-batch-partitioned-application-for-the-kubernetes-platform">2.2.1. Notes on Developing a Batch-partitioned application for the Kubernetes Platform</a></li>
+<li><a href="#notes-on-developing-a-batch-partitioned-application-for-the-cloud-foundry-platform">2.2.2. Notes on Developing a Batch-partitioned Application for the Cloud Foundry Platform</a></li>
+</ul>
+</li>
+<li><a href="#batch-informational-messages">2.3. Batch Informational Messages</a></li>
+<li><a href="#batch-job-exit-codes">2.4. Batch Job Exit Codes</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
@@ -1289,7 +1338,7 @@ task 는 boot application이고 task에서 반환되는 exit code는 boot applic
 <div id="footer">
 <div id="footer-text">
 Version 2.1.1.RELEASE<br>
-Last updated 2019-08-07 04:24:39 KST
+Last updated 2019-08-07 04:26:57 KST
 </div>
 </div>
 </body>

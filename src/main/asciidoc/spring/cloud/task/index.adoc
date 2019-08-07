@@ -1,7 +1,6 @@
 include::_attributes.adoc[]
 = Spring Cloud Task Documentation
 :revnumber: {spring-cloud-task-version}
-:toc!:
 
 
 == Features

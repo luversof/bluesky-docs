@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<title>Spring Boot Features</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+<script type="text/javascript">
+function addBlockSwitches() {
+	$('.primary').each(function() {
+		primary = $(this);
+		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
+		primary.children('.title').remove();
+	});
+	$('.secondary').each(function(idx, node) {
+		secondary = $(node);
+		primary = findPrimary(secondary);
+		switchItem = createSwitchItem(secondary, primary.children('.switch'));
+		switchItem.content.addClass('hidden');
+		findPrimary(secondary).append(switchItem.content);
+		secondary.remove();
+	});
+}
+
+function createBlockSwitch(primary) {
+	blockSwitch = $('<div class="switch"></div>');
+	primary.prepend(blockSwitch);
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	candidate = secondary.prev();
+	while (!candidate.is('.primary')) {
+		candidate = candidate.prev();
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	blockName = block.children('.title').text();
+	content = block.children('.content').first().append(block.next('.colist'));
+	item = $('<div class="switch--item">' + blockName + '</div>');
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	$('.switch--item').each(function() {
+		var blockId = blockIdForSwitchItem($(this));
+		$(this).off('click');
+		$(this).on('click', function() {
+			selectedText = $(this).text()
+			window.localStorage.setItem(blockId, selectedText);
+			$(".switch--item").filter(function() {
+				return blockIdForSwitchItem($(this)) === blockId;
+			}).filter(function() {
+				return $(this).text() === selectedText;
+			}).each(function() {
+				select($(this))
+			});
+		});
+		if ($(this).text() === window.localStorage.getItem(blockId)) {
+			select($(this))
+		}
+	});
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	idComponents.push(item.text().toLowerCase());
+	item.siblings(".switch--item").each(function(index, sibling) {
+		idComponents.push($(sibling).text().toLowerCase());
+	});
+	return idComponents.sort().join("-")
+}
+
+function select(selected) {
+	selected.addClass('selected');
+	selected.siblings().removeClass('selected');
+	selectedContent = selected.parent().siblings(".content").eq(selected.index())
+	selectedContent.removeClass('hidden');
+	selectedContent.siblings().addClass('hidden');
+}
+
+$(addBlockSwitches);
+$(globalSwitch);
+
+</script>
+
+</head>
+<body id="boot-features" class="book toc2 toc-left">
+<div id="header">
+<h1>Spring Boot Features</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#boot-features-logging">1. Logging</a>
+<ul class="sectlevel2">
+<li><a href="#boot-features-logging-format">1.1. Log Format</a></li>
+<li><a href="#boot-features-logging-console-output">1.2. Console Output</a>
+<ul class="sectlevel3">
+<li><a href="#boot-features-logging-color-coded-output">1.2.1. Color-coded Output</a></li>
+</ul>
+</li>
+<li><a href="#boot-features-logging-file-output">1.3. File Output</a></li>
+<li><a href="#boot-features-logging-file-rotation">1.4. File Rotation</a></li>
+<li><a href="#boot-features-custom-log-levels">1.5. Log Levels</a></li>
+<li><a href="#boot-features-custom-log-groups">1.6. Log Groups</a></li>
+<li><a href="#boot-features-log-shutdown-hook">1.7. Using a Log Shutdown Hook</a></li>
+<li><a href="#boot-features-custom-log-configuration">1.8. Custom Log Configuration</a></li>
+<li><a href="#boot-features-logback-extensions">1.9. Logback Extensions</a>
+<ul class="sectlevel3">
+<li><a href="#profile-specific-configuration">1.9.1. Profile-specific Configuration</a></li>
+<li><a href="#environment-properties">1.9.2. Environment Properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section dives into the details of Spring Boot.<br>
+Here you can learn about the key features that you may want to use and customize.<br>
+If you have not already done so, you might want to read the "<a href="getting-started.html#getting-started">getting-started.html</a>" and "<a href="using-spring-boot.html#using-boot">using-spring-boot.html</a>" sections, so that you have a good grounding of the basics.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="boot-features-logging"><a class="anchor" href="#boot-features-logging"></a>1. Logging</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Boot는 모든 내부 logging에 <a href="https://commons.apache.org/logging">Commons Logging</a>을 사용하지만 기본 로그 구현은 오픈되어 있습니다<br>
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html">Java Util Logging</a>, <a href="https://logging.apache.org/log4j/2.x/">Log4J2</a>, and <a href="https://logback.qos.ch/">Logback</a>에 대한 기본 구성이 제공됩니다..<br>
+각각의 경우에 logger는 optional file output도 사용 가능한 console output을 사용하도록 사전 구성되어 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>기본적으로 "`Starters`"를 사용하면 Logback이 logging에 사용됩니다.<br>
+Java Util Logging, Commons Logging, Log4J 또는 SLF4J를 사용하는 종속 library가 모두 올바르게 작동하는지 확인하기 위해 적절한 logback routing도 포함됩니다.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Java에 사용할 수 있는 logging framework가 많이 있습니다.<br>
+위 목록이 헷갈리더라도 걱정하지 마세요.<br>
+일반적으로 logging dependencies을 변경할 필요가 없으며 Spring Boot 기본값이 잘 작동합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+application을 servlet container 또는 application server에 배포할 때 Java Util Logging API를 통해 수행된 logging은 application의 log로 route 되지 않습니다.<br>
+이렇게 하면 container 또는 container에 배포된 다른 application에서 수행한 logging이 application의 log에 표시되지 않습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="boot-features-logging-format"><a class="anchor" href="#boot-features-logging-format"></a>1.1. Log Format</h3>
+<div class="paragraph">
+<p>Spring Boot의 default log output은 다음 예제와 유사합니다:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2019-03-05 10:57:51.112  INFO 45469 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/7.0.52
+2019-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1358 ms
+2019-03-05 10:57:51.698  INFO 45469 --- [ost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-05 10:57:51.702  INFO 45469 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>다음 항목이 출력됩니다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Date and Time: Millisecond의 정밀도와 쉽게 정렬 가능.</p>
+</li>
+<li>
+<p>Log Level: <code>ERROR</code>, <code>WARN</code>, <code>INFO</code>, <code>DEBUG</code>, or <code>TRACE</code>.</p>
+</li>
+<li>
+<p>Process ID.</p>
+</li>
+<li>
+<p>실제 log message의 시작을 구분하는 <code>---</code> 구분자.</p>
+</li>
+<li>
+<p>Thread name: 대괄호로 묶여 있습니다. (console output을 위해 잘릴 수 있음)</p>
+</li>
+<li>
+<p>Logger name: 일반적으로 source class name. (종종 축약됨)</p>
+</li>
+<li>
+<p>The log message.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Logback은 <code>FATAL</code> level을 가지고 있지 않습니다.<br>
+이는 <code>ERROR</code> 로 맵핑됩니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-logging-console-output"><a class="anchor" href="#boot-features-logging-console-output"></a>1.2. Console Output</h3>
+<div class="paragraph">
+<p>default log configuration은 작성될 때 console에 message를 표시합니다.<br>
+default로 <code>ERROR</code>-level, <code>WARN</code>-level, 그리고 <code>INFO</code>-level message가 기록됩니다.<br>
+by starting your application with a <code>--debug</code> flag로 application을 시작하여 &#8220;debug&#8221; mode 를 활성화할 수도 있습니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ java -jar myapp.jar --debug</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>application.properties</code> 에서 <code>debug=true</code> 를 지정할 수도 있습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>debug mode가 활성화되면 더 많은 정보를 출력하도록 core logger (embedded container, Hibernate 및 Spring Boot) 선택이 구성됩니다.<br>
+debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기록하도록 application이 구성되지는 않습니다.</p>
+</div>
+<div class="paragraph">
+<p>또는 <code>--trace</code> flag (또는 <code>trace=true</code> in your <code>application.properties</code>) 로 application을 시작하여 &#8220;trace&#8221; mode를 활성화할 수 있습니다.<br>
+이렇게 하면 선택한 core logger (embedded container, Hibernate schema generation 및 전체 Spring Boot portfolio)에 대한 trace logging이 가능합니다.</p>
+</div>
+<div class="sect3">
+<h4 id="boot-features-logging-color-coded-output"><a class="anchor" href="#boot-features-logging-color-coded-output"></a>1.2.1. Color-coded Output</h4>
+<div class="paragraph">
+<p>termintal이 ANSI를 지원하는 경우 가독성을 높이기 위해 색상 출력이 사용됩니다.<br>
+<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
+</div>
+<div class="paragraph">
+<p>색 구분은 <code>%clr</code> conversion word를 사용하여 구성됩니다.<br>
+가장 간단한 형식으로 converter는 다음 예와 같이 log level에 따라 출력에 색상을 지정합니다.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>%clr(%5p)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>아래 table은 색상에 대한 log level mapping을 설명합니다.:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Level</th>
+<th class="tableblock halign-left valign-top">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FATAL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Red</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ERROR</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Red</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WARN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yellow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INFO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Green</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DEBUG</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Green</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TRACE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Green</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>또는 변환 옵션을 제공하여 사용해야 하는 색상 또는 스타일을 지정할 수 있습니다.<br>
+예를 들어 text를 노란색으로 만들려면 다음 설정을 사용합니다:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following colors and styles are supported:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>blue</code></p>
+</li>
+<li>
+<p><code>cyan</code></p>
+</li>
+<li>
+<p><code>faint</code></p>
+</li>
+<li>
+<p><code>green</code></p>
+</li>
+<li>
+<p><code>magenta</code></p>
+</li>
+<li>
+<p><code>red</code></p>
+</li>
+<li>
+<p><code>yellow</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-logging-file-output"><a class="anchor" href="#boot-features-logging-file-output"></a>1.3. File Output</h3>
+<div class="paragraph">
+<p>기본적으로 Spring Boot log는 console 만 log를 처리하고 log file을 작성하지 않습니다.<br>
+만약 console 출력 외에 log file을 남기길 원한다면 <code>logging.file.name</code> 또는 <code>logging.file.path</code> property를 (예를 들면 <code>application.properties</code> 에서) 설정해야 합니다.</p>
+</div>
+<div class="paragraph">
+<p>아래 테이블은 <code>logging.*</code> properties를 함께 사용할 수 있는 방법을 보여줍니다.:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Logging properties</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 57.1429%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><code>logging.file.name</code></th>
+<th class="tableblock halign-left valign-top"><code>logging.file.path</code></th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Console only logging.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>my.log</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지정된 log file에 기록합니다.<br>
+  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/var/log</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지정된 directory에 <code>spring.log</code> 를 기록합니다.<br>
+  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Log file은 10MB에 도달하면 rotate 되며 console output과 마찬가지로 <code>ERROR</code>-level, <code>WARN</code>-level 및 <code>INFO</code>-level message가 default로 기록됩니다.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Logging properties는 실제 logging infrastructure에 독립적입니다.<br>
+결과적으로 특정 configuration key들은(logback을 위한 <code>logback.configurationFile</code> 같은) Spring Boot에서 관리되지 않습니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-logging-file-rotation"><a class="anchor" href="#boot-features-logging-file-rotation"></a>1.4. File Rotation</h3>
+<div class="paragraph">
+<p>만약 logback을 사용하는 경우 <code>application.properties</code> 또는 <code>application.yaml</code> file에서 log rotation setting을 자세하게 할 수 있습니다.<br>
+다른 모든 logging system의 경우 직접 rotation setting을 구성해야 합니다. (예를 들면 Log4j2를 사용하는 경우 <code>log4j.xml</code> file을 추가하여 사용)</p>
+</div>
+<div class="paragraph">
+<p>다음 rotation policy properties가 지원됩니다.:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.file-name-pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">log archive를 만드는데 사용되는 filename pattern입니다.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.clean-history-on-start</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application이 시작될 때 log archive cleanup이 수행되어야 하는 경우</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-file-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">archive 되기 전 log file의 maximum size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.total-size-cap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">log archive를 삭제할 수 있는 maximum amount</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-history</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">log archive 보관 일 수  (default : 7)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="boot-features-custom-log-levels"><a class="anchor" href="#boot-features-custom-log-levels"></a>1.5. Log Levels</h3>
+<div class="paragraph">
+<p>모든 지원되는 logging system은 TRACE, DEBUG, INFO, WARN, ERROR, FATAL 또는 OFF 중 하나를 <code>level</code> 로 <code>logging.level.&lt;logger-name&gt;=&lt;level&gt;</code> 을 사용하여 logger level을 Spring <code>Environment</code> 에 (예를 들면 <code>application.properties</code> 에) 설정할 수 있습니다.<br>
+<code>logging.level.root</code> 를 사용하여 <code>root</code> logger를 설정할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>아래 예제는 <code>application.properties</code> 의 잠재적 logging 설정을 보여줍니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.root=warn
+logging.level.org.springframework.web=debug
+logging.level.org.hibernate=error</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging:
+  level:
+    root: "warn"
+    org.springframework.web: "debug"
+    org.hibernate: "error"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>environment variable을 사용하여 logging level을 설정할 수도 있습니다.<br>
+예를 들어 <code>LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG</code> 는 <code>org.springframework.web</code> 을 <code>DEBUG</code> 로 설정합니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+위의 접근 방식은 package level logging에 대해서만 적용됩니다.<br>
+relaxed binding은 언제나 environment variable을 소문자로 변환하기 때문이 이 방식으로 개별 class에 대한 logging을 설정할 수 없습니다.<br>
+만약 class에 대해 loggin을 설정하고자 하는 경우  <a href="#boot-features-external-config-application-json">the <code>SPRING_APPLICATION_JSON</code></a> variable을 사용할 수 있습니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-custom-log-groups"><a class="anchor" href="#boot-features-custom-log-groups"></a>1.6. Log Groups</h3>
+<div class="paragraph">
+<p>관련 logger를 함께 그룹화하여 모두 동시에 구성할 수 있으면 유용합니다.<br>
+예를 들어 일반적으로 모든 Tomcat 관련 logger의 logging level을 변경할 수 있지만 최상위 패키지를 쉽게 기억할 수 없습니다.</p>
+</div>
+<div class="paragraph">
+<p>이를 돕기 위해 Spring <code>Environment</code> 를 사용하면 logging group을 정의할 수 있습니다.<br>
+예를 들어 &#8220;tomcat&#8221; group을 <code>application.properties</code> 에 추가하여 정의하는 방법은 다음과 같습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+  group:
+    tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>일단 정의되면 한 줄로 모든 그룹에 있는 모든 logger의 level을 변경할 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+  level:
+    tomcat: "trace"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring Boot에는 즉시 사용할 수 있는 다음과 같은 사전 정의된 logging group이 포함되어 있습니다:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Loggers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.core.codec</code>, <code>org.springframework.http</code>, <code>org.springframework.web</code>, <code>org.springframework.boot.actuate.endpoint.web</code>, <code>org.springframework.boot.web.servlet.ServletContextInitializerBeans</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sql</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.jdbc.core</code>, <code>org.hibernate.SQL</code>, <code>org.jooq.tools.LoggerListener</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="boot-features-log-shutdown-hook"><a class="anchor" href="#boot-features-log-shutdown-hook"></a>1.7. Using a Log Shutdown Hook</h3>
+<div class="paragraph">
+<p>In order to release logging resources when your application terminates, a shutdown hook that will trigger log system cleanup when the JVM exits is provided.<br>
+This shutdown hook is registered automatically unless your application is deployed as a war file.<br>
+If your application has complex context hierarchies the shutdown hook may not meet your needs.<br>
+If it does not, disable the shutdown hook and investigate the options provided directly by the underlying logging system.<br>
+For example, Logback offers <a href="http://logback.qos.ch/manual/loggingSeparation.html">context selectors</a> which allow each Logger to be created in its own context.<br>
+You can use the <code>logging.register-shutdown-hook</code> property to disable the shutdown hook.<br>
+Setting it to <code>false</code> will disable the registration.<br>
+You can set the property in your <code>application.properties</code> or <code>application.yaml</code> file:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties"></code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Yaml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+  register-shutdown-hook: false</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-custom-log-configuration"><a class="anchor" href="#boot-features-custom-log-configuration"></a>1.8. Custom Log Configuration</h3>
+<div class="paragraph">
+<p>다양한 loggin system은 classpath에 적절한 library를 포함하여 활성화할 수 있으며 classpath의 root 또는 Spring <code>Environment</code> property: <code>logging.config</code> 에 지정된 위치에 적절한 configuration file을 제공하여 추가로 customize 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p><code>org.springframework.boot.logging.LoggingSystem</code> system property를 사용하여 Spring Boot가 특정 logging system을 사용하도록 강제할 수 있습니다.<br>
+값은 <code>LoggingSystem</code> 구현의 명확한 class name이어야 합니다.<br>
+<code>none</code> 값을 사용하여 Spring Boot의 Logging configuration을 완전히 비활성화할 수도 있습니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+logging은 <code>ApplicationContext</code> 가 만들어지기 <strong>이전</strong> 에 초기화되기 때문에 Spring <code>@Configuration</code> file의 <code>@PropertySources</code> 에서 logging을 설정할 수 없습니다.<br>
+logging system을 변경하거나 완전히 비활성화하는 유일한 방법은 System properties를 이용하는 것입니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>logging system에 따라 다음 file이 load 됩니다:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Logging System</th>
+<th class="tableblock halign-left valign-top">Customization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logback</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logback-spring.xml</code>, <code>logback-spring.groovy</code>, <code>logback.xml</code>, or <code>logback.groovy</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Log4j2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log4j2-spring.xml</code> or <code>log4j2.xml</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JDK (Java Util Logging)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.properties</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+가능한 경우 logging configuration에 <code>-spring</code> variants 을 사용하는 것이 좋습니다. (예를 들면 <code>logback.xml</code> 대신 <code>logback-spring.xml</code> ).<br>
+standard configuration location을 사용하는 경우 Spring은 log initialization을 완전히 제어할 수 없습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으키는 classloading issue가 있습니다.<br>
+가능하면 'executable jar&#8217;에서 실행할 때 피하는 것이 좋습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>customization을 돕기 위해 다음 표에 설명된 대로 일부 다른 properties가 Spring <code>Environment</code> 에서 System properties로 전달됩니다.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Spring Environment</th>
+<th class="tableblock halign-left valign-top">System Property</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.exception-conversion-word</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_EXCEPTION_CONVERSION_WORD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The conversion word used when logging exceptions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.file.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_FILE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If defined, it is used in the default log configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.file.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_PATH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If defined, it is used in the default log configuration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.console</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CONSOLE_LOG_PATTERN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The log pattern to use on the console (stdout).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.dateformat</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_DATEFORMAT_PATTERN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Appender pattern for log date format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.charset.console</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CONSOLE_LOG_CHARSET</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The charset to use for console logging.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FILE_LOG_PATTERN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The log pattern to use in a file (if <code>LOG_FILE</code> is enabled).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.charset.file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FILE_LOG_CHARSET</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The charset to use for file logging (if <code>LOG_FILE</code> is enabled).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.level</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_LEVEL_PATTERN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The format to use when rendering the log level (default <code>%5p</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PID</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PID</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The current process ID (discovered if possible and when not already defined as an OS environment variable).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>logback을 사용하는 경우 다음 properties도 전달됩니다:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Spring Environment</th>
+<th class="tableblock halign-left valign-top">System Property</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.file-name-pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_FILE_NAME_PATTERN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pattern for rolled-over log file names (default <code>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.clean-history-on-start</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to clean the archive log files on startup.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-file-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum log file size.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.total-size-cap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total size of log backups to be kept.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-history</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_MAX_HISTORY</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of archive log files to keep.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>지원되는 모든 logging system은 configuration file을 parsing 할 때 system properties를 참조할 수 있습니다.<br>
+`spring-boot.jar`의 default configuration을 참조하세요:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/{github-tag}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml">Logback</a></p>
+</li>
+<li>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/{github-tag}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/log4j2/log4j2.xml">Log4j 2</a></p>
+</li>
+<li>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/{github-tag}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/java/logging-file.properties">Java Util logging</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>logging property에 placeholder를 사용하려면 기본 framework의 구문이 아닌 <a href="#boot-features-external-config-placeholders-in-properties">Spring Boot&#8217;s syntax</a> 를 사용해야 합니다.<br>
+특히 Logback을 사용하는 경우 property name과 default value 사이에 <code>:</code> 구분 기호로 사용하고 <code>:-</code> 를 사용하지 말아야 합니다.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>LOG_LEVEL_PATTERN</code> (또는 logback의 <code>logging.pattern.level</code> ) 만 overriding 하여 MDC 및 다른 ad-hoc content를 log line에 추가할 수 있습니다.<br>
+예를 들어 <code>logging.pattern.level=user:%X{user} %5p</code>, 를 사용하는 경우 default log format에는 다음 예제와 같이 "user"에 대한 MDC 항목이 포함됩니다. (있는 경우)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2019-08-30 12:30:04.031 user:someone INFO 22174 --- [  nio-8080-exec-0] demo.Controller
+Handling authenticated request</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="boot-features-logback-extensions"><a class="anchor" href="#boot-features-logback-extensions"></a>1.9. Logback Extensions</h3>
+<div class="paragraph">
+<p>Spring Boot에는 advanced configuration에 도움이 되는 Logback에 대한 여러 extension이 포함되어 있습니다.<br>
+<code>logback-spring.xml</code> configuration file에서 이러한 extension을 사용할 수 있습니다.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+standard <code>logback.xml</code> configuration file은 너무 일찍 로드되기 때문에 이 file에서 extension을 사용할 수 없습니다.<br>
+<code>logback-spring.xml</code> 을 사용하거나 또는 <code>logging.config</code> property를 정의해야 합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+extension은 Logback의 <a href="https://logback.qos.ch/manual/configuration.html#autoScan">configuration scanning</a>과 함께 사용할 수 없습니다.<br>
+만약 이렇게 하려고 하면 configuration file을 변경하면 다음과 유사한 오류가 발생합니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProperty], current ElementPath is [[configuration][springProperty]]
+ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProfile], current ElementPath is [[configuration][springProfile]]</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="profile-specific-configuration"><a class="anchor" href="#profile-specific-configuration"></a>1.9.1. Profile-specific Configuration</h4>
+<div class="paragraph">
+<p><code>&lt;springProfile&gt;</code> 태그는 active Spring Profile에 기반한 configuration section을 선택적으로 포함하거나 제외할 수 있습니다.<br>
+Profile section은 <code>&lt;configuration&gt;</code> 요소 내 모든 위치에서 지원됩니다.<br>
+<code>name</code> attribute를 사용하여 대상 configuration profile을 지정할 수 있습니다.<br>
+<code>&lt;springProfile&gt;</code> tag는 profile name(예를 들어 <code>staging</code> ) 또는 profile expression을 포함할 수 있습니다.<br>
+profile expression은 좀 더 복잡한 profile logic을 표현할 수 있습니다. (예: <code>production &amp; (eu-central | eu-west)</code> )<br>
+자세한 내용은 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/core.html#beans-definition-profiles-java">reference guide</a>를 확인하세요.<br>
+다음 목록은 세 가지 sample profile을 보여줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProfile name="staging"&gt;
+    &lt;!-- configuration to be enabled when the "staging" profile is active --&gt;
+&lt;/springProfile&gt;
+
+&lt;springProfile name="dev | staging"&gt;
+    &lt;!-- configuration to be enabled when the "dev" or "staging" profiles are active --&gt;
+&lt;/springProfile&gt;
+
+&lt;springProfile name="!production"&gt;
+    &lt;!-- configuration to be enabled when the "production" profile is not active --&gt;
+&lt;/springProfile&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="environment-properties"><a class="anchor" href="#environment-properties"></a>1.9.2. Environment Properties</h4>
+<div class="paragraph">
+<p><code>&lt;springProperty&gt;</code> tag를 사용하면 logback 내에서 사용할 수 있도록 Spring <code>Environment</code> 의 properties를 노출할 수 있습니다.<br>
+이렇게 하면 Logback configuration에서 <code>application.properties</code> file의 값에 접근하려는 경우 유용할 수 있습니다.<br>
+tag는 logback standard <code>&lt;property&gt;</code> tag와 유사한 방식으로 동작합니다.<br>
+그러나 직접 <code>value</code> 를 지정하는 대신 property의 <code>source</code> 를 지정합니다( <code>Environment</code> 로 부터).<br>
+property를 <code>local</code> scope 이외의 다른 곳에 저장해야 하는 경우 <code>scope</code> attribute를 사용할 수 있습니다.<br>
+fallback value가 필요한 경우 ( <code>Environment</code> 에서 property를 설정하지 않은 경우) <code>defaultValue</code> attribute를 사용할 수 있습니다.<br>
+다음 예에서는 Logback 내에서 사용할 properties를 노출하는 방법을 보여줍니다.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
+        defaultValue="localhost"/&gt;
+&lt;appender name="FLUENT" class="ch.qos.logback.more.appenders.DataFluentAppender"&gt;
+    &lt;remoteHost&gt;${fluentHost}&lt;/remoteHost&gt;
+    ...
+&lt;/appender&gt;</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>source</code> 는 kebab case(예: <code>my.property-name</code>)로 지정해야 합니다.<br>
+그러나 완화된 규칙을 사용하여 property를 <code>Environment</code> 에 추가할 수 있습니다.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-03-18 11:25:21 +0900
+</div>
+</div>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+[[spring-boot-reference-documentation]]
+= Spring Boot Reference Documentation
+include::spring/boot/authors.adoc[]
+:docinfo: shared
+include::spring/boot/_attributes.adoc[]
+
+*{spring-boot-version}*
+
+참조 문서는 다음 섹션으로 구성됩니다:
+
+[horizontal]
+<<spring-boot-features.adoc#boot-features,Spring Boot Features>> :: Profiles, Logging, Security, Caching, Spring Integration, Testing, and more.
+

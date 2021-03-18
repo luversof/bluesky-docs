@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Configuration
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 https://docs.spring.io/spring-cloud-dataflow/docs/2.2.0.RELEASE/reference/htmlsingle/#getting-started
 == Maven

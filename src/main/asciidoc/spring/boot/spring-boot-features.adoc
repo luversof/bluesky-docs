@@ -1,0 +1,487 @@
+[[boot-features]]
+= Spring Boot Features
+include::spring/boot/_attributes.adoc[]
+
+This section dives into the details of Spring Boot.
+Here you can learn about the key features that you may want to use and customize.
+If you have not already done so, you might want to read the "<<getting-started.adoc#getting-started>>" and "<<using-spring-boot.adoc#using-boot>>" sections, so that you have a good grounding of the basics.
+
+[[boot-features-logging]]
+== Logging
+Spring Boot는 모든 내부 logging에 https://commons.apache.org/logging[Commons Logging]을 사용하지만 기본 로그 구현은 오픈되어 있습니다
+{java-api}/java/util/logging/package-summary.html[Java Util Logging], https://logging.apache.org/log4j/2.x/[Log4J2], and https://logback.qos.ch/[Logback]에 대한 기본 구성이 제공됩니다..
+각각의 경우에 logger는 optional file output도 사용 가능한 console output을 사용하도록 사전 구성되어 있습니다.
+
+기본적으로 "`Starters`"를 사용하면 Logback이 logging에 사용됩니다.
+Java Util Logging, Commons Logging, Log4J 또는 SLF4J를 사용하는 종속 library가 모두 올바르게 작동하는지 확인하기 위해 적절한 logback routing도 포함됩니다.
+
+TIP: Java에 사용할 수 있는 logging framework가 많이 있습니다.
+위 목록이 헷갈리더라도 걱정하지 마세요.
+일반적으로 logging dependencies을 변경할 필요가 없으며 Spring Boot 기본값이 잘 작동합니다.
+
+TIP: application을 servlet container 또는 application server에 배포할 때 Java Util Logging API를 통해 수행된 logging은 application의 log로 route 되지 않습니다.
+이렇게 하면 container 또는 container에 배포된 다른 application에서 수행한 logging이 application의 log에 표시되지 않습니다.
+
+
+[[boot-features-logging-format]]
+=== Log Format
+Spring Boot의 default log output은 다음 예제와 유사합니다:
+
+[indent=0]
+----
+2019-03-05 10:57:51.112  INFO 45469 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/7.0.52
+2019-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-05 10:57:51.253  INFO 45469 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1358 ms
+2019-03-05 10:57:51.698  INFO 45469 --- [ost-startStop-1] o.s.b.c.e.ServletRegistrationBean        : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-05 10:57:51.702  INFO 45469 --- [ost-startStop-1] o.s.b.c.embedded.FilterRegistrationBean  : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+----
+
+다음 항목이 출력됩니다:
+
+* Date and Time: Millisecond의 정밀도와 쉽게 정렬 가능.
+* Log Level: `ERROR`, `WARN`, `INFO`, `DEBUG`, or `TRACE`.
+* Process ID.
+* 실제 log message의 시작을 구분하는 `---` 구분자.
+* Thread name: 대괄호로 묶여 있습니다. (console output을 위해 잘릴 수 있음)
+* Logger name: 일반적으로 source class name. (종종 축약됨)
+* The log message.
+
+NOTE: Logback은 `FATAL` level을 가지고 있지 않습니다.
+이는 `ERROR` 로 맵핑됩니다.
+
+
+
+[[boot-features-logging-console-output]]
+=== Console Output
+default log configuration은 작성될 때 console에 message를 표시합니다.
+default로 `ERROR`-level, `WARN`-level, 그리고 `INFO`-level message가 기록됩니다.
+by starting your application with a `--debug` flag로 application을 시작하여 "`debug`" mode 를 활성화할 수도 있습니다.
+
+[indent=0]
+----
+	$ java -jar myapp.jar --debug
+----
+
+NOTE: `application.properties` 에서 `debug=true` 를 지정할 수도 있습니다.
+
+debug mode가 활성화되면 더 많은 정보를 출력하도록 core logger (embedded container, Hibernate 및 Spring Boot) 선택이 구성됩니다.
+debug mode를 활성화해도 `DEBUG` level로 모든 message를 기록하도록 application이 구성되지는 않습니다.
+
+또는 `--trace` flag (또는 `trace=true` in your `application.properties`) 로 application을 시작하여 "`trace`" mode를 활성화할 수 있습니다.
+이렇게 하면 선택한 core logger (embedded container, Hibernate schema generation 및 전체 Spring Boot portfolio)에 대한 trace logging이 가능합니다.
+
+
+
+[[boot-features-logging-color-coded-output]]
+==== Color-coded Output
+termintal이 ANSI를 지원하는 경우 가독성을 높이기 위해 색상 출력이 사용됩니다.
+`spring.output.ansi.enabled` 를 {spring-boot-module-api}/ansi/AnsiOutput.Enabled.html[supported value] 으로 설정하여 auto-detection을 override 할 수 있습니다..
+
+색 구분은 `%clr` conversion word를 사용하여 구성됩니다.
+가장 간단한 형식으로 converter는 다음 예와 같이 log level에 따라 출력에 색상을 지정합니다.:
+
+[source,indent=0]
+----
+%clr(%5p)
+----
+
+아래 table은 색상에 대한 log level mapping을 설명합니다.:
+
+|===
+| Level | Color
+
+| `FATAL`
+| Red
+
+| `ERROR`
+| Red
+
+| `WARN`
+| Yellow
+
+| `INFO`
+| Green
+
+| `DEBUG`
+| Green
+
+| `TRACE`
+| Green
+|===
+
+또는 변환 옵션을 제공하여 사용해야 하는 색상 또는 스타일을 지정할 수 있습니다.
+예를 들어 text를 노란색으로 만들려면 다음 설정을 사용합니다:
+
+[source,indent=0]
+----
+%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow}
+----
+
+The following colors and styles are supported:
+
+* `blue`
+* `cyan`
+* `faint`
+* `green`
+* `magenta`
+* `red`
+* `yellow`
+
+
+
+[[boot-features-logging-file-output]]
+=== File Output
+기본적으로 Spring Boot log는 console 만 log를 처리하고 log file을 작성하지 않습니다.
+만약 console 출력 외에 log file을 남기길 원한다면 configprop:logging.file.name[] 또는 configprop:logging.file.path[] property를 (예를 들면 `application.properties` 에서) 설정해야 합니다.
+
+아래 테이블은 `logging.*` properties를 함께 사용할 수 있는 방법을 보여줍니다.:
+
+.Logging properties
+[cols="1,1,1,4"]
+|===
+| configprop:logging.file.name[] | configprop:logging.file.path[] | Example | Description
+
+| _(none)_
+| _(none)_
+|
+| Console only logging.
+
+| Specific file
+| _(none)_
+| `my.log`
+| 지정된 log file에 기록합니다.
+  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다.
+
+| _(none)_
+| Specific directory
+| `/var/log`
+| 지정된 directory에 `spring.log` 를 기록합니다.
+  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다
+|===
+
+Log file은 10MB에 도달하면 rotate 되며 console output과 마찬가지로 `ERROR`-level, `WARN`-level 및 `INFO`-level message가 default로 기록됩니다.
+
+TIP: Logging properties는 실제 logging infrastructure에 독립적입니다.
+결과적으로 특정 configuration key들은(logback을 위한 `logback.configurationFile` 같은) Spring Boot에서 관리되지 않습니다.
+
+
+
+[[boot-features-logging-file-rotation]]
+=== File Rotation
+만약 logback을 사용하는 경우 `application.properties` 또는 `application.yaml` file에서 log rotation setting을 자세하게 할 수 있습니다.
+다른 모든 logging system의 경우 직접 rotation setting을 구성해야 합니다. (예를 들면 Log4j2를 사용하는 경우 `log4j.xml` file을 추가하여 사용)
+
+다음 rotation policy properties가 지원됩니다.:
+
+|===
+| Name | Description
+
+| configprop:logging.logback.rollingpolicy.file-name-pattern[]
+| log archive를 만드는데 사용되는 filename pattern입니다.
+
+| configprop:logging.logback.rollingpolicy.clean-history-on-start[]
+| application이 시작될 때 log archive cleanup이 수행되어야 하는 경우
+
+| configprop:logging.logback.rollingpolicy.max-file-size[]
+| archive 되기 전 log file의 maximum size
+
+| configprop:logging.logback.rollingpolicy.total-size-cap[]
+| log archive를 삭제할 수 있는 maximum amount
+
+| configprop:logging.logback.rollingpolicy.max-history[]
+| log archive 보관 일 수  (default : 7)
+|===
+
+
+
+[[boot-features-custom-log-levels]]
+=== Log Levels
+모든 지원되는 logging system은 TRACE, DEBUG, INFO, WARN, ERROR, FATAL 또는 OFF 중 하나를 `level` 로 `+logging.level.<logger-name>=<level>+` 을 사용하여 logger level을 Spring `Environment` 에 (예를 들면 `application.properties` 에) 설정할 수 있습니다.
+`logging.level.root` 를 사용하여 `root` logger를 설정할 수 있습니다. 
+
+아래 예제는 `application.properties` 의 잠재적 logging 설정을 보여줍니다:
+
+[source,properties,indent=0,subs="verbatim,quotes,attributes",configprops,role="primary"]
+.Properties
+----
+	logging.level.root=warn
+	logging.level.org.springframework.web=debug
+	logging.level.org.hibernate=error
+----
+
+[source,properties,indent=0,subs="verbatim,quotes,attributes",role="secondary"]
+.Yaml
+----
+	logging:
+	  level:
+	    root: "warn"
+	    org.springframework.web: "debug"
+	    org.hibernate: "error"
+----
+
+environment variable을 사용하여 logging level을 설정할 수도 있습니다.
+예를 들어 `LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG` 는 `org.springframework.web` 을 `DEBUG` 로 설정합니다.
+
+NOTE: 위의 접근 방식은 package level logging에 대해서만 적용됩니다.
+relaxed binding은 언제나 environment variable을 소문자로 변환하기 때문이 이 방식으로 개별 class에 대한 logging을 설정할 수 없습니다.
+만약 class에 대해 loggin을 설정하고자 하는 경우  <<boot-features-external-config-application-json, the `SPRING_APPLICATION_JSON`>> variable을 사용할 수 있습니다.
+
+
+
+[[boot-features-custom-log-groups]]
+=== Log Groups
+관련 logger를 함께 그룹화하여 모두 동시에 구성할 수 있으면 유용합니다.
+예를 들어 일반적으로 모든 Tomcat 관련 logger의 logging level을 변경할 수 있지만 최상위 패키지를 쉽게 기억할 수 없습니다.
+
+이를 돕기 위해 Spring `Environment` 를 사용하면 logging group을 정의할 수 있습니다.
+예를 들어 "`tomcat`" group을 `application.properties` 에 추가하여 정의하는 방법은 다음과 같습니다:
+
+[source,yaml,indent=0,subs="verbatim,quotes,attributes",configprops,configblocks]
+----
+	logging:
+	  group:
+	    tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"
+----
+
+일단 정의되면 한 줄로 모든 그룹에 있는 모든 logger의 level을 변경할 수 있습니다:
+
+[source,yaml,indent=0,subs="verbatim,quotes,attributes",configprops,configblocks]
+----
+	logging:
+	  level:
+	    tomcat: "trace"
+----
+
+Spring Boot에는 즉시 사용할 수 있는 다음과 같은 사전 정의된 logging group이 포함되어 있습니다:
+
+[cols="1,4"]
+|===
+| Name | Loggers
+
+| web
+| `org.springframework.core.codec`, `org.springframework.http`, `org.springframework.web`, `org.springframework.boot.actuate.endpoint.web`, `org.springframework.boot.web.servlet.ServletContextInitializerBeans`
+
+| sql
+| `org.springframework.jdbc.core`, `org.hibernate.SQL`, `org.jooq.tools.LoggerListener`
+|===
+
+
+
+[[boot-features-log-shutdown-hook]]
+=== Using a Log Shutdown Hook
+In order to release logging resources when your application terminates, a shutdown hook that will trigger log system cleanup when the JVM exits is provided.
+This shutdown hook is registered automatically unless your application is deployed as a war file.
+If your application has complex context hierarchies the shutdown hook may not meet your needs.
+If it does not, disable the shutdown hook and investigate the options provided directly by the underlying logging system.
+For example, Logback offers http://logback.qos.ch/manual/loggingSeparation.html[context selectors] which allow each Logger to be created in its own context.
+You can use the configprop:logging.register-shutdown-hook[] property to disable the shutdown hook.
+Setting it to `false` will disable the registration.
+You can set the property in your `application.properties` or `application.yaml` file:
+
+[source,yaml,indent=0,configprops,configblocks]
+----
+	logging:
+	  register-shutdown-hook: false
+----
+
+
+
+[[boot-features-custom-log-configuration]]
+=== Custom Log Configuration
+다양한 loggin system은 classpath에 적절한 library를 포함하여 활성화할 수 있으며 classpath의 root 또는 Spring `Environment` property: configprop:logging.config[] 에 지정된 위치에 적절한 configuration file을 제공하여 추가로 customize 할 수 있습니다.
+
+
+`org.springframework.boot.logging.LoggingSystem` system property를 사용하여 Spring Boot가 특정 logging system을 사용하도록 강제할 수 있습니다.
+값은 `LoggingSystem` 구현의 명확한 class name이어야 합니다.
+`none` 값을 사용하여 Spring Boot의 Logging configuration을 완전히 비활성화할 수도 있습니다.
+
+NOTE: logging은 `ApplicationContext` 가 만들어지기 *이전* 에 초기화되기 때문에 Spring `@Configuration` file의 `@PropertySources` 에서 logging을 설정할 수 없습니다.
+logging system을 변경하거나 완전히 비활성화하는 유일한 방법은 System properties를 이용하는 것입니다.
+
+logging system에 따라 다음 file이 load 됩니다:
+
+|===
+| Logging System | Customization
+
+| Logback
+| `logback-spring.xml`, `logback-spring.groovy`, `logback.xml`, or `logback.groovy`
+
+| Log4j2
+| `log4j2-spring.xml` or `log4j2.xml`
+
+| JDK (Java Util Logging)
+| `logging.properties`
+|===
+
+NOTE: 가능한 경우 logging configuration에 `-spring` variants 을 사용하는 것이 좋습니다. (예를 들면 `logback.xml` 대신 `logback-spring.xml` ).
+standard configuration location을 사용하는 경우 Spring은 log initialization을 완전히 제어할 수 없습니다.
+
+WARNING: Java Util Logging에 'executable jar'에서 실행할 때 문제를 일으키는 classloading issue가 있습니다.
+가능하면 'executable jar'에서 실행할 때 피하는 것이 좋습니다.
+
+customization을 돕기 위해 다음 표에 설명된 대로 일부 다른 properties가 Spring `Environment` 에서 System properties로 전달됩니다.
+
+|===
+| Spring Environment | System Property | Comments
+
+| configprop:logging.exception-conversion-word[]
+| `LOG_EXCEPTION_CONVERSION_WORD`
+| The conversion word used when logging exceptions.
+
+| configprop:logging.file.name[]
+| `LOG_FILE`
+| If defined, it is used in the default log configuration.
+
+| configprop:logging.file.path[]
+| `LOG_PATH`
+| If defined, it is used in the default log configuration.
+
+| configprop:logging.pattern.console[]
+| `CONSOLE_LOG_PATTERN`
+| The log pattern to use on the console (stdout).
+
+| configprop:logging.pattern.dateformat[]
+| `LOG_DATEFORMAT_PATTERN`
+| Appender pattern for log date format.
+
+| configprop:logging.charset.console[]
+| `CONSOLE_LOG_CHARSET`
+| The charset to use for console logging.
+
+| configprop:logging.pattern.file[]
+| `FILE_LOG_PATTERN`
+| The log pattern to use in a file (if `LOG_FILE` is enabled).
+
+| configprop:logging.charset.file[]
+| `FILE_LOG_CHARSET`
+| The charset to use for file logging (if `LOG_FILE` is enabled).
+
+| configprop:logging.pattern.level[]
+| `LOG_LEVEL_PATTERN`
+| The format to use when rendering the log level (default `%5p`).
+
+| `PID`
+| `PID`
+| The current process ID (discovered if possible and when not already defined as an OS environment variable).
+|===
+
+logback을 사용하는 경우 다음 properties도 전달됩니다:
+
+|===
+| Spring Environment | System Property | Comments
+
+| configprop:logging.logback.rollingpolicy.file-name-pattern[]
+| `LOGBACK_ROLLINGPOLICY_FILE_NAME_PATTERN`
+| Pattern for rolled-over log file names (default `$\{LOG_FILE}.%d\{yyyy-MM-dd}.%i.gz`).
+
+| configprop:logging.logback.rollingpolicy.clean-history-on-start[]
+| `LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START`
+| Whether to clean the archive log files on startup.
+
+| configprop:logging.logback.rollingpolicy.max-file-size[]
+| `LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE`
+| Maximum log file size.
+
+| configprop:logging.logback.rollingpolicy.total-size-cap[]
+| `LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP`
+| Total size of log backups to be kept.
+
+| configprop:logging.logback.rollingpolicy.max-history[]
+| `LOGBACK_ROLLINGPOLICY_MAX_HISTORY`
+| Maximum number of archive log files to keep.
+|===
+
+
+지원되는 모든 logging system은 configuration file을 parsing 할 때 system properties를 참조할 수 있습니다.
+`spring-boot.jar`의 default configuration을 참조하세요:
+
+* {spring-boot-code}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/logback/defaults.xml[Logback]
+* {spring-boot-code}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/log4j2/log4j2.xml[Log4j 2]
+* {spring-boot-code}/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/java/logging-file.properties[Java Util logging]
+
+[TIP]
+====
+logging property에 placeholder를 사용하려면 기본 framework의 구문이 아닌 <<boot-features-external-config-placeholders-in-properties,Spring Boot's syntax>> 를 사용해야 합니다.
+특히 Logback을 사용하는 경우 property name과 default value 사이에 `:` 구분 기호로 사용하고 `:-` 를 사용하지 말아야 합니다.
+====
+
+[TIP]
+====
+`LOG_LEVEL_PATTERN` (또는 logback의 `logging.pattern.level` ) 만 overriding 하여 MDC 및 다른 ad-hoc content를 log line에 추가할 수 있습니다.
+예를 들어 `logging.pattern.level=user:%X\{user} %5p`, 를 사용하는 경우 default log format에는 다음 예제와 같이 "user"에 대한 MDC 항목이 포함됩니다. (있는 경우)
+
+[indent=0]
+----
+	2019-08-30 12:30:04.031 user:someone INFO 22174 --- [  nio-8080-exec-0] demo.Controller
+	Handling authenticated request
+----
+====
+
+
+
+[[boot-features-logback-extensions]]
+=== Logback Extensions
+Spring Boot에는 advanced configuration에 도움이 되는 Logback에 대한 여러 extension이 포함되어 있습니다.
+`logback-spring.xml` configuration file에서 이러한 extension을 사용할 수 있습니다.
+
+NOTE: standard `logback.xml` configuration file은 너무 일찍 로드되기 때문에 이 file에서 extension을 사용할 수 없습니다.
+`logback-spring.xml` 을 사용하거나 또는 configprop:logging.config[] property를 정의해야 합니다.
+
+WARNING: extension은 Logback의 https://logback.qos.ch/manual/configuration.html#autoScan[configuration scanning]과 함께 사용할 수 없습니다.
+만약 이렇게 하려고 하면 configuration file을 변경하면 다음과 유사한 오류가 발생합니다.
+
+[indent=0]
+----
+	ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProperty], current ElementPath is [[configuration][springProperty]]
+	ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action for [springProfile], current ElementPath is [[configuration][springProfile]]
+----
+
+
+
+==== Profile-specific Configuration
+`<springProfile>` 태그는 active Spring Profile에 기반한 configuration section을 선택적으로 포함하거나 제외할 수 있습니다.
+Profile section은 `<configuration>` 요소 내 모든 위치에서 지원됩니다.
+`name` attribute를 사용하여 대상 configuration profile을 지정할 수 있습니다.
+`<springProfile>` tag는 profile name(예를 들어 `staging` ) 또는 profile expression을 포함할 수 있습니다.
+profile expression은 좀 더 복잡한 profile logic을 표현할 수 있습니다. (예: `production & (eu-central | eu-west)` )
+자세한 내용은 {spring-framework-docs}/core.html#beans-definition-profiles-java[reference guide]를 확인하세요.
+다음 목록은 세 가지 sample profile을 보여줍니다.
+
+[source,xml,indent=0]
+----
+	<springProfile name="staging">
+		<!-- configuration to be enabled when the "staging" profile is active -->
+	</springProfile>
+
+	<springProfile name="dev | staging">
+		<!-- configuration to be enabled when the "dev" or "staging" profiles are active -->
+	</springProfile>
+
+	<springProfile name="!production">
+		<!-- configuration to be enabled when the "production" profile is not active -->
+	</springProfile>
+----
+
+
+
+==== Environment Properties
+`<springProperty>` tag를 사용하면 logback 내에서 사용할 수 있도록 Spring `Environment` 의 properties를 노출할 수 있습니다.
+이렇게 하면 Logback configuration에서 `application.properties` file의 값에 접근하려는 경우 유용할 수 있습니다.
+tag는 logback standard `<property>` tag와 유사한 방식으로 동작합니다.
+그러나 직접 `value` 를 지정하는 대신 property의 `source` 를 지정합니다( `Environment` 로 부터).
+property를 `local` scope 이외의 다른 곳에 저장해야 하는 경우 `scope` attribute를 사용할 수 있습니다.
+fallback value가 필요한 경우 ( `Environment` 에서 property를 설정하지 않은 경우) `defaultValue` attribute를 사용할 수 있습니다.
+다음 예에서는 Logback 내에서 사용할 properties를 노출하는 방법을 보여줍니다.
+
+[source,xml,indent=0]
+----
+	<springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
+			defaultValue="localhost"/>
+	<appender name="FLUENT" class="ch.qos.logback.more.appenders.DataFluentAppender">
+		<remoteHost>${fluentHost}</remoteHost>
+		...
+	</appender>
+----
+
+NOTE: `source` 는 kebab case(예: `my.property-name`)로 지정해야 합니다.
+그러나 완화된 규칙을 사용하여 property를 `Environment` 에 추가할 수 있습니다.

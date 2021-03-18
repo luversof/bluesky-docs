@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Architecture
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 이 가이드에서는 Data Flow architecture의 주요 개념을 설명합니다.
 

@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Tooling
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 Dashboard와 Shell은 Spring Cloud Data Flow와 상호 작용하는 주요 방법입니다.
 curl을 사용하여 RESTful API를 호출하거나 java client library를 사용하는 application을 작성한 다음 java client library가 RESTful API를 호출할 수도 있습니다.

@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Getting Started
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 이 섹션에서는 기존의 stream application으로 streaming data pipeline을 생성하고 Spring Cloud Data Flow를 사용하여 이를 배포하는 방법을 설명합니다.
 

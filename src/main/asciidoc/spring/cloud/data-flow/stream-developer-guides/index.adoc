@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Developer guides
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 이 섹션에는 여러가지 가이드가 있지만 공통 시작 경로는 다음 단계로 구성됩니다.
 

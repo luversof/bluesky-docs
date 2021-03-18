@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Batch Processing
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 Batch processing은 상호 작용이나 중단 없이 한정된 양의 데이터를 처리하는 것으로 정의됩니다.
 Batch processing을 구현하는 application은 일시적 또는 수명이 짧은(short-lived) application이라고 합니다.

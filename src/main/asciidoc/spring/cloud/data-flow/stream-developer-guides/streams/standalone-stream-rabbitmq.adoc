@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Stream Processing with RabbitMQ
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 이 가이드에서는 RabbitMQ에 대한 Spring Cloud Stream의 지원을 사용하는 3가지 Spring Boot application을 개발하여 Cloud Foundry, Kubernetes 및 local machine에 배치합니다.
 다른 가이드에서는 Data Flow를 사용하여 이 application을 배포합니다.

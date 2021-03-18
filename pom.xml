@@ -2,18 +2,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.luversof</groupId>
+	<groupId>io.github.luversof</groupId>
 	<artifactId>bluesky-docs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.4.RELEASE</version>
+		<groupId>io.github.luversof</groupId>
+		<artifactId>bluesky-boot-starter-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-
 	<properties>
-		<java.version>11</java.version>
-		<asciidoctor.maven.plugin.version>1.5.8</asciidoctor.maven.plugin.version>
+		<asciidocs.output.directory>docs</asciidocs.output.directory>
 	</properties>
 
 	<dependencies>
@@ -22,48 +20,66 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.asciidoctor</groupId>
-				<artifactId>asciidoctor-maven-plugin</artifactId>
-				<version>${asciidoctor.maven.plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework.restdocs</groupId>
-						<artifactId>spring-restdocs-asciidoctor</artifactId>
-						<version>${spring-restdocs.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>asciidoc-to-html</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>process-asciidoc</goal>
-						</goals>
+	
+	<profiles>
+		<profile>
+			<id>asciidoctor</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
 						<configuration>
-							<backend>html5</backend>
-							<sourceHighlighter>coderay</sourceHighlighter>
-							<preserveDirectories>true</preserveDirectories>
-							<outputDirectory>docs</outputDirectory>
 							<attributes>
-								<java-version>${java.version}</java-version>
+								<!-- <java-version>${java.version}</java-version> -->
 								<spring-restdocs-version>${spring-restdocs.version}</spring-restdocs-version>
+								<spring-framework-version>5.3.4</spring-framework-version>
+								<spring-boot-version>2.4.3</spring-boot-version>
 								<spring-cloud-data-flow-version>2.2.0.RELEASE</spring-cloud-data-flow-version>
 								<spring-cloud-task-version>2.1.1.RELEASE</spring-cloud-task-version>
-								<basedir>${project.basedir}</basedir>
+								<!-- <basedir>${project.basedir}</basedir> -->
 							</attributes>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots />
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>github-bluesky-maven-repo</id>
+			<url>https://raw.githubusercontent.com/luversof/bluesky-maven-repo/master/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots />
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<url>https://repo.spring.io/milestone</url>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

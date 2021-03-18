@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Stream Processing
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 Stream processing은 상호 작용이나 중단없이 무한한 양의 데이터를 처리하는 것으로 정의됩니다.
 Stream processing 사용 사례로 실시간 신용카드 사기 탐지 또는 예측 분석이 있습니다.

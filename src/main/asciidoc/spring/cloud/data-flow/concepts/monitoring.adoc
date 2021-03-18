@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Monitoring
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 Data Flow metrics architecture는 vendor-neutral application metrics facade인 Micrometer library를 중심으로 설계되었습니다.
 가장 널리 사용되는 모니터링 시스템의  instrumentation client를 통해 간단한  facade를 제공합니다.

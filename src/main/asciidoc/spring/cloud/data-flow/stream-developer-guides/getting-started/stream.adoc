@@ -1,6 +1,6 @@
-include::_attributes.adoc[]
 = Getting Started with Stream Processing
 :revnumber: {spring-cloud-data-flow-version}
+include::{docdir}/spring/cloud/_attributes.adoc[]
 
 Spring Cloud Dat Flow는 일반적인 streaming use case를 구현하기 위해 즉시 사용할 수 있는 70가지 이상의 미리 작성된 streaming application을 제공합니다.
 이 가이드에서는 두 가지 application을 사용하여 외부 HTTP 요청에서 보낸 데이터를 생성하고 payload를 터미널에 기록하여 해당 데이터를 소비하는 간단한 데이터 파이프 라인을 구성합니다.

@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="generator" content="Asciidoctor 2.0.10">
 <title>Getting Started with Stream Processing</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -44,87 +44,110 @@ body {
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -213,7 +236,7 @@ application은 application 사이의 '파이프' 역할을 하는 massaging midd
 화면이 다음 이미지로 바뀝니다.</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/dataflow-stream-create-start.webp" alt="dataflow stream create start">
+<img src="./images/dataflow-stream-create-start.webp" alt="dataflow stream create start">
 </div>
 </div>
 </li>
@@ -227,7 +250,7 @@ application은 application 사이의 '파이프' 역할을 하는 massaging midd
 <p>strean 이름으로 http-ingest를 다음처럼 입력합니다.</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/dataflow-stream-create.webp" alt="dataflow stream create">
+<img src="./images/dataflow-stream-create.webp" alt="dataflow stream create">
 </div>
 </div>
 </li>
@@ -250,7 +273,7 @@ application은 application 사이의 '파이프' 역할을 하는 massaging midd
 <p>이전 섹션에서 생성한 <code>http-ingest</code> 행의 오른쪽에 있는 play (deploy) 버튼을 클릭하세요</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/dataflow-stream-definition-deploy.webp" alt="dataflow stream definition deploy">
+<img src="./images/dataflow-stream-definition-deploy.webp" alt="dataflow stream definition deploy">
 </div>
 </div>
 <div class="paragraph">
@@ -259,7 +282,7 @@ application은 application 사이의 '파이프' 역할을 하는 massaging midd
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/dataflow-deploy-http-ingest.webp" alt="dataflow deploy http ingest">
+<img src="./images/dataflow-deploy-http-ingest.webp" alt="dataflow deploy http ingest">
 </div>
 </div>
 <div class="paragraph">
@@ -267,7 +290,7 @@ application은 application 사이의 '파이프' 역할을 하는 massaging midd
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/dataflow-unique-port.webp" alt="dataflow unique port">
+<img src="./images/dataflow-unique-port.webp" alt="dataflow unique port">
 </div>
 </div>
 </li>
@@ -315,7 +338,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -338,7 +361,7 @@ UI가 definition page로 이동합니다.<br>
 <p>다른 콘솔 창에서 다음을 입력하세요.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker exec -it skipper tail -f [경로]</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">docker exec -it skipper tail -f [경로]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -346,7 +369,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">log-sink                                 : Happy streaming</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">log-sink                                 : Happy streaming</code></pre>
 </div>
 </div>
 </li>
@@ -367,7 +390,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -378,7 +401,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
 Getting apps in org ORG / space SPACE as email@pivotal.io...
 
 name                         requested state   instances   memory   disk   urls
@@ -393,7 +416,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cf logs http-ingest-314-log-v1
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">cf logs http-ingest-314-log-v1
 ...
 ...
 2017-11-20T15:39:43.76-0800 [APP/PROC/WEB/0] OUT 2017-11-20 23:39:43.761  INFO 12 --- [ http-ingest-314.ingest-314-1] log-sink                                 : Happy streaming</code></pre>
@@ -414,7 +437,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -422,7 +445,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 <h4 id="results-3"><a class="anchor" href="#results-3"></a>4.4.2. Results</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
 http-ingest-log-v1-0-2k4r8          1/1       Running   0          2m
 http-ingest-http-v1-qhdqq           1/1       Running   0          2m
@@ -437,7 +460,7 @@ skipper-2408247821-50z31            1/1       Running   0          15m</code></p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl logs -f http-ingest-log-v1-0-2k4r8
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">kubectl logs -f http-ingest-log-v1-0-2k4r8
 ...
 ...
 2017-10-30 22:59:04.966  INFO 1 --- [ http-ingest.http.http-ingest-1] log-sink                                 : Happy streaming</code></pre>
@@ -476,10 +499,10 @@ Version 2.2.0.RELEASE<br>
 Last updated 2021-03-18 11:44:16 +0900
 </div>
 </div>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
 <script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
 </body>
 </html>

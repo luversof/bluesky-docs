@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="generator" content="Asciidoctor 2.0.10">
 <title>Stream Processing with RabbitMQ</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -44,87 +44,110 @@ body {
 	color: #ffffff;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
 <script type="text/javascript">
 function addBlockSwitches() {
-	$('.primary').each(function() {
-		primary = $(this);
-		createSwitchItem(primary, createBlockSwitch(primary)).item.addClass("selected");
-		primary.children('.title').remove();
-	});
-	$('.secondary').each(function(idx, node) {
-		secondary = $(node);
-		primary = findPrimary(secondary);
-		switchItem = createSwitchItem(secondary, primary.children('.switch'));
-		switchItem.content.addClass('hidden');
-		findPrimary(secondary).append(switchItem.content);
-		secondary.remove();
-	});
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
 function createBlockSwitch(primary) {
-	blockSwitch = $('<div class="switch"></div>');
-	primary.prepend(blockSwitch);
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
 	return blockSwitch;
 }
 
 function findPrimary(secondary) {
-	candidate = secondary.prev();
-	while (!candidate.is('.primary')) {
-		candidate = candidate.prev();
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
 	}
 	return candidate;
 }
 
 function createSwitchItem(block, blockSwitch) {
-	blockName = block.children('.title').text();
-	content = block.children('.content').first().append(block.next('.colist'));
-	item = $('<div class="switch--item">' + blockName + '</div>');
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
 	blockSwitch.append(item);
 	return {'item': item, 'content': content};
 }
 
 function globalSwitch() {
-	$('.switch--item').each(function() {
-		var blockId = blockIdForSwitchItem($(this));
-		$(this).off('click');
-		$(this).on('click', function() {
-			selectedText = $(this).text()
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
 			window.localStorage.setItem(blockId, selectedText);
-			$(".switch--item").filter(function() {
-				return blockIdForSwitchItem($(this)) === blockId;
-			}).filter(function() {
-				return $(this).text() === selectedText;
-			}).each(function() {
-				select($(this))
-			});
-		});
-		if ($(this).text() === window.localStorage.getItem(blockId)) {
-			select($(this))
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
 		}
 	});
 }
 
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
 function blockIdForSwitchItem(item) {
 	idComponents = []
-	idComponents.push(item.text().toLowerCase());
-	item.siblings(".switch--item").each(function(index, sibling) {
-		idComponents.push($(sibling).text().toLowerCase());
-	});
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
 	return idComponents.sort().join("-")
 }
 
-function select(selected) {
-	selected.addClass('selected');
-	selected.siblings().removeClass('selected');
-	selectedContent = selected.parent().siblings(".content").eq(selected.index())
-	selectedContent.removeClass('hidden');
-	selectedContent.siblings().addClass('hidden');
-}
-
-$(addBlockSwitches);
-$(globalSwitch);
-
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
 </script>
 
 </head>
@@ -202,7 +225,7 @@ application을 수동으로 배포하면 Data Flow에서 자동으로 수행하�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/stream-developer-guides/streams/standalone-stream-rabbitmq/dist/usage-cost-stream-rabbit.zip?raw=true -O usage-cost-stream-rabbit.zip</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/stream-developer-guides/streams/standalone-stream-rabbitmq/dist/usage-cost-stream-rabbit.zip?raw=true -O usage-cost-stream-rabbit.zip</code></pre>
 </div>
 </div>
 </div>
@@ -286,7 +309,7 @@ artifact: <code>usage-detail-sender-rabbit</code></p>
 다음과 같은 형태입니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagedetailsender;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagedetailsender;
 
 import java.util.Random;
 
@@ -355,7 +378,7 @@ RabbitMQ의 경우 <code>output</code> 채널로 전송된 메시지는 <code>To
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>spring.cloud.stream.bindings.output.destination=usage-detail
+<pre class="highlightjs highlight"><code class="language-none hljs">spring.cloud.stream.bindings.output.destination=usage-detail
 spring.cloud.stream.bindings.output.producer.requiredGroups=usage-cost-consumer</code></pre>
 </div>
 </div>
@@ -381,7 +404,7 @@ spring.cloud.stream.bindings.output.producer.requiredGroups=usage-cost-consumer<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>spring.cloud.stream.bindings.&lt;channelName&gt;.producer.requiredGroups</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">spring.cloud.stream.bindings.&lt;channelName&gt;.producer.requiredGroups</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -400,7 +423,7 @@ spring.cloud.stream.bindings.output.producer.requiredGroups=usage-cost-consumer<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -416,7 +439,7 @@ RabbitMQ binder 대신 <code>Test</code> binder를 사용하여 application의 o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagedetailsender;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagedetailsender;
 
 import java.util.concurrent.TimeUnit;
 
@@ -526,7 +549,7 @@ UserDetail 클래스는 userId, data, duration 속성을 가집니다.</p>
 소스코드는 다음과 같습니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostprocessor;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostprocessor;
 
 import io.spring.dataflow.sample.UsageCostDetail;
 import io.spring.dataflow.sample.UsageDetail;
@@ -596,7 +619,7 @@ annotation은 하나 이상의 interface를 매개 변수로 사용합니다.<br
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>spring.cloud.stream.bindings.input.destination=usage-detail
+<pre class="highlightjs highlight"><code class="language-none hljs">spring.cloud.stream.bindings.input.destination=usage-detail
 spring.cloud.stream.bindings.input.group=usage-cost-consumer
 spring.cloud.stream.bindings.output.destination=usage-cost
 spring.cloud.stream.bindings.output.producer.requiredGroups=logger</code></pre>
@@ -626,7 +649,7 @@ spring.cloud.stream.bindings.output.producer.requiredGroups=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -642,7 +665,7 @@ RabbitMQ binder 대신 <code>Test</code> binder를 사용하여 application의 o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostprocessor;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostprocessor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -743,7 +766,7 @@ artifact: <code>usage-detail-logger-rabbit</code></p>
 다음과 같은 형태입니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostlogger;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostlogger;
 
 import io.spring.dataflow.sample.UsageCostDetail;
 import org.slf4j.Logger;
@@ -797,7 +820,7 @@ public class UsageCostLogger {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>spring.cloud.stream.bindings.input.destination=usage-cost
+<pre class="highlightjs highlight"><code class="language-none hljs">spring.cloud.stream.bindings.input.destination=usage-cost
 spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 </div>
@@ -815,7 +838,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -826,7 +849,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostlogger;
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostlogger;
 
  import io.spring.dataflow.sample.UsageCostDetail;
  import org.junit.Test;
@@ -907,7 +930,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>UsageDetailSender -&gt; UsageCostProcessor -&gt; UsageCostLogger</code></pre>
+<pre class="highlightjs highlight"><code class="language-none hljs">UsageDetailSender -&gt; UsageCostProcessor -&gt; UsageCostLogger</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -927,7 +950,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3.7.14-management</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3.7.14-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -940,7 +963,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-detail-sender-rabbit-0.0.1-SNAPSHOT.jar --server.port=9001 &amp;</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-detail-sender-rabbit-0.0.1-SNAPSHOT.jar --server.port=9001 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -948,7 +971,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/standalone-rabbitmq-usage-detail-sender.webp" alt="standalone rabbitmq usage detail sender">
+<img src="./images/standalone-rabbitmq-usage-detail-sender.webp" alt="standalone rabbitmq usage detail sender">
 </div>
 </div>
 <div class="paragraph">
@@ -956,7 +979,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/standalone-rabbitmq-usage-detail-sender-message-guarantee.webp" alt="standalone rabbitmq usage detail sender message guarantee">
+<img src="./images/standalone-rabbitmq-usage-detail-sender-message-guarantee.webp" alt="standalone rabbitmq usage detail sender message guarantee">
 </div>
 </div>
 <div class="paragraph">
@@ -982,7 +1005,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-cost-processor-rabbit-0.0.1-SNAPSHOT.jar --server.port=9002 &amp;</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-cost-processor-rabbit-0.0.1-SNAPSHOT.jar --server.port=9002 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1006,7 +1029,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/standalone-rabbitmq-usage-cost-processor.webp" alt="standalone rabbitmq usage cost processor">
+<img src="./images/standalone-rabbitmq-usage-cost-processor.webp" alt="standalone rabbitmq usage cost processor">
 </div>
 </div>
 <div class="paragraph">
@@ -1014,7 +1037,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/standalone-rabbitmq-usage-cost-processor-message-guarantee.webp" alt="standalone rabbitmq usage cost processor message guarantee">
+<img src="./images/standalone-rabbitmq-usage-cost-processor-message-guarantee.webp" alt="standalone rabbitmq usage cost processor message guarantee">
 </div>
 </div>
 </div>
@@ -1025,7 +1048,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-cost-logger-rabbit-0.0.1-SNAPSHOT.jar --server.port=9003 &amp;</code></pre>
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-cost-logger-rabbit-0.0.1-SNAPSHOT.jar --server.port=9003 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1033,7 +1056,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code>2019-05-08 08:16:46.442  INFO 10769 --- [o6VmGALOP_onw-1] i.s.d.s.u.UsageCostLoggerApplication     : {"userId": "user2", "callCost": "28.3", "dataCost": "29.8" }
+<pre class="highlightjs highlight"><code class="language-none hljs">2019-05-08 08:16:46.442  INFO 10769 --- [o6VmGALOP_onw-1] i.s.d.s.u.UsageCostLoggerApplication     : {"userId": "user2", "callCost": "28.3", "dataCost": "29.8" }
 2019-05-08 08:16:47.446  INFO 10769 --- [o6VmGALOP_onw-1] i.s.d.s.u.UsageCostLoggerApplication     : {"userId": "user2", "callCost": "12.0", "dataCost": "23.75" }
 2019-05-08 08:16:48.451  INFO 10769 --- [o6VmGALOP_onw-1] i.s.d.s.u.UsageCostLoggerApplication     : {"userId": "user4", "callCost": "16.0", "dataCost": "30.05" }
 2019-05-08 08:16:49.454  INFO 10769 --- [o6VmGALOP_onw-1] i.s.d.s.u.UsageCostLoggerApplication     : {"userId": "user1", "callCost": "17.7", "dataCost": "18.0" }</code></pre>
@@ -1054,10 +1077,10 @@ Version 2.2.0.RELEASE<br>
 Last updated 2021-03-18 11:44:16 +0900
 </div>
 </div>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
 <script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
 </body>
 </html>

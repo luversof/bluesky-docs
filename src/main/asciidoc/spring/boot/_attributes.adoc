@@ -7,10 +7,11 @@
 :numbered:
 :sectanchors:
 :sectnums:
-:icons: font
 :hide-uri-scheme:
 :docinfo: shared,private
-:hardbreaks:
+:chomp: tags formatters headers packages
+
+:imagesdir: ./images
 
 :basedir: {docdir}/../../../
 :snippets: {basedir}/target/generated-snippets

@@ -236,26 +236,17 @@ window.onload = function() {
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>This section dives into the details of Spring Boot.
-Here you can learn about the key features that you may want to use and customize.
-If you have not already done so, you might want to read the "<a href="getting-started.html#getting-started">getting-started.html</a>" and "<a href="using-spring-boot.html#using-boot">using-spring-boot.html</a>" sections, so that you have a good grounding of the basics.</p>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="boot-features-logging"><a class="anchor" href="#boot-features-logging"></a>1. Logging</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Spring Boot는 모든 내부 logging에 <a href="https://commons.apache.org/logging">Commons Logging</a>을 사용하지만 기본 로그 구현은 오픈되어 있습니다
-<a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html">Java Util Logging</a>, <a href="https://logging.apache.org/log4j/2.x/">Log4J2</a>, and <a href="https://logback.qos.ch/">Logback</a>에 대한 기본 구성이 제공됩니다..
-각각의 경우에 logger는 optional file output도 사용 가능한 console output을 사용하도록 사전 구성되어 있습니다.</p>
+<p>Spring Boot uses <a href="https://commons.apache.org/logging">Commons Logging</a> for all internal logging but leaves the underlying log implementation open.
+Default configurations are provided for <a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html">Java Util Logging</a>, <a href="https://logging.apache.org/log4j/2.x/">Log4J2</a>, and <a href="https://logback.qos.ch/">Logback</a>.
+In each case, loggers are pre-configured to use console output with optional file output also available.</p>
 </div>
 <div class="paragraph">
-<p>기본적으로 "`Starters`"를 사용하면 Logback이 logging에 사용됩니다.
-Java Util Logging, Commons Logging, Log4J 또는 SLF4J를 사용하는 종속 library가 모두 올바르게 작동하는지 확인하기 위해 적절한 logback routing도 포함됩니다.</p>
+<p>By default, if you use the &#8220;Starters&#8221;, Logback is used for logging.
+Appropriate Logback routing is also included to ensure that dependent libraries that use Java Util Logging, Commons Logging, Log4J, or SLF4J all work correctly.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -264,9 +255,9 @@ Java Util Logging, Commons Logging, Log4J 또는 SLF4J를 사용하는 종속 li
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Java에 사용할 수 있는 logging framework가 많이 있습니다.
-위 목록이 헷갈리더라도 걱정하지 마세요.
-일반적으로 logging dependencies을 변경할 필요가 없으며 Spring Boot 기본값이 잘 작동합니다.
+There are a lot of logging frameworks available for Java.
+Do not worry if the above list seems confusing.
+Generally, you do not need to change your logging dependencies and the Spring Boot defaults work just fine.
 </td>
 </tr>
 </table>
@@ -278,8 +269,8 @@ Java에 사용할 수 있는 logging framework가 많이 있습니다.
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-application을 servlet container 또는 application server에 배포할 때 Java Util Logging API를 통해 수행된 logging은 application의 log로 route 되지 않습니다.
-이렇게 하면 container 또는 container에 배포된 다른 application에서 수행한 logging이 application의 log에 표시되지 않습니다.
+When you deploy your application to a servlet container or application server, logging performed via the Java Util Logging API is not routed into your application&#8217;s logs.
+This prevents logging performed by the container or other applications that have been deployed to it from appearing in your application&#8217;s logs.
 </td>
 </tr>
 </table>
@@ -287,7 +278,7 @@ application을 servlet container 또는 application server에 배포할 때 Java
 <div class="sect2">
 <h3 id="boot-features-logging-format"><a class="anchor" href="#boot-features-logging-format"></a>1.1. Log Format</h3>
 <div class="paragraph">
-<p>Spring Boot의 default log output은 다음 예제와 유사합니다:</p>
+<p>The default log output from Spring Boot resembles the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -299,12 +290,12 @@ application을 servlet container 또는 application server에 배포할 때 Java
 </div>
 </div>
 <div class="paragraph">
-<p>다음 항목이 출력됩니다:</p>
+<p>The following items are output:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Date and Time: Millisecond의 정밀도와 쉽게 정렬 가능.</p>
+<p>Date and Time: Millisecond precision and easily sortable.</p>
 </li>
 <li>
 <p>Log Level: <code>ERROR</code>, <code>WARN</code>, <code>INFO</code>, <code>DEBUG</code>, or <code>TRACE</code>.</p>
@@ -313,13 +304,13 @@ application을 servlet container 또는 application server에 배포할 때 Java
 <p>Process ID.</p>
 </li>
 <li>
-<p>실제 log message의 시작을 구분하는 <code>---</code> 구분자.</p>
+<p>A <code>---</code> separator to distinguish the start of actual log messages.</p>
 </li>
 <li>
-<p>Thread name: 대괄호로 묶여 있습니다. (console output을 위해 잘릴 수 있음)</p>
+<p>Thread name: Enclosed in square brackets (may be truncated for console output).</p>
 </li>
 <li>
-<p>Logger name: 일반적으로 source class name. (종종 축약됨)</p>
+<p>Logger name: This is usually the source class name (often abbreviated).</p>
 </li>
 <li>
 <p>The log message.</p>
@@ -333,8 +324,8 @@ application을 servlet container 또는 application server에 배포할 때 Java
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Logback은 <code>FATAL</code> level을 가지고 있지 않습니다.
-이는 <code>ERROR</code> 로 맵핑됩니다.
+Logback does not have a <code>FATAL</code> level.
+It is mapped to <code>ERROR</code>.
 </td>
 </tr>
 </table>
@@ -343,9 +334,9 @@ Logback은 <code>FATAL</code> level을 가지고 있지 않습니다.
 <div class="sect2">
 <h3 id="boot-features-logging-console-output"><a class="anchor" href="#boot-features-logging-console-output"></a>1.2. Console Output</h3>
 <div class="paragraph">
-<p>default log configuration은 작성될 때 console에 message를 표시합니다.
-default로 <code>ERROR</code>-level, <code>WARN</code>-level, 그리고 <code>INFO</code>-level message가 기록됩니다.
-by starting your application with a <code>--debug</code> flag로 application을 시작하여 &#8220;debug&#8221; mode 를 활성화할 수도 있습니다.</p>
+<p>The default log configuration echoes messages to the console as they are written.
+By default, <code>ERROR</code>-level, <code>WARN</code>-level, and <code>INFO</code>-level messages are logged.
+You can also enable a &#8220;debug&#8221; mode by starting your application with a <code>--debug</code> flag.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -359,28 +350,28 @@ by starting your application with a <code>--debug</code> flag로 application을 
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>application.properties</code> 에서 <code>debug=true</code> 를 지정할 수도 있습니다.
+You can also specify <code>debug=true</code> in your <code>application.properties</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>debug mode가 활성화되면 더 많은 정보를 출력하도록 core logger (embedded container, Hibernate 및 Spring Boot) 선택이 구성됩니다.
-debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기록하도록 application이 구성되지는 않습니다.</p>
+<p>When the debug mode is enabled, a selection of core loggers (embedded container, Hibernate, and Spring Boot) are configured to output more information.
+Enabling the debug mode does <em>not</em> configure your application to log all messages with <code>DEBUG</code> level.</p>
 </div>
 <div class="paragraph">
-<p>또는 <code>--trace</code> flag (또는 <code>trace=true</code> in your <code>application.properties</code>) 로 application을 시작하여 &#8220;trace&#8221; mode를 활성화할 수 있습니다.
-이렇게 하면 선택한 core logger (embedded container, Hibernate schema generation 및 전체 Spring Boot portfolio)에 대한 trace logging이 가능합니다.</p>
+<p>Alternatively, you can enable a &#8220;trace&#8221; mode by starting your application with a <code>--trace</code> flag (or <code>trace=true</code> in your <code>application.properties</code>).
+Doing so enables trace logging for a selection of core loggers (embedded container, Hibernate schema generation, and the whole Spring portfolio).</p>
 </div>
 <div class="sect3">
 <h4 id="boot-features-logging-color-coded-output"><a class="anchor" href="#boot-features-logging-color-coded-output"></a>1.2.1. Color-coded Output</h4>
 <div class="paragraph">
-<p>termintal이 ANSI를 지원하는 경우 가독성을 높이기 위해 색상 출력이 사용됩니다.
-<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
+<p>If your terminal supports ANSI, color output is used to aid readability.
+You can set <code>spring.output.ansi.enabled</code> to a <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> to override the auto-detection.</p>
 </div>
 <div class="paragraph">
-<p>색 구분은 <code>%clr</code> conversion word를 사용하여 구성됩니다.
-가장 간단한 형식으로 converter는 다음 예와 같이 log level에 따라 출력에 색상을 지정합니다.:</p>
+<p>Color coding is configured by using the <code>%clr</code> conversion word.
+In its simplest form, the converter colors the output according to the log level, as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -388,7 +379,7 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 </div>
 </div>
 <div class="paragraph">
-<p>아래 table은 색상에 대한 log level mapping을 설명합니다.:</p>
+<p>The following table describes the mapping of log levels to colors:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -429,8 +420,8 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 </tbody>
 </table>
 <div class="paragraph">
-<p>또는 변환 옵션을 제공하여 사용해야 하는 색상 또는 스타일을 지정할 수 있습니다.
-예를 들어 text를 노란색으로 만들려면 다음 설정을 사용합니다:</p>
+<p>Alternatively, you can specify the color or style that should be used by providing it as an option to the conversion.
+For example, to make the text yellow, use the following setting:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -470,11 +461,11 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 <div class="sect2">
 <h3 id="boot-features-logging-file-output"><a class="anchor" href="#boot-features-logging-file-output"></a>1.3. File Output</h3>
 <div class="paragraph">
-<p>기본적으로 Spring Boot log는 console 만 log를 처리하고 log file을 작성하지 않습니다.
-만약 console 출력 외에 log file을 남기길 원한다면 <code>logging.file.name</code> 또는 <code>logging.file.path</code> property를 (예를 들면 <code>application.properties</code> 에서) 설정해야 합니다.</p>
+<p>By default, Spring Boot logs only to the console and does not write log files.
+If you want to write log files in addition to the console output, you need to set a <code>logging.file.name</code> or <code>logging.file.path</code> property (for example, in your <code>application.properties</code>).</p>
 </div>
 <div class="paragraph">
-<p>아래 테이블은 <code>logging.*</code> properties를 함께 사용할 수 있는 방법을 보여줍니다.:</p>
+<p>The following table shows how the <code>logging.*</code> properties can be used together:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Logging properties</caption>
@@ -503,20 +494,20 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specific file</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>my.log</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">지정된 log file에 기록합니다.
-  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Writes to the specified log file.
+  Names can be an exact location or relative to the current directory.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>(none)</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Specific directory</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/var/log</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">지정된 directory에 <code>spring.log</code> 를 기록합니다.
-  이름은 정확한 위치이거나 또는 현재 directory에 상대적일 수 있습니다</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Writes <code>spring.log</code> to the specified directory.
+  Names can be an exact location or relative to the current directory.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>Log file은 10MB에 도달하면 rotate 되며 console output과 마찬가지로 <code>ERROR</code>-level, <code>WARN</code>-level 및 <code>INFO</code>-level message가 default로 기록됩니다.</p>
+<p>Log files rotate when they reach 10 MB and, as with console output, <code>ERROR</code>-level, <code>WARN</code>-level, and <code>INFO</code>-level messages are logged by default.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -525,8 +516,8 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Logging properties는 실제 logging infrastructure에 독립적입니다.
-결과적으로 특정 configuration key들은(logback을 위한 <code>logback.configurationFile</code> 같은) Spring Boot에서 관리되지 않습니다.
+Logging properties are independent of the actual logging infrastructure.
+As a result, specific configuration keys (such as <code>logback.configurationFile</code> for Logback) are not managed by spring Boot.
 </td>
 </tr>
 </table>
@@ -535,11 +526,11 @@ Logging properties는 실제 logging infrastructure에 독립적입니다.
 <div class="sect2">
 <h3 id="boot-features-logging-file-rotation"><a class="anchor" href="#boot-features-logging-file-rotation"></a>1.4. File Rotation</h3>
 <div class="paragraph">
-<p>만약 logback을 사용하는 경우 <code>application.properties</code> 또는 <code>application.yaml</code> file에서 log rotation setting을 자세하게 할 수 있습니다.
-다른 모든 logging system의 경우 직접 rotation setting을 구성해야 합니다. (예를 들면 Log4j2를 사용하는 경우 <code>log4j.xml</code> file을 추가하여 사용)</p>
+<p>If you are using the Logback, it&#8217;s possible to fine-tune log rotation settings using your <code>application.properties</code> or <code>application.yaml</code> file.
+For all other logging system, you&#8217;ll need to configure rotation settings directly yourself (for example, if you use Log4J2 then you could add a <code>log4j.xml</code> file).</p>
 </div>
 <div class="paragraph">
-<p>다음 rotation policy properties가 지원됩니다.:</p>
+<p>The following rotation policy properties are supported:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -555,23 +546,23 @@ Logging properties는 실제 logging infrastructure에 독립적입니다.
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.file-name-pattern</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">log archive를 만드는데 사용되는 filename pattern입니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The filename pattern used to create log archives.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.clean-history-on-start</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">application이 시작될 때 log archive cleanup이 수행되어야 하는 경우</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If log archive cleanup should occur when the application starts.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-file-size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">archive 되기 전 log file의 maximum size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum size of log file before it&#8217;s archived.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.total-size-cap</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">log archive를 삭제할 수 있는 maximum amount</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum amount of size log archives can take before being deleted.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-history</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">log archive 보관 일 수  (default : 7)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of days to keep log archives (defaults to 7)</p></td>
 </tr>
 </tbody>
 </table>
@@ -579,11 +570,11 @@ Logging properties는 실제 logging infrastructure에 독립적입니다.
 <div class="sect2">
 <h3 id="boot-features-custom-log-levels"><a class="anchor" href="#boot-features-custom-log-levels"></a>1.5. Log Levels</h3>
 <div class="paragraph">
-<p>모든 지원되는 logging system은 TRACE, DEBUG, INFO, WARN, ERROR, FATAL 또는 OFF 중 하나를 <code>level</code> 로 <code>logging.level.&lt;logger-name&gt;=&lt;level&gt;</code> 을 사용하여 logger level을 Spring <code>Environment</code> 에 (예를 들면 <code>application.properties</code> 에) 설정할 수 있습니다.
-<code>logging.level.root</code> 를 사용하여 <code>root</code> logger를 설정할 수 있습니다.</p>
+<p>All the supported logging systems can have the logger levels set in the Spring <code>Environment</code> (for example, in <code>application.properties</code>) by using <code>logging.level.&lt;logger-name&gt;=&lt;level&gt;</code> where <code>level</code> is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF.
+The <code>root</code> logger can be configured by using <code>logging.level.root</code>.</p>
 </div>
 <div class="paragraph">
-<p>아래 예제는 <code>application.properties</code> 의 잠재적 logging 설정을 보여줍니다:</p>
+<p>The following example shows potential logging settings in <code>application.properties</code>:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Properties</div>
@@ -604,8 +595,8 @@ logging.level.org.hibernate=error</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>environment variable을 사용하여 logging level을 설정할 수도 있습니다.
-예를 들어 <code>LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG</code> 는 <code>org.springframework.web</code> 을 <code>DEBUG</code> 로 설정합니다.</p>
+<p>It&#8217;s also possible to set logging levels using environment variables.
+For example, <code>LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG</code> will set <code>org.springframework.web</code> to <code>DEBUG</code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -614,9 +605,9 @@ logging.level.org.hibernate=error</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-위의 접근 방식은 package level logging에 대해서만 적용됩니다.
-relaxed binding은 언제나 environment variable을 소문자로 변환하기 때문이 이 방식으로 개별 class에 대한 logging을 설정할 수 없습니다.
-만약 class에 대해 loggin을 설정하고자 하는 경우  <a href="#boot-features-external-config-application-json">the <code>SPRING_APPLICATION_JSON</code></a> variable을 사용할 수 있습니다.
+The above approach will only work for package level logging.
+Since relaxed binding always converts environment variables to lowercase, it&#8217;s not possible to configure logging for an individual class in this way.
+If you need to configure logging for a class, you can use <a href="#boot-features-external-config-application-json">the <code>SPRING_APPLICATION_JSON</code></a> variable.
 </td>
 </tr>
 </table>
@@ -625,12 +616,12 @@ relaxed binding은 언제나 environment variable을 소문자로 변환하기 �
 <div class="sect2">
 <h3 id="boot-features-custom-log-groups"><a class="anchor" href="#boot-features-custom-log-groups"></a>1.6. Log Groups</h3>
 <div class="paragraph">
-<p>관련 logger를 함께 그룹화하여 모두 동시에 구성할 수 있으면 유용합니다.
-예를 들어 일반적으로 모든 Tomcat 관련 logger의 logging level을 변경할 수 있지만 최상위 패키지를 쉽게 기억할 수 없습니다.</p>
+<p>It&#8217;s often useful to be able to group related loggers together so that they can all be configured at the same time.
+For example, you might commonly change the logging levels for <em>all</em> Tomcat related loggers, but you can&#8217;t easily remember top level packages.</p>
 </div>
 <div class="paragraph">
-<p>이를 돕기 위해 Spring <code>Environment</code> 를 사용하면 logging group을 정의할 수 있습니다.
-예를 들어 &#8220;tomcat&#8221; group을 <code>application.properties</code> 에 추가하여 정의하는 방법은 다음과 같습니다:</p>
+<p>To help with this, Spring Boot allows you to define logging groups in your Spring <code>Environment</code>.
+For example, here&#8217;s how you could define a &#8220;tomcat&#8221; group by adding it to your <code>application.properties</code>:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Properties</div>
@@ -647,7 +638,7 @@ relaxed binding은 언제나 environment variable을 소문자로 변환하기 �
 </div>
 </div>
 <div class="paragraph">
-<p>일단 정의되면 한 줄로 모든 그룹에 있는 모든 logger의 level을 변경할 수 있습니다:</p>
+<p>Once defined, you can change the level for all the loggers in the group with a single line:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Properties</div>
@@ -664,7 +655,7 @@ relaxed binding은 언제나 environment variable을 소문자로 변환하기 �
 </div>
 </div>
 <div class="paragraph">
-<p>Spring Boot에는 즉시 사용할 수 있는 다음과 같은 사전 정의된 logging group이 포함되어 있습니다:</p>
+<p>Spring Boot includes the following pre-defined logging groups that can be used out-of-the-box:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -692,14 +683,14 @@ relaxed binding은 언제나 environment variable을 소문자로 변환하기 �
 <div class="sect2">
 <h3 id="boot-features-log-shutdown-hook"><a class="anchor" href="#boot-features-log-shutdown-hook"></a>1.7. Using a Log Shutdown Hook</h3>
 <div class="paragraph">
-<p>application 종료 시 loggin resource를 해제하기 위해 JVM 종료 시 log system cleanup을 trigger 하는 shutdown hook이 제공됩니다.
-이 shutdown hook은 application이 war 파일로 배포되지 않는 한 자동으로 등록됩니다.
-application에 복잡한 context hierarchy가 있는 경우 요구 조건이 충족되지 않아 shutdown hook이 동작하지 않을 수 있습니다.
-이런 경우 shutdown hook을 비활성화하고 logging system에 직접 처리하는 옵션을 사용합니다.
-예를 들어 logback은 <a href="http://logback.qos.ch/manual/loggingSeparation.html">context selectors</a>를 제공하여 각 logger를 자체 context에서 생성할 수 있습니다.
-<code>logging.register-shutdown-hook</code> property를 사용하여 shutdown hook를 비활성화 할 수 있습니다.
-<code>false</code> 로 설정하면 등록이 비활성화 됩니다.
-<code>application.properties</code> 또는 <code>application.yaml</code> 파일에서 property를 설정할 수 있습니다.</p>
+<p>In order to release logging resources when your application terminates, a shutdown hook that will trigger log system cleanup when the JVM exits is provided.
+This shutdown hook is registered automatically unless your application is deployed as a war file.
+If your application has complex context hierarchies the shutdown hook may not meet your needs.
+If it does not, disable the shutdown hook and investigate the options provided directly by the underlying logging system.
+For example, Logback offers <a href="http://logback.qos.ch/manual/loggingSeparation.html">context selectors</a> which allow each Logger to be created in its own context.
+You can use the <code>logging.register-shutdown-hook</code> property to disable the shutdown hook.
+Setting it to <code>false</code> will disable the registration.
+You can set the property in your <code>application.properties</code> or <code>application.yaml</code> file:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Properties</div>
@@ -718,12 +709,12 @@ application에 복잡한 context hierarchy가 있는 경우 요구 조건이 충
 <div class="sect2">
 <h3 id="boot-features-custom-log-configuration"><a class="anchor" href="#boot-features-custom-log-configuration"></a>1.8. Custom Log Configuration</h3>
 <div class="paragraph">
-<p>다양한 loggin system은 classpath에 적절한 library를 포함하여 활성화할 수 있으며 classpath의 root 또는 Spring <code>Environment</code> property: <code>logging.config</code> 에 지정된 위치에 적절한 configuration file을 제공하여 추가로 customize 할 수 있습니다.</p>
+<p>The various logging systems can be activated by including the appropriate libraries on the classpath and can be further customized by providing a suitable configuration file in the root of the classpath or in a location specified by the following Spring <code>Environment</code> property: <code>logging.config</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>org.springframework.boot.logging.LoggingSystem</code> system property를 사용하여 Spring Boot가 특정 logging system을 사용하도록 강제할 수 있습니다.
-값은 <code>LoggingSystem</code> 구현의 명확한 class name이어야 합니다.
-<code>none</code> 값을 사용하여 Spring Boot의 Logging configuration을 완전히 비활성화할 수도 있습니다.</p>
+<p>You can force Spring Boot to use a particular logging system by using the <code>org.springframework.boot.logging.LoggingSystem</code> system property.
+The value should be the fully qualified class name of a <code>LoggingSystem</code> implementation.
+You can also disable Spring Boot&#8217;s logging configuration entirely by using a value of <code>none</code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -732,14 +723,14 @@ application에 복잡한 context hierarchy가 있는 경우 요구 조건이 충
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-logging은 <code>ApplicationContext</code> 가 만들어지기 <strong>이전</strong> 에 초기화되기 때문에 Spring <code>@Configuration</code> file의 <code>@PropertySources</code> 에서 logging을 설정할 수 없습니다.
-logging system을 변경하거나 완전히 비활성화하는 유일한 방법은 System properties를 이용하는 것입니다.
+Since logging is initialized <strong>before</strong> the <code>ApplicationContext</code> is created, it is not possible to control logging from <code>@PropertySources</code> in Spring <code>@Configuration</code> files.
+The only way to change the logging system or disable it entirely is via System properties.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>logging system에 따라 다음 file이 load 됩니다:</p>
+<p>Depending on your logging system, the following files are loaded:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -774,8 +765,8 @@ logging system을 변경하거나 완전히 비활성화하는 유일한 방법�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-가능한 경우 logging configuration에 <code>-spring</code> variants 을 사용하는 것이 좋습니다. (예를 들면 <code>logback.xml</code> 대신 <code>logback-spring.xml</code> ).
-standard configuration location을 사용하는 경우 Spring은 log initialization을 완전히 제어할 수 없습니다.
+When possible, we recommend that you use the <code>-spring</code> variants for your logging configuration (for example, <code>logback-spring.xml</code> rather than <code>logback.xml</code>).
+If you use standard configuration locations, Spring cannot completely control log initialization.
 </td>
 </tr>
 </table>
@@ -787,14 +778,14 @@ standard configuration location을 사용하는 경우 Spring은 log initializat
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으키는 classloading issue가 있습니다.
-가능하면 'executable jar&#8217;에서 실행할 때 피하는 것이 좋습니다.
+There are known classloading issues with Java Util Logging that cause problems when running from an 'executable jar'.
+We recommend that you avoid it when running from an 'executable jar' if at all possible.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>customization을 돕기 위해 다음 표에 설명된 대로 일부 다른 properties가 Spring <code>Environment</code> 에서 System properties로 전달됩니다.</p>
+<p>To help with the customization, some other properties are transferred from the Spring <code>Environment</code> to System properties, as described in the following table:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -863,7 +854,7 @@ Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으
 </tbody>
 </table>
 <div class="paragraph">
-<p>logback을 사용하는 경우 다음 properties도 전달됩니다:</p>
+<p>If you&#8217;re using Logback, the following properties are also transfered:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -907,8 +898,8 @@ Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으
 </tbody>
 </table>
 <div class="paragraph">
-<p>지원되는 모든 logging system은 configuration file을 parsing 할 때 system properties를 참조할 수 있습니다.
-`spring-boot.jar`의 default configuration을 참조하세요:</p>
+<p>All the supported logging systems can consult System properties when parsing their configuration files.
+See the default configurations in <code>spring-boot.jar</code> for examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -931,8 +922,8 @@ Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으
 </td>
 <td class="content">
 <div class="paragraph">
-<p>logging property에 placeholder를 사용하려면 기본 framework의 구문이 아닌 <a href="#boot-features-external-config-placeholders-in-properties">Spring Boot&#8217;s syntax</a> 를 사용해야 합니다.
-특히 Logback을 사용하는 경우 property name과 default value 사이에 <code>:</code> 구분 기호로 사용하고 <code>:-</code> 를 사용하지 말아야 합니다.</p>
+<p>If you want to use a placeholder in a logging property, you should use <a href="#boot-features-external-config-placeholders-in-properties">Spring Boot&#8217;s syntax</a> and not the syntax of the underlying framework.
+Notably, if you use Logback, you should use <code>:</code> as the delimiter between a property name and its default value and not use <code>:-</code>.</p>
 </div>
 </td>
 </tr>
@@ -946,8 +937,8 @@ Java Util Logging에 'executable jar&#8217;에서 실행할 때 문제를 일으
 </td>
 <td class="content">
 <div class="paragraph">
-<p><code>LOG_LEVEL_PATTERN</code> (또는 logback의 <code>logging.pattern.level</code> ) 만 overriding 하여 MDC 및 다른 ad-hoc content를 log line에 추가할 수 있습니다.
-예를 들어 <code>logging.pattern.level=user:%X{user} %5p</code>, 를 사용하는 경우 default log format에는 다음 예제와 같이 "user"에 대한 MDC 항목이 포함됩니다. (있는 경우)</p>
+<p>You can add MDC and other ad-hoc content to log lines by overriding only the <code>LOG_LEVEL_PATTERN</code> (or <code>logging.pattern.level</code> with Logback).
+For example, if you use <code>logging.pattern.level=user:%X{user} %5p</code>, then the default log format contains an MDC entry for "user", if it exists, as shown in the following example.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -963,8 +954,8 @@ Handling authenticated request</pre>
 <div class="sect2">
 <h3 id="boot-features-logback-extensions"><a class="anchor" href="#boot-features-logback-extensions"></a>1.9. Logback Extensions</h3>
 <div class="paragraph">
-<p>Spring Boot에는 advanced configuration에 도움이 되는 Logback에 대한 여러 extension이 포함되어 있습니다.
-<code>logback-spring.xml</code> configuration file에서 이러한 extension을 사용할 수 있습니다.</p>
+<p>Spring Boot includes a number of extensions to Logback that can help with advanced configuration.
+You can use these extensions in your <code>logback-spring.xml</code> configuration file.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -973,8 +964,8 @@ Handling authenticated request</pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-standard <code>logback.xml</code> configuration file은 너무 일찍 로드되기 때문에 이 file에서 extension을 사용할 수 없습니다.
-<code>logback-spring.xml</code> 을 사용하거나 또는 <code>logging.config</code> property를 정의해야 합니다.
+Because the standard <code>logback.xml</code> configuration file is loaded too early, you cannot use extensions in it.
+You need to either use <code>logback-spring.xml</code> or define a <code>logging.config</code> property.
 </td>
 </tr>
 </table>
@@ -986,8 +977,8 @@ standard <code>logback.xml</code> configuration file은 너무 일찍 로드되�
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-extension은 Logback의 <a href="https://logback.qos.ch/manual/configuration.html#autoScan">configuration scanning</a>과 함께 사용할 수 없습니다.
-만약 이렇게 하려고 하면 configuration file을 변경하면 다음과 유사한 오류가 발생합니다.
+The extensions cannot be used with Logback&#8217;s <a href="https://logback.qos.ch/manual/configuration.html#autoScan">configuration scanning</a>.
+If you attempt to do so, making changes to the configuration file results in an error similar to one of the following being logged:
 </td>
 </tr>
 </table>
@@ -1001,13 +992,13 @@ ERROR in ch.qos.logback.core.joran.spi.Interpreter@4:71 - no applicable action f
 <div class="sect3">
 <h4 id="profile-specific-configuration"><a class="anchor" href="#profile-specific-configuration"></a>1.9.1. Profile-specific Configuration</h4>
 <div class="paragraph">
-<p><code>&lt;springProfile&gt;</code> 태그는 active Spring Profile에 기반한 configuration section을 선택적으로 포함하거나 제외할 수 있습니다.
-Profile section은 <code>&lt;configuration&gt;</code> 요소 내 모든 위치에서 지원됩니다.
-<code>name</code> attribute를 사용하여 대상 configuration profile을 지정할 수 있습니다.
-<code>&lt;springProfile&gt;</code> tag는 profile name(예를 들어 <code>staging</code> ) 또는 profile expression을 포함할 수 있습니다.
-profile expression은 좀 더 복잡한 profile logic을 표현할 수 있습니다. (예: <code>production &amp; (eu-central | eu-west)</code> )
-자세한 내용은 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/core.html#beans-definition-profiles-java">reference guide</a>를 확인하세요.
-다음 목록은 세 가지 sample profile을 보여줍니다.</p>
+<p>The <code>&lt;springProfile&gt;</code> tag lets you optionally include or exclude sections of configuration based on the active Spring profiles.
+Profile sections are supported anywhere within the <code>&lt;configuration&gt;</code> element.
+Use the <code>name</code> attribute to specify which profile accepts the configuration.
+The <code>&lt;springProfile&gt;</code> tag can contain a profile name (for example <code>staging</code>) or a profile expression.
+A profile expression allows for more complicated profile logic to be expressed, for example <code>production &amp; (eu-central | eu-west)</code>.
+Check the <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/core.html#beans-definition-profiles-java">reference guide</a> for more details.
+The following listing shows three sample profiles:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1028,13 +1019,13 @@ profile expression은 좀 더 복잡한 profile logic을 표현할 수 있습니
 <div class="sect3">
 <h4 id="environment-properties"><a class="anchor" href="#environment-properties"></a>1.9.2. Environment Properties</h4>
 <div class="paragraph">
-<p><code>&lt;springProperty&gt;</code> tag를 사용하면 logback 내에서 사용할 수 있도록 Spring <code>Environment</code> 의 properties를 노출할 수 있습니다.
-이렇게 하면 Logback configuration에서 <code>application.properties</code> file의 값에 접근하려는 경우 유용할 수 있습니다.
-tag는 logback standard <code>&lt;property&gt;</code> tag와 유사한 방식으로 동작합니다.
-그러나 직접 <code>value</code> 를 지정하는 대신 property의 <code>source</code> 를 지정합니다( <code>Environment</code> 로 부터).
-property를 <code>local</code> scope 이외의 다른 곳에 저장해야 하는 경우 <code>scope</code> attribute를 사용할 수 있습니다.
-fallback value가 필요한 경우 ( <code>Environment</code> 에서 property를 설정하지 않은 경우) <code>defaultValue</code> attribute를 사용할 수 있습니다.
-다음 예에서는 Logback 내에서 사용할 properties를 노출하는 방법을 보여줍니다.</p>
+<p>The <code>&lt;springProperty&gt;</code> tag lets you expose properties from the Spring <code>Environment</code> for use within Logback.
+Doing so can be useful if you want to access values from your <code>application.properties</code> file in your Logback configuration.
+The tag works in a similar way to Logback&#8217;s standard <code>&lt;property&gt;</code> tag.
+However, rather than specifying a direct <code>value</code>, you specify the <code>source</code> of the property (from the <code>Environment</code>).
+If you need to store the property somewhere other than in <code>local</code> scope, you can use the <code>scope</code> attribute.
+If you need a fallback value (in case the property is not set in the <code>Environment</code>), you can use the <code>defaultValue</code> attribute.
+The following example shows how to expose properties for use within Logback:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1053,8 +1044,8 @@ fallback value가 필요한 경우 ( <code>Environment</code> 에서 property를
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>source</code> 는 kebab case(예: <code>my.property-name</code>)로 지정해야 합니다.
-그러나 완화된 규칙을 사용하여 property를 <code>Environment</code> 에 추가할 수 있습니다.
+The <code>source</code> must be specified in kebab case (such as <code>my.property-name</code>).
+However, properties can be added to the <code>Environment</code> by using the relaxed rules.
 </td>
 </tr>
 </table>
@@ -1067,11 +1058,11 @@ fallback value가 필요한 경우 ( <code>Environment</code> 에서 property를
 <h2 id="boot-features-testing"><a class="anchor" href="#boot-features-testing"></a>2. Testing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Spring Boot는 application을 테스트 할 때 도움이 되는 여러 utility와 annotation을 제공합니다.
-테스트 지원은 두 개의 module로 제공됩니다: <code>spring-boot-test</code> 는 핵심 항목을 포함하고, <code>spring-boot-test-autoconfigure</code> 는 테스트를 위한 autoconfigure를 지원합니다.</p>
+<p>Spring Boot provides a number of utilities and annotations to help when testing your application.
+Test support is provided by two modules: <code>spring-boot-test</code> contains core items, and <code>spring-boot-test-autoconfigure</code> supports auto-configuration for tests.</p>
 </div>
 <div class="paragraph">
-<p>대부분의 개발자는 Spring Boot test module과 JUnit Jupiter, AssertJ, Hamcrest 및 기타 여러 유용한 라이브러리를 가져오는 <code>spring-boot-starter-test</code> "`Starter`"를 사용합니다.</p>
+<p>Most developers use the <code>spring-boot-starter-test</code> &#8220;Starter&#8221;, which imports both Spring Boot test modules as well as JUnit Jupiter, AssertJ, Hamcrest, and a number of other useful libraries.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1081,8 +1072,8 @@ fallback value가 필요한 경우 ( <code>Environment</code> 에서 property를
 </td>
 <td class="content">
 <div class="paragraph">
-<p>JUnit4를 사용하는 테스트가 있는 경우 JUnit 5의 vintage engine을 사용하여 실행할 수 있습니다.
-vintage engine을 사용하려면 <code>junit-vintage-engine</code> dependency를 아래 예제와 같이 추가하세요:</p>
+<p>If you have tests that use JUnit 4, JUnit 5&#8217;s vintage engine can be used to run them.
+To use the vintage engine, add a dependency on <code>junit-vintage-engine</code>, as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1104,26 +1095,26 @@ vintage engine을 사용하려면 <code>junit-vintage-engine</code> dependency�
 </table>
 </div>
 <div class="paragraph">
-<p><code>spring-boot-starter-test</code> 에 포함된 <code>org.hamcrest:hamcrest</code> 를 사용하며 <code>hamcrest-core</code> 는 제외됩니다. (hamcrest에 통합되었음)</p>
+<p><code>hamcrest-core</code> is excluded in favor of <code>org.hamcrest:hamcrest</code> that is part of <code>spring-boot-starter-test</code>.</p>
 </div>
 <div class="sect2">
 <h3 id="boot-features-test-scope-dependencies"><a class="anchor" href="#boot-features-test-scope-dependencies"></a>2.1. Test Scope Dependencies</h3>
 <div class="paragraph">
-<p>The <code>spring-boot-starter-test</code> &#8220;Starter&#8221; 는 (<code>test</code> <code>scope</code> 에서) 아래와 같은 라이브러리가 포함됩니다:</p>
+<p>The <code>spring-boot-starter-test</code> &#8220;Starter&#8221; (in the <code>test</code> <code>scope</code>) contains the following provided libraries:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://junit.org/junit5/">JUnit 5</a>: Java applications 단위 테스트를 위한 사실상 표준</p>
+<p><a href="https://junit.org/junit5/">JUnit 5</a>: The de-facto standard for unit testing Java applications.</p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#integration-testing">Spring Test</a> &amp; Spring Boot Test: Spring Boot applications을 위한 유틸리티 및 통합 테스트 지원.</p>
+<p><a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#integration-testing">Spring Test</a> &amp; Spring Boot Test: Utilities and integration test support for Spring Boot applications.</p>
 </li>
 <li>
 <p><a href="https://assertj.github.io/doc/">AssertJ</a>: A fluent assertion library.</p>
 </li>
 <li>
-<p><a href="https://github.com/hamcrest/JavaHamcrest">Hamcrest</a>: matcher objects의 라이브러리 (constraints 또는 predicates로 알려진).</p>
+<p><a href="https://github.com/hamcrest/JavaHamcrest">Hamcrest</a>: A library of matcher objects (also known as constraints or predicates).</p>
 </li>
 <li>
 <p><a href="https://site.mockito.org/">Mockito</a>: A Java mocking framework.</p>
@@ -1137,33 +1128,33 @@ vintage engine을 사용하려면 <code>junit-vintage-engine</code> dependency�
 </ul>
 </div>
 <div class="paragraph">
-<p>일반적으로 이러한 공통 라이브러리는 테스트를 작성할 때 유용합니다.
-이러한 라이브러리가 필요하지 않으면 자체적으로 테스트 dependency를 추가하면 됩니다.</p>
+<p>We generally find these common libraries to be useful when writing tests.
+If these libraries do not suit your needs, you can add additional test dependencies of your own.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="boot-features-testing-spring-applications"><a class="anchor" href="#boot-features-testing-spring-applications"></a>2.2. Testing Spring Applications</h3>
 <div class="paragraph">
-<p>dependency injection의 주요 장점 중 하나는 단위 테스트하기 쉽게 코드를 만들 수 있다는 것입니다.
-Spring을 사용하지 않더라도 <code>new</code> operator를  사용하여 object를 인스턴스화 할 수 있습니다.
-실제 dependency 대신 <em>mock object</em> 를 사용할 수도 있습니다.</p>
+<p>One of the major advantages of dependency injection is that it should make your code easier to unit test.
+You can instantiate objects by using the <code>new</code> operator without even involving Spring.
+You can also use <em>mock objects</em> instead of real dependencies.</p>
 </div>
 <div class="paragraph">
-<p>종종 단위 테스트를 뛰어넘어 통합 테스트를 해야합니다. (Spring <code>ApplicationContext</code> 과 함께)
-application을 배포하거나 다른 infrastructure와 연결할 필요 없이 통합 테스트를 수행할 수 있는 것이 유용합니다.</p>
+<p>Often, you need to move beyond unit testing and start integration testing (with a Spring <code>ApplicationContext</code>).
+It is useful to be able to perform integration testing without requiring deployment of your application or needing to connect to other infrastructure.</p>
 </div>
 <div class="paragraph">
-<p>Spring Framework에는 이러한 통합 테스트를 위한 전용 test module이 포함되어 있습니다.
-Spring Framework인 <code>org.springframework:spring-test</code> 를 바로 dependency 설정하거나 <code>spring-boot-starter-test</code> &#8220;Starter&#8221; 를 통해 가져올 수 있습니다.</p>
+<p>The Spring Framework includes a dedicated test module for such integration testing.
+You can declare a dependency directly to <code>org.springframework:spring-test</code> or use the <code>spring-boot-starter-test</code> &#8220;Starter&#8221; to pull it in transitively.</p>
 </div>
 <div class="paragraph">
-<p><code>spring-test</code> module을 이전에 사용하지 않았다면 Spring Framework reference의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testing">관련 section</a>을 읽는 것으로 시작해야 합니다.</p>
+<p>If you have not used the <code>spring-test</code> module before, you should start by reading the <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testing">relevant section</a> of the Spring Framework reference documentation.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="boot-features-testing-spring-boot-applications"><a class="anchor" href="#boot-features-testing-spring-boot-applications"></a>2.3. Testing Spring Boot Applications</h3>
 <div class="paragraph">
-<p>Spring Boot application은 Spring <code>ApplicationContext</code> 이므로 vanilla Spring contenxt에서 일반적인 테스트를 하는 것보다 특별한 것은 없습니다.</p>
+<p>A Spring Boot application is a Spring <code>ApplicationContext</code>, so nothing very special has to be done to test it beyond what you would normally do with a vanilla Spring context.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1172,15 +1163,15 @@ Spring Framework인 <code>org.springframework:spring-test</code> 를 바로 depe
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Spring Boot의 외부 properties, logging 및 다른 기능은 기본적으로 <code>SpringApplication</code> 을 사용하여 생성하는 경우에만 context에 처리됩니다.
+External properties, logging, and other features of Spring Boot are installed in the context by default only if you use <code>SpringApplication</code> to create it.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Spring Boot는 Spring Boot 기능이 필요할 때 표준 <code>spring-test</code> <code>@ContextConfiguration</code> annotation의 대안으로 사용할 수 있는 <code>@SpringBootTest</code> annotation을 제공합니다.
-이 annotation은 <a href="#boot-features-testing-spring-boot-applications-detecting-config"><code>SpringApplication</code> 을 통해 테스트에 사용된 <code>ApplicationContext</code> 를 생성</a> 하는 방식으로 동작합니다.
-<code>@SpringBootTest</code> 외에 <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-tests">더 구체적인 slice test</a>를 위해 여러 개의 다른 annotation도 제공됩니다.</p>
+<p>Spring Boot provides a <code>@SpringBootTest</code> annotation, which can be used as an alternative to the standard <code>spring-test</code> <code>@ContextConfiguration</code> annotation when you need Spring Boot features.
+The annotation works by <a href="#boot-features-testing-spring-boot-applications-detecting-config">creating the <code>ApplicationContext</code> used in your tests through <code>SpringApplication</code></a>.
+In addition to <code>@SpringBootTest</code> a number of other annotations are also provided for <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-tests">testing more specific slices</a> of an application.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1189,34 +1180,34 @@ Spring Boot의 외부 properties, logging 및 다른 기능은 기본적으로 <
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-JUnit 4를 사용하는 경우 <code>@RunWith(SpringRunner.class)</code> 를 테스트에 추가해야하는 것을 잊지 마세요. 그렇지 않으면 annotation이 무시됩니다.
-JUnit 5를 사용하는 경우 <code>@SpringBootTest</code> 와 다른  <code>@…Test</code> annotation이 이미 선언하고 있으므로 <code>@ExtendWith(SpringExtension.class)</code> 를 추가할 필요가 없습니다.
+If you are using JUnit 4, don&#8217;t forget to also add <code>@RunWith(SpringRunner.class)</code> to your test, otherwise the annotations will be ignored.
+If you are using JUnit 5, there&#8217;s no need to add the equivalent <code>@ExtendWith(SpringExtension.class)</code> as <code>@SpringBootTest</code> and the other <code>@…Test</code> annotations are already annotated with it.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>기본적으로 <code>@SpringBootTest</code> 는 server를 시작하지 않습니다.
-<code>@SpringBootTest</code> 의 <code>webEnvironment</code> attribute를 사용하여 테스트 수행 방법을 구체화 할 수 있습니다:</p>
+<p>By default, <code>@SpringBootTest</code> will not start a server.
+You can use the <code>webEnvironment</code> attribute of <code>@SpringBootTest</code> to further refine how your tests run:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>MOCK</code>(Default) : web <code>ApplicationContext</code> 을 로드하고 mock web environment을 제공합니다.
-이 annotation을 사용할 때 embeded server가 시작되지 않습니다.
-  classpath에 web environment가 없는 경우, 이 mode는 web이 아닌 일반 <code>ApplicationContext</code> 를 생성합니다.
-  <a href="#boot-features-testing-spring-boot-applications-testing-with-mock-environment"><code>@AutoConfigureMockMvc</code> 또는 <code>@AutoConfigureWebTestClient</code></a>와 함께 web application의 mock-based 테스트를 위해 사용할 수 있습니다.</p>
+<p><code>MOCK</code>(Default) : Loads a web <code>ApplicationContext</code> and provides a mock web environment.
+ Embedded servers are not started when using this annotation.
+If a web environment is not available on your classpath, this mode transparently falls back to creating a regular non-web <code>ApplicationContext</code>.
+It can be used in conjunction with <a href="#boot-features-testing-spring-boot-applications-testing-with-mock-environment"><code>@AutoConfigureMockMvc</code> or <code>@AutoConfigureWebTestClient</code></a> for mock-based testing of your web application.</p>
 </li>
 <li>
-<p><code>RANDOM_PORT</code>: <code>WebServerApplicationContext</code> 를 로드하고 실제 web environment를 제공합니다.
-embedded server가 시작되고 random port를 사용합니다.</p>
+<p><code>RANDOM_PORT</code>: Loads a <code>WebServerApplicationContext</code> and provides a real web environment.
+Embedded servers are started and listen on a random port.</p>
 </li>
 <li>
-<p><code>DEFINED_PORT</code>: <code>WebServerApplicationContext</code> 를 로드하고 실제 web environment를 제공합니다.
-embedded server가 (<code>application.properties</code> 에) 정의된 port 또는 default port인 <code>8080</code> 으로  시작됩니다.</p>
+<p><code>DEFINED_PORT</code>: Loads a <code>WebServerApplicationContext</code> and provides a real web environment.
+Embedded servers are started and listen on a defined port (from your <code>application.properties</code>) or on the default port of <code>8080</code>.</p>
 </li>
 <li>
-<p><code>NONE</code>:  <code>SpringApplication</code> 을 사용하여 <code>ApplicationContext</code> 를 로드하지만 web environment (mock or otherwise)는 <em>전혀</em> 제공하지 않습니다.</p>
+<p><code>NONE</code>: Loads an <code>ApplicationContext</code> by using <code>SpringApplication</code> but does not provide <em>any</em> web environment (mock or otherwise).</p>
 </li>
 </ul>
 </div>
@@ -1227,9 +1218,9 @@ embedded server가 (<code>application.properties</code> 에) 정의된 port 또�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-테스트가 <code>@Transactional</code> 인 경우 default로 각 테스트 method의 종료 시 transaction을 roll back합니다.
-그러나 <code>RANDOM_PORT</code> 또는 <code>DEFINED_PORT</code> 와 함께 사용시 암시적으로 실제 servlet 환경을 제공하므로, HTTP client와 server는 별도의 thread에서 실행되므로 별도의 transcation에서 실행됩니다.
-이 경우 server에서 시작된 transcation은 roll back 되지 않습니다.
+If your test is <code>@Transactional</code>, it rolls back the transaction at the end of each test method by default.
+However, as using this arrangement with either <code>RANDOM_PORT</code> or <code>DEFINED_PORT</code> implicitly provides a real servlet environment, the HTTP client and server run in separate threads and, thus, in separate transactions.
+Any transaction initiated on the server does not roll back in this case.
 </td>
 </tr>
 </table>
@@ -1241,7 +1232,7 @@ embedded server가 (<code>application.properties</code> 에) 정의된 port 또�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>webEnvironment = WebEnvironment.RANDOM_PORT</code> 와 함께 <code>@SpringBootTest</code> 사용 시 application이 management server에 대해 다른 port를 사용하는 경우 별도의 random port로 management server를 시작합니다.
+<code>@SpringBootTest</code> with <code>webEnvironment = WebEnvironment.RANDOM_PORT</code> will also start the management server on a separate random port if your application uses a different port for the management server.
 </td>
 </tr>
 </table>
@@ -1249,12 +1240,12 @@ embedded server가 (<code>application.properties</code> 에) 정의된 port 또�
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-detecting-web-app-type"><a class="anchor" href="#boot-features-testing-spring-boot-applications-detecting-web-app-type"></a>2.3.1. Detecting Web Application Type</h4>
 <div class="paragraph">
-<p>Spring MVC를 사용할 수 있는 경우 일반 MVC 기반 application context가 구성됩니다.
-Spring WebFlux만 있는 경우 이를 감지하고 WebFlux 기반 application context를 구성합니다.</p>
+<p>If Spring MVC is available, a regular MVC-based application context is configured.
+If you have only Spring WebFlux, we&#8217;ll detect that and configure a WebFlux-based application context instead.</p>
 </div>
 <div class="paragraph">
-<p>만약 둘다 있으면 Spring MVC가 우선합니다.
-이 시나리오에서 reactive web application을 테스트하려면 <code>spring.main.web-application-type</code> property를 설정해야 합니다.</p>
+<p>If both are present, Spring MVC takes precedence.
+If you want to test a reactive web application in this scenario, you must set the <code>spring.main.web-application-type</code> property:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1266,16 +1257,16 @@ class MyWebFluxTests { ... }</code></pre>
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-detecting-config"><a class="anchor" href="#boot-features-testing-spring-boot-applications-detecting-config"></a>2.3.2. Detecting Test Configuration</h4>
 <div class="paragraph">
-<p>Spring Test Framework에 익숙하다면 Spring <code>@Configuration</code> 를 로드하기 위해 <code>@ContextConfiguration(classes=&#8230;&#8203;)</code> 를 사용하는데 익숙할 수 있습니다.
-또는 테스트내에서 중첩 <code>@Configuration</code> class를 자주 사용했을 수 있습니다.</p>
+<p>If you are familiar with the Spring Test Framework, you may be used to using <code>@ContextConfiguration(classes=&#8230;&#8203;)</code> in order to specify which Spring <code>@Configuration</code> to load.
+Alternatively, you might have often used nested <code>@Configuration</code> classes within your test.</p>
 </div>
 <div class="paragraph">
-<p>Spring Boot application을 테스트할 때 이는 종종 필요하지 않습니다.
-Spring Boot의 <code>@*Test</code> annotation은 주요 configuration을 정의하지 않아도 자동으로 검색합니다.</p>
+<p>When testing Spring Boot applications, this is often not required.
+Spring Boot&#8217;s <code>@*Test</code> annotations search for your primary configuration automatically whenever you do not explicitly define one.</p>
 </div>
 <div class="paragraph">
-<p>검색 알고리즘은 <code>@SpringBootApplication</code> 또는 <code>@SpringBootConfiguration</code> annotation이 달린 class를 테스트가 포함된 package에서 동작합니다.
-코드를 <a href="using-spring-boot.html#using-boot-structuring-your-code">합리적으로 구성</a>하기만 하면 주요 구성이 대개 검색됩니다.</p>
+<p>The search algorithm works up from the package that contains the test until it finds a class annotated with <code>@SpringBootApplication</code> or <code>@SpringBootConfiguration</code>.
+As long as you <a href="using-spring-boot.html#using-boot-structuring-your-code">structured your code</a> in a sensible way, your main configuration is usually found.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1285,20 +1276,20 @@ Spring Boot의 <code>@*Test</code> annotation은 주요 configuration을 정의�
 </td>
 <td class="content">
 <div class="paragraph">
-<p><a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-tests">test annotation을 사용하여 application의 특정 부분을 테스트</a>하는 경우 <a href="#boot-features-testing-spring-boot-applications-testing-user-configuration">main method의 application class</a>에 특정 영역에 특정 configuration 설정을 추가하지 않도록 해야합니다.</p>
+<p>If you use a <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-tests">test annotation to test a more specific slice of your application</a>, you should avoid adding configuration settings that are specific to a particular area on the <a href="#boot-features-testing-spring-boot-applications-testing-user-configuration">main method&#8217;s application class</a>.</p>
 </div>
 <div class="paragraph">
-<p><code>@SpringBootApplication</code> 의 component scan configuration은 slicing이 예상대로 작동하는지 확인하는데 사용되는 exclude filter를 정의합니다.
-<code>@SpringBootApplication</code> annotation을 사용한 class에 <code>@ComponentScan</code> 을 직접 사용하는 경우 해당 filter는 비활성화 됩니다.
-slicing을 사용하는 경우 slice를 다시 정의해야 합니다.</p>
+<p>The underlying component scan configuration of <code>@SpringBootApplication</code> defines exclude filters that are used to make sure slicing works as expected.
+If you are using an explicit <code>@ComponentScan</code> directive on your <code>@SpringBootApplication</code>-annotated class, be aware that those filters will be disabled.
+If you are using slicing, you should define them again.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>primary configuration을 customize하려는 경우 중첩된 <code>@TestConfiguration</code> class를 사용할 수 있습니다.
-application의 primary configuration 대신 사용되는 중첩된 <code>@Configuration</code> class와 달리 중첩된 <code>@TestConfiguration</code> 는 application의 primary configuration에 추가로 적용됩니다.</p>
+<p>If you want to customize the primary configuration, you can use a nested <code>@TestConfiguration</code> class.
+Unlike a nested <code>@Configuration</code> class, which would be used instead of your application&#8217;s primary configuration, a nested <code>@TestConfiguration</code> class is used in addition to your application&#8217;s primary configuration.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1307,8 +1298,8 @@ application의 primary configuration 대신 사용되는 중첩된 <code>@Config
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Spring의 test framework는 test간 application context를 캐시합니다.
-따라서 테스트가 동일한 configuration을 공유하는 한 (검색 방법에 관계 없이) 잠재적으로 시간이 많이 걸리는 context loading도 한 번만 발생합니다.
+Spring&#8217;s test framework caches application contexts between tests.
+Therefore, as long as your tests share the same configuration (no matter how it is discovered), the potentially time-consuming process of loading the context happens only once.
 </td>
 </tr>
 </table>
@@ -1317,12 +1308,12 @@ Spring의 test framework는 test간 application context를 캐시합니다.
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-excluding-config"><a class="anchor" href="#boot-features-testing-spring-boot-applications-excluding-config"></a>2.3.3. Excluding Test Configuration</h4>
 <div class="paragraph">
-<p>application에서 component scan을 사용하는 경우 (예: <code>@SpringBootApplication</code> 또는 <code>@ComponentScan</code> 를 사용하는 경우) 특정 테스트용으로만 생성한 top-level copnfiguration class가 실수로 모든 곳에서 선택될 수 있습니다.</p>
+<p>If your application uses component scanning (for example, if you use <code>@SpringBootApplication</code> or <code>@ComponentScan</code>), you may find top-level configuration classes that you created only for specific tests accidentally get picked up everywhere.</p>
 </div>
 <div class="paragraph">
-<p><a href="#boot-features-testing-spring-boot-applications-detecting-config">앞서 살펴본 것</a>처럼 <code>@TestConfiguration</code> 은 test의 inner class에서 primary configuration을 customize 하는데 사용할 수 있습니다.
-top-level class에 배치될 떄 <code>@TestConfiguration</code> 은 <code>src/test/java</code> 의 class를 검색으로 선택할 수 없음을 나타냅니다.
-그런 다음 아래 예제와 같이 필요한 위치의 해당 class를 명시적으로 import 할 수 있습니다.</p>
+<p>As we <a href="#boot-features-testing-spring-boot-applications-detecting-config">have seen earlier</a>, <code>@TestConfiguration</code> can be used on an inner class of a test to customize the primary configuration.
+When placed on a top-level class, <code>@TestConfiguration</code> indicates that classes in <code>src/test/java</code> should not be picked up by scanning.
+You can then import that class explicitly where it is required, as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1345,8 +1336,8 @@ class MyTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-만약 <code>@ComponentScan</code> 를 직접 사용한다면 (즉 <code>@SpringBootApplication</code> 을 통하지 않은 경우) <code>TypeExcludeFilter</code> 를 등록해야 합니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a>을 참조하세요.
+If you directly use <code>@ComponentScan</code> (that is, not through <code>@SpringBootApplication</code>) you need to register the <code>TypeExcludeFilter</code> with it.
+See <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a> for details.
 </td>
 </tr>
 </table>
@@ -1355,7 +1346,8 @@ class MyTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-application-arguments"><a class="anchor" href="#boot-features-testing-spring-boot-application-arguments"></a>2.3.4. Using Application Arguments</h4>
 <div class="paragraph">
-<p>application이 <a href="#boot-features-application-arguments">arguments</a>를 예상하는 경우 <code>args</code> attribute를 사용하여 <code>@SpringBootTest</code> 에 주입하도록 할 수 있습니다.</p>
+<p>If your application expects <a href="#boot-features-application-arguments">arguments</a>, you can
+have <code>@SpringBootTest</code> inject them using the <code>args</code> attribute.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1401,8 +1393,8 @@ class ApplicationArgumentTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-with-mock-environment"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-with-mock-environment"></a>2.3.5. Testing with a mock environment</h4>
 <div class="paragraph">
-<p>default로 <code>@SpringBootTest</code> 는 server를 시작하지 않습니다.
-만약 mock environment에 테스트하려는 web endpoint가 있는 경우 다음 예제와 같이 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#spring-mvc-test-framework"><code>MockMvc</code></a> 를 추가로 구성할 수 있습니다:</p>
+<p>By default, <code>@SpringBootTest</code> does not start the server.
+If you have web endpoints that you want to test against this mock environment, you can additionally configure <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#spring-mvc-test-framework"><code>MockMvc</code></a> as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1454,13 +1446,13 @@ class MockMvcTests {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-만약 web layer에만 집중하고 전체 <code>ApplicationContext</code> 를 시작하지 않으려면 <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests"><code>@WebMvcTest</code> 를 대신 사용하는 것</a>을 고려하세요.
+If you want to focus only on the web layer and not start a complete <code>ApplicationContext</code>, consider <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests">using <code>@WebMvcTest</code> instead</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>또는 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 를 다음 예제와 같이 구성할 수 있습니다.</p>
+<p>Alternatively, you can configure a <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1509,13 +1501,13 @@ class MockWebTestClientTests {
 </td>
 <td class="content">
 <div class="paragraph">
-<p>mock environment에서 테스트 하는 것은 일반적으로 전체 Servlet container를 실행하는 것보다 빠릅니다.
-그러나 mocking은 Spring MVC layer에서 발생하기 때문에 하위 수준의 Servlet container 동작에 의존하는 코드는 MockMvc로 직접 테스트 할 수 없습니다.</p>
+<p>Testing within a mocked environment is usually faster than running with a full Servlet container.
+However, since mocking occurs at the Spring MVC layer, code that relies on lower-level Servlet container behavior cannot be directly tested with MockMvc.</p>
 </div>
 <div class="paragraph">
-<p>예를 들어 Spring Boot의 오류 처리는 Servlet container에서 제공하는 &#8220;error page&#8221; 지원을 기반으로 합니다.
-이것은 MVC layer가 기대한대로 exception을 throw하고 처리하는 것을 테스트 할 수 있지만 특정 <a href="#boot-features-error-handling-custom-error-pages">custom error page</a>가 렌더링되었는지 직접 테스트 할 수는 없습니다.
-이러한 lover-level의 문제를 테스트해야 하는 경우 다음 섹션에 섦명된 대로 완전히 실행중인 서버를 시작할 수 있습니다.</p>
+<p>For example, Spring Boot&#8217;s error handling is based on the &#8220;error page&#8221; support provided by the Servlet container.
+This means that, whilst you can test your MVC layer throws and handles exceptions as expected, you cannot directly test that a specific <a href="#boot-features-error-handling-custom-error-pages">custom error page</a> is rendered.
+If you need to test these lower-level concerns, you can start a fully running server as described in the next section.</p>
 </div>
 </td>
 </tr>
@@ -1525,12 +1517,12 @@ class MockWebTestClientTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-with-running-server"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-with-running-server"></a>2.3.6. Testing with a running server</h4>
 <div class="paragraph">
-<p>전체 실행 서버를 시작해야하는 경우 random port를 사용하는 것이 좋습니다.
-<code>@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)</code> 를 사용하는 경우 테스트가 실행될 때마다 사용 가능한 port가 무작위로 선택됩니다.</p>
+<p>If you need to start a full running server, we recommend that you use random ports.
+If you use <code>@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)</code>, an available port is picked at random each time your test runs.</p>
 </div>
 <div class="paragraph">
-<p><code>@LocalServerPort</code> annotation은 <a href="howto.html#howto-discover-the-http-port-at-runtime">사용하는 실제 port 주입</a> 테스트에 사용됩니다.
-편의를 위해 시작된 서버에 대한 REST 호출을 수행해야 하는 테스트는 <code>@Autowire</code> 를 추가로 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 로 할 수 있는데, 이 client는 실행 중인 서버에 대한 상대 link를 확인하고 응답을 확인하기 위한 전용 API를 제공합니다.</p>
+<p>The <code>@LocalServerPort</code> annotation can be used to <a href="howto.html#howto-discover-the-http-port-at-runtime">inject the actual port used</a> into your test.
+For convenience, tests that need to make REST calls to the started server can additionally <code>@Autowire</code> a <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a>, which resolves relative links to the running server and comes with a dedicated API for verifying responses, as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1571,8 +1563,8 @@ class RandomPortWebTestClientTests {
 </div>
 </div>
 <div class="paragraph">
-<p>이 설정은 classpath에 <code>spring-webflux</code> 를 필요로 합니다.
-webflux를 추가할 수 없거나 추가하지 않은 경우 Spring Boot는 다음과 같은 <code>TestRestTemplate</code> 기능도 제공합니다:</p>
+<p>This setup requires <code>spring-webflux</code> on the classpath.
+If you can&#8217;t or won&#8217;t add webflux, Spring Boot also provides a <code>TestRestTemplate</code> facility:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1619,15 +1611,15 @@ class RandomPortTestRestTemplateTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-customizing-web-test-client"><a class="anchor" href="#boot-features-testing-spring-boot-applications-customizing-web-test-client"></a>2.3.7. Customizing WebTestClient</h4>
 <div class="paragraph">
-<p><code>WebTestClient</code> bean을 customize하려면 <code>WebTestClientBuilderCustomizer</code> bean을 구성하면 됩니다.
-<code>WebTestClient.Builder</code> 로 호출된 bean은 <code>WebTestClient</code> 을 만드는데 사용됩니다.</p>
+<p>To customize the <code>WebTestClient</code> bean, configure a <code>WebTestClientBuilderCustomizer</code> bean.
+Any such beans are called with the <code>WebTestClient.Builder</code> that is used to create the <code>WebTestClient</code>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-jmx"><a class="anchor" href="#boot-features-testing-spring-boot-applications-jmx"></a>2.3.8. Using JMX</h4>
 <div class="paragraph">
-<p>test context framework가 context를 cache 하기 때문에 JMX는 default로 비활성화되어 동일한 구성 요소가 동일한 도메인에 등록되지 않도록 합니다.
-만약 테스트가 <code>MBeanServer</code> 에 접근해야 하는 경우 dirty mark도 고려해야 합니다.</p>
+<p>As the test context framework caches context, JMX is disabled by default to prevent identical components to register on the same domain.
+If such test needs access to an <code>MBeanServer</code>, consider marking it dirty as well:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1683,23 +1675,25 @@ class SampleJmxTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-metrics"><a class="anchor" href="#boot-features-testing-spring-boot-applications-metrics"></a>2.3.9. Using Metrics</h4>
 <div class="paragraph">
-<p>classpath와 관계없이 <code>@SpringBootTest</code> 를 사용할 때 지원되는 in-memory를 제외한 meter registry는 자동으로 구성되지 않습니다.
-통합 테스트의 일부로 metric을 다른 backend로 내보내야 하는 경우 <code>@AutoConfigureMetrics</code> annotation을 추가합니다.</p>
+<p>Regardless of your classpath, meter registries, except the in-memory backed, are not auto-configured when using <code>@SpringBootTest</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you need to export metrics to a different backend as part of an integration test, annotate it with <code>@AutoConfigureMetrics</code>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-mocking-beans"><a class="anchor" href="#boot-features-testing-spring-boot-applications-mocking-beans"></a>2.3.10. Mocking and Spying Beans</h4>
 <div class="paragraph">
-<p>테스트를 실행할 때 때때로 application context 내에서 득정 구성 요소를 mock으로 처리해야 하는 경우가 있습니다.
-예를 들면 개발 중에 사용할 수 없는 일부 원격 서비스에 대한 facade가 있을 수 있습니다.
-mocking은 실제 환경에서 trigger 하기 어려울 수 있는 실패를 시뮬레이션 하는 경우에도 유용할 수 있습니다.</p>
+<p>When running tests, it is sometimes necessary to mock certain components within your application context.
+For example, you may have a facade over some remote service that is unavailable during development.
+Mocking can also be useful when you want to simulate failures that might be hard to trigger in a real environment.</p>
 </div>
 <div class="paragraph">
-<p>Spring Boot는 <code>ApplicationContext</code> 내부 bean에 대한 Mockito mock을 정의한는데 사용하기 위한 <code>@MockBean</code> annotation을 포함하고 있습니다.
-annotation을 사용하여 새 bean을 추가하거나 기존 single bean 정의를 바꿀 수 있습니다.
-annotation은 test class, test class내의 field 또는 <code>@Configuration</code> class와 field에서 직접 사용할 수 있습니다.
-field에서 사용하면 생성된 mock instance도 inject 됩니다.
-mock bean은 각 테스트 method 실행 이후 reset 됩니다.</p>
+<p>Spring Boot includes a <code>@MockBean</code> annotation that can be used to define a Mockito mock for a bean inside your <code>ApplicationContext</code>.
+You can use the annotation to add new beans or replace a single existing bean definition.
+The annotation can be used directly on test classes, on fields within your test, or on <code>@Configuration</code> classes and fields.
+When used on a field, the instance of the created mock is also injected.
+Mock beans are automatically reset after each test method.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1709,8 +1703,8 @@ mock bean은 각 테스트 method 실행 이후 reset 됩니다.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>테스트에서 Spring Boot의 test annotation (예를 들면  <code>@SpringBootTest</code>) 중 하나를 사용하는 경우 이 기능은 자동으로 활성화 됩니다.
-이 기능을 다른 arrangement로 사용하려면 다음 예와 같이 listener를 명시적으로 추가해야 합니다.</p>
+<p>If your test uses one of Spring Boot&#8217;s test annotations (such as <code>@SpringBootTest</code>), this feature is automatically enabled.
+To use this feature with a different arrangement, listeners must be explicitly added, as shown in the following example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1722,7 +1716,7 @@ mock bean은 각 테스트 method 실행 이후 reset 됩니다.</p>
 </table>
 </div>
 <div class="paragraph">
-<p>다음 예제는 기존 <code>RemoteService</code> bean을 mock 구현으로 대체합니다.</p>
+<p>The following example replaces an existing <code>RemoteService</code> bean with a mock implementation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1761,16 +1755,16 @@ class MyTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>@MockBean</code> 은 application context가 refresh되는 동안 실행되는 bean의 동작을 mock 처리하는데 사용할 수 없습니다.
-test가 실행될 때 application context refresh가 완료되어 mock behavior가 구성되기에는 너무 늦습니다.
-이런 경우 <code>@Bean</code>  method를 생성하고 구성하여 mock을 만다는 것이 좋습니다.
+<code>@MockBean</code> cannot be used to mock the behavior of a bean that&#8217;s exercised during application context refresh.
+By the time the test is executed, the application context refresh has completed and it is too late to configure the mocked behavior.
+We recommend using a <code>@Bean</code> method to create and configure the mock in this situation.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>또한 <code>@SpyBean</code> 을 사용하여 Mockito <code>spy</code> 로 기존 beand을 wrapping 할 수 있습니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a>을 참조하세요</p>
+<p>Additionally, you can use <code>@SpyBean</code> to wrap any existing bean with a Mockito <code>spy</code>.
+See the <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a> for full details.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1779,9 +1773,10 @@ test가 실행될 때 application context refresh가 완료되어 mock behavior�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-scoped bean 생성같은 CGLIB proxy는 proxy된 method를 <code>final</code> 로 선언합니다.
-이는 default configuration에서 <code>final</code> method를 mock 처리하거나 spy 처리 할 수 없기 때문에 올바르게 작동하지 않습니다.
-만약 이런 bean을 mock 또는 spy 처리하고 싶다면 <code>org.mockito:mockito-inline</code> 를 application의 test dependencies에 추가하여 Mockito가 inline mock maker를 사용하도록 구성합니다.
+CGLib proxies, such as those created for scoped beans, declare the proxied methods as <code>final</code>.
+This stops Mockito from functioning correctly as it cannot mock or spy on <code>final</code> methods in its default configuration.
+If you want to mock or spy on such a bean, configure Mockito to use its inline mock maker by adding <code>org.mockito:mockito-inline</code> to your application&#8217;s test dependencies.
+This allows Mockito to mock and spy on <code>final</code> methods.
 </td>
 </tr>
 </table>
@@ -1793,7 +1788,7 @@ scoped bean 생성같은 CGLIB proxy는 proxy된 method를 <code>final</code> �
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Spring의 test framework는 test 간 applciation context를 cache하고 동일한 구성을 공유하는 테스트를 위해 context를 재사용하지만 <code>@MockBean</code> 또는 <code>@SpyBean</code> 의 사용은 cache key에 영향을 미쳐 context를 늘릴 가능성이 높습니다.
+While Spring&#8217;s test framework caches application contexts between tests and reuses a context for tests sharing the same configuration, the use of <code>@MockBean</code> or <code>@SpyBean</code> influences the cache key, which will most likely increase the number of contexts.
 </td>
 </tr>
 </table>
@@ -1805,8 +1800,8 @@ Spring의 test framework는 test 간 applciation context를 cache하고 동일�
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-만약 name으로 parameter를 참조하는 <code>@Cacheable</code> method가 있는 bean을 감시하기 위해 <code>@SpyBean</code> 을 사용하는 경우 application은 <code>-parameters</code> 로 compile 되어야 합니다.
-이렇게 하면 bean이 감시된 후 caching infrastructure에서 parameter name을 사용할 수 있습니다.
+If you are using <code>@SpyBean</code> to spy on a bean with <code>@Cacheable</code> methods that refer to parameters by name, your application must be compiled with <code>-parameters</code>.
+This ensures that the parameter names are available to the caching infrastructure once the bean has been spied upon.
 </td>
 </tr>
 </table>
@@ -1818,8 +1813,8 @@ Spring의 test framework는 test 간 applciation context를 cache하고 동일�
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<code>@SpyBean</code> 을 사용하여 Spring의 proxy 된 bean을 감시할 때 <code>given</code> 이나 <code>when</code> 을 사용하여 expectations을 설정할 때처럼 경우에 따라 Spring의 proxy를 제거해야 할 수 있습니다.
-그렇게 하려면 <code>AopTestUtils.getTargetObject(yourProxiedSpy)</code> 를 사용하세요
+When you are using <code>@SpyBean</code> to spy on a bean that is proxied by Spring, you may need to remove Spring&#8217;s proxy in some situations, for example when setting expectations using <code>given</code> or <code>when</code>.
+Use <code>AopTestUtils.getTargetObject(yourProxiedSpy)</code> to do so.
 </td>
 </tr>
 </table>
@@ -1828,13 +1823,13 @@ Spring의 test framework는 test 간 applciation context를 cache하고 동일�
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-tests"></a>2.3.11. Auto-configured Tests</h4>
 <div class="paragraph">
-<p>Spring Boot의 auto-configuration sytstem은 application에서 동작하지만 때로는 테스트에 너무 많은 경우가 있습니다.
-application의 "`slice`"를 테스트 하는데 필요한 configuration 부분만 로드하면 도움이 되는 경우가 많습니다.
-예를 들면, Spring MVC controller가 URL을 올바르게 mapping하는지 테스트하고 해당 테스트에 dastabase 호출을 포함하지 않거나 또는 JPA entity를 테스트 하고 싶을 때 web layer에 관심이 없는 경우가 있습니다.</p>
+<p>Spring Boot&#8217;s auto-configuration system works well for applications but can sometimes be a little too much for tests.
+It often helps to load only the parts of the configuration that are required to test a &#8220;slice&#8221; of your application.
+For example, you might want to test that Spring MVC controllers are mapping URLs correctly, and you do not want to involve database calls in those tests, or you might want to test JPA entities, and you are not interested in the web layer when those tests run.</p>
 </div>
 <div class="paragraph">
-<p><code>spring-boot-test-autoconfigure</code> module은 이러한 &#8220;slices&#8221; 를 자동으로 구성하는데 사용할 수 있는 여러 annotation이 포함되어 있습니다.
-각각은 auto-configuration 설정을 customize하는데 사용되는 <code>ApplicationContext</code> 과 하나 이상의 <code>@AutoConfigure&#8230;&#8203;</code> annotations을 로드하는 <code>@&#8230;&#8203;Test</code> annotation으로 제공되며 비슷한 방식으로 동작합니다.</p>
+<p>The <code>spring-boot-test-autoconfigure</code> module includes a number of annotations that can be used to automatically configure such &#8220;slices&#8221;.
+Each of them works in a similar way, providing a <code>@&#8230;&#8203;Test</code> annotation that loads the <code>ApplicationContext</code> and one or more <code>@AutoConfigure&#8230;&#8203;</code> annotations that can be used to customize auto-configuration settings.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1843,9 +1838,9 @@ application의 "`slice`"를 테스트 하는데 필요한 configuration 부분�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-각 slice는 component scan을 적절한  component로 제한하고 매우 제한된 auto-configuration class를 로드합니다.
-그 중 하나를 제외해야하는 경우 대부분의 <code>@&#8230;&#8203;Test</code> annotations은 <code>excludeAutoConfiguration</code> attribute를 제공합니다.
-또는 <code>@ImportAutoConfiguration#exclude</code> 를 사용할 수 있습니다.
+Each slice restricts component scan to appropriate components and loads a very restricted set of auto-configuration classes.
+If you need to exclude one of them, most <code>@&#8230;&#8203;Test</code> annotations provide an <code>excludeAutoConfiguration</code> attribute.
+Alternatively, you can use <code>@ImportAutoConfiguration#exclude</code>.
 </td>
 </tr>
 </table>
@@ -1857,8 +1852,8 @@ application의 "`slice`"를 테스트 하는데 필요한 configuration 부분�
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-하나의 테스트에서 여러 개의 <code>@&#8230;&#8203;Test</code> annotations 을 사용하여 여러 "`slices`"를 포함하는 것은 지원되지 않습니다.
-민액 여러 "`slices`"가 필요한 경우 <code>@&#8230;&#8203;Test</code> annotations 중 하나를 선택하고 다른 "`slices`"의 <code>@AutoConfigure&#8230;&#8203;</code> annotations 을 직접 포함해야 합니다.
+Including multiple &#8220;slices&#8221; by using several <code>@&#8230;&#8203;Test</code> annotations in one test is not supported.
+If you need multiple &#8220;slices&#8221;, pick one of the <code>@&#8230;&#8203;Test</code> annotations and include the <code>@AutoConfigure&#8230;&#8203;</code> annotations of the other &#8220;slices&#8221; by hand.
 </td>
 </tr>
 </table>
@@ -1870,8 +1865,8 @@ application의 "`slice`"를 테스트 하는데 필요한 configuration 부분�
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-standard <code>@SpringBootTest</code> annotation과 함께 <code>@AutoConfigure&#8230;&#8203;</code> annotations을 사용할 수도 있습니다.
-application을 &#8220;slicing&#8221; 하는 데 관심이 없지만 auto-configured test bean 중 일부를 원하는 경우 이 조합을 사용할 수 있습니다.
+It is also possible to use the <code>@AutoConfigure&#8230;&#8203;</code> annotations with the standard <code>@SpringBootTest</code> annotation.
+You can use this combination if you are not interested in &#8220;slicing&#8221; your application but you want some of the auto-configured test beans.
 </td>
 </tr>
 </table>
@@ -1880,8 +1875,8 @@ application을 &#8220;slicing&#8221; 하는 데 관심이 없지만 auto-configu
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-json-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-json-tests"></a>2.3.12. Auto-configured JSON Tests</h4>
 <div class="paragraph">
-<p>object JSON serialization 과 deserialization가 예상대로 동작하는지 테스트하려면 <code>@JsonTest</code> annotation을 사용할 수 있습니다.
-<code>@JsonTest</code> 는 다음 library 중 하나가 될 수 있는 사용가능한 JSON mapper를 auto-configure 처리합니다.</p>
+<p>To test that object JSON serialization and deserialization is working as expected, you can use the <code>@JsonTest</code> annotation.
+<code>@JsonTest</code> auto-configures the available supported JSON mapper, which can be one of the following libraries:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1903,19 +1898,19 @@ application을 &#8220;slicing&#8221; 하는 데 관심이 없지만 auto-configu
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<code>@JsonTest</code> 에 의해 활성화된 auto-configuration 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">appendix 에서 찾을 수</a> 있습니다.
+A list of the auto-configurations that are enabled by <code>@JsonTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>auto-configuration 요소를 구성해야 하는 경우 <code>@AutoConfigureJsonTesters</code> annotation을 사용할 수 있습니다.</p>
+<p>If you need to configure elements of the auto-configuration, you can use the <code>@AutoConfigureJsonTesters</code> annotation.</p>
 </div>
 <div class="paragraph">
-<p>Spring Boot는 JSON이 예상한 대로 표시되는지 확인하기 위해 JSONASsert와 JsonPath library와 함께 동작하는 AssertJ-based helper가 포함되어 있습니다.
-<code>JacksonTester</code>, <code>GsonTester</code>, <code>JsonbTester</code>, 및 <code>BasicJsonTester</code> class는 각각 Jackson, Gson, Jsonb 및 String에 사용할 수 있습니다.
-<code>@JsonTest</code> 를 사용할 때 test class의 helper field를 <code>@Autowired</code> 할 수 있습니다.
-다음 예제는 Jackson의 test class를 보여줍니다.:</p>
+<p>Spring Boot includes AssertJ-based helpers that work with the JSONAssert and JsonPath libraries to check that JSON appears as expected.
+The <code>JacksonTester</code>, <code>GsonTester</code>, <code>JsonbTester</code>, and <code>BasicJsonTester</code> classes can be used for Jackson, Gson, Jsonb, and Strings respectively.
+Any helper fields on the test class can be <code>@Autowired</code> when using <code>@JsonTest</code>.
+The following example shows a test class for Jackson:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1962,16 +1957,16 @@ class MyJsonTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-JSON helper class는 표준 단위 테스트에 직접 사용할 수도 있습니다.
-그렇게 하려면 <code>@JsonTest</code> 를 사용하지 않는 경우 <code>@Before</code> method에 helper의 <code>initFields</code> method를 호출합니다.
+JSON helper classes can also be used directly in standard unit tests.
+To do so, call the <code>initFields</code> method of the helper in your <code>@Before</code> method if you do not use <code>@JsonTest</code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Spring Boot의 AssertJ-based helpers를 사용하여 주어진 JSON path에서 number value를 assert하는 경우 type에 따라 isEqualTo를 사용하지 못할 수 있습니다.
-대신 AssertJ의 <code>satisfies</code> 를 사용하여 값이 지정된 조건과 일치한다고 assert 할 수 있습니다.
-예를 들어 다음 예제에서는 실제 숫자가 <code>0.01</code> 의 offset 내에서 <code>0.15</code> 에 가까운 float value로 assert 할 수 있습니다.</p>
+<p>If you&#8217;re using Spring Boot&#8217;s AssertJ-based helpers to assert on a number value at a given JSON path, you might not be able to use <code>isEqualTo</code> depending on the type.
+Instead, you can use AssertJ&#8217;s <code>satisfies</code> to assert that the value matches the given condition.
+For instance, the following example asserts that the actual number is a float value close to <code>0.15</code> within an offset of <code>0.01</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1984,10 +1979,10 @@ JSON helper class는 표준 단위 테스트에 직접 사용할 수도 있습�
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests"></a>2.3.13. Auto-configured Spring MVC Tests</h4>
 <div class="paragraph">
-<p>Spring MVC controller가 예상대로 동작하는지 테스트하려면 <code>@WebMvcTest</code> annotation을 사용할 수 있습니다.
-<code>@WebMvcTest</code> 는 Spring MVC infrastructor를 자동 구성하고 scanned bean을 <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>Filter</code>, <code>HandlerInterceptor</code>, <code>WebMvcConfigurer</code>, 및 <code>HandlerMethodArgumentResolver</code> 로 제한합니다.
-<code>@WebMvcTest</code> annotation이 사용된 경우 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan 되지 않습니다.
-<code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용할 수 있습니다.</p>
+<p>To test whether Spring MVC controllers are working as expected, use the <code>@WebMvcTest</code> annotation.
+<code>@WebMvcTest</code> auto-configures the Spring MVC infrastructure and limits scanned beans to <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>Filter</code>, <code>HandlerInterceptor</code>, <code>WebMvcConfigurer</code>, and <code>HandlerMethodArgumentResolver</code>.
+Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@WebMvcTest</code> annotation is used.
+<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -3520,7 +3515,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-04 23:46:56 +0900
+Last updated 2021-03-31 23:34:37 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

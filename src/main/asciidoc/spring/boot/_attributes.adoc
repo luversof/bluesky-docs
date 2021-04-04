@@ -27,7 +27,7 @@
 :github-issues: https://github.com/{github-repo}/issues/
 :github-wiki: https://github.com/{github-repo}/wiki
 
-:include: ../main/java/org/springframework/boot/docs
+:include: ../../src/main/java/org/springframework/boot/docs
 :include-springbootfeatures: {include}/springbootfeatures
 :include-productionreadyfeatures: {include}/productionreadyfeatures
 :include-howto: {include}/howto

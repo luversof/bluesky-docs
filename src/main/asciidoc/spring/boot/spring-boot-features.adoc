@@ -1086,7 +1086,7 @@ Cassandra application을 테스트하는데 `@DataCassandraTest` 를 사용할 �
 기본적으로 `CassandraTemplate` 를 구성하고 `@Table` classe를 scan 하고 Spring Data Cassandra repository를 구성합니다.
 `@DataCassandraTest` annotation 이 사용될 때 일반 `@Component` 와 `@ConfigurationProperties` bean은 scan되지 않습니다.
 `@EnableConfigurationProperties` 을 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
-(Spring Boot에서 Cassandra를 사용하는 방법에 대한 자세한 내용은 이 장 앞부분의 "<<boot-features-cassandra>>" 를 참조하세요.)
+(Spring Boot에서 Cassandra를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-cassandra>>" 를 참조하세요.)
 
 TIP: `@DataCassandraTest` 로 활성화한 auto-configuration 설정 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록 (appendix)>> 에서 확인할 수 있습니다.
 
@@ -1119,7 +1119,7 @@ classpath에 embedded database가 사용 가능한 경우 하나의 database도 
 
 TIP: `@DataJpaTest` 로 활성화된 auto-configuration 구성 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-기본적으로 data JPA 테스트는 transactional이며 각 테스트가 끝날 때 roll back됩니다.
+기본적으로 data JPA 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
 자세한 내용은  Spring Framework  참조 문서의 {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[관련 section]울 참조하세요.
 원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:
 
@@ -1192,9 +1192,9 @@ In-memory embedded databases는 빠르고 설치가 필요하지 않기 때문�
 `@JdbcTest` annotation이 사용될 때 일반 `@Component` 과 `@ConfigurationProperties` bean은 scan되지 않습니다.
 `@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
 
-TIP: `@JdbcTest`로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록 (appendix)>>에서 확인할 수 있습니다.
+TIP: `@JdbcTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-기본적으로 JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back됩니다.
+기본적으로 JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
 자세한 내용은 Spring Framework 참조 문서의 {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[관련 section]을 참조하세요.
 원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:
 
@@ -1213,41 +1213,42 @@ TIP: `@JdbcTest`로 활성화된 auto-configuration 목록은 <<appendix-test-au
 ----
 
 만약 실제 데이터베이스에 대해 테스트를 실행하려는 경우 `DataJpaTest` 와 동일하게 `@AutoConfigureTestDatabase` annotation을 사용할 수 있습니다:
-("<<boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test>>" 참고.)
+("<<boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test>>" 참조)
 
 
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-data-jdbc-test]]
 ==== Auto-configured Data JDBC Tests
-`@DataJdbcTest` is similar to `@JdbcTest` but is for tests that use Spring Data JDBC repositories.
-By default, it configures an in-memory embedded database, a `JdbcTemplate`, and Spring Data JDBC repositories.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@DataJdbcTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
+`@DataJdbcTest` 는 `@JdbcTest` 와 비슷하지만 Spring Dasta JDBC repository를 사용하는 테스트용입니다.
+기본적으로 in-memory embedded database와 `JdbcTemplate`, Spring Data JDBC repository를 구성합니다.
+`@DataJdbcTest` annotation 이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
 
-TIP: A list of the auto-configurations that are enabled by `@DataJdbcTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@DataJdbcTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-By default, Data JDBC tests are transactional and roll back at the end of each test.
-See the {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[relevant section] in the Spring Framework Reference Documentation for more details.
-If that is not what you want, you can disable transaction management for a test or for the whole test class as <<boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test,shown in the JDBC example>>.
+기본적으로 Data JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
+자세한 내용은 Spring Framework 참조 문서의 {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[관련 section]을 참조하세요.
+원하지 않을 경우  <<boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test,JDBC example에서 보여진 것처럼>> 테스트 또는 전체 테스트 class에 대해 transaction management를 비활성화 할 수 있습니다.
 
-If you prefer your test to run against a real database, you can use the `@AutoConfigureTestDatabase` annotation in the same way as for `DataJpaTest`.
-(See "<<boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test>>".)
+실제 데이터베이스에 대해 테스트를 실행하는 것을 선호하는 경우 `DataJpaTest` 와 동일하게 `@AutoConfigureTestDatabase` annotation을 사용할 수 있습니다:
+("<<boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test>>" 참조)
 
 
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-jooq-test]]
 ==== Auto-configured jOOQ Tests
-You can use `@JooqTest` in a similar fashion as `@JdbcTest` but for jOOQ-related tests.
-As jOOQ relies heavily on a Java-based schema that corresponds with the database schema, the existing `DataSource` is used.
-If you want to replace it with an in-memory database, you can use `@AutoConfigureTestDatabase` to override those settings.
-(For more about using jOOQ with Spring Boot, see "<<boot-features-jooq>>", earlier in this chapter.)
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@JooqTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
+`@JdbcTest` 와 비슷한 방식으로 `@JooqTest` 를 jOOQ 관련 테스트에 사용할 수 있습니다.
+jOOQ는 database schema와 일치하는 java-based schema에 크게 의존하므로 기존 `DataSource` 가 사용됩니다.
+in-memory database로 변경하려면 `@AutoConfigureTestDatabase` 을 사용하여 해당 설정을 재정의할 수 있습니다.
+(Spring Boot와 함께 jOOQ를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-jooq>>" 을 참조하세요.)
+`@JooqTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
 
-TIP: A list of the auto-configurations that are enabled by `@JooqTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@JooqTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-`@JooqTest` configures a `DSLContext`.
-The following example shows the `@JooqTest` annotation in use:
+`@JooqTest` 는 `DSLContext` 을 구성합니다.
+다음 예제는 `@JooqTest` annotation을 사용하는 경우를 보여줍니다:
+
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1263,22 +1264,21 @@ The following example shows the `@JooqTest` annotation in use:
 	}
 ----
 
-JOOQ tests are transactional and roll back at the end of each test by default.
-If that is not what you want, you can disable transaction management for a test or for the whole test class as <<boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test,shown in the JDBC example>>.
-
+기본적으로 JOOQ 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
+원하지 않을 경우  <<boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test,JDBC example에서 보여진 것처럼>> 테스트 또는 전체 테스트 class에 대해 transaction management를 비활성화 할 수 있습니다.
 
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-mongo-test]]
 ==== Auto-configured Data MongoDB Tests
-You can use `@DataMongoTest` to test MongoDB applications.
-By default, it configures an in-memory embedded MongoDB (if available), configures a `MongoTemplate`, scans for `@Document` classes, and configures Spring Data MongoDB repositories.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@DataMongoTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
-(For more about using MongoDB with Spring Boot, see "<<boot-features-mongodb>>", earlier in this chapter.)
+MongoDB applications을 테스트 하는데 `@DataMongoTest` 를 사용할 수 있습니다.
+기본적으로 (가능한 경우) in-memory embedded MongoDB을 구성하며 `MongoTemplate` 을 구성하고 `@Document` class를 scan 하며 Spring Data MongoDB repository를 구성합니다.
+`@DataMongoTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
+(Spring Boot와 함께 MongoDB를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-mongodb>>" 을 참조하세요.)
 
-TIP: A list of the auto-configuration settings that are enabled by `@DataMongoTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@DataMongoTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The following class shows the `@DataMongoTest` annotation in use:
+다음 예제는 `@DataMongoTest` annotation을 사용하는 경우를 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1296,8 +1296,8 @@ The following class shows the `@DataMongoTest` annotation in use:
 	}
 ----
 
-In-memory embedded MongoDB generally works well for tests, since it is fast and does not require any developer installation.
-If, however, you prefer to run tests against a real MongoDB server, you should exclude the embedded MongoDB auto-configuration, as shown in the following example:
+In-memory embedded MongoDB는 빠르고 개발자 설치가 필요하지 않기 때문에 일반적으로 테스트에 적합합니다.
+그러나 실제 MongoDB server에 대해 테스트를 실행하려면 다음 예와 같이 embedded MongoDB auto-configuration을 제외해야 합니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1314,15 +1314,15 @@ If, however, you prefer to run tests against a real MongoDB server, you should e
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-neo4j-test]]
 ==== Auto-configured Data Neo4j Tests
-You can use `@DataNeo4jTest` to test Neo4j applications.
-By default, it scans for `@Node` classes, and configures Spring Data Neo4j repositories.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@DataNeo4jTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
-(For more about using Neo4J with Spring Boot, see "<<boot-features-neo4j>>", earlier in this chapter.)
+Neo4j applications을 테스트하기 위해 `@DataNeo4jTest` 을 사용할 수 있습니다.
+기본적으로 `@Node` class를 scan하고 Spring Data Neo4j repository를 구성합니다.
+`@DataNeo4jTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
+(Spring Boot와 함께 Neo4J를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-neo4j>>" 을 참조하세요.)
 
-TIP: A list of the auto-configuration settings that are enabled by `@DataNeo4jTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@DataNeo4jTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The following example shows a typical setup for using Neo4J tests in Spring Boot:
+다음 예제는 Spring Boot에서 Neo4J를 테스트 하기 위한 일반적인 설정을 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1339,9 +1339,9 @@ The following example shows a typical setup for using Neo4J tests in Spring Boot
 	}
 ----
 
-By default, Data Neo4j tests are transactional and roll back at the end of each test.
-See the {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[relevant section] in the Spring Framework Reference Documentation for more details.
-If that is not what you want, you can disable transaction management for a test or for the whole class, as follows:
+기본적으로 Data Neo4j 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
+자세한 내용은 Spring Framework 참조 문서의 {spring-framework-docs}/testing.html#testcontext-tx-enabling-transactions[관련 section]을 참조하세요.
+원하지 않을 경우 다음과 같이 테스트 또는 전체 테스트 class에 대해 transaction management를 비활성화 할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1356,22 +1356,21 @@ If that is not what you want, you can disable transaction management for a test 
 	}
 ----
 
-NOTE: Transactional tests are not supported with reactive access.
-If you are using this style, you must configure `@DataNeo4jTest` tests as described above.
-
+NOTE: reactive access에서 Transactional 테스트는 지원되지 않습니다.
+이 경우 위에 설명한 대로 `@DataNeo4jTest` 테스트를 구성해야 합니다.
 
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-redis-test]]
 ==== Auto-configured Data Redis Tests
-You can use `@DataRedisTest` to test Redis applications.
-By default, it scans for `@RedisHash` classes and configures Spring Data Redis repositories.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@DataRedisTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
-(For more about using Redis with Spring Boot, see "<<boot-features-redis>>", earlier in this chapter.)
+Redis applications을 테스트하기 위해 `@DataRedisTest` 를 사용할 수 있습니다.
+기본적으로 `@RedisHash` class를 scan하고 Spring Data Redis repository를 구성합니다.
+`@DataRedisTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
+(Spring Boot와 함께 Redis를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-redis>>" 을 참조하세요.)
 
-TIP: A list of the auto-configuration settings that are enabled by `@DataRedisTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@DataRedisTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The following example shows the `@DataRedisTest` annotation in use:
+다음 예제는 `@DataRedisTest` annotation을 사용하는 경우를 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1392,15 +1391,15 @@ The following example shows the `@DataRedisTest` annotation in use:
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-ldap-test]]
 ==== Auto-configured Data LDAP Tests
-You can use `@DataLdapTest` to test LDAP applications.
-By default, it configures an in-memory embedded LDAP (if available), configures an `LdapTemplate`, scans for `@Entry` classes, and configures Spring Data LDAP repositories.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@DataLdapTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
-(For more about using LDAP with Spring Boot, see "<<boot-features-ldap>>", earlier in this chapter.)
+LDAP applications을 테스트하기 위해 `@DataLdapTest` 를 사용할 수 있습니다.
+기본적으로 (가능한 경우) in-memory embedded LDAP을 구성하고 `LdapTemplate`을 구성하고 `@Entry` class를 scan하고 Spring Data LDAP repository를 구성합니다.
+`@DataLdapTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
+(Spring Boot와 함께 LDAP를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-ldap>>" 을 참조하세요.)
 
-TIP: A list of the auto-configuration settings that are enabled by `@DataLdapTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@DataLdapTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The following example shows the `@DataLdapTest` annotation in use:
+다음 예제는 `@DataLdapTest` annotation을 사용하는 경우를 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1418,8 +1417,8 @@ The following example shows the `@DataLdapTest` annotation in use:
 	}
 ----
 
-In-memory embedded LDAP generally works well for tests, since it is fast and does not require any developer installation.
-If, however, you prefer to run tests against a real LDAP server, you should exclude the embedded LDAP auto-configuration, as shown in the following example:
+In-memory embedded LDAP은 빠르고 개발자 설치가 필요하지 않기 때문에 일반적으로 테스트에 적합합니다.
+그러나 실제 LDAP server에 대해 테스트를 실행하려면 다음 예와 같이 embedded LDAP auto-configuration을 제외해야 합니다:
 
 [source,java,pending-extract=true,indent=0]
 ----

@@ -1915,7 +1915,7 @@ application을 &#8220;slicing&#8221; 하는 데 관심이 없지만 auto-configu
 <p>Spring Boot는 JSON이 예상한 대로 표시되는지 확인하기 위해 JSONASsert와 JsonPath library와 함께 동작하는 AssertJ-based helper가 포함되어 있습니다.
 <code>JacksonTester</code>, <code>GsonTester</code>, <code>JsonbTester</code>, 및 <code>BasicJsonTester</code> class는 각각 Jackson, Gson, Jsonb 및 String에 사용할 수 있습니다.
 <code>@JsonTest</code> 를 사용할 때 test class의 helper field를 <code>@Autowired</code> 할 수 있습니다.
-다음 예제는 Jackson의 test class를 보여줍니다.:</p>
+다음 예제는 Jackson의 test class를 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1985,7 +1985,7 @@ JSON helper class는 표준 단위 테스트에 직접 사용할 수도 있습�
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-mvc-tests"></a>2.3.13. Auto-configured Spring MVC Tests</h4>
 <div class="paragraph">
 <p>Spring MVC controller가 예상대로 동작하는지 테스트하려면 <code>@WebMvcTest</code> annotation을 사용할 수 있습니다.
-<code>@WebMvcTest</code> 는 Spring MVC infrastructor를 자동 구성하고 scanned bean을 <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>Filter</code>, <code>HandlerInterceptor</code>, <code>WebMvcConfigurer</code>, 및 <code>HandlerMethodArgumentResolver</code> 로 제한합니다.
+<code>@WebMvcTest</code> 는 Spring MVC infrastructor를 auto-configure 하고 scanned bean을 <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>Filter</code>, <code>HandlerInterceptor</code>, <code>WebMvcConfigurer</code>, 및 <code>HandlerMethodArgumentResolver</code> 로 제한합니다.
 <code>@WebMvcTest</code> annotation이 사용된 경우 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan 되지 않습니다.
 <code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용할 수 있습니다.</p>
 </div>
@@ -1996,7 +1996,7 @@ JSON helper class는 표준 단위 테스트에 직접 사용할 수도 있습�
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configuration settings that are enabled by <code>@WebMvcTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@WebMvcTest</code> 에서 활성화된 auto-configuration 목록 설정은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록(appendix)</a>에서 찾을 수 있습니다.
 </td>
 </tr>
 </table>
@@ -2008,17 +2008,17 @@ A list of the auto-configuration settings that are enabled by <code>@WebMvcTest<
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need to register extra components, such as the Jackson <code>Module</code>, you can import additional configuration classes by using <code>@Import</code> on your test.
+Jackson <code>Module</code> 같은 확장 component 등록이 필요한 경우 테스트에 <code>@Import</code> 를 사용하여 추가적인 configuration class를 import 할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Often, <code>@WebMvcTest</code> is limited to a single controller and is used in combination with <code>@MockBean</code> to provide mock implementations for required collaborators.</p>
+<p>종종 <code>@WebMvcTest</code> 는 single controller로 제한되며 <code>@MockBean</code> 과 함께 사용되어 필요한 collaborator에게 mock 구현을 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p><code>@WebMvcTest</code> also auto-configures <code>MockMvc</code>.
-Mock MVC offers a powerful way to quickly test MVC controllers without needing to start a full HTTP server.</p>
+<p><code>@WebMvcTest</code> 또한 <code>MockMvc</code> 를 auto-configure합니다.
+Mock MVC는 전체 HTTP server를 시작할 필요 없이 MVC Controller를 빠르게 테스트할 수 있는 강력한 방법을 제공합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2027,8 +2027,8 @@ Mock MVC offers a powerful way to quickly test MVC controllers without needing t
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You can also auto-configure <code>MockMvc</code> in a non-<code>@WebMvcTest</code> (such as <code>@SpringBootTest</code>) by annotating it with <code>@AutoConfigureMockMvc</code>.
-The following example uses <code>MockMvc</code>:
+(<code>@SpringBootTest</code> 같은) non-<code>@WebMvcTest</code> 에서도 <code>MockMvc</code> 를 <code>@AutoConfigureMockMvc</code> annotation을 통해 auto-configure 할 수도 있습니다.
+아래 예제는 <code>MockMvc</code> 를 사용합니다:
 </td>
 </tr>
 </table>
@@ -2072,14 +2072,14 @@ class MyControllerTests {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need to configure elements of the auto-configuration (for example, when servlet filters should be applied) you can use attributes in the <code>@AutoConfigureMockMvc</code> annotation.
+auto-configuration의 element를 구성해야 하는 경우 (예: servlet filter를 적용해야 하는 경우) <code>@AutoConfigureMockMvc</code> annotation에서 attribute를 사용할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>If you use HtmlUnit or Selenium, auto-configuration also provides an HtmlUnit <code>WebClient</code> bean and/or a Selenium <code>WebDriver</code> bean.
-The following example uses HtmlUnit:</p>
+<p>HtmlUnit 또는 Selenium을 사용하는 경우 auto-configuration은 HtmlUnit <code>WebClient</code> bean 및/또는 Selenuum <code>WebDriver</code> bean도 제공합니다.
+다음 예제는 HtmlUnit을 사용합니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2119,8 +2119,8 @@ class MyHtmlUnitTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-By default, Spring Boot puts <code>WebDriver</code> beans in a special &#8220;scope&#8221; to ensure that the driver exits after each test and that a new instance is injected.
-If you do not want this behavior, you can add <code>@Scope("singleton")</code> to your <code>WebDriver</code> <code>@Bean</code> definition.
+기본적으로 Spring Boot는 <code>WebDriver</code> bean을 특별한 "`scope`"에 넣어 각 테스트 후 driver가 종료되고 새 instance가 inject되도록 합니다.
+이 동작을 원하지 않는 경우 <code>@Scope("singleton")</code> 를  <code>WebDriver</code> <code>@Bean</code> 에 추가할 수 있습니다.
 </td>
 </tr>
 </table>
@@ -2132,16 +2132,16 @@ If you do not want this behavior, you can add <code>@Scope("singleton")</code> t
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The <code>webDriver</code> scope created by Spring Boot will replace any user defined scope of the same name.
-If you define your own <code>webDriver</code> scope you may find it stops working when you use <code>@WebMvcTest</code>.
+Spring Boot에 의해 생성된 <code>webDriver</code> scope 는 동일한 이름의 사용자 정의 scope를 대체합니다.
+만약 자체 <code>webDriver</code> scope를 정의하면 `@WebMvcTest`를 사용할 때 동작이 중지될 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>If you have Spring Security on the classpath, <code>@WebMvcTest</code> will also scan <code>WebSecurityConfigurer</code> beans.
-Instead of disabling security completely for such tests, you can use Spring Security&#8217;s test support.
-More details on how to use Spring Security&#8217;s <code>MockMvc</code> support can be found in this <em><a href="howto.html#howto-use-test-with-spring-security">howto.html</a></em> how-to section.</p>
+<p>만약 classpath에 Spring Security가 있다면 <code>@WebMvcTest</code> 는 <code>WebSecurityConfigurer</code> bean을 scan합니다.
+이러한 테스트에 대해 security를 완전히 비활성화하는 대신 Spring Security의 test 지원을 사용할 수 있습니다.
+Spring Security의 <code>MockMvc</code> 지원에 대한 좀더 자세한 내용은  <em><a href="howto.html#howto-use-test-with-spring-security">howto.html</a></em> how-to section에서 찾을 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2150,7 +2150,7 @@ More details on how to use Spring Security&#8217;s <code>MockMvc</code> support 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Sometimes writing Spring MVC tests is not enough; Spring Boot can help you run <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">full end-to-end tests with an actual server</a>.
+때때로 Spring MVC 테스트를 작성하는 것만으로 충분하지 않습니다. Spring Boot는 <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">실제 서버로 전체 end-to-end 테스트</a>를 실행하는데 도움이 됩니다.
 </td>
 </tr>
 </table>
@@ -2159,10 +2159,10 @@ Sometimes writing Spring MVC tests is not enough; Spring Boot can help you run <
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests"></a>2.3.14. Auto-configured Spring WebFlux Tests</h4>
 <div class="paragraph">
-<p>To test that <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/web-reactive.html">Spring WebFlux</a> controllers are working as expected, you can use the <code>@WebFluxTest</code> annotation.
-<code>@WebFluxTest</code> auto-configures the Spring WebFlux infrastructure and limits scanned beans to <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>WebFilter</code>, and <code>WebFluxConfigurer</code>.
-Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@WebFluxTest</code> annotation is used.
-<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.</p>
+<p><a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/web-reactive.html">Spring WebFlux</a> controllers가 예상대로 작동하는지 테스트하려면 <code>@WebFluxTest</code> annotation을 사용할 수 있습니다.
+<code>@WebFluxTest</code> 는 Spring WebFlux infrastructure를 auto-configure 하고 scanned bean을 <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>WebFilter</code> 및 <code>WebFluxConfigurer</code> 로 제한합니다.
+<code>@WebFluxTest</code> annotation이 사용된 경우 표준 <code>@Component</code> 와 <code>@ConfigurationProperties</code> beans은 scan 되지 않습니다.
+<code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용할 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2171,7 +2171,7 @@ Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configurations that are enabled by <code>@WebFluxTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@WebFluxTest</code> 로 활성화된 auto-configuration 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록(appendix)</a>에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
@@ -2183,16 +2183,16 @@ A list of the auto-configurations that are enabled by <code>@WebFluxTest</code> 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If you need to register extra components, such as Jackson <code>Module</code>, you can import additional configuration classes using <code>@Import</code> on your test.
+만약 Jackson`Module` 같은 추가 component를 등록해야 하는 경우 test에서 <code>@Import</code> 를 사용하여 추가 configuration class를 import 할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Often, <code>@WebFluxTest</code> is limited to a single controller and used in combination with the <code>@MockBean</code> annotation to provide mock implementations for required collaborators.</p>
+<p>종종 <code>@WebFluxTest</code> 는 single controller로 제한되며 <code>@MockBean</code> 과 함께 사용되어 필요한 collaborator에게 mock 구현을 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p><code>@WebFluxTest</code> also auto-configures <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient"><code>WebTestClient</code></a>, which offers a powerful way to quickly test WebFlux controllers without needing to start a full HTTP server.</p>
+<p><code>@WebFluxTest</code> 는 또한 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient"><code>WebTestClient</code></a> 를 auto-configure합니다. 이 client는 전체 HTTP server를 시작할 필요 없이 WebFlux controller를 빠르게 테스트할 수 있는 강력한 방법을 제공합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2201,8 +2201,8 @@ If you need to register extra components, such as Jackson <code>Module</code>, y
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-You can also auto-configure <code>WebTestClient</code> in a non-<code>@WebFluxTest</code> (such as <code>@SpringBootTest</code>) by annotating it with <code>@AutoConfigureWebTestClient</code>.
-The following example shows a class that uses both <code>@WebFluxTest</code> and a <code>WebTestClient</code>:
+(<code>@SpringBootTest</code> 같은) non-<code>@WebFluxTest</code> 에서도 <code>WebTestClient</code> 를 <code>@AutoConfigureWebTestClient</code> annotation을 통해 auto-configure 할 수도 있습니다.
+다음 예제는 <code>@WebFluxTest</code> 와 <code>WebTestClient</code> 를 모두 사용하는 경우입니다:
 </td>
 </tr>
 </table>
@@ -2245,7 +2245,7 @@ class MyControllerTests {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-This setup is only supported by WebFlux applications as using <code>WebTestClient</code> in a mocked web application only works with WebFlux at the moment.
+mock web application에서 <code>WebTestClient</code> 를 사용하는 것은 현재 WebFlux에서만 작동하므로 이 설정은 현재 WebFlux application에서만 지원됩니다.
 </td>
 </tr>
 </table>
@@ -2257,8 +2257,8 @@ This setup is only supported by WebFlux applications as using <code>WebTestClien
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>@WebFluxTest</code> cannot detect routes registered via the functional web framework.
-For testing <code>RouterFunction</code> beans in the context, consider importing your <code>RouterFunction</code> yourself via <code>@Import</code> or using <code>@SpringBootTest</code>.
+<code>@WebFluxTest</code> 는 functional web framework를 통해 등록된 경로를 감지할 수 없습니다.
+context에서 <code>RouterFunction</code> bean을 테스트하려면 <code>@Import</code> 를 통해 직접 <code>RouterFunction</code> 을 가져오거나 <code>@SpringBootTest</code> 를 사용하는 것이 좋습니다.
 </td>
 </tr>
 </table>
@@ -2270,8 +2270,8 @@ For testing <code>RouterFunction</code> beans in the context, consider importing
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>@WebFluxTest</code> cannot detect custom security configuration registered via a <code>@Bean</code> of type <code>SecurityWebFilterChain</code>.
-To include that in your test, you will need to import the configuration that registers the bean via <code>@Import</code> or use <code>@SpringBootTest</code>.
+<code>@WebFluxTest</code> 는 <code>SecurityWebFilterChain</code> type의 <code>@Bean</code> 을 통해 등록된 custom security configuration을 감지할 수 없습니다.
+테스트에 포함하려면 <code>@Import</code> 를 통해 bean을 등록하는 configuration을 import하거나 <code>@SpringBootTest</code> 를 사용해야 합니다.
 </td>
 </tr>
 </table>
@@ -2283,7 +2283,7 @@ To include that in your test, you will need to import the configuration that reg
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Sometimes writing Spring WebFlux tests is not enough; Spring Boot can help you run <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">full end-to-end tests with an actual server</a>.
+때때로 Spring WebFlux 테스트를 작성하는 것만으로 충분하지 않습니다. Spring Boot는 <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">실제 서버로 전체 end-to-end 테스트</a>를 실행하는데 도움이 됩니다.
 </td>
 </tr>
 </table>
@@ -2292,11 +2292,11 @@ Sometimes writing Spring WebFlux tests is not enough; Spring Boot can help you r
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-cassandra-test"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-cassandra-test"></a>2.3.15. Auto-configured Data Cassandra Tests</h4>
 <div class="paragraph">
-<p>You can use <code>@DataCassandraTest</code> to test Cassandra applications.
-By default, it configures a <code>CassandraTemplate</code>, scans for <code>@Table</code> classes, and configures Spring Data Cassandra repositories.
-Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@DataCassandraTest</code> annotation is used.
-<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.
-(For more about using Cassandra with Spring Boot, see "<a href="#boot-features-cassandra">[boot-features-cassandra]</a>", earlier in this chapter.)</p>
+<p>Cassandra application을 테스트하는데 <code>@DataCassandraTest</code> 를 사용할 수 있습니다.
+기본적으로 <code>CassandraTemplate</code> 를 구성하고 <code>@Table</code> classe를 scan 하고 Spring Data Cassandra repository를 구성합니다.
+<code>@DataCassandraTest</code> annotation 이 사용될 때 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
+<code>@EnableConfigurationProperties</code> 을 사용하여 <code>@ConfigurationProperties</code> bean을 포함할 수 있습니다.
+(Spring Boot에서 Cassandra를 사용하는 방법에 대한 자세한 내용은 이 장 앞부분의 "<a href="#boot-features-cassandra">[boot-features-cassandra]</a>" 를 참조하세요.)</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2305,13 +2305,13 @@ Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configuration settings that are enabled by <code>@DataCassandraTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@DataCassandraTest</code> 로 활성화한 auto-configuration 설정 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록 (appendix)</a> 에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows a typical setup for using Cassandra tests in Spring Boot:</p>
+<p>다음 예제는 Spring Boot에일 Cassandra 테스트를 사용하기 위한 일반적인 설정을 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2332,11 +2332,11 @@ class ExampleDataCassandraTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test"></a>2.3.16. Auto-configured Data JPA Tests</h4>
 <div class="paragraph">
-<p>You can use the <code>@DataJpaTest</code> annotation to test JPA applications.
-By default, it scans for <code>@Entity</code> classes and configures Spring Data JPA repositories.
-If an embedded database is available on the classpath, it configures one as well.
-Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@DataJpaTest</code> annotation is used.
-<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.</p>
+<p><code>@DataJpaTest</code> annotation을 사용하여 JPA application을 테스트할 수 있습니다.
+기본적으로 <code>@Entity</code> class를 scan 하고 Spring Data repository를 구성합니다.
+classpath에 embedded database가 사용 가능한 경우 하나의 database도 구성됩니다.
+<code>@DataJpaTest</code> annotation 이 사용될 때 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
+<code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용될 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2345,15 +2345,15 @@ Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configuration settings that are enabled by <code>@DataJpaTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@DataJpaTest</code> 로 활성화된 auto-configuration 구성 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록(appendix)</a>에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>By default, data JPA tests are transactional and roll back at the end of each test.
-See the <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">relevant section</a> in the Spring Framework Reference Documentation for more details.
-If that is not what you want, you can disable transaction management for a test or for the whole class as follows:</p>
+<p>기본적으로 data JPA 테스트는 transactional이며 각 테스트가 끝날 때 roll back됩니다.
+자세한 내용은  Spring Framework  참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>울 참조하세요.
+원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2370,10 +2370,10 @@ class ExampleNonTransactionalTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Data JPA tests may also inject a <a href="https://github.com/spring-projects/spring-boot/tree/{github-tag}/spring-boot-project/spring-boot-test-autoconfigure/src/main/java/org/springframework/boot/test/autoconfigure/orm/jpa/TestEntityManager.java"><code>TestEntityManager</code></a> bean, which provides an alternative to the standard JPA <code>EntityManager</code> that is specifically designed for tests.
-If you want to use <code>TestEntityManager</code> outside of <code>@DataJpaTest</code> instances, you can also use the <code>@AutoConfigureTestEntityManager</code> annotation.
-A <code>JdbcTemplate</code> is also available if you need that.
-The following example shows the <code>@DataJpaTest</code> annotation in use:</p>
+<p>Data JPA 테스트는 테스트를 위해 특별히 설계된 JPA <code>EntityManager</code> 의 대안을 제공하는 <a href="https://github.com/spring-projects/spring-boot/tree/{github-tag}/spring-boot-project/spring-boot-test-autoconfigure/src/main/java/org/springframework/boot/test/autoconfigure/orm/jpa/TestEntityManager.java"><code>TestEntityManager</code></a> bean을 inject 할 수 있습니다.
+<code>@DataJpaTest</code> instances 외부에서 <code>TestEntityManager</code> 를 사용하려는 경우 <code>@AutoConfigureTestEntityManager</code> annotation을 사용할 수 있습니다.
+필요한 경우 <code>JdbcTemplate</code> 도 사용할 수 있습니다.
+다음 예제는 <code>@DataJpaTest</code> annotation을 사용하는 경우를 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2403,8 +2403,8 @@ class ExampleRepositoryTests {
 </div>
 </div>
 <div class="paragraph">
-<p>In-memory embedded databases generally work well for tests, since they are fast and do not require any installation.
-If, however, you prefer to run tests against a real database you can use the <code>@AutoConfigureTestDatabase</code> annotation, as shown in the following example:</p>
+<p>In-memory embedded databases는 빠르고 설치가 필요하지 않기 때문에 일반적으로 테스트에 적합합니다.
+그러나 실제 데이터베이스에 대해 테스트를 실행하려는 경우 다음 예제와 같이 <code>@AutoConfigureTestDatabase</code> annotation을 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2421,10 +2421,10 @@ class ExampleRepositoryTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test"></a>2.3.17. Auto-configured JDBC Tests</h4>
 <div class="paragraph">
-<p><code>@JdbcTest</code> is similar to <code>@DataJpaTest</code> but is for tests that only require a <code>DataSource</code> and do not use Spring Data JDBC.
-By default, it configures an in-memory embedded database and a <code>JdbcTemplate</code>.
-Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@JdbcTest</code> annotation is used.
-<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.</p>
+<p><code>@JdbcTest</code> 는 <code>@DataJpaTest</code> 와 비슷하지만 Spring Data JDBC를 사용하지 않고 <code>DataSource</code> 만 필요한 테스트에 사용됩니다.
+기본적으로 in-memory embedded database와 <code>JdbcTemplate</code> 를 구성합니다.
+<code>@JdbcTest</code> annotation이 사용될 때 일반 <code>@Component</code> 과 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
+<code>@EnableConfigurationProperties</code> 를 사용하여 <code>@ConfigurationProperties</code> bean을 포함할 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2433,15 +2433,15 @@ Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configurations that are enabled by <code>@JdbcTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+`@JdbcTest`로 활성화된 auto-configuration 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록 (appendix)</a>에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>By default, JDBC tests are transactional and roll back at the end of each test.
-See the <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">relevant section</a> in the Spring Framework Reference Documentation for more details.
-If that is not what you want, you can disable transaction management for a test or for the whole class, as follows:</p>
+<p>기본적으로 JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back됩니다.
+자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
+원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2458,8 +2458,8 @@ class ExampleNonTransactionalTests {
 </div>
 </div>
 <div class="paragraph">
-<p>If you prefer your test to run against a real database, you can use the <code>@AutoConfigureTestDatabase</code> annotation in the same way as for <code>DataJpaTest</code>.
-(See "<a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test">Auto-configured Data JPA Tests</a>".)</p>
+<p>만약 실제 데이터베이스에 대해 테스트를 실행하려는 경우 <code>DataJpaTest</code> 와 동일하게 <code>@AutoConfigureTestDatabase</code> annotation을 사용할 수 있습니다:
+("<a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test">Auto-configured Data JPA Tests</a>" 참고.)</p>
 </div>
 </div>
 <div class="sect3">
@@ -3520,7 +3520,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-04 23:46:56 +0900
+Last updated 2021-04-05 15:52:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

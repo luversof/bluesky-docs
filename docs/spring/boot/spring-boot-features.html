@@ -2763,10 +2763,10 @@ class ExampleDataLdapNonEmbeddedTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-client"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-client"></a>2.3.24. Auto-configured REST Clients</h4>
 <div class="paragraph">
-<p>You can use the <code>@RestClientTest</code> annotation to test REST clients.
-By default, it auto-configures Jackson, GSON, and Jsonb support, configures a <code>RestTemplateBuilder</code>, and adds support for <code>MockRestServiceServer</code>.
-Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans are not scanned when the <code>@RestClientTest</code> annotation is used.
-<code>@EnableConfigurationProperties</code> can be used to include <code>@ConfigurationProperties</code> beans.</p>
+<p>REST client를 테스트하기 위해 <code>@RestClientTest</code> annotation을 사용할 수 있습니다.
+기본적으로 Jackson, GSON 및 Jsonb 지원을 auto-configure하고 <code>RestTemplateBuilder</code> 를 구성하고 <code>MockRestServiceServer</code> 지원을 추가합니다.
+<code>@RestClientTest</code> annotation이 사용될 때 일반 <code>@Component</code> 및 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
+<code>@EnableConfigurationProperties</code> 를 사용하여 <code>@ConfigurationProperties</code> bean을 포함할 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2775,13 +2775,13 @@ Regular <code>@Component</code> and <code>@ConfigurationProperties</code> beans 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configuration settings that are enabled by <code>@RestClientTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@RestClientTest</code> 로 활성화된 auto-configuration 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록(appendix)</a>에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The specific beans that you want to test should be specified by using the <code>value</code> or <code>components</code> attribute of <code>@RestClientTest</code>, as shown in the following example:</p>
+<p>다음 예제와 같이 <code>@RestClientTest</code> 의 <code>value</code> 또는 <code>components</code> attribute를 사용하여 테스트할 bean을 지정해야 합니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2810,18 +2810,18 @@ class ExampleRestClientTest {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs"></a>2.3.25. Auto-configured Spring REST Docs Tests</h4>
 <div class="paragraph">
-<p>You can use the <code>@AutoConfigureRestDocs</code> annotation to use <a href="https://spring.io/projects/spring-restdocs">Spring REST Docs</a> in your tests with Mock MVC, REST Assured, or WebTestClient.
-It removes the need for the JUnit extension in Spring REST Docs.</p>
+<p><code>@AutoConfigureRestDocs</code> annotation을 사용하여 Mock MVC, REST Assured 또는 WebTestClient로 테스트에서 <a href="https://spring.io/projects/spring-restdocs">Spring REST Docs</a>를 사용할 수 있습니다.
+Spring REST Docs애서 JUnit extension은 필요하지 않습니다.</p>
 </div>
 <div class="paragraph">
-<p><code>@AutoConfigureRestDocs</code> can be used to override the default output directory (<code>target/generated-snippets</code> if you are using Maven or <code>build/generated-snippets</code> if you are using Gradle).
-It can also be used to configure the host, scheme, and port that appears in any documented URIs.</p>
+<p><code>@AutoConfigureRestDocs</code> 는 기본 output directory(Maven을 사용하는 경우 <code>target/generated-snippets</code> , Gradle을 사용하는 경우 <code>build/generated-snippets</code> )를 재정의 하는데 사용할 수 있습니다.
+또한 문서화된 URI에서 나타나는 host, scheme 및 port를 구성하는 데 사용할 수도 있습니다.</p>
 </div>
 <div class="sect4">
 <h5 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-mock-mvc"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-mock-mvc"></a>Auto-configured Spring REST Docs Tests with Mock MVC</h5>
 <div class="paragraph">
-<p><code>@AutoConfigureRestDocs</code> customizes the <code>MockMvc</code> bean to use Spring REST Docs when testing Servlet-based web applications.
-You can inject it by using <code>@Autowired</code> and use it in your tests as you normally would when using Mock MVC and Spring REST Docs, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 는 Servlet 기반 web application을 테스트할 때 Spring REST Docs를 사용하도록 <code>MockMvc</code> bean을 customize합니다.
+다음 예제와 같이 <code>@Autowired</code> 를 사용하여 inject하고 Mock MVC와 Spring REST Docs를 사용할 때 처럼 테스트에 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2854,7 +2854,7 @@ class UserDocumentationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>If you require more control over Spring REST Docs configuration than offered by the attributes of <code>@AutoConfigureRestDocs</code>, you can use a <code>RestDocsMockMvcConfigurationCustomizer</code> bean, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 <code>RestDocsMockMvcConfigurationCustomizer</code> bean을 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2871,9 +2871,9 @@ static class CustomizationConfiguration
 </div>
 </div>
 <div class="paragraph">
-<p>If you want to make use of Spring REST Docs support for a parameterized output directory, you can create a <code>RestDocumentationResultHandler</code> bean.
-The auto-configuration calls <code>alwaysDo</code> with this result handler, thereby causing each <code>MockMvc</code> call to automatically generate the default snippets.
-The following example shows a <code>RestDocumentationResultHandler</code> being defined:</p>
+<p>parameterized output directory에 Spring REST Docs 지원을 사용하려면 <code>RestDocumentationResultHandler</code> bean을 생성할 수 있습니다.
+auto-configuration은 이 result handler로 <code>alwaysDo</code> 을 호출하여 각 <code>MockMvc</code> 호출을 자동으로 기본 snippet을 생성하게 합니다.
+아래 예제는 <code>RestDocumentationResultHandler</code> 가 정의듸는 것을 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2892,8 +2892,8 @@ static class ResultHandlerConfiguration {
 <div class="sect4">
 <h5 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-web-test-client"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-web-test-client"></a>Auto-configured Spring REST Docs Tests with WebTestClient</h5>
 <div class="paragraph">
-<p><code>@AutoConfigureRestDocs</code> can also be used with <code>WebTestClient</code> when testing reactive web applications.
-You can inject it by using <code>@Autowired</code> and use it in your tests as you normally would when using <code>@WebFluxTest</code> and Spring REST Docs, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 는 reactive web application을 테스트할 때 <code>WebTestClient</code> 와 함께 사용할 수 있습니다.
+다음 예제와 같이 <code>@Autowired</code> 를 사용하여 inject하고 <code>@WebFluxTest</code> 및 Spring REST Docs를 사용할 때처럼 테스트에 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2948,7 +2948,7 @@ class UsersDocumentationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>If you require more control over Spring REST Docs configuration than offered by the attributes of <code>@AutoConfigureRestDocs</code>, you can use a <code>RestDocsWebTestClientConfigurationCustomizer</code> bean, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 <code>RestDocsWebTestClientConfigurationCustomizer</code> bean을 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2989,8 +2989,8 @@ public class AdvancedRestDocsConfiguration implements RestDocsWebTestClientConfi
 <div class="sect4">
 <h5 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-rest-assured"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-rest-assured"></a>Auto-configured Spring REST Docs Tests with REST Assured</h5>
 <div class="paragraph">
-<p><code>@AutoConfigureRestDocs</code> makes a <code>RequestSpecification</code> bean, preconfigured to use Spring REST Docs, available to your tests.
-You can inject it by using <code>@Autowired</code> and use it in your tests as you normally would when using REST Assured and Spring REST Docs, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 은 Spring REST Docs를 사용하도록 사전 구성된 <code>RequestSpecification</code> bean을 테스트에서 사용할 수 있도록 합니다.
+다음 예제와 같이 <code>@Autowired</code> 를 사용하여 inject하고 REST Assured 및 Spring REST Docs를 사용할 때처럼 테스트에 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3046,7 +3046,7 @@ class UserDocumentationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>If you require more control over Spring REST Docs configuration than offered by the attributes of <code>@AutoConfigureRestDocs</code>, a <code>RestDocsRestAssuredConfigurationCustomizer</code> bean can be used, as shown in the following example:</p>
+<p><code>@AutoConfigureRestDocs</code> 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 <code>RestDocsRestAssuredConfigurationCustomizer</code> bean을 사용할 수</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3089,9 +3089,9 @@ public class AdvancedRestDocsConfiguration implements RestDocsRestAssuredConfigu
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-webservices"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-webservices"></a>2.3.26. Auto-configured Spring Web Services Tests</h4>
 <div class="paragraph">
-<p>You can use <code>@WebServiceClientTest</code> to test applications that use call web services using the Spring Web Services project.
-By default, it configures a mock <code>WebServiceServer</code> bean and automatically customizes your <code>WebServiceTemplateBuilder</code>.
-(For more about using Web Services with Spring Boot, see "<a href="#boot-features-webservices">[boot-features-webservices]</a>", earlier in this chapter.)</p>
+<p><code>@WebServiceClientTest</code> 를 사용하여 Spring Web Service project를 사용하여 call web service를 사용하는 application을 테스트할 수 있습니다.
+기본적으로 mock <code>WebServiceServer</code> bean을 구성하고 <code>WebServiceTemplateBuilder</code> 를 자동으로 customize 합니다.
+(Spring Boot에서 Web Service를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<a href="#boot-features-webservices">[boot-features-webservices]</a>" 를 참조하세요.)</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -3100,13 +3100,13 @@ By default, it configures a mock <code>WebServiceServer</code> bean and automati
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A list of the auto-configuration settings that are enabled by <code>@WebServiceClientTest</code> can be <a href="appendix-test-auto-configuration.html#test-auto-configuration">found in the appendix</a>.
+<code>@WebServiceClientTest</code> 로 활성화된 auto-configuration 목록은 <a href="appendix-test-auto-configuration.html#test-auto-configuration">부록(appendix)</a>에서 확인할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows the <code>@WebServiceClientTest</code> annotation in use:</p>
+<p>다음 예제는 <code>@WebServiceClientTest</code> annotation을 사용하는 경우를 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3133,8 +3133,8 @@ class WebServiceClientIntegrationTests {
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-auto-configured-additional-auto-config"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-auto-configured-additional-auto-config"></a>2.3.27. Additional Auto-configuration and Slicing</h4>
 <div class="paragraph">
-<p>Each slice provides one or more <code>@AutoConfigure&#8230;&#8203;</code> annotations that namely defines the auto-configurations that should be included as part of a slice.
-Additional auto-configurations can be added on a test-by-test basis by creating a custom <code>@AutoConfigure&#8230;&#8203;</code> annotation or by adding <code>@ImportAutoConfiguration</code> to the test as shown in the following example:</p>
+<p>각 slice는 slice의 일부로 포함되어야 하는 auto-configuration을 정의하는 하나 이상의 <code>@AutoConfigure&#8230;&#8203;</code> annotation을 제공합니다.
+custom <code>@AutoConfigure&#8230;&#8203;</code> annotation을 생성하거나 다음 예와 같이 <code>@ImportAutoConfiguration</code> 을 테스트에 추가하여 테스트 별로 추가 auto-configuration을 추가할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3152,7 +3152,7 @@ class ExampleJdbcTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Make sure to not use the regular <code>@Import</code> annotation to import auto-configurations as they are handled in a specific way by Spring Boot.
+auto-configuration은 Spring Boot에서 특정 방식으로 처리되므로 일반 <code>@Import</code> annotation을 사용하여 import 하지 마세요.
 </td>
 </tr>
 </table>
@@ -3172,7 +3172,7 @@ Make sure to not use the regular <code>@Import</code> annotation to import auto-
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-A slice or <code>@AutoConfigure&#8230;&#8203;</code> annotation can be customized this way as long as it is meta-annotated with <code>@ImportAutoConfiguration</code>.
+<code>@ImportAutoConfiguration</code> 으로 meta-annotation이 있기만 하면 slice 또는 <code>@AutoConfigure&#8230;&#8203;</code> annotation을 이 방법으로 customize 할 수 있습니다.
 </td>
 </tr>
 </table>
@@ -3181,14 +3181,14 @@ A slice or <code>@AutoConfigure&#8230;&#8203;</code> annotation can be customize
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-user-configuration"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-user-configuration"></a>2.3.28. User Configuration and Slicing</h4>
 <div class="paragraph">
-<p>If you <a href="using-spring-boot.html#using-boot-structuring-your-code">structure your code</a> in a sensible way, your <code>@SpringBootApplication</code> class is <a href="#boot-features-testing-spring-boot-applications-detecting-config">used by default</a> as the configuration of your tests.</p>
+<p>합리적인 방식으로 <a href="using-spring-boot.html#using-boot-structuring-your-code">code를 구조화</a>하면 <code>@SpringBootApplication</code> class가 <a href="#boot-features-testing-spring-boot-applications-detecting-config">기본적</a>으로 테스트 구성으로 사용됩니다.</p>
 </div>
 <div class="paragraph">
-<p>It then becomes important not to litter the application&#8217;s main class with configuration settings that are specific to a particular area of its functionality.</p>
+<p>그런 다음 application의 main class를 기능의 특정 영역에 특정한 구성 성질으로 흩어지지 않게 하는 것이 중요해집니다.</p>
 </div>
 <div class="paragraph">
-<p>Assume that you are using Spring Batch and you rely on the auto-configuration for it.
-You could define your <code>@SpringBootApplication</code> as follows:</p>
+<p>Spring Batch를 사용하고 있으며 auto-configuration에 의존한다고 가정해보세요.
+<code>@SpringBootApplication</code> 을 다음과 같이 정의할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3520,7 +3520,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-06 04:57:28 +0900
+Last updated 2021-04-06 09:10:17 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

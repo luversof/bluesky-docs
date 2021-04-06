@@ -1435,14 +1435,14 @@ In-memory embedded LDAP은 빠르고 개발자 설치가 필요하지 않기 때
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-client]]
 ==== Auto-configured REST Clients
-You can use the `@RestClientTest` annotation to test REST clients.
-By default, it auto-configures Jackson, GSON, and Jsonb support, configures a `RestTemplateBuilder`, and adds support for `MockRestServiceServer`.
-Regular `@Component` and `@ConfigurationProperties` beans are not scanned when the `@RestClientTest` annotation is used.
-`@EnableConfigurationProperties` can be used to include `@ConfigurationProperties` beans.
+REST client를 테스트하기 위해 `@RestClientTest` annotation을 사용할 수 있습니다.
+기본적으로 Jackson, GSON 및 Jsonb 지원을 auto-configure하고 `RestTemplateBuilder` 를 구성하고 `MockRestServiceServer` 지원을 추가합니다.
+`@RestClientTest` annotation이 사용될 때 일반 `@Component` 및 `@ConfigurationProperties` bean은 scan되지 않습니다.
+`@EnableConfigurationProperties` 를 사용하여 `@ConfigurationProperties` bean을 포함할 수 있습니다.
 
-TIP: A list of the auto-configuration settings that are enabled by `@RestClientTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@RestClientTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The specific beans that you want to test should be specified by using the `value` or `components` attribute of `@RestClientTest`, as shown in the following example:
+다음 예제와 같이 `@RestClientTest` 의 `value` 또는 `components` attribute를 사용하여 테스트할 bean을 지정해야 합니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1471,18 +1471,17 @@ The specific beans that you want to test should be specified by using the `value
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs]]
 ==== Auto-configured Spring REST Docs Tests
-You can use the `@AutoConfigureRestDocs` annotation to use {spring-restdocs}[Spring REST Docs] in your tests with Mock MVC, REST Assured, or WebTestClient.
-It removes the need for the JUnit extension in Spring REST Docs.
+`@AutoConfigureRestDocs` annotation을 사용하여 Mock MVC, REST Assured 또는 WebTestClient로 테스트에서 {spring-restdocs}[Spring REST Docs]를 사용할 수 있습니다.
+Spring REST Docs애서 JUnit extension은 필요하지 않습니다.
 
-`@AutoConfigureRestDocs` can be used to override the default output directory (`target/generated-snippets` if you are using Maven or `build/generated-snippets` if you are using Gradle).
-It can also be used to configure the host, scheme, and port that appears in any documented URIs.
-
+`@AutoConfigureRestDocs` 는 기본 output directory(Maven을 사용하는 경우 `target/generated-snippets` , Gradle을 사용하는 경우 `build/generated-snippets` )를 재정의 하는데 사용할 수 있습니다.
+또한 문서화된 URI에서 나타나는 host, scheme 및 port를 구성하는 데 사용할 수도 있습니다.
 
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-mock-mvc]]
 ===== Auto-configured Spring REST Docs Tests with Mock MVC
-`@AutoConfigureRestDocs` customizes the `MockMvc` bean to use Spring REST Docs when testing Servlet-based web applications.
-You can inject it by using `@Autowired` and use it in your tests as you normally would when using Mock MVC and Spring REST Docs, as shown in the following example:
+`@AutoConfigureRestDocs` 는 Servlet 기반 web application을 테스트할 때 Spring REST Docs를 사용하도록 `MockMvc` bean을 customize합니다.
+다음 예제와 같이 `@Autowired` 를 사용하여 inject하고 Mock MVC와 Spring REST Docs를 사용할 때 처럼 테스트에 사용할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1514,7 +1513,7 @@ You can inject it by using `@Autowired` and use it in your tests as you normally
 	}
 ----
 
-If you require more control over Spring REST Docs configuration than offered by the attributes of `@AutoConfigureRestDocs`, you can use a `RestDocsMockMvcConfigurationCustomizer` bean, as shown in the following example:
+`@AutoConfigureRestDocs` 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 `RestDocsMockMvcConfigurationCustomizer` bean을 사용할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1530,9 +1529,9 @@ If you require more control over Spring REST Docs configuration than offered by 
 	}
 ----
 
-If you want to make use of Spring REST Docs support for a parameterized output directory, you can create a `RestDocumentationResultHandler` bean.
-The auto-configuration calls `alwaysDo` with this result handler, thereby causing each `MockMvc` call to automatically generate the default snippets.
-The following example shows a `RestDocumentationResultHandler` being defined:
+parameterized output directory에 Spring REST Docs 지원을 사용하려면 `RestDocumentationResultHandler` bean을 생성할 수 있습니다.
+auto-configuration은 이 result handler로 `alwaysDo` 을 호출하여 각 `MockMvc` 호출을 자동으로 기본 snippet을 생성하게 합니다.
+아래 예제는 `RestDocumentationResultHandler` 가 정의듸는 것을 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1551,15 +1550,15 @@ The following example shows a `RestDocumentationResultHandler` being defined:
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-web-test-client]]
 ===== Auto-configured Spring REST Docs Tests with WebTestClient
-`@AutoConfigureRestDocs` can also be used with `WebTestClient` when testing reactive web applications.
-You can inject it by using `@Autowired` and use it in your tests as you normally would when using `@WebFluxTest` and Spring REST Docs, as shown in the following example:
+`@AutoConfigureRestDocs` 는 reactive web application을 테스트할 때 `WebTestClient` 와 함께 사용할 수 있습니다.
+다음 예제와 같이 `@Autowired` 를 사용하여 inject하고 `@WebFluxTest` 및 Spring REST Docs를 사용할 때처럼 테스트에 사용할 수 있습니다:
 
 [source,java,indent=0]
 ----
 include::{include-springbootfeatures}/testing/restdocs/webclient/UsersDocumentationTests.java[]
 ----
 
-If you require more control over Spring REST Docs configuration than offered by the attributes of `@AutoConfigureRestDocs`, you can use a `RestDocsWebTestClientConfigurationCustomizer` bean, as shown in the following example:
+`@AutoConfigureRestDocs` 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 `RestDocsWebTestClientConfigurationCustomizer` bean을 사용할 수 있습니다:
 
 [source,java,indent=0]
 ----
@@ -1570,15 +1569,15 @@ include::{include-springbootfeatures}/testing/restdocs/webclient/AdvancedRestDoc
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-rest-docs-rest-assured]]
 ===== Auto-configured Spring REST Docs Tests with REST Assured
-`@AutoConfigureRestDocs` makes a `RequestSpecification` bean, preconfigured to use Spring REST Docs, available to your tests.
-You can inject it by using `@Autowired` and use it in your tests as you normally would when using REST Assured and Spring REST Docs, as shown in the following example:
+`@AutoConfigureRestDocs` 은 Spring REST Docs를 사용하도록 사전 구성된 `RequestSpecification` bean을 테스트에서 사용할 수 있도록 합니다.
+다음 예제와 같이 `@Autowired` 를 사용하여 inject하고 REST Assured 및 Spring REST Docs를 사용할 때처럼 테스트에 사용할 수 있습니다:
 
 [source,java,indent=0]
 ----
 include::{include-springbootfeatures}/testing/restdocs/restassured/UserDocumentationTests.java[]
 ----
 
-If you require more control over Spring REST Docs configuration than offered by the attributes of `@AutoConfigureRestDocs`, a `RestDocsRestAssuredConfigurationCustomizer` bean can be used, as shown in the following example:
+`@AutoConfigureRestDocs` 의 attribute에서 제공하는 것보다 Spring REST Docs 구성에 대한 더 많은 제어가 필요한 경우 다음 예와 같이 `RestDocsRestAssuredConfigurationCustomizer` bean을 사용할 수 
 
 [source,java,indent=0]
 ----
@@ -1589,14 +1588,14 @@ include::{include-springbootfeatures}/testing/restdocs/restassured/AdvancedRestD
 
 [[boot-features-testing-spring-boot-applications-testing-autoconfigured-webservices]]
 ==== Auto-configured Spring Web Services Tests
-You can use `@WebServiceClientTest` to test applications that use call web services using the Spring Web Services project.
-By default, it configures a mock `WebServiceServer` bean and automatically customizes your `WebServiceTemplateBuilder`.
-(For more about using Web Services with Spring Boot, see "<<boot-features-webservices>>", earlier in this chapter.)
+`@WebServiceClientTest` 를 사용하여 Spring Web Service project를 사용하여 call web service를 사용하는 application을 테스트할 수 있습니다.
+기본적으로 mock `WebServiceServer` bean을 구성하고 `WebServiceTemplateBuilder` 를 자동으로 customize 합니다.
+(Spring Boot에서 Web Service를 사용하는 방법에 대한 자세한 내용은 선행 챕터의 "<<boot-features-webservices>>" 를 참조하세요.)
 
 
-TIP: A list of the auto-configuration settings that are enabled by `@WebServiceClientTest` can be <<appendix-test-auto-configuration.adoc#test-auto-configuration,found in the appendix>>.
+TIP: `@WebServiceClientTest` 로 활성화된 auto-configuration 목록은 <<appendix-test-auto-configuration.adoc#test-auto-configuration,부록(appendix)>>에서 확인할 수 있습니다.
 
-The following example shows the `@WebServiceClientTest` annotation in use:
+다음 예제는 `@WebServiceClientTest` annotation을 사용하는 경우를 보여줍니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1623,8 +1622,8 @@ The following example shows the `@WebServiceClientTest` annotation in use:
 
 [[boot-features-testing-spring-boot-applications-testing-auto-configured-additional-auto-config]]
 ==== Additional Auto-configuration and Slicing
-Each slice provides one or more `@AutoConfigure...` annotations that namely defines the auto-configurations that should be included as part of a slice.
-Additional auto-configurations can be added on a test-by-test basis by creating a custom `@AutoConfigure...` annotation or by adding `@ImportAutoConfiguration` to the test as shown in the following example:
+각 slice는 slice의 일부로 포함되어야 하는 auto-configuration을 정의하는 하나 이상의 `@AutoConfigure...` annotation을 제공합니다.
+custom `@AutoConfigure...` annotation을 생성하거나 다음 예와 같이 `@ImportAutoConfiguration` 을 테스트에 추가하여 테스트 별로 추가 auto-configuration을 추가할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1635,7 +1634,7 @@ Additional auto-configurations can be added on a test-by-test basis by creating 
 	}
 ----
 
-NOTE: Make sure to not use the regular `@Import` annotation to import auto-configurations as they are handled in a specific way by Spring Boot.
+NOTE: auto-configuration은 Spring Boot에서 특정 방식으로 처리되므로 일반 `@Import` annotation을 사용하여 import 하지 마세요.
 
 Alternatively, additional auto-configurations can be added for any use of a slice annotation by registering them in `META-INF/spring.factories` as shown in the following example:
 
@@ -1644,18 +1643,18 @@ Alternatively, additional auto-configurations can be added for any use of a slic
 	org.springframework.boot.test.autoconfigure.jdbc.JdbcTest=com.example.IntegrationAutoConfiguration
 ----
 
-TIP: A slice or `@AutoConfigure...` annotation can be customized this way as long as it is meta-annotated with `@ImportAutoConfiguration`.
+TIP: `@ImportAutoConfiguration` 으로 meta-annotation이 있기만 하면 slice 또는 `@AutoConfigure...` annotation을 이 방법으로 customize 할 수 있습니다.
 
 
 
 [[boot-features-testing-spring-boot-applications-testing-user-configuration]]
 ==== User Configuration and Slicing
-If you <<using-spring-boot.adoc#using-boot-structuring-your-code, structure your code>> in a sensible way, your `@SpringBootApplication` class is <<boot-features-testing-spring-boot-applications-detecting-config, used by default>> as the configuration of your tests.
+합리적인 방식으로 <<using-spring-boot.adoc#using-boot-structuring-your-code, code를 구조화>>하면 `@SpringBootApplication` class가 <<boot-features-testing-spring-boot-applications-detecting-config, 기본적>>으로 테스트 구성으로 사용됩니다.
 
-It then becomes important not to litter the application's main class with configuration settings that are specific to a particular area of its functionality.
+그런 다음 application의 main class를 기능의 특정 영역에 특정한 구성 성질으로 흩어지지 않게 하는 것이 중요해집니다.
 
-Assume that you are using Spring Batch and you rely on the auto-configuration for it.
-You could define your `@SpringBootApplication` as follows:
+Spring Batch를 사용하고 있으며 auto-configuration에 의존한다고 가정해보세요.
+`@SpringBootApplication` 을 다음과 같이 정의할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----

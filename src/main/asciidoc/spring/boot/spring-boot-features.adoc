@@ -1663,8 +1663,8 @@ Spring Batch를 사용하고 있으며 auto-configuration에 의존한다고 가
 	public class SampleApplication { ... }
 ----
 
-Because this class is the source configuration for the test, any slice test actually tries to start Spring Batch, which is definitely not what you want to do.
-A recommended approach is to move that area-specific configuration to a separate `@Configuration` class at the same level as your application, as shown in the following example:
+이 class는 테스트를 위한 source configuration이기 때문에 모든 slice 테스트는 실제로 Spring Batch를 시작하려고 시도합니다. 이는 확실히 원하는 작업이 아닙니다.
+다음 예제와 같이 해당 영역별 구성을 application과 동일한 수준의 별도 `@Configuration` class로 이동하는 것이 좋습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1673,11 +1673,11 @@ A recommended approach is to move that area-specific configuration to a separate
 	public class BatchConfiguration { ... }
 ----
 
-NOTE: Depending on the complexity of your application, you may either have a single `@Configuration` class for your customizations or one class per domain area.
-The latter approach lets you enable it in one of your tests, if necessary, with the `@Import` annotation.
+NOTE: application의 복잡도에 따라 사용자 지정을 위한 단일 `@Configuration` class 또는 domain 영역 당 하나의 class를 가질 수 있습니다.
+후자의 접근 방식을 사용하면 필요한 경우 `@Import` annotation을 사용하여 테스트 중 하나에서 활성화 할 수 있습니다.
 
-Test slices exclude `@Configuration` classes from scanning.
-For example, for a `@WebMvcTest`, the following configuration will not include the given `WebMvcConfigurer` bean in the application context loaded by the test slice:
+테스트 slice는 scann으로 부터 `@Configuration` class를 제외합니다.
+예를 들어 `@WebMvcTest` 의 경우 다음 구성은 test slice에서 로드된 application context에 지정된 `WebMvcConfigurer` bean을 포함하지 않습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1692,7 +1692,7 @@ For example, for a `@WebMvcTest`, the following configuration will not include t
 	}
 ----
 
-The configuration below will, however, cause the custom `WebMvcConfigurer` to be loaded by the test slice.
+그러나 아래 구성에서는  test slice에 의해 custom `WebMvcConfigurer` 가 로드됩니다.
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1702,9 +1702,9 @@ The configuration below will, however, cause the custom `WebMvcConfigurer` to be
 	}
 ----
 
-Another source of confusion is classpath scanning.
-Assume that, while you structured your code in a sensible way, you need to scan an additional package.
-Your application may resemble the following code:
+또 다른 혼란의 원인은 classpath scan입니다.
+합리적인 방식으로 code를 구성하는 동안 추가 package를 scan해야 한다고 가정합니다.
+application은 다음 코드와 유사 할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1713,36 +1713,35 @@ Your application may resemble the following code:
 	public class SampleApplication { ... }
 ----
 
-Doing so effectively overrides the default component scan directive with the side effect of scanning those two packages regardless of the slice that you chose.
-For instance, a `@DataJpaTest` seems to suddenly scan components and user configurations of your application.
-Again, moving the custom directive to a separate class is a good way to fix this issue.
+이렇게 하면 선택한 slice에 관계 없이 두 package를 scan 하는 부작용이 있는 기본 component scan directive(지시문)이 효과적으로 재정의 됩니다.
+예를 들어 `@DataJpaTest` 는 갑자기 application의 component와 user configuration을 scan하는 것처럼 보입니다.
+다시 말하면, custom directive를 별도의 class로 이동하는 것이 이 문제를 해결하는 좋은 방법입니다.
 
-TIP: If this is not an option for you, you can create a `@SpringBootConfiguration` somewhere in the hierarchy of your test so that it is used instead.
-Alternatively, you can specify a source for your test, which disables the behavior of finding a default one.
-
+TIP: 이 옵션이 선택 사항이 아닌 경우 테스트 계층 아딘가에 `@SpringBootConfiguration` 을 생성하여 대신 사용할 수 있습니다.
+또는 테스트 source를 지정하여 default source를 찾는 동작을 비활성화 할 수 있습니다.
 
 
 [[boot-features-testing-spring-boot-applications-with-spock]]
 ==== Using Spock to Test Spring Boot Applications
-If you wish to use Spock to test a Spring Boot application, you should add a dependency on Spock's `spock-spring` module to your application's build.
-`spock-spring` integrates Spring's test framework into Spock.
-See http://spockframework.org/spock/docs/2.0-M4/modules.html#_spring_module[the documentation for Spock's Spring module] for further details.
+Spock을 사용하여 Spring Boot application을 테스트하려면 Spock의 `spock-spring` module에 대한 dependency를 application buill에 추가해야합니다.
+`spock-spring` 은 Spring의 test framework를 Spock에 통합합니다.
+자세한 내용은 http://spockframework.org/spock/docs/2.0-M4/modules.html#_spring_module[Spock의 Spring module을 위한 문서] 를 참조하세요.
 
-NOTE: As of Spring Boot 2.5.x and its support for Groovy 3.x you have two options to make use of Spock:
-Either use the latest Spock 2.0 milestone or release that is compatible with Groovy 3.x or stick with Spock 1.3 and downgrade Spring Boot's Groovy version to 2.5.x.
+NOTE: Spring Boot 2.5.x 및 Groovy 3.x 지원 시 spock을 사용할 수 있는 두가지 option이 있습니다:
+최신 Spock 2.0 milestone 이나 Groovy 3.x와 호환되는 release를 사용하거나 Spock 1.3과 함께 사용하고 Spring Boot의 Groovy 버전을 2.5.x로 downgrade 합니다.
 
 
 
 [[boot-features-test-utilities]]
 === Test Utilities
-A few test utility classes that are generally useful when testing your application are packaged as part of `spring-boot`.
+application을 테스트 할 때 일반적으로 유용한 몇가지 test utility class가 `spring-boot` 의 일부로 packaging 됩니다.
 
 
 
 [[boot-features-configfileapplicationcontextinitializer-test-utility]]
 ==== ConfigFileApplicationContextInitializer
-`ConfigFileApplicationContextInitializer` is an `ApplicationContextInitializer` that you can apply to your tests to load Spring Boot `application.properties` files.
-You can use it when you do not need the full set of features provided by `@SpringBootTest`, as shown in the following example:
+`ConfigFileApplicationContextInitializer` 은 Spring Boot `application.properties` file을 로드하는 테스트에 적용할 수 있는 `ApplicationContextInitializer` 입니다.
+다음 예제와 같이 `@SpringBootTest` 에서 제공하는 기능의 full set이 필요하지 않을 때 사용할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1750,16 +1749,16 @@ You can use it when you do not need the full set of features provided by `@Sprin
 		initializers = ConfigFileApplicationContextInitializer.class)
 ----
 
-NOTE: Using `ConfigFileApplicationContextInitializer` alone does not provide support for `@Value("${...}")` injection.
-Its only job is to ensure that `application.properties` files are loaded into Spring's `Environment`.
-For `@Value` support, you need to either additionally configure a `PropertySourcesPlaceholderConfigurer` or use `@SpringBootTest`, which auto-configures one for you.
+NOTE: `ConfigFileApplicationContextInitializer` 을 단독으로 사용하는 것은 `@Value("${...}")` inject를 제공하지 않습니다.
+Spring의 `Environment` 에 `application.properties` file이 로드되도록 하는 것만이 유일한 작업입니다.
+`@Value` 지원을 받으려면 `PropertySourcesPlaceholderConfigurer` 를 추가로 구성하거나 `@SpringBootTest` 를 사용해야 auto-configure가 됩니다.
 
 
 
 [[boot-features-test-property-values]]
 ==== TestPropertyValues
-`TestPropertyValues` lets you quickly add properties to a `ConfigurableEnvironment` or `ConfigurableApplicationContext`.
-You can call it with `key=value` strings, as follows:
+`TestPropertyValues` 는 `ConfigurableEnvironment` 또는 `ConfigurableApplicationContext` 에 property를 빠르게 추가할 수 있도록 합니다.
+다음과 같이 `key=value` 문자열을 사용하여 호출할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1770,8 +1769,8 @@ You can call it with `key=value` strings, as follows:
 
 [[boot-features-output-capture-test-utility]]
 ==== OutputCapture
-`OutputCapture` is a JUnit `Extension` that you can use to capture `System.out` and `System.err` output.
-To use add `@ExtendWith(OutputCaptureExtension.class)` and inject `CapturedOutput` as an argument to your test class constructor or test method as follows:
+`OutputCapture` 는 `System.out` 과 `System.err` output을 캡처하는데 사용할 수 있는 JUnit `Extension` 입니다.
+사용하려면 다음 예제와 같이 `@ExtendWith(OutputCaptureExtension.class)` 를 추가하고 `CapturedOutput` 을 argument로 test class constructor나 test method에 inject합니다:
 
 [source,java,indent=0]
 ----
@@ -1782,21 +1781,21 @@ include::{include-springbootfeatures}/testing/OutputCaptureTests.java[]
 
 [[boot-features-rest-templates-test-utility]]
 ==== TestRestTemplate
-`TestRestTemplate` is a convenience alternative to Spring's `RestTemplate` that is useful in integration tests.
-You can get a vanilla template or one that sends Basic HTTP authentication (with a username and password).
-In either case, the template behaves in a test-friendly way by not throwing exceptions on server-side errors.
+`TestRestTemplate` 은 Spring의 `RestTemplate` 을 편하게 대체하여 통합 테스트에 유용합니다.
+vanilla template 또는 Basic HTTP authentication을 보내는 template(사용자 이름 및 암호 포함)을 얻을 수 있습니다.
+두 경우 모두 template은 server-side error에 exception을 throw하지 않고 테스트하기 쉬운 방식으로 작동합니다.
 
-TIP: Spring Framework 5.0 provides a new `WebTestClient` that works for <<boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests, WebFlux integration tests>> and both <<boot-features-testing-spring-boot-applications-testing-with-running-server, WebFlux and MVC end-to-end testing>>.
-It provides a fluent API for assertions, unlike `TestRestTemplate`.
+TIP: Spring Framework 5.0은 <<boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests, WebFlux 통합 테스트>>와 <<boot-features-testing-spring-boot-applications-testing-with-running-server, WebFlux 및 MVC end-to-end 테스트>>에 모두 적합한 새로운 `WebTestClient` 를 제공합니다.
+`TestRestTemplate` 과 달리 assertion에 뛰어난 API를 제공합니다.
 
-It is recommended, but not mandatory, to use the Apache HTTP Client (version 4.3.2 or better).
-If you have that on your classpath, the `TestRestTemplate` responds by configuring the client appropriately.
-If you do use Apache's HTTP client, some additional test-friendly features are enabled:
+Apache HTTP client(version 4.3.2 이상)를 사용하는 것이 좋습니다.
+classpath에 해당 항목이 있는 경우 `TestRestTemplate` 는 client를 적절하게 구성하여 응답합니다.
+Apache의 HTTP client를 사용하는 경우 테스트하기 쉬운 일부 추가 기능이 사용되도록 설정됩니다:
 
-* Redirects are not followed (so you can assert the response location).
-* Cookies are ignored (so the template is stateless).
+* redirect가 수행되지 않으므로 response location을 assert 할 수 있습니다.
+* cookie가 무시되므로 template은 stateless 입니다.
 
-`TestRestTemplate` can be instantiated directly in your integration tests, as shown in the following example:
+`TestRestTemplate` 은 다음 예제와 같이 통합 테스트에서 직접 인스턴스화 할 수 있습니다:
 
 [source,java,pending-extract=true,indent=0]
 ----
@@ -1814,9 +1813,9 @@ If you do use Apache's HTTP client, some additional test-friendly features are e
 	}
 ----
 
-Alternatively, if you use the `@SpringBootTest` annotation with `WebEnvironment.RANDOM_PORT` or `WebEnvironment.DEFINED_PORT`, you can inject a fully configured `TestRestTemplate` and start using it.
-If necessary, additional customizations can be applied through the `RestTemplateBuilder` bean.
-Any URLs that do not specify a host and port automatically connect to the embedded server, as shown in the following example:
+또는 `@SpringBootTest` annotation을 사용하는 경우 `WebEnvironment.RANDOM_PORT` 또는 `WebEnvironment.DEFINED_PORT` 로 완전히 설정된 `TestRestTemplate` 를 inject하고 사용할 수 있습니다.
+필요한 경우 `RestTemplateBuilder` bean을 통해 추가 customize를 할 수 있습니다.
+host 및 port를 지정하지 않은 URL은 다음 예제와 같이 embedded server에 자동으로 연결됩니다:
 
 [source,java,indent=0]
 ----

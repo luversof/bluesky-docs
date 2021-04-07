@@ -3199,8 +3199,8 @@ public class SampleApplication { ... }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Because this class is the source configuration for the test, any slice test actually tries to start Spring Batch, which is definitely not what you want to do.
-A recommended approach is to move that area-specific configuration to a separate <code>@Configuration</code> class at the same level as your application, as shown in the following example:</p>
+<p>이 class는 테스트를 위한 source configuration이기 때문에 모든 slice 테스트는 실제로 Spring Batch를 시작하려고 시도합니다. 이는 확실히 원하는 작업이 아닙니다.
+다음 예제와 같이 해당 영역별 구성을 application과 동일한 수준의 별도 <code>@Configuration</code> class로 이동하는 것이 좋습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3216,15 +3216,15 @@ public class BatchConfiguration { ... }</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Depending on the complexity of your application, you may either have a single <code>@Configuration</code> class for your customizations or one class per domain area.
-The latter approach lets you enable it in one of your tests, if necessary, with the <code>@Import</code> annotation.
+application의 복잡도에 따라 사용자 지정을 위한 단일 <code>@Configuration</code> class 또는 domain 영역 당 하나의 class를 가질 수 있습니다.
+후자의 접근 방식을 사용하면 필요한 경우 <code>@Import</code> annotation을 사용하여 테스트 중 하나에서 활성화 할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Test slices exclude <code>@Configuration</code> classes from scanning.
-For example, for a <code>@WebMvcTest</code>, the following configuration will not include the given <code>WebMvcConfigurer</code> bean in the application context loaded by the test slice:</p>
+<p>테스트 slice는 scann으로 부터 <code>@Configuration</code> class를 제외합니다.
+예를 들어 <code>@WebMvcTest</code> 의 경우 다음 구성은 test slice에서 로드된 application context에 지정된 <code>WebMvcConfigurer</code> bean을 포함하지 않습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3240,7 +3240,7 @@ public class WebConfiguration {
 </div>
 </div>
 <div class="paragraph">
-<p>The configuration below will, however, cause the custom <code>WebMvcConfigurer</code> to be loaded by the test slice.</p>
+<p>그러나 아래 구성에서는  test slice에 의해 custom <code>WebMvcConfigurer</code> 가 로드됩니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3251,9 +3251,9 @@ public class TestWebMvcConfigurer implements WebMvcConfigurer {
 </div>
 </div>
 <div class="paragraph">
-<p>Another source of confusion is classpath scanning.
-Assume that, while you structured your code in a sensible way, you need to scan an additional package.
-Your application may resemble the following code:</p>
+<p>또 다른 혼란의 원인은 classpath scan입니다.
+합리적인 방식으로 code를 구성하는 동안 추가 package를 scan해야 한다고 가정합니다.
+application은 다음 코드와 유사 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3263,9 +3263,9 @@ public class SampleApplication { ... }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Doing so effectively overrides the default component scan directive with the side effect of scanning those two packages regardless of the slice that you chose.
-For instance, a <code>@DataJpaTest</code> seems to suddenly scan components and user configurations of your application.
-Again, moving the custom directive to a separate class is a good way to fix this issue.</p>
+<p>이렇게 하면 선택한 slice에 관계 없이 두 package를 scan 하는 부작용이 있는 기본 component scan directive(지시문)이 효과적으로 재정의 됩니다.
+예를 들어 <code>@DataJpaTest</code> 는 갑자기 application의 component와 user configuration을 scan하는 것처럼 보입니다.
+다시 말하면, custom directive를 별도의 class로 이동하는 것이 이 문제를 해결하는 좋은 방법입니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -3274,8 +3274,8 @@ Again, moving the custom directive to a separate class is a good way to fix this
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-If this is not an option for you, you can create a <code>@SpringBootConfiguration</code> somewhere in the hierarchy of your test so that it is used instead.
-Alternatively, you can specify a source for your test, which disables the behavior of finding a default one.
+이 옵션이 선택 사항이 아닌 경우 테스트 계층 아딘가에 <code>@SpringBootConfiguration</code> 을 생성하여 대신 사용할 수 있습니다.
+또는 테스트 source를 지정하여 default source를 찾는 동작을 비활성화 할 수 있습니다.
 </td>
 </tr>
 </table>
@@ -3284,9 +3284,9 @@ Alternatively, you can specify a source for your test, which disables the behavi
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-with-spock"><a class="anchor" href="#boot-features-testing-spring-boot-applications-with-spock"></a>2.3.29. Using Spock to Test Spring Boot Applications</h4>
 <div class="paragraph">
-<p>If you wish to use Spock to test a Spring Boot application, you should add a dependency on Spock&#8217;s <code>spock-spring</code> module to your application&#8217;s build.
-<code>spock-spring</code> integrates Spring&#8217;s test framework into Spock.
-See <a href="http://spockframework.org/spock/docs/2.0-M4/modules.html#_spring_module">the documentation for Spock&#8217;s Spring module</a> for further details.</p>
+<p>Spock을 사용하여 Spring Boot application을 테스트하려면 Spock의 <code>spock-spring</code> module에 대한 dependency를 application buill에 추가해야합니다.
+<code>spock-spring</code> 은 Spring의 test framework를 Spock에 통합합니다.
+자세한 내용은 <a href="http://spockframework.org/spock/docs/2.0-M4/modules.html#_spring_module">Spock의 Spring module을 위한 문서</a> 를 참조하세요.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -3295,8 +3295,8 @@ See <a href="http://spockframework.org/spock/docs/2.0-M4/modules.html#_spring_mo
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As of Spring Boot 2.5.x and its support for Groovy 3.x you have two options to make use of Spock:
-Either use the latest Spock 2.0 milestone or release that is compatible with Groovy 3.x or stick with Spock 1.3 and downgrade Spring Boot&#8217;s Groovy version to 2.5.x.
+Spring Boot 2.5.x 및 Groovy 3.x 지원 시 spock을 사용할 수 있는 두가지 option이 있습니다:
+최신 Spock 2.0 milestone 이나 Groovy 3.x와 호환되는 release를 사용하거나 Spock 1.3과 함께 사용하고 Spring Boot의 Groovy 버전을 2.5.x로 downgrade 합니다.
 </td>
 </tr>
 </table>
@@ -3306,13 +3306,13 @@ Either use the latest Spock 2.0 milestone or release that is compatible with Gro
 <div class="sect2">
 <h3 id="boot-features-test-utilities"><a class="anchor" href="#boot-features-test-utilities"></a>2.4. Test Utilities</h3>
 <div class="paragraph">
-<p>A few test utility classes that are generally useful when testing your application are packaged as part of <code>spring-boot</code>.</p>
+<p>application을 테스트 할 때 일반적으로 유용한 몇가지 test utility class가 <code>spring-boot</code> 의 일부로 packaging 됩니다.</p>
 </div>
 <div class="sect3">
 <h4 id="boot-features-configfileapplicationcontextinitializer-test-utility"><a class="anchor" href="#boot-features-configfileapplicationcontextinitializer-test-utility"></a>2.4.1. ConfigFileApplicationContextInitializer</h4>
 <div class="paragraph">
-<p><code>ConfigFileApplicationContextInitializer</code> is an <code>ApplicationContextInitializer</code> that you can apply to your tests to load Spring Boot <code>application.properties</code> files.
-You can use it when you do not need the full set of features provided by <code>@SpringBootTest</code>, as shown in the following example:</p>
+<p><code>ConfigFileApplicationContextInitializer</code> 은 Spring Boot <code>application.properties</code> file을 로드하는 테스트에 적용할 수 있는 <code>ApplicationContextInitializer</code> 입니다.
+다음 예제와 같이 <code>@SpringBootTest</code> 에서 제공하는 기능의 full set이 필요하지 않을 때 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3327,9 +3327,9 @@ You can use it when you do not need the full set of features provided by <code>@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Using <code>ConfigFileApplicationContextInitializer</code> alone does not provide support for <code>@Value("${&#8230;&#8203;}")</code> injection.
-Its only job is to ensure that <code>application.properties</code> files are loaded into Spring&#8217;s <code>Environment</code>.
-For <code>@Value</code> support, you need to either additionally configure a <code>PropertySourcesPlaceholderConfigurer</code> or use <code>@SpringBootTest</code>, which auto-configures one for you.
+<code>ConfigFileApplicationContextInitializer</code> 을 단독으로 사용하는 것은 <code>@Value("${&#8230;&#8203;}")</code> inject를 제공하지 않습니다.
+Spring의 <code>Environment</code> 에 <code>application.properties</code> file이 로드되도록 하는 것만이 유일한 작업입니다.
+<code>@Value</code> 지원을 받으려면 <code>PropertySourcesPlaceholderConfigurer</code> 를 추가로 구성하거나 <code>@SpringBootTest</code> 를 사용해야 auto-configure가 됩니다.
 </td>
 </tr>
 </table>
@@ -3338,8 +3338,8 @@ For <code>@Value</code> support, you need to either additionally configure a <co
 <div class="sect3">
 <h4 id="boot-features-test-property-values"><a class="anchor" href="#boot-features-test-property-values"></a>2.4.2. TestPropertyValues</h4>
 <div class="paragraph">
-<p><code>TestPropertyValues</code> lets you quickly add properties to a <code>ConfigurableEnvironment</code> or <code>ConfigurableApplicationContext</code>.
-You can call it with <code>key=value</code> strings, as follows:</p>
+<p><code>TestPropertyValues</code> 는 <code>ConfigurableEnvironment</code> 또는 <code>ConfigurableApplicationContext</code> 에 property를 빠르게 추가할 수 있도록 합니다.
+다음과 같이 <code>key=value</code> 문자열을 사용하여 호출할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3350,8 +3350,8 @@ You can call it with <code>key=value</code> strings, as follows:</p>
 <div class="sect3">
 <h4 id="boot-features-output-capture-test-utility"><a class="anchor" href="#boot-features-output-capture-test-utility"></a>2.4.3. OutputCapture</h4>
 <div class="paragraph">
-<p><code>OutputCapture</code> is a JUnit <code>Extension</code> that you can use to capture <code>System.out</code> and <code>System.err</code> output.
-To use add <code>@ExtendWith(OutputCaptureExtension.class)</code> and inject <code>CapturedOutput</code> as an argument to your test class constructor or test method as follows:</p>
+<p><code>OutputCapture</code> 는 <code>System.out</code> 과 <code>System.err</code> output을 캡처하는데 사용할 수 있는 JUnit <code>Extension</code> 입니다.
+사용하려면 다음 예제와 같이 <code>@ExtendWith(OutputCaptureExtension.class)</code> 를 추가하고 <code>CapturedOutput</code> 을 argument로 test class constructor나 test method에 inject합니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3397,9 +3397,9 @@ class OutputCaptureTests {
 <div class="sect3">
 <h4 id="boot-features-rest-templates-test-utility"><a class="anchor" href="#boot-features-rest-templates-test-utility"></a>2.4.4. TestRestTemplate</h4>
 <div class="paragraph">
-<p><code>TestRestTemplate</code> is a convenience alternative to Spring&#8217;s <code>RestTemplate</code> that is useful in integration tests.
-You can get a vanilla template or one that sends Basic HTTP authentication (with a username and password).
-In either case, the template behaves in a test-friendly way by not throwing exceptions on server-side errors.</p>
+<p><code>TestRestTemplate</code> 은 Spring의 <code>RestTemplate</code> 을 편하게 대체하여 통합 테스트에 유용합니다.
+vanilla template 또는 Basic HTTP authentication을 보내는 template(사용자 이름 및 암호 포함)을 얻을 수 있습니다.
+두 경우 모두 template은 server-side error에 exception을 throw하지 않고 테스트하기 쉬운 방식으로 작동합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -3408,29 +3408,29 @@ In either case, the template behaves in a test-friendly way by not throwing exce
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Spring Framework 5.0 provides a new <code>WebTestClient</code> that works for <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests">WebFlux integration tests</a> and both <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">WebFlux and MVC end-to-end testing</a>.
-It provides a fluent API for assertions, unlike <code>TestRestTemplate</code>.
+Spring Framework 5.0은 <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests">WebFlux 통합 테스트</a>와 <a href="#boot-features-testing-spring-boot-applications-testing-with-running-server">WebFlux 및 MVC end-to-end 테스트</a>에 모두 적합한 새로운 <code>WebTestClient</code> 를 제공합니다.
+<code>TestRestTemplate</code> 과 달리 assertion에 뛰어난 API를 제공합니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>It is recommended, but not mandatory, to use the Apache HTTP Client (version 4.3.2 or better).
-If you have that on your classpath, the <code>TestRestTemplate</code> responds by configuring the client appropriately.
-If you do use Apache&#8217;s HTTP client, some additional test-friendly features are enabled:</p>
+<p>Apache HTTP client(version 4.3.2 이상)를 사용하는 것이 좋습니다.
+classpath에 해당 항목이 있는 경우 <code>TestRestTemplate</code> 는 client를 적절하게 구성하여 응답합니다.
+Apache의 HTTP client를 사용하는 경우 테스트하기 쉬운 일부 추가 기능이 사용되도록 설정됩니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Redirects are not followed (so you can assert the response location).</p>
+<p>redirect가 수행되지 않으므로 response location을 assert 할 수 있습니다.</p>
 </li>
 <li>
-<p>Cookies are ignored (so the template is stateless).</p>
+<p>cookie가 무시되므로 template은 stateless 입니다.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><code>TestRestTemplate</code> can be instantiated directly in your integration tests, as shown in the following example:</p>
+<p><code>TestRestTemplate</code> 은 다음 예제와 같이 통합 테스트에서 직접 인스턴스화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3449,9 +3449,9 @@ If you do use Apache&#8217;s HTTP client, some additional test-friendly features
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, if you use the <code>@SpringBootTest</code> annotation with <code>WebEnvironment.RANDOM_PORT</code> or <code>WebEnvironment.DEFINED_PORT</code>, you can inject a fully configured <code>TestRestTemplate</code> and start using it.
-If necessary, additional customizations can be applied through the <code>RestTemplateBuilder</code> bean.
-Any URLs that do not specify a host and port automatically connect to the embedded server, as shown in the following example:</p>
+<p>또는 <code>@SpringBootTest</code> annotation을 사용하는 경우 <code>WebEnvironment.RANDOM_PORT</code> 또는 <code>WebEnvironment.DEFINED_PORT</code> 로 완전히 설정된 <code>TestRestTemplate</code> 를 inject하고 사용할 수 있습니다.
+필요한 경우 <code>RestTemplateBuilder</code> bean을 통해 추가 customize를 할 수 있습니다.
+host 및 port를 지정하지 않은 URL은 다음 예제와 같이 embedded server에 자동으로 연결됩니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3521,7 +3521,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-06 09:10:17 +0900
+Last updated 2021-04-08 04:52:32 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

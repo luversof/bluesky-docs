@@ -768,11 +768,8 @@ ORM 도구와 함께 사용하는 경우 <a href="#testcontext-tx-false-positive
 <p><a href="#testcontext-support-classes-junit4"><code>AbstractTransactionalJUnit4SpringContextTests</code></a> 및 <a href="#testcontext-support-classes-testng"><code>AbstractTransactionalTestNGSpringContextTests</code></a>는 앞서 언급한 <code>JdbcTestUtils</code> 의 method를 위임한 편리한 method를 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p>The <code>spring-jdbc</code> module provides support for configuring and launching an embedded
-database, which you can use in integration tests that interact with a database.
-For details, see <a href="data-access.html#jdbc-embedded-database-support">Embedded Database
-Support</a> and <a href="data-access.html#jdbc-embedded-database-dao-testing">Testing Data Access
-Logic with an Embedded Database</a>.</p>
+<p><code>spring-jdbc</code> module은 데이터베이스와 상호 작용하는 통합 테스트에서 사용할 수 있는 embedded database 구성 및 실행을 지원합니다.
+자세한 내용은 <a href="data-access.html#jdbc-embedded-database-support">Embedded Database 지원</a> 및 <a href="data-access.html#jdbc-embedded-database-dao-testing">Embedded Database로 dasta access logic 테스트하기</a>를 참조하세요.</p>
 </div>
 </td>
 </tr>
@@ -782,8 +779,8 @@ Logic with an Embedded Database</a>.</p>
 <div class="sect2">
 <h3 id="integration-testing-annotations">Annotations</h3>
 <div class="paragraph">
-<p>This section covers annotations that you can use when you test Spring applications.
-It includes the following topics:</p>
+<p>이 section은 Spring application을 테스트 할 때 사용할 수 있는 annotation을 다룹니다.
+여기에는 다음 항목이 포함됩니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -807,13 +804,11 @@ It includes the following topics:</p>
 <div class="sect3">
 <h4 id="integration-testing-annotations-spring">Spring Testing Annotations</h4>
 <div class="paragraph">
-<p>The Spring Framework provides the following set of Spring-specific annotations that you
-can use in your unit and integration tests in conjunction with the TestContext framework.
-See the corresponding javadoc for further information, including default attribute
-values, attribute aliases, and other details.</p>
+<p>Spring Framework는 TestContext framework와 함께 단위 및 통합 테스트에서 사용할 수 있는 다음과 같은 Spring 관련 annotation set을 제공합니다.
+default attribute, attribute alias 및 기타 세부 사항을 포함한 추가 정보는 해당 javadoc을 참조하세요.</p>
 </div>
 <div class="paragraph">
-<p>Spring&#8217;s testing annotations include the following:</p>
+<p>Spring의 test annotation에는 다음이 포함됩니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -876,30 +871,24 @@ values, attribute aliases, and other details.</p>
 <div class="sect4">
 <h5 id="spring-testing-annotation-bootstrapwith"><code>@BootstrapWith</code></h5>
 <div class="paragraph">
-<p><code>@BootstrapWith</code> is a class-level annotation that you can use to configure how the Spring
-TestContext Framework is bootstrapped. Specifically, you can use <code>@BootstrapWith</code> to
-specify a custom <code>TestContextBootstrapper</code>. See the section on
-<a href="#testcontext-bootstrapping">bootstrapping the TestContext framework</a> for further details.</p>
+<p><code>@BootstrapWith</code> 는 Spring TestContext Framework가 bootstrap되는 방법을 구성하는데 사용할 수 있는 class-level annotation 입니다.
+특히 <code>@BootstrapWith</code> 를 사용하여 custom <code>TestContextBootstrapper</code> 를 지정합니다.
+자세한 내용은 <a href="#testcontext-bootstrapping">bootstrapping the TestContext framework</a> section을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-contextconfiguration"><code>@ContextConfiguration</code></h5>
 <div class="paragraph">
-<p><code>@ContextConfiguration</code> defines class-level metadata that is used to determine how to
-load and configure an <code>ApplicationContext</code> for integration tests. Specifically,
-<code>@ContextConfiguration</code> declares the application context resource <code>locations</code> or the
-component <code>classes</code> used to load the context.</p>
+<p><code>@ContextConfiguration</code> 은 통합 테스트를 위해 <code>ApplicationContext</code> 를 로드하고 구성하는 방법을 결정하는데 사용되는 class-level metadata를 정의합니다.
+특히 <code>@ContextConfiguration</code> 는 context를 로드하는데 사용되는 application context resource <code>locations</code> 또는 component <code>classes</code> 를 선언합니다.</p>
 </div>
 <div class="paragraph">
-<p>Resource locations are typically XML configuration files or Groovy scripts located in the
-classpath, while component classes are typically <code>@Configuration</code> classes. However,
-resource locations can also refer to files and scripts in the file system, and component
-classes can be <code>@Component</code> classes, <code>@Service</code> classes, and so on. See
-<a href="#testcontext-ctx-management-javaconfig-component-classes">Component Classes</a> for further details.</p>
+<p>Resource locations은 일반적으로 XML configuration file 또는 Groovy script이며 component class는 일반적으로 <code>@Configuration</code> class입니다.
+그러나 resource locastion은 file system의 file 및 script를 참조할 수도 있으며 component class는 <code>@Component</code> classes, <code>@Service</code> classes 등이 될 수 있습니다.
+자세한 내용은 <a href="#testcontext-ctx-management-javaconfig-component-classes">Component Classes</a>를 참조하세요.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows a <code>@ContextConfiguration</code> annotation that refers to an XML
-file:</p>
+<p>다음 예제는 xml file을 참조하는 <code>@ContextConfiguration</code> annotation을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -914,7 +903,7 @@ class XmlApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Referring to an XML file.</td>
+<td>XML file을 참조합니다.</td>
 </tr>
 </table>
 </div>
@@ -931,12 +920,12 @@ class XmlApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Referring to an XML file.</td>
+<td>XML file을 참조합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows a <code>@ContextConfiguration</code> annotation that refers to a class:</p>
+<p>다음 예제는 class를 참조하는 <code>@ContextConfiguration</code> annotation을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -951,7 +940,7 @@ class ConfigClassApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Referring to a class.</td>
+<td>class를 참조합니다.</td>
 </tr>
 </table>
 </div>
@@ -968,14 +957,13 @@ class ConfigClassApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Referring to a class.</td>
+<td>class를 참조합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>As an alternative or in addition to declaring resource locations or component classes,
-you can use <code>@ContextConfiguration</code> to declare <code>ApplicationContextInitializer</code> classes.
-The following example shows such a case:</p>
+<p>대안으로 resource location 또는 component class를 선언하는 것 외에 <code>@ContextConfiguration</code> 를 사용하여 <code>ApplicationContextInitializer</code> class를 선언할 수 있습니다.
+다음 예는 이러한 경우를 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1004,13 +992,11 @@ class ContextInitializerTests {
 </table>
 </div>
 <div class="paragraph">
-<p>You can optionally use <code>@ContextConfiguration</code> to declare the <code>ContextLoader</code> strategy as
-well. Note, however, that you typically do not need to explicitly configure the loader,
-since the default loader supports <code>initializers</code> and either resource <code>locations</code> or
-component <code>classes</code>.</p>
+<p>선택적으로 <code>@ContextConfiguration</code> 를 사용하여 <code>ContextLoader</code> strategy를 선언할 수도 있습니다.
+그러나 default loader가 <code>initializers</code> 및 resource <code>locations</code> 또는 component <code>classes</code> 를 지원하므로 일반적으로 loader를 명시적으로 구성할 필요가 없습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example uses both a location and a loader:</p>
+<p>다음 예제에서는 location과 loader를 모두 사용합니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1025,7 +1011,7 @@ class CustomLoaderXmlApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configuring both a location and a custom loader.</td>
+<td>location과 custom loader를 모두 구성합니다.</td>
 </tr>
 </table>
 </div>
@@ -1042,7 +1028,7 @@ class CustomLoaderXmlApplicationContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Configuring both a location and a custom loader.</td>
+<td>location과 custom loader를 모두 구성합니다.</td>
 </tr>
 </table>
 </div>
@@ -1053,33 +1039,24 @@ class CustomLoaderXmlApplicationContextTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>@ContextConfiguration</code> provides support for inheriting resource locations or
-configuration classes as well as context initializers that are declared by superclasses
-or enclosing classes.
+<code>@ContextConfiguration</code> 는 resource location 또는 configuration class의 상속은 물론 superclass 또는 enclosing class에 의해 선언된 context initializer를 제공합니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management">Context Management</a>,
-<a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a>, and the <code>@ContextConfiguration</code>
-javadocs for further details.</p>
+<p>자세한 내용은 <a href="#testcontext-ctx-management">Context Management</a>, <a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a>, 및 <code>@ContextConfiguration</code> javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-webappconfiguration"><code>@WebAppConfiguration</code></h5>
 <div class="paragraph">
-<p><code>@WebAppConfiguration</code> is a class-level annotation that you can use to declare that the
-<code>ApplicationContext</code> loaded for an integration test should be a <code>WebApplicationContext</code>.
-The mere presence of <code>@WebAppConfiguration</code> on a test class ensures that a
-<code>WebApplicationContext</code> is loaded for the test, using the default value of
-<code>"file:src/main/webapp"</code> for the path to the root of the web application (that is, the
-resource base path). The resource base path is used behind the scenes to create a
-<code>MockServletContext</code>, which serves as the <code>ServletContext</code> for the test&#8217;s
-<code>WebApplicationContext</code>.</p>
+<p><code>@WebAppConfiguration</code>  은 통합 테스트를 위해 로드된 <code>ApplicationContext</code> 가 <code>WebApplicationContext</code> 여야 함을 선언하는데 사용할 수 있는 class-level annotation 입니다.
+<code>@WebAppConfiguration</code> 이 test class에 존재하기만 하면 web application의 root(resource base path)에 대한 <code>"file:src/main/webapp"</code> default value를 사용하여 <code>WebApplicationContext</code> 가 테스트용으로 로드됩니다.
+resource base path는 테스트의 <code>WebApplicationContext</code> 에 대한 <code>ServletContext</code> 역할을 하는 <code>MockServletContext</code> 를 만드는데 사용됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@WebAppConfiguration</code> annotation:</p>
+<p>다음 예는 <code>@WebAppConfiguration</code> annotation을 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1105,15 +1082,15 @@ class WebAppTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>@WebAppConfiguration</code> annotation.</td>
+<td><code>@WebAppConfiguration</code> annotation.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>To override the default, you can specify a different base resource path by using the
-implicit <code>value</code> attribute. Both <code>classpath:</code> and <code>file:</code> resource prefixes are
-supported. If no resource prefix is supplied, the path is assumed to be a file system
-resource. The following example shows how to specify a classpath resource:</p>
+<p>기본 값을 재정의 하려면 implicit <code>value</code> attribute를 사용하여 다른 base resource path를 지정할 수 있습니다.
+<code>classpath:</code> 및 <code>file:</code> resource prefix가 지원됩니다.
+resource prefix가 제공되지 않으면 path는 file system resource로 간주됩니다.
+다음 예는 classpath resource를 지정하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1129,7 +1106,7 @@ class WebAppTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specifying a classpath resource.</td>
+<td>classpath resource 지정.</td>
 </tr>
 </table>
 </div>
@@ -1147,27 +1124,21 @@ class WebAppTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specifying a classpath resource.</td>
+<td>classpath resource 지정.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Note that <code>@WebAppConfiguration</code> must be used in conjunction with
-<code>@ContextConfiguration</code>, either within a single test class or within a test class
-hierarchy. See the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/web/WebAppConfiguration.html"><code>@WebAppConfiguration</code></a>
-javadoc for further details.</p>
+<p><code>@WebAppConfiguration</code> 는 single test class 또는 test class hierarchy 내에서 <code>@ContextConfiguration</code> 와 함께 사용해야 합니다.
+자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/web/WebAppConfiguration.html"><code>@WebAppConfiguration</code></a> javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-contexthierarchy"><code>@ContextHierarchy</code></h5>
 <div class="paragraph">
-<p><code>@ContextHierarchy</code> is a class-level annotation that is used to define a hierarchy of
-<code>ApplicationContext</code> instances for integration tests. <code>@ContextHierarchy</code> should be
-declared with a list of one or more <code>@ContextConfiguration</code> instances, each of which
-defines a level in the context hierarchy. The following examples demonstrate the use of
-<code>@ContextHierarchy</code> within a single test class (<code>@ContextHierarchy</code> can also be used
-within a test class hierarchy):</p>
+<p><code>@ContextHierarchy</code> 는 통합 테스트를 위한 <code>ApplicationContext</code> instance의 hierarchy를 정의하는데 사용되는 class-level annotation 입니다.
+<code>@ContextHierarchy</code> 는 하나 이상의 <code>@ContextConfiguration</code> instances 목록으로 선언되어야 하며, 각 instance는 context hierarchy의 level을 정의합니다.
+다음 예는 single test class내에서 <code>@ContextHierarchy</code> 의 사용을 보여줍니다. (<code>@ContextHierarchy</code> 는 test class hierarchy 내에서도 사용할 수 있음):</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1218,23 +1189,17 @@ class WebIntegrationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>If you need to merge or override the configuration for a given level of the context
-hierarchy within a test class hierarchy, you must explicitly name that level by supplying
-the same value to the <code>name</code> attribute in <code>@ContextConfiguration</code> at each corresponding
-level in the class hierarchy. See <a href="#testcontext-ctx-management-ctx-hierarchies">Context Hierarchies</a> and the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ContextHierarchy.html"><code>@ContextHierarchy</code></a> javadoc
-for further examples.</p>
+<p>test class hierarchy 내에서 지정된 level에 대한 context hierarchy 구성을 병합하거나 재정의해야하는 경우 class hierarchy의 각 해당 level에서 <code>@ContextConfiguration</code> 의 <code>name</code> attribute에 동일한 값을 제공하여 해당 level의 name을 명시적으로 지정해야 합니다.
+추가 예제는 <a href="#testcontext-ctx-management-ctx-hierarchies">Context Hierarchies</a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ContextHierarchy.html"><code>@ContextHierarchy</code></a> javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-activeprofiles"><code>@ActiveProfiles</code></h5>
 <div class="paragraph">
-<p><code>@ActiveProfiles</code> is a class-level annotation that is used to declare which bean
-definition profiles should be active when loading an <code>ApplicationContext</code> for an
-integration test.</p>
+<p><code>@ActiveProfiles</code> 통합 테스트를 위해 <code>ApplicationContext</code> 을 로드할 때 활성화 되어야 하는 bean definition profile을 선언하는데 사용되는 class-level annotation 입니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example indicates that the <code>dev</code> profile should be active:</p>
+<p>다음 예는 <code>dev</code> profile이 활성화 되어야 함을 나타냅니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1250,7 +1215,7 @@ class DeveloperTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Indicate that the <code>dev</code> profile should be active.</td>
+<td><code>dev</code> profile이 활성화 되어야 함을 나타냅니다.</td>
 </tr>
 </table>
 </div>
@@ -1268,13 +1233,12 @@ class DeveloperTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Indicate that the <code>dev</code> profile should be active.</td>
+<td><code>dev</code> profile이 활성화 되어야 함을 나타냅니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example indicates that both the <code>dev</code> and the <code>integration</code> profiles should
-be active:</p>
+<p>다음 예는 <code>dev</code> 및 <code>integration</code> profile이 모두 활성화되어야 함을 나타냅니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1290,7 +1254,7 @@ class DeveloperIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Indicate that the <code>dev</code> and <code>integration</code> profiles should be active.</td>
+<td><code>dev</code> 및 <code>integration</code> profile이 활성화되어야 함을 나타냅니다.</td>
 </tr>
 </table>
 </div>
@@ -1308,7 +1272,7 @@ class DeveloperIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Indicate that the <code>dev</code> and <code>integration</code> profiles should be active.</td>
+<td><code>dev</code> 및 <code>integration</code> profile이 활성화되어야 함을 나타냅니다.</td>
 </tr>
 </table>
 </div>
@@ -1319,32 +1283,21 @@ class DeveloperIntegrationTests {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>@ActiveProfiles</code> provides support for inheriting active bean definition profiles
-declared by superclasses and enclosing classes by default. You can also resolve active
-bean definition profiles programmatically by implementing a custom
-<a href="#testcontext-ctx-management-env-profiles-ActiveProfilesResolver"><code>ActiveProfilesResolver</code></a>
-and registering it by using the <code>resolver</code> attribute of <code>@ActiveProfiles</code>.
+<code>@ActiveProfiles</code> 기본적으로 superclass 및 enclosing class에 의해 선언된 active bean profile 상속을 지원합니다.
+또한 custom <a href="#testcontext-ctx-management-env-profiles-ActiveProfilesResolver"><code>ActiveProfilesResolver</code></a>를 구현하고 <code>@ActiveProfiles</code> 의 <code>resolver</code> attribute를 사용하여 등록함으로써 active bean definition profile을 programming 방식으로 해결할 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management-env-profiles">Context Configuration with Environment Profiles</a>,
-<a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a>, and the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ActiveProfiles.html"><code>@ActiveProfiles</code></a> javadoc for
-examples and further details.</p>
+<p>자세한 내용은 <a href="#testcontext-ctx-management-env-profiles">Context Configuration with Environment Profiles</a>, <a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ActiveProfiles.html"><code>@ActiveProfiles</code></a> javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-testpropertysource"><code>@TestPropertySource</code></h5>
 <div class="paragraph">
-<p><code>@TestPropertySource</code> is a class-level annotation that you can use to configure the
-locations of properties files and inlined properties to be added to the set of
-<code>PropertySources</code> in the <code>Environment</code> for an <code>ApplicationContext</code> loaded for an
-integration test.</p>
-</div>
-<div class="paragraph">
-<p>The following example demonstrates how to declare a properties file from the classpath:</p>
+<p><code>@TestPropertySource</code> 는 통합 테스트를 위해 로드된 <code>ApplicationContext</code> 에 대해 <code>Environment</code> 안에서 <code>PropertySources</code> set에 추가할 properties file과 inline property의 localtion을 구성하는데 사용할 수 있는 class-level annotation 입니다.
+다음 예제는 classpath에서 properties file을 선언하는 방법을 보여줍니다;</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1360,7 +1313,7 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Get properties from <code>test.properties</code> in the root of the classpath.</td>
+<td>classpath의 root에 있는 <code>test.properties</code> 에서 property를 가져옵니다.</td>
 </tr>
 </table>
 </div>
@@ -1378,12 +1331,12 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Get properties from <code>test.properties</code> in the root of the classpath.</td>
+<td>classpath의 root에 있는 <code>test.properties</code> 에서 property를 가져옵니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example demonstrates how to declare inlined properties:</p>
+<p>다음 예제는 inline property를 선언하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1399,7 +1352,7 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Declare <code>timezone</code> and <code>port</code> properties.</td>
+<td><code>timezone</code> 및 <code>port</code> property 선언.</td>
 </tr>
 </table>
 </div>
@@ -1417,26 +1370,23 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Declare <code>timezone</code> and <code>port</code> properties.</td>
+<td><code>timezone</code> 및 <code>port</code> property 선언.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management-property-sources">Context Configuration with Test Property Sources</a> for examples and further details.</p>
+<p>예제 및 자세한 내용은 <a href="#testcontext-ctx-management-property-sources">Context Configuration with Test Property Sources</a>를 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-dynamicpropertysource"><code>@DynamicPropertySource</code></h5>
 <div class="paragraph">
-<p><code>@DynamicPropertySource</code> is a method-level annotation that you can use to register
-<em>dynamic</em> properties to be added to the set of <code>PropertySources</code> in the <code>Environment</code> for
-an <code>ApplicationContext</code> loaded for an integration test. Dynamic properties are useful
-when you do not know the value of the properties upfront – for example, if the properties
-are managed by an external resource such as for a container managed by the
-<a href="https://www.testcontainers.org/">Testcontainers</a> project.</p>
+<p><code>@DynamicPropertySource</code> 는 통합 테스트를 위해 로드된 <code>ApplicationContext</code> 에 대해  <code>Environment</code> 에서 <code>PropertySources</code> set에 추가할 <em>dynamic</em> property를 등록할 때 사용할 수 있는 method-level annotation 입니다.
+Dynamic property는 property의 값을 미리 모르는 경우 유용합니다.
+예를 들어 <a href="https://www.testcontainers.org/">Testcontainers</a> project에서 관리하는 container와 같은 외부 resource에서 property를 관리하는 경우입니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example demonstrates how to register a dynamic property:</p>
+<p>다음 예제는 dynamic property를 등록하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1459,15 +1409,15 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Annotate a <code>static</code> method with <code>@DynamicPropertySource</code>.</td>
+<td><code>@DynamicPropertySource`와 함께 `static</code> method를 annotate 합니다.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Accept a <code>DynamicPropertyRegistry</code> as an argument.</td>
+<td><code>DynamicPropertyRegistry</code> 를 argument 사용합니다.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Register a dynamic <code>server.port</code> property to be retrieved lazily from the server.</td>
+<td>server에서 lazy하게 검색할 dynamic <code>server.port</code> property를 등록합니다.</td>
 </tr>
 </table>
 </div>
@@ -1497,48 +1447,40 @@ class MyIntegrationTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Annotate a <code>static</code> method with <code>@DynamicPropertySource</code>.</td>
+<td><code>@DynamicPropertySource`와 함께 `static</code> method를 annotate 합니다.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Accept a <code>DynamicPropertyRegistry</code> as an argument.</td>
+<td><code>DynamicPropertyRegistry</code> 를 argument 사용합니다.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Register a dynamic <code>server.port</code> property to be retrieved lazily from the server.</td>
+<td>server에서 lazy하게 검색할 dynamic <code>server.port</code> property를 등록합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management-dynamic-property-sources">Context Configuration with Dynamic Property Sources</a> for further details.</p>
+<p>자세한 내용은 <a href="#testcontext-ctx-management-dynamic-property-sources">Context Configuration with Dynamic Property Sources</a>를 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-dirtiescontext"><code>@DirtiesContext</code></h5>
 <div class="paragraph">
-<p><code>@DirtiesContext</code> indicates that the underlying Spring <code>ApplicationContext</code> has been
-dirtied during the execution of a test (that is, the test modified or corrupted it in
-some manner&#8201;&#8212;&#8201;for example, by changing the state of a singleton bean) and should be
-closed. When an application context is marked as dirty, it is removed from the testing
-framework&#8217;s cache and closed. As a consequence, the underlying Spring container is
-rebuilt for any subsequent test that requires a context with the same configuration
-metadata.</p>
+<p><code>@DirtiesContext</code> 는 테스트 실행 중 기본 Spring <code>ApplicationContext</code> 가 더럽혀졌음(어떤 방식으로 인해 수정되거나 손상되는 경우&#8201;&#8212;&#8201;예를 들어 singleton bean의 상태가 변경됨)을 의미하며 이는 종료가 되어야 합니다.
+Application context가 dirty로 표시되면 test framework의 cache에서 제거되고 닫힙니다.
+결과적으로 기본 Spring container는 동일한 configuration metadata를 가진 context가 필요한 모든 후속 테스트를 위해 rebuild 됩니다.</p>
 </div>
 <div class="paragraph">
-<p>You can use <code>@DirtiesContext</code> as both a class-level and a method-level annotation within
-the same class or class hierarchy. In such scenarios, the <code>ApplicationContext</code> is marked
-as dirty before or after any such annotated method as well as before or after the current
-test class, depending on the configured <code>methodMode</code> and <code>classMode</code>.</p>
+<p>동일한 class 또는 class hierarchy 내에서 <code>@DirtiesContext</code> 를 class-level과 method-level annotation으로 모두 사용할 수 있습니다.
+이러한 시나리오에서 <code>ApplicationContext</code> 은 구성된 <code>methodMode</code> 와 <code>classMode</code> 에 따라 current test class 전과 후에 annotation이 달린 method가 더러워진 것으로 표시됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The following examples explain when the context would be dirtied for various
-configuration scenarios:</p>
+<p>다음 예는 다양한 configuration 시나리오에서 context가 더러워지는 시기를 설명합니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Before the current test class, when declared on a class with class mode set to
-<code>BEFORE_CLASS</code>.</p>
+<p>current test class 전에 class mode가 <code>BEFORE_CLASS</code> 로 설정된 class에 선언되었을 때</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1552,7 +1494,7 @@ class FreshContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before the current test class.</td>
+<td>current test class 이전의 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1569,14 +1511,13 @@ class FreshContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before the current test class.</td>
+<td>current test class 이전의 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>After the current test class, when declared on a class with class mode set to
-<code>AFTER_CLASS</code> (i.e., the default class mode).</p>
+<p>current test class 이후 class mode가 <code>AFTER_CLASS</code> (즉, default class mode)로 설정된 class에 선언되었을 때</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1590,7 +1531,7 @@ class ContextDirtyingTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after the current test class.</td>
+<td>current test class 이후의 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1607,14 +1548,13 @@ class ContextDirtyingTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after the current test class.</td>
+<td>current test class 이후의 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Before each test method in the current test class, when declared on a class with class
-mode set to <code>BEFORE_EACH_TEST_METHOD.</code></p>
+<p>current test class의 각 test method 이전에 class mode가 <code>BEFORE_EACH_TEST_METHOD</code> 로 설정된 class에 선언되었을 때</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1628,7 +1568,7 @@ class FreshContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before each test method.</td>
+<td>각 test method 전에 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1645,14 +1585,13 @@ class FreshContextTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before each test method.</td>
+<td>각 test method 전에 context를 dirty 합니다.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>After each test method in the current test class, when declared on a class with class
-mode set to <code>AFTER_EACH_TEST_METHOD.</code></p>
+<p>current test class 의 각 test method 이후에 class mode가 <code>AFTER_EACH_TEST_METHOD</code> 로 설정된 class에 선언되었을 때</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1666,7 +1605,7 @@ class ContextDirtyingTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after each test method.</td>
+<td>각 test method 이후 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1683,14 +1622,13 @@ class ContextDirtyingTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after each test method.</td>
+<td>각 test method 이후 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>Before the current test, when declared on a method with the method mode set to
-<code>BEFORE_METHOD</code>.</p>
+<p>current test 전에 method mode가 `BEFORE_METHOD`로 설정된 method에 선언된 경우</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1705,7 +1643,7 @@ void testProcessWhichRequiresFreshAppCtx() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before the current test method.</td>
+<td>current test method 전에 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1723,14 +1661,13 @@ fun testProcessWhichRequiresFreshAppCtx() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context before the current test method.</td>
+<td>current test method 전에 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
 </li>
 <li>
-<p>After the current test, when declared on a method with the method mode set to
-<code>AFTER_METHOD</code> (i.e., the default method mode).</p>
+<p>current test 이후 method mode가 <code>AFTER_METHOD</code> (즉, default method mode)로 설정된 method에 선언된 경우</p>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
@@ -1745,7 +1682,7 @@ void testProcessWhichDirtiesAppCtx() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after the current test method.</td>
+<td>current test method 이후 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1763,7 +1700,7 @@ fun testProcessWhichDirtiesAppCtx() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Dirty the context after the current test method.</td>
+<td>current test method 이후 context가 dirty 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1771,15 +1708,10 @@ fun testProcessWhichDirtiesAppCtx() {
 </ul>
 </div>
 <div class="paragraph">
-<p>If you use <code>@DirtiesContext</code> in a test whose context is configured as part of a context
-hierarchy with <code>@ContextHierarchy</code>, you can use the <code>hierarchyMode</code> flag to control how
-the context cache is cleared. By default, an exhaustive algorithm is used to clear the
-context cache, including not only the current level but also all other context
-hierarchies that share an ancestor context common to the current test. All
-<code>ApplicationContext</code> instances that reside in a sub-hierarchy of the common ancestor
-context are removed from the context cache and closed. If the exhaustive algorithm is
-overkill for a particular use case, you can specify the simpler current level algorithm,
-as the following example shows.</p>
+<p>context가 <code>@ContextHierarchy</code> 로 context hierarchy의 일부로 구성된 테스트에서 <code>@DirtiesContext</code> 를 사용하면 <code>hierarchyMode</code> flag를 사용하여 context cache가 삭제되는 방법을 제어할 수 있습니다.
+기본적으로 현재 수준 뿐만 아니라 현재 테스트에 공통된 상위 context를 공유하는 다른 모든 context hierarchy를 포함하여 전체 알고리즘을 사용하여 context cache를 지웁니다.
+공통 상위 context의 하위 hierarchy에 있는 모든 <code>ApplicationContext</code> instance는 context cache에서 제거되고 닫힙니다.
+특정 사용 사례에 대한 전체 알고리즘이 과다한 경우 다음 예와 같이 더 간단한 현재 수준 알고리즘을 지정할 수 있습니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1806,7 +1738,7 @@ class ExtendedTests extends BaseTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use the current-level algorithm.</td>
+<td>현재 수준 알고리즘을 사용합니다.</td>
 </tr>
 </table>
 </div>
@@ -1834,26 +1766,22 @@ class ExtendedTests : BaseTests() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use the current-level algorithm.</td>
+<td>현재 수준 알고리즘을 사용합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>For further details regarding the <code>EXHAUSTIVE</code> and <code>CURRENT_LEVEL</code> algorithms, see the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/annotation/DirtiesContext.HierarchyMode.html"><code>DirtiesContext.HierarchyMode</code></a>
-javadoc.</p>
+<p><code>EXHAUSTIVE</code> 및 <code>CURRENT_LEVEL</code> 알고리즘에 대한 자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/annotation/DirtiesContext.HierarchyMode.html"><code>DirtiesContext.HierarchyMode</code></a> javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-testexecutionlisteners"><code>@TestExecutionListeners</code></h5>
 <div class="paragraph">
-<p><code>@TestExecutionListeners</code> defines class-level metadata for configuring the
-<code>TestExecutionListener</code> implementations that should be registered with the
-<code>TestContextManager</code>. Typically, <code>@TestExecutionListeners</code> is used in conjunction with
-<code>@ContextConfiguration</code>.</p>
+<p><code>@TestExecutionListeners</code> 는 <code>TestContextManager</code> 에 등록해야 하는 <code>TestExecutionListener</code> 구현을 구성하기 위한 class-level metadasta를 정의합니다.
+일반적으로 <code>@TestExecutionListeners</code> 는 <code>@ContextConfiguration</code> 와 함께 사용됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to register two <code>TestExecutionListener</code> implementations:</p>
+<p>다음 예제는 2개의 <code>TestExecutionListener</code> 구현을 등록하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1869,7 +1797,7 @@ class CustomTestExecutionListenerTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Register two <code>TestExecutionListener</code> implementations.</td>
+<td>2개의 <code>TestExecutionListener</code> 구현을 등록합니다.</td>
 </tr>
 </table>
 </div>
@@ -1887,45 +1815,36 @@ class CustomTestExecutionListenerTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Register two <code>TestExecutionListener</code> implementations.</td>
+<td>2개의 <code>TestExecutionListener</code> 구현을 등록합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>By default, <code>@TestExecutionListeners</code> provides support for inheriting listeners from
-superclasses or enclosing classes. See
-<a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a> and the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/TestExecutionListeners.html"><code>@TestExecutionListeners</code>
-javadoc</a> for an example and further details.</p>
+<p>기본적으로 <code>@TestExecutionListeners</code> 는 superclass 또는 enclosing class에서 listener 상속을 지원합니다.
+예제 및 추가 세부사항은 <a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/TestExecutionListeners.html"><code>@TestExecutionListeners</code> javadoc</a>을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-recordapplicationevents"><code>@RecordApplicationEvents</code></h5>
 <div class="paragraph">
-<p><code>@RecordApplicationEvents</code> is a class-level annotation that is used to instruct the
-<em>Spring TestContext Framework</em> to record all application events that are published in the
-<code>ApplicationContext</code> during the execution of a single test.</p>
+<p><code>@RecordApplicationEvents</code> 는 <em>Spring TestContext Framework</em> 에 단일 테스트를 실행하는 동안 <code>ApplicationContext</code> 에 게시된 모든 application event를 기록하도록 지시하는데 사용되는 class-level annotation 입니다.</p>
 </div>
 <div class="paragraph">
-<p>The recorded events can be accessed via the <code>ApplicationEvents</code> API within tests.</p>
+<p>기록된 event는 테스트 내에서 <code>ApplicationEvents</code> API를 통해 access 할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-application-events">Application Events</a> and the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/event/RecordApplicationEvents.html"><code>@RecordApplicationEvents</code>
-javadoc</a> for an example and further details.</p>
+<p>예제 및 추가 세부사항은 <a href="#testcontext-application-events">Application Events</a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/event/RecordApplicationEvents.html"><code>@RecordApplicationEvents</code> javadoc</a> 을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-commit"><code>@Commit</code></h5>
 <div class="paragraph">
-<p><code>@Commit</code> indicates that the transaction for a transactional test method should be
-committed after the test method has completed. You can use <code>@Commit</code> as a direct
-replacement for <code>@Rollback(false)</code> to more explicitly convey the intent of the code.
-Analogous to <code>@Rollback</code>, <code>@Commit</code> can also be declared as a class-level or method-level
-annotation.</p>
+<p><code>@Commit</code> 은 transcation test method에 대한 transaction이 test method가 완료된 후 commit 되어야 함을 나타냅니다.
+<code>@Commit`을 `@Rollback(false)</code> 의 대체로 사용하여 코드의 의도를 좀더 명시적으로 전달할 수 있습니다.
+<code>@Rollback</code> 과 마찬가지로 <code>@Commit</code> 도 class-level 또는 method-level annotation으로 선언할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@Commit</code> annotation:</p>
+<p>다음 예는 <code>@Commit</code> annotation을 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1941,7 +1860,7 @@ void testProcessWithoutRollback() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Commit the result of the test to the database.</td>
+<td>테스트 결과를 데이터베이스에 commit 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1959,7 +1878,7 @@ fun testProcessWithoutRollback() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Commit the result of the test to the database.</td>
+<td>테스트 결과를 데이터베이스에 commit 합니다.</td>
 </tr>
 </table>
 </div>
@@ -1967,21 +1886,16 @@ fun testProcessWithoutRollback() {
 <div class="sect4">
 <h5 id="spring-testing-annotation-rollback"><code>@Rollback</code></h5>
 <div class="paragraph">
-<p><code>@Rollback</code> indicates whether the transaction for a transactional test method should be
-rolled back after the test method has completed. If <code>true</code>, the transaction is rolled
-back. Otherwise, the transaction is committed (see also
-<a href="#spring-testing-annotation-commit"><code>@Commit</code></a>). Rollback for integration tests in the Spring
-TestContext Framework defaults to <code>true</code> even if <code>@Rollback</code> is not explicitly declared.</p>
+<p><code>@Rollback</code> 은 test method가 완료된 후 transaction test method에 대한 transaction을 rollback 해야하는지 여부를 나타냅니다.
+<code>true</code> 인 경우 transaction이 rollback 되며 그렇지 않으면 commit 됩니다. (<a href="#spring-testing-annotation-commit"><code>@Commit</code></a> 참조)
+Spring TestContext Framework에서 통합 테스트를 위한 rollback은 <code>@Rollback</code> 이 명시적으로 선언되지 않은 경우 기본적으로 <code>true</code> 로 설정됩니다.</p>
 </div>
 <div class="paragraph">
-<p>When declared as a class-level annotation, <code>@Rollback</code> defines the default rollback
-semantics for all test methods within the test class hierarchy. When declared as a
-method-level annotation, <code>@Rollback</code> defines rollback semantics for the specific test
-method, potentially overriding class-level <code>@Rollback</code> or <code>@Commit</code> semantics.</p>
+<p>class-level annotation으로 선언되면 <code>@Rollback</code> 은 test class hierarchy 내의 모든 test method에 대한 기본 rolllback 체계를 정의합니다.
+method-level annotation으로 선언되면 <code>@Rollback</code> 은 특정 test method에 대한 rollback 체계를 정의하여 잠재적으로 class-level <code>@Rollback</code> 또는 <code>@Commit</code> 체계를 재정의합니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example causes a test method&#8217;s result to not be rolled back (that is, the
-result is committed to the database):</p>
+<p>다음 예제에서는 test method의 결과가 rollback되지 않도록 합니다. (즉, 결과가 데이터베이스에 commit 됨):</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -1997,7 +1911,7 @@ void testProcessWithoutRollback() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Do not roll back the result.</td>
+<td>결과를 rollback 하지 않습니다.</td>
 </tr>
 </table>
 </div>
@@ -2015,7 +1929,7 @@ fun testProcessWithoutRollback() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Do not roll back the result.</td>
+<td>결과를 rollback 하지 않습니다.</td>
 </tr>
 </table>
 </div>
@@ -2023,14 +1937,11 @@ fun testProcessWithoutRollback() {
 <div class="sect4">
 <h5 id="spring-testing-annotation-beforetransaction"><code>@BeforeTransaction</code></h5>
 <div class="paragraph">
-<p><code>@BeforeTransaction</code> indicates that the annotated <code>void</code> method should be run before a
-transaction is started, for test methods that have been configured to run within a
-transaction by using Spring&#8217;s <code>@Transactional</code> annotation. <code>@BeforeTransaction</code> methods
-are not required to be <code>public</code> and may be declared on Java 8-based interface default
-methods.</p>
+<p><code>@BeforeTransaction</code> 은 Spring의 <code>@Transactional</code> annotation을 사용하여 transaction 내에서 실행되도록 구성된 test method의 경우 annotation이 있는 method가 transaction이 시작되기 전에 실행되어야 함을 나타냅니다.
+<code>@BeforeTransaction</code> method는 public일 필요는 없으며 Java 8 기반 interface default method에 선언될 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@BeforeTransaction</code> annotation:</p>
+<p>다음 예는 <code>@BeforeTransaction</code> annotation을 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2045,7 +1956,7 @@ void beforeTransaction() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this method before a transaction.</td>
+<td>transaction 이전에 method를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2062,7 +1973,7 @@ fun beforeTransaction() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this method before a transaction.</td>
+<td>transaction 이전에 method를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2070,11 +1981,8 @@ fun beforeTransaction() {
 <div class="sect4">
 <h5 id="spring-testing-annotation-aftertransaction"><code>@AfterTransaction</code></h5>
 <div class="paragraph">
-<p><code>@AfterTransaction</code> indicates that the annotated <code>void</code> method should be run after a
-transaction is ended, for test methods that have been configured to run within a
-transaction by using Spring&#8217;s <code>@Transactional</code> annotation. <code>@AfterTransaction</code> methods
-are not required to be <code>public</code> and may be declared on Java 8-based interface default
-methods.</p>
+<p><code>@AfterTransaction</code> 은 Spring의  <code>@Transactional</code> annotation을 사용하여  transaction 내에서 실행되도록 구성된 test method에 대한 transaction이 종료된 후 annotation이 달린 <code>void</code> method를 실행해야 함을 나타냅니다.
+<code>@AfterTransaction</code> method는 <code>public</code> 일 필요는 없으며 Java 8 기반 interface default method에 선언될 수 있습니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2089,7 +1997,7 @@ void afterTransaction() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this method after a transaction.</td>
+<td>transaction 이후에 method를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2106,7 +2014,7 @@ fun afterTransaction() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this method after a transaction.</td>
+<td>transaction 이후에 method를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2114,9 +2022,8 @@ fun afterTransaction() {
 <div class="sect4">
 <h5 id="spring-testing-annotation-sql"><code>@Sql</code></h5>
 <div class="paragraph">
-<p><code>@Sql</code> is used to annotate a test class or test method to configure SQL scripts to be run
-against a given database during integration tests. The following example shows how to use
-it:</p>
+<p><code>@Sql</code> 은 통합 테스트 중에 지정된 데이터베이스에 대해 실행될 SQL script를 구성하기 위해 test class 또는 test method에 annotation을 추가하는데 사용됩니다.
+다음 예제는 사용방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2132,7 +2039,7 @@ void userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run two scripts for this test.</td>
+<td>이 테스트를 위해 두 개의 script를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2150,19 +2057,19 @@ fun userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run two scripts for this test.</td>
+<td>이 테스트를 위해 두 개의 script를 실행합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-executing-sql-declaratively">Executing SQL scripts declaratively with @Sql</a> for further details.</p>
+<p>자세한 내용은 <a href="#testcontext-executing-sql-declaratively">Executing SQL scripts declaratively with @Sql</a>을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-testing-annotation-sqlconfig"><code>@SqlConfig</code></h5>
 <div class="paragraph">
-<p><code>@SqlConfig</code> defines metadata that is used to determine how to parse and run SQL scripts
-configured with the <code>@Sql</code> annotation. The following example shows how to use it:</p>
+<p><code>@SqlConfig</code> 는 <code>@Sql</code> annotation으로 구성된 SQL script를 구문 분석하고 실행하는 방법을 결정하는데 사용되는 metadata를 정의합니다.
+다음 예제는 사용 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2181,7 +2088,7 @@ void userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the comment prefix and the separator in SQL scripts.</td>
+<td>SQL script에서 comment prefix와 separator를 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2199,7 +2106,7 @@ fun userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the comment prefix and the separator in SQL scripts.</td>
+<td>SQL script에서 comment prefix와 separator를 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2207,17 +2114,15 @@ fun userTest() {
 <div class="sect4">
 <h5 id="spring-testing-annotation-sqlmergemode"><code>@SqlMergeMode</code></h5>
 <div class="paragraph">
-<p><code>@SqlMergeMode</code> is used to annotate a test class or test method to configure whether
-method-level <code>@Sql</code> declarations are merged with class-level <code>@Sql</code> declarations. If
-<code>@SqlMergeMode</code> is not declared on a test class or test method, the <code>OVERRIDE</code> merge mode
-will be used by default. With the <code>OVERRIDE</code> mode, method-level <code>@Sql</code> declarations will
-effectively override class-level <code>@Sql</code> declarations.</p>
+<p><code>@SqlMergeMode</code> 는 method-level <code>@Sql</code> 선언이 class-level <code>@Sql</code> 선언과 병합되는지 여부를 구성하기 위해 test class 또는 test method에 annotation을 추가하는 데 사용됩니다.
+test class나 test method에서 <code>@SqlMergeMode</code> 가 선언되지 않으면 기본적으로 <code>OVERRIDE</code> merge mode가 사용됩니다.
+<code>OVERRIDE</code> mode를 사용하면 method-level <code>@Sql</code> 선언이 class-level <code>@Sql</code> 선언을 효과적으로 재정의 합니다.</p>
 </div>
 <div class="paragraph">
-<p>Note that a method-level <code>@SqlMergeMode</code> declaration overrides a class-level declaration.</p>
+<p>method-level <code>@SqlMergeMode</code> 선언은 class-level 선언을 재정의합니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use <code>@SqlMergeMode</code> at the class level.</p>
+<p>다음 예제는 class level에서 <code>@SqlMergeMode</code> 을 사용하는 방법을 보여줍니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2239,7 +2144,7 @@ class UserTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the <code>@Sql</code> merge mode to <code>MERGE</code> for all test methods in the class.</td>
+<td>class의 모든 test method에 대해 <code>@Sql</code> merge mode를 <code>MERGE</code> 로 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2263,12 +2168,12 @@ class UserTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the <code>@Sql</code> merge mode to <code>MERGE</code> for all test methods in the class.</td>
+<td>class의 모든 test method에 대해 <code>@Sql</code> merge mode를 <code>MERGE</code> 로 설정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use <code>@SqlMergeMode</code> at the method level.</p>
+<p>다음 예제는 method level에서 <code>@SqlMergeMode</code> 을 사용하는 방법을 보여줍니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2290,7 +2195,7 @@ class UserTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the <code>@Sql</code> merge mode to <code>MERGE</code> for a specific test method.</td>
+<td>특정 test method에 대해 <code>@Sql</code> merge mode를 <code>MERGE</code> 로 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2314,7 +2219,7 @@ class UserTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the <code>@Sql</code> merge mode to <code>MERGE</code> for a specific test method.</td>
+<td>특정 test method에 대해 <code>@Sql</code> merge mode를 <code>MERGE</code> 로 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2322,11 +2227,9 @@ class UserTests {
 <div class="sect4">
 <h5 id="spring-testing-annotation-sqlgroup"><code>@SqlGroup</code></h5>
 <div class="paragraph">
-<p><code>@SqlGroup</code> is a container annotation that aggregates several <code>@Sql</code> annotations. You can
-use <code>@SqlGroup</code> natively to declare several nested <code>@Sql</code> annotations, or you can use it
-in conjunction with Java 8&#8217;s support for repeatable annotations, where <code>@Sql</code> can be
-declared several times on the same class or method, implicitly generating this container
-annotation. The following example shows how to declare an SQL group:</p>
+<p><code>@SqlGroup</code> 은 여러 <code>@Sql</code> annotation을 사용할 때 쓰이는 container annotation입니다.
+<code>@SqlGroup</code> 을 사용하여 여러 개의 중첩된 <code>@Sql</code> annotation을 선언하거나 Java 8의 repeatable annotation 지원과 함께 사용할 수 있으며 , 여기서 <code>@Sql</code> 은 동일한 class나 method에서 여러 번 선언되어 이 container annotation을 암시적으로 생성할 수 있습니다.
+다음 예는 SQL group을 선언하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2345,7 +2248,7 @@ void userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Declare a group of SQL scripts.</td>
+<td>SQL script group을 선언합니다.</td>
 </tr>
 </table>
 </div>
@@ -2365,7 +2268,7 @@ fun userTest() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Declare a group of SQL scripts.</td>
+<td>SQL script group을 선언합니다.</td>
 </tr>
 </table>
 </div>
@@ -2374,9 +2277,8 @@ fun userTest() {
 <div class="sect3">
 <h4 id="integration-testing-annotations-standard">Standard Annotation Support</h4>
 <div class="paragraph">
-<p>The following annotations are supported with standard semantics for all configurations of
-the Spring TestContext Framework. Note that these annotations are not specific to tests
-and can be used anywhere in the Spring Framework.</p>
+<p>다음 annotation은 Spring TestContest Framework의 모든 구성에 대한 standard semantic으로 지원됩니다.
+이러한 annotation은 테스트에만 국한되지 않으며 Spring Framework 어느 곳에서나 사용할 수 있습니다.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2390,29 +2292,29 @@ and can be used anywhere in the Spring Framework.</p>
 <p><code>@Value</code></p>
 </li>
 <li>
-<p><code>@Resource</code> (javax.annotation) if JSR-250 is present</p>
+<p><code>@Resource</code> (javax.annotation) JSR-250가 있는 경우</p>
 </li>
 <li>
-<p><code>@ManagedBean</code> (javax.annotation) if JSR-250 is present</p>
+<p><code>@ManagedBean</code> (javax.annotation) JSR-250가 있는 경우</p>
 </li>
 <li>
-<p><code>@Inject</code> (javax.inject) if JSR-330 is present</p>
+<p><code>@Inject</code> (javax.inject) JSR-330가 있는 경우</p>
 </li>
 <li>
-<p><code>@Named</code> (javax.inject) if JSR-330 is present</p>
+<p><code>@Named</code> (javax.inject) JSR-330가 있는 경우</p>
 </li>
 <li>
-<p><code>@PersistenceContext</code> (javax.persistence) if JPA is present</p>
+<p><code>@PersistenceContext</code> (javax.persistence) JPA가 있는 경우</p>
 </li>
 <li>
-<p><code>@PersistenceUnit</code> (javax.persistence) if JPA is present</p>
+<p><code>@PersistenceUnit</code> (javax.persistence) JPA가 있는 경우</p>
 </li>
 <li>
 <p><code>@Required</code></p>
 </li>
 <li>
 <p><code>@Transactional</code> (org.springframework.transaction.annotation)
-<em>with <a href="#testcontext-tx-attribute-support">limited attribute support</a></em></p>
+<em>with <a href="#testcontext-tx-attribute-support">제한된 attribute 지원</a></em></p>
 </li>
 </ul>
 </div>
@@ -2425,18 +2327,13 @@ and can be used anywhere in the Spring Framework.</p>
 <td class="content">
 <div class="title">JSR-250 Lifecycle Annotations</div>
 <div class="paragraph">
-<p>In the Spring TestContext Framework, you can use <code>@PostConstruct</code> and <code>@PreDestroy</code> with
-standard semantics on any application components configured in the <code>ApplicationContext</code>.
-However, these lifecycle annotations have limited usage within an actual test class.</p>
+<p>Spring TestContext Framework에서는 <code>ApplicationContext</code> 에서 구성된 모든 application component에 standard semantic과 함께 <code>@PostConstruct</code> 및 <code>@PreDestroy</code> 를 사용할 수 있습니다.
+하지만 이러한 lifecycle annotation은 실제 test class 내에서 제한적으로 사용됩니다.</p>
 </div>
 <div class="paragraph">
-<p>If a method within a test class is annotated with <code>@PostConstruct</code>, that method runs
-before any before methods of the underlying test framework (for example, methods
-annotated with JUnit Jupiter&#8217;s <code>@BeforeEach</code>), and that applies for every test method in
-the test class. On the other hand, if a method within a test class is annotated with
-<code>@PreDestroy</code>, that method never runs. Therefore, within a test class, we recommend that
-you use test lifecycle callbacks from the underlying test framework instead of
-<code>@PostConstruct</code> and <code>@PreDestroy</code>.</p>
+<p>test class 내의 method에 <code>@PostConstruct</code> annotation이 달린 경우 해당 method는 기본 test framework의 어떤 method 보다 먼저 실행되며 (예 : JUnit Jupiter의 <code>@BeforeEach</code> annotation이 달린 method) test class의 모든 test method에 적용됩니다.
+반면 test class 내의 method에 <code>@PreDestroy</code> annotation이 달린 경우 해당 method는 실행되지 않습니다.
+따라서 test class 내에서 <code>@PostConstruct</code> 및 <code>@PreDestroy</code> 대신 기본 test framework에서 test lifecycle callback을 사용하는 것이 좋습니다.</p>
 </div>
 </td>
 </tr>
@@ -2446,9 +2343,7 @@ you use test lifecycle callbacks from the underlying test framework instead of
 <div class="sect3">
 <h4 id="integration-testing-annotations-junit4">Spring JUnit 4 Testing Annotations</h4>
 <div class="paragraph">
-<p>The following annotations are supported only when used in conjunction with the
-<a href="#testcontext-junit4-runner">SpringRunner</a>, <a href="#testcontext-junit4-rules">Spring&#8217;s JUnit 4
-rules</a>, or <a href="#testcontext-support-classes-junit4">Spring&#8217;s JUnit 4 support classes</a>:</p>
+<p>다음 annotation은 <a href="#testcontext-junit4-runner">SpringRunner</a>, <a href="#testcontext-junit4-rules">Spring&#8217;s JUnit 4 rules</a>, 또는 <a href="#testcontext-support-classes-junit4">Spring&#8217;s JUnit 4 support classes</a> 와 함께 사용되는 경우에만 지원됩니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2469,21 +2364,18 @@ rules</a>, or <a href="#testcontext-support-classes-junit4">Spring&#8217;s JUnit
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit4-ifprofilevalue"><code>@IfProfileValue</code></h5>
 <div class="paragraph">
-<p><code>@IfProfileValue</code> indicates that the annotated test is enabled for a specific testing
-environment. If the configured <code>ProfileValueSource</code> returns a matching <code>value</code> for the
-provided <code>name</code>, the test is enabled. Otherwise, the test is disabled and, effectively,
-ignored.</p>
+<p><code>@IfProfileValue</code> 은 해당 annotation이 달린 테스트가 특정 테스트 환경에 대해 활성화 됨을 나타냅니다.
+구성된 <code>ProfileValueSource</code> 가 제공된 <code>name</code> 에 일치하는 <code>value</code> 를 반환하는 경우 테스트가 활성화됩니다.</p>
 </div>
 <div class="paragraph">
-<p>You can apply <code>@IfProfileValue</code> at the class level, the method level, or both.
-Class-level usage of <code>@IfProfileValue</code> takes precedence over method-level usage for any
-methods within that class or its subclasses. Specifically, a test is enabled if it is
-enabled both at the class level and at the method level. The absence of <code>@IfProfileValue</code>
-means the test is implicitly enabled. This is analogous to the semantics of JUnit 4&#8217;s
-<code>@Ignore</code> annotation, except that the presence of <code>@Ignore</code> always disables a test.</p>
+<p><code>@IfProfileValue</code> 는 class level, method level 또는 둘다 적용할 수 있습니다.
+<code>@IfProfileValue</code> 의 class-level 사용은 해당 class 또는 subclass 내의 모든 method에 대한 method-level 사용보다 우선합니다.
+특히 class level 과 method level에서 모두 활성화되면 테스트가 활성화됩니다.
+<code>@IfProfileValue</code> 가 없으면 테스트가 암묵적으로 활성화 되었음을 의미합니다.
+이것은 <code>@Ignore</code> 가 존재하면 항상 테스트가 비활성화 된다는 점을 제외하면 JUnit 4의 <code>@Ignore</code> annotation의 의미와 유사합니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows a test that has an <code>@IfProfileValue</code> annotation:</p>
+<p>다음 예는 <code>@IfProfileValue</code> annotation이 있는 테스트를 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2499,7 +2391,7 @@ public void testProcessWhichRunsOnlyOnOracleJvm() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this test only when the Java vendor is "Oracle Corporation".</td>
+<td>Java vendor가 "Oracle Corporation" 인 경우에만 테스트가 실행됩니다.</td>
 </tr>
 </table>
 </div>
@@ -2517,14 +2409,12 @@ fun testProcessWhichRunsOnlyOnOracleJvm() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this test only when the Java vendor is "Oracle Corporation".</td>
+<td>Java vendor가 "Oracle Corporation" 인 경우에만 테스트가 실행됩니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can configure <code>@IfProfileValue</code> with a list of <code>values</code> (with <code>OR</code>
-semantics) to achieve TestNG-like support for test groups in a JUnit 4 environment.
-Consider the following example:</p>
+<p>또는 <code>values</code> 목록 (<code>OR</code> 의미 포함)과 함께 <code>@IfProfileValue</code> 를 구성하여 JUnit 4 환경에서 test group을 TestNG 처럼 지원할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2540,7 +2430,7 @@ public void testProcessWhichRunsForUnitOrIntegrationTestGroups() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this test for unit tests and integration tests.</td>
+<td>unit tests 및 integration tests를 위해 이 테스트를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2558,7 +2448,7 @@ fun testProcessWhichRunsForUnitOrIntegrationTestGroups() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Run this test for unit tests and integration tests.</td>
+<td>unit tests 및 integration tests를 위해 이 테스트를 실행합니다.</td>
 </tr>
 </table>
 </div>
@@ -2566,11 +2456,9 @@ fun testProcessWhichRunsForUnitOrIntegrationTestGroups() {
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit4-profilevaluesourceconfiguration"><code>@ProfileValueSourceConfiguration</code></h5>
 <div class="paragraph">
-<p><code>@ProfileValueSourceConfiguration</code> is a class-level annotation that specifies what type
-of <code>ProfileValueSource</code> to use when retrieving profile values configured through the
-<code>@IfProfileValue</code> annotation. If <code>@ProfileValueSourceConfiguration</code> is not declared for a
-test, <code>SystemProfileValueSource</code> is used by default. The following example shows how to
-use <code>@ProfileValueSourceConfiguration</code>:</p>
+<p><code>@ProfileValueSourceConfiguration</code> 은  <code>@IfProfileValue</code> annotation을 통해 구성된 profile value를 검색 할 때 사용할 <code>ProfileValueSource</code> 의 유형을 지정하는 class-level annotation 입니다.
+테스트에 대해 <code>@ProfileValueSourceConfiguration</code> 이 선언되지 않은 경우 기본적으로 <code>SystemProfileValueSource</code> 가 사용됩니다.
+다음 예는 <code>@ProfileValueSourceConfiguration</code> 을 사용하는 방법을 보여줍니다.:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2585,7 +2473,7 @@ public class CustomProfileValueSourceTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use a custom profile value source.</td>
+<td>custom profile value source를 사용합니다.</td>
 </tr>
 </table>
 </div>
@@ -2602,7 +2490,7 @@ class CustomProfileValueSourceTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use a custom profile value source.</td>
+<td>custom profile value source를 사용합니다.</td>
 </tr>
 </table>
 </div>
@@ -2610,14 +2498,12 @@ class CustomProfileValueSourceTests {
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit4-timed"><code>@Timed</code></h5>
 <div class="paragraph">
-<p><code>@Timed</code> indicates that the annotated test method must finish execution in a specified
-time period (in milliseconds). If the text execution time exceeds the specified time
-period, the test fails.</p>
+<p><code>@Timed</code> 는 해당 annotation이 달린 test method가 지정된 기간 내에(millisecond 안에) 실행을 완료해야 함을 나타냅니다.
+테스트 실행 시간이 지정된 시간을 초과하면 테스트가 실패합니다.</p>
 </div>
 <div class="paragraph">
-<p>The time period includes running the test method itself, any repetitions of the test (see
-<code>@Repeat</code>), as well as any setting up or tearing down of the test fixture. The following
-example shows how to use it:</p>
+<p>time period에는 test method 자체 실행. rest repeat (<code>@Repeat</code> 참조), test fixture 설정 또는 해제가 포함됩니다.
+다음 예제는 사용 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2632,7 +2518,7 @@ public void testProcessWithOneSecondTimeout() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the time period for the test to one second.</td>
+<td>테스트 기간을 1초로 설정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2649,29 +2535,25 @@ fun testProcessWithOneSecondTimeout() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the time period for the test to one second.</td>
+<td>테스트 기간을 1초로 설정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Spring&#8217;s <code>@Timed</code> annotation has different semantics than JUnit 4&#8217;s <code>@Test(timeout=&#8230;&#8203;)</code>
-support. Specifically, due to the manner in which JUnit 4 handles test execution timeouts
-(that is, by executing the test method in a separate <code>Thread</code>), <code>@Test(timeout=&#8230;&#8203;)</code>
-preemptively fails the test if the test takes too long. Spring&#8217;s <code>@Timed</code>, on the other
-hand, does not preemptively fail the test but rather waits for the test to complete
-before failing.</p>
+<p>Spring의 <code>@Timed</code> annotation은 JUnit 4의 <code>@Test(timeout=&#8230;&#8203;)</code> 지원과 다른 의미를 가지고 있습니다.
+특히 JUnit4가 테스트 실행 시간 초과(즉, 별도의 <code>Thread</code> 에서 test method를 실행하여)를 처리하는 방식으로 인해 <code>@Test(timeout=&#8230;&#8203;)</code> 는 테스트가 너무 오래 걸릴 경우 선제적으로 테스트를 실패처리합니다.
+반면에 Spring의 <code>@Timed</code> 는 선제적으로 fail 처리를 하지 않고 test가 종료되기를 기다렸다가 fail 처리를 합니다.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit4-repeat"><code>@Repeat</code></h5>
 <div class="paragraph">
-<p><code>@Repeat</code> indicates that the annotated test method must be run repeatedly. The number of
-times that the test method is to be run is specified in the annotation.</p>
+<p><code>@Repeat</code> 는 해당 annotation이 달린 test method를 반복적으로 실행해야 함을 나타냅니다.
+test method가 실행되는 횟수는 annotation에 지정됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The scope of execution to be repeated includes execution of the test method itself as
-well as any setting up or tearing down of the test fixture. The following example shows
-how to use the <code>@Repeat</code> annotation:</p>
+<p>반복되는 실행 범위에는 test method 자체의 실행과 test fixture의 설정 또는 해제가 포함됩니다.
+다음 예는 <code>@Repeat</code> annotation을 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2687,7 +2569,7 @@ public void testProcessRepeatedly() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Repeat this test ten times.</td>
+<td>이 테스트를 10번 반복합니다.</td>
 </tr>
 </table>
 </div>
@@ -2705,7 +2587,7 @@ fun testProcessRepeatedly() {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Repeat this test ten times.</td>
+<td>이 테스트를 10번 반복합니다.</td>
 </tr>
 </table>
 </div>
@@ -2714,9 +2596,7 @@ fun testProcessRepeatedly() {
 <div class="sect3">
 <h4 id="integration-testing-annotations-junit-jupiter">Spring JUnit Jupiter Testing Annotations</h4>
 <div class="paragraph">
-<p>The following annotations are supported when used in conjunction with the
-<a href="#testcontext-junit-jupiter-extension"><code>SpringExtension</code></a> and JUnit Jupiter
-(that is, the programming model in JUnit 5):</p>
+<p>다음 annotation은 <a href="#testcontext-junit-jupiter-extension"><code>SpringExtension</code></a> 및 JUnit Jupiter(JUnit 5의 programming model)와 함께 사용될 때 지원됩니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2743,16 +2623,12 @@ fun testProcessRepeatedly() {
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit-jupiter-springjunitconfig"><code>@SpringJUnitConfig</code></h5>
 <div class="paragraph">
-<p><code>@SpringJUnitConfig</code> is a composed annotation that combines
-<code>@ExtendWith(SpringExtension.class)</code> from JUnit Jupiter with <code>@ContextConfiguration</code> from
-the Spring TestContext Framework. It can be used at the class level as a drop-in
-replacement for <code>@ContextConfiguration</code>. With regard to configuration options, the only
-difference between <code>@ContextConfiguration</code> and <code>@SpringJUnitConfig</code> is that component
-classes may be declared with the <code>value</code> attribute in <code>@SpringJUnitConfig</code>.</p>
+<p><code>@SpringJUnitConfig</code> 는 JUnit Jupiter의 <code>@ExtendWith(SpringExtension.class)</code> 과 Spring TestContext Framework의 <code>@ContextConfiguration</code> 을 결합하여 구성된 annotation입니다.
+class level에서 <code>@ContextConfiguration</code> 을 대체하여 사용할 수 있습니다.
+<code>@ContextConfiguration</code> 과 <code>@SpringJUnitConfig</code> 사이의 유일한 차이점은 <code>@SpringJUnitConfig</code> 는 component class를 <code>value</code> attribute로 선언할 수 있다는 것입니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@SpringJUnitConfig</code> annotation to specify a
-configuration class:</p>
+<p>다음 예제는 <code>@SpringJUnitConfig</code> annotation을 사용하여 configuration class를 지정하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2767,7 +2643,7 @@ class ConfigurationClassJUnitJupiterSpringTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the configuration class.</td>
+<td>configuration class를 지정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2784,13 +2660,12 @@ class ConfigurationClassJUnitJupiterSpringTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the configuration class.</td>
+<td>configuration class를 지정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@SpringJUnitConfig</code> annotation to specify the
-location of a configuration file:</p>
+<p>다음 예제는 <code>@SpringJUnitConfig</code> annotation을 사용하여 configuration file의 location을 지정하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2805,7 +2680,7 @@ class XmlJUnitJupiterSpringTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the location of a configuration file.</td>
+<td>configuration file의 location을 지정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2822,32 +2697,24 @@ class XmlJUnitJupiterSpringTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the location of a configuration file.</td>
+<td>configuration file의 location을 지정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management">Context Management</a> as well as the javadoc for
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/junit/jupiter/SpringJUnitConfig.html"><code>@SpringJUnitConfig</code></a>
-and <code>@ContextConfiguration</code> for further details.</p>
+<p>자세한 내용은 <a href="#testcontext-ctx-management">Context Management</a>, <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/junit/jupiter/SpringJUnitConfig.html"><code>@SpringJUnitConfig</code></a> javadoc 및 `@ContextConfiguration`을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit-jupiter-springjunitwebconfig"><code>@SpringJUnitWebConfig</code></h5>
 <div class="paragraph">
-<p><code>@SpringJUnitWebConfig</code> is a composed annotation that combines
-<code>@ExtendWith(SpringExtension.class)</code> from JUnit Jupiter with <code>@ContextConfiguration</code> and
-<code>@WebAppConfiguration</code> from the Spring TestContext Framework. You can use it at the class
-level as a drop-in replacement for <code>@ContextConfiguration</code> and <code>@WebAppConfiguration</code>.
-With regard to configuration options, the only difference between <code>@ContextConfiguration</code>
-and <code>@SpringJUnitWebConfig</code> is that you can declare component classes by using the
-<code>value</code> attribute in <code>@SpringJUnitWebConfig</code>. In addition, you can override the <code>value</code>
-attribute from <code>@WebAppConfiguration</code> only by using the <code>resourcePath</code> attribute in
-<code>@SpringJUnitWebConfig</code>.</p>
+<p><code>@SpringJUnitWebConfig</code> 는 JUnit Jupiter의 <code>@ExtendWith(SpringExtension.class)</code> 과 Spring TestContext Framework의 <code>@ContextConfiguration</code> 및 <code>@WebAppConfiguration</code> 을 결합하여 구성된 annotation입니다.
+class level에서 <code>@ContextConfiguration</code> 및 <code>@WebAppConfiguration</code> 을 대체하여 사용할 수 있습니다.
+<code>@ContextConfiguration</code> 과 <code>@SpringJUnitWebConfig</code> 사이의 유일한 차이점은 <code>@SpringJUnitWebConfig</code> 는 component class를 <code>value</code> attribute로 선언할 수 있다는 것입니다.
+또한 <code>@WebAppConfiguration</code> 의 <code>value</code> attribute를 <code>@SpringJUnitWebConfig</code> 에서 <code>resourcePath</code> attribute를 사용하여 재정의할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@SpringJUnitWebConfig</code> annotation to specify
-a configuration class:</p>
+<p>다음 예제는 <code>@SpringJUnitWebConfig</code> annotation를 사용하여 configuration class를 지정하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2862,7 +2729,7 @@ class ConfigurationClassJUnitJupiterSpringWebTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the configuration class.</td>
+<td>configuration class을 지정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2879,13 +2746,12 @@ class ConfigurationClassJUnitJupiterSpringWebTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the configuration class.</td>
+<td>configuration class을 지정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use the <code>@SpringJUnitWebConfig</code> annotation to specify the
-location of a configuration file:</p>
+<p>다음 예제는 <code>@SpringJUnitWebConfig</code> annotation을 사용하여 configuration file의 location을 지정하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -2900,7 +2766,7 @@ class XmlJUnitJupiterSpringWebTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the location of a configuration file.</td>
+<td>configuration file의 location을 지정합니다.</td>
 </tr>
 </table>
 </div>
@@ -2917,30 +2783,24 @@ class XmlJUnitJupiterSpringWebTests {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Specify the location of a configuration file.</td>
+<td>configuration file의 location을 지정합니다.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-ctx-management">Context Management</a> as well as the javadoc for
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/junit/jupiter/web/SpringJUnitWebConfig.html"><code>@SpringJUnitWebConfig</code></a>,
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ContextConfiguration.html"><code>@ContextConfiguration</code></a>, and
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/web/WebAppConfiguration.html"><code>@WebAppConfiguration</code></a>
-for further details.</p>
+<p>자세한 내용은 <a href="#testcontext-ctx-management">Context Management</a>, <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/junit/jupiter/web/SpringJUnitWebConfig.html"><code>@SpringJUnitWebConfig</code></a>, <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/ContextConfiguration.html"><code>@ContextConfiguration</code></a>, 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/web/WebAppConfiguration.html"><code>@WebAppConfiguration</code></a>의 javadoc을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="integration-testing-annotations-testconstructor"><code>@TestConstructor</code></h5>
 <div class="paragraph">
-<p><code>@TestConstructor</code> is a type-level annotation that is used to configure how the parameters
-of a test class constructor are autowired from components in the test&#8217;s
-<code>ApplicationContext</code>.</p>
+<p><code>@TestConstructor</code> 은 test class construct의 parameter를 테스트의 <code>ApplicationContext</code> 의 component로부터 autowired 되는 방식을 구성하는데 사용되는 type-level annotation 입니다.
+<code>@TestConstructor</code> is a type-level annotation that is used to configure how the parameters of a test class constructor are autowired from components in the test&#8217;s <code>ApplicationContext</code>.</p>
 </div>
 <div class="paragraph">
-<p>If <code>@TestConstructor</code> is not present or meta-present on a test class, the default <em>test
-constructor autowire mode</em> will be used. See the tip below for details on how to change
-the default mode. Note, however, that a local declaration of <code>@Autowired</code> on a
-constructor takes precedence over both <code>@TestConstructor</code> and the default mode.</p>
+<p><code>@TestConstructor</code> 가 없거나 test class에 meta가 있는 경우 기본적으로 <em>test constructor autowire mode</em> 가 사용됩니다.
+default mode를 변경하는 방법에 대한 자세한 내용은 아래 tip을 참조하세요.
+그러나 constructor에 대한 <code>@Autowired</code> 의 local 선언이 <code>@TestConstructor</code> 와 default mode보다 우선한다는 점에 유의하세요.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2951,18 +2811,14 @@ constructor takes precedence over both <code>@TestConstructor</code> and the def
 <td class="content">
 <div class="title">Changing the default test constructor autowire mode</div>
 <div class="paragraph">
-<p>The default <em>test constructor autowire mode</em> can be changed by setting the
-<code>spring.test.constructor.autowire.mode</code> JVM system property to <code>all</code>. Alternatively, the
-default mode may be set via the
-<a href="appendix.html#appendix-spring-properties"><code>SpringProperties</code></a> mechanism.</p>
+<p>기본 <em>test constructor autowire mode</em> 는 <code>spring.test.constructor.autowire.mode</code> JVM system property를 <code>all</code> 로 설정하여 변경할 수 있습니다.
+또는 <a href="appendix.html#appendix-spring-properties"><code>SpringProperties</code></a> 메커니즘을 통해 default mode를 설정할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>As of Spring Framework 5.3, the default mode may also be configured as a
-<a href="https://junit.org/junit5/docs/current/user-guide/#running-tests-config-params">JUnit Platform configuration parameter</a>.</p>
+<p>Spring Framework 5.3부터 defaut mode는 <a href="https://junit.org/junit5/docs/current/user-guide/#running-tests-config-params">JUnit Platform configuration parameter</a>로 구성될 수도 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>If the <code>spring.test.constructor.autowire.mode</code> property is not set, test class
-constructors will not be automatically autowired.</p>
+<p>만약 <code>spring.test.constructor.autowire.mode</code> property가 설정되지 않은 경우 test class constructor는 autowired가 자동으로 처리되지 않습니다.</p>
 </div>
 </td>
 </tr>
@@ -2975,11 +2831,8 @@ constructors will not be automatically autowired.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-As of Spring Framework 5.2, <code>@TestConstructor</code> is only supported in conjunction
-with the <code>SpringExtension</code> for use with JUnit Jupiter. Note that the <code>SpringExtension</code> is
-often automatically registered for you – for example, when using annotations such as
-<code>@SpringJUnitConfig</code> and <code>@SpringJUnitWebConfig</code> or various test-related annotations from
-Spring Boot Test.
+Spring Framework 5.2부터 @TestConstructor` 는 JUnit Jupiter과 함께 사용하기 위한 <code>SpringExtension</code> 과 결합만 지원됩니다.
+Spring Boot Test에서 <code>@SpringJUnitConfig</code> 및 <code>@SpringJUnitWebConfig</code> 또는 다양한 test관련 annotation을 사용할 때 <code>SpringExtension</code> 은 자동으로 등록되는 경우가 많습니다.
 </td>
 </tr>
 </table>
@@ -2988,15 +2841,11 @@ Spring Boot Test.
 <div class="sect4">
 <h5 id="integration-testing-annotations-nestedtestconfiguration"><code>@NestedTestConfiguration</code></h5>
 <div class="paragraph">
-<p><code>@NestedTestConfiguration</code> is a type-level annotation that is used to configure how
-Spring test configuration annotations are processed within enclosing class hierarchies
-for inner test classes.</p>
+<p><code>@NestedTestConfiguration</code> 은 inner test class를 위한 enclosing class hierarchy 에서 Spring test configuration annotation이 처리되는 방식을 구성하는데 사용되는 type-level annotaion 입니다.</p>
 </div>
 <div class="paragraph">
-<p>If <code>@NestedTestConfiguration</code> is not present or meta-present on a test class, in its
-super type hierarchy, or in its enclosing class hierarchy, the default <em>enclosing
-configuration inheritance mode</em> will be used. See the tip below for details on how to
-change the default mode.</p>
+<p><code>@NestedTestConfiguration</code> 가 test class, super type hierarchy 또는 enclosing class hierarchy에 없거나 meta가 포함되어 있는 경우 default <em>enclosing configuration inheritance mode</em> 가 사용됩니다.
+default mode를 변경하는 방법에 대한 자세한 내용은 아래 tip을 참조하세요.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -3007,18 +2856,15 @@ change the default mode.</p>
 <td class="content">
 <div class="title">Changing the default enclosing configuration inheritance mode</div>
 <div class="paragraph">
-<p>The default <em>enclosing configuration inheritance mode</em> is <code>INHERIT</code>, but it can be
-changed by setting the <code>spring.test.enclosing.configuration</code> JVM system property to
-<code>OVERRIDE</code>. Alternatively, the default mode may be set via the
-<a href="appendix.html#appendix-spring-properties"><code>SpringProperties</code></a> mechanism.</p>
+<p>default <em>enclosing configuration inheritance mode</em> 는 <code>INHERIT</code> 이지만 <code>spring.test.enclosing.configuration</code> JVM system property를 <code>OVERRIDE</code> 로 설정하여 변경할 수 있습니다.
+또는 default mode는 <a href="appendix.html#appendix-spring-properties"><code>SpringProperties</code></a> 매커니즘을 통해 default mode를 설정할 수 있습니다.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The <a href="#testcontext-framework">Spring TestContext Framework</a> honors <code>@NestedTestConfiguration</code> semantics for the
-following annotations.</p>
+<p><a href="#testcontext-framework">Spring TestContext Framework</a>는 다음 annotation에 대해 <code>@NestedTestConfiguration</code> semantic을 존중합니다.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3082,54 +2928,47 @@ following annotations.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The use of <code>@NestedTestConfiguration</code> typically only makes sense in conjunction
-with <code>@Nested</code> test classes in JUnit Jupiter; however, there may be other testing
-frameworks with support for Spring and nested test classes that make use of this
-annotation.
+<code>@NestedTestConfiguration</code> 의 사용은 일반적으로 JUnit Jupiter의 <code>@Nested</code> test classes와 함께 사용하는 경우에만 의미가 있습니다.
+그러나 이 annotation을 사용하는 Spring 및 nested test class를 지원하는 다른 test framework가 있을 수 있습니다.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>See <a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a> for an example and further
-details.</p>
+<p>예제 및 자세한 내용은 <a href="#testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</a>을 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit-jupiter-enabledif"><code>@EnabledIf</code></h5>
 <div class="paragraph">
-<p><code>@EnabledIf</code> is used to signal that the annotated JUnit Jupiter test class or test method
-is enabled and should be run if the supplied <code>expression</code> evaluates to <code>true</code>.
-Specifically, if the expression evaluates to <code>Boolean.TRUE</code> or a <code>String</code> equal to <code>true</code>
-(ignoring case), the test is enabled. When applied at the class level, all test methods
-within that class are automatically enabled by default as well.</p>
+<p><code>@EnabledIf</code> 는 annotation이 달린 JUnit Jupiter test class 또는 test method가 활성화 되었음을 알리는데 사용되며 제공된 <code>expression</code> 이 <code>true</code> 로 평가되면 실행되어야 합니다.
+특히 표현식이 <code>Boolean.TRUE</code> 또는 <code>true</code> 와 같은 <code>String</code> (대소문자 무시)으로 평가되면 테스트가 활성화됩니다.
+class level에서 적용하면 해당 class 내의 모든 test method도 기본적으로 자동으로 활성화됩니다.</p>
 </div>
 <div class="paragraph">
-<p>Expressions can be any of the following:</p>
+<p>표현식은 다음 중 하나일 수 있습니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="core.html#expressions">Spring Expression Language</a> (SpEL) expression. For example:
+<p><a href="core.html#expressions">Spring Expression Language</a> (SpEL) expression. 예를 들면:
 <code>@EnabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")</code></p>
 </li>
 <li>
 <p>Placeholder for a property available in the Spring <a href="core.html#beans-environment"><code>Environment</code></a>.
-For example: <code>@EnabledIf("${smoke.tests.enabled}")</code></p>
+예를 들면: <code>@EnabledIf("${smoke.tests.enabled}")</code></p>
 </li>
 <li>
-<p>Text literal. For example: <code>@EnabledIf("true")</code></p>
+<p>Text literal. 예를 들면: <code>@EnabledIf("true")</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note, however, that a text literal that is not the result of dynamic resolution of a
-property placeholder is of zero practical value, since <code>@EnabledIf("false")</code> is
-equivalent to <code>@Disabled</code> and <code>@EnabledIf("true")</code> is logically meaningless.</p>
+<p>그러나 <code>@EnabledIf("false")</code> 는 <code>@Disabled</code> 와 같고 <code>@EnabledIf("true")</code> 는 논리적으로 의미가 없기 때문에 property placeholder의 동적 확인 결과가 아닌 text literal은 값이 zero practical value입니다. .</p>
 </div>
 <div class="paragraph">
-<p>You can use <code>@EnabledIf</code> as a meta-annotation to create custom composed annotations. For
-example, you can create a custom <code>@EnabledOnMac</code> annotation as follows:</p>
+<p><code>@EnabledIf</code> 를 meta-annotation으로 사용하여 custom composed annotation을 만들 수 있습니다.
+예를 들어 다음과 같이 custom <code>@EnabledOnMac</code> annotation을 만들 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3159,38 +2998,34 @@ annotation class EnabledOnMac {}</code></pre>
 <div class="sect4">
 <h5 id="integration-testing-annotations-junit-jupiter-disabledif"><code>@DisabledIf</code></h5>
 <div class="paragraph">
-<p><code>@DisabledIf</code> is used to signal that the annotated JUnit Jupiter test class or test
-method is disabled and should not be run if the supplied <code>expression</code> evaluates to
-<code>true</code>. Specifically, if the expression evaluates to <code>Boolean.TRUE</code> or a <code>String</code> equal
-to <code>true</code> (ignoring case), the test is disabled. When applied at the class level, all
-test methods within that class are automatically disabled as well.</p>
+<p><code>@DisabledIf</code> 는 주석이 달린 JUnit Jupiter test class 또는 test method가 비활성화 되었음을 알리는데 사용되며 제공된 <code>expression</code> 이 <code>true</code> 로 평가되면 실행되서는 안됩니다.
+특히 표현식이 <code>Boolean.TRUE</code> 또는 <code>true</code> 와 같은 <code>String</code> (대소문자 무시)로 평가되면 테스트가 비활성화됩니다.
+class level에서 적용하면 해당 class 내의 모든 test method도 기본적으로 자동으로 비활성화됩니다.</p>
 </div>
 <div class="paragraph">
-<p>Expressions can be any of the following:</p>
+<p>표현식은 다음 중 하나일 수 있습니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="core.html#expressions">Spring Expression Language</a> (SpEL) expression. For example:
+<p><a href="core.html#expressions">Spring Expression Language</a> (SpEL) expression. 예를 들면:
 <code>@DisabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")</code></p>
 </li>
 <li>
 <p>Placeholder for a property available in the Spring <a href="core.html#beans-environment"><code>Environment</code></a>.
-For example: <code>@DisabledIf("${smoke.tests.disabled}")</code></p>
+예를 들면: <code>@DisabledIf("${smoke.tests.disabled}")</code></p>
 </li>
 <li>
-<p>Text literal. For example: <code>@DisabledIf("true")</code></p>
+<p>Text literal. 예를 들면: <code>@DisabledIf("true")</code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Note, however, that a text literal that is not the result of dynamic resolution of a
-property placeholder is of zero practical value, since <code>@DisabledIf("true")</code> is
-equivalent to <code>@Disabled</code> and <code>@DisabledIf("false")</code> is logically meaningless.</p>
+<p>그러나 <code>@DisabledIf("true")</code> 는 <code>@Disabled</code> 와 같고 <code>@DisabledIf("false")</code> 는 논리적으로 의미가 없으므로 property placeholder의 동적 확인 결과가 아닌 텍스트 리터럴은 값이 zero practical value입니다. .</p>
 </div>
 <div class="paragraph">
-<p>You can use <code>@DisabledIf</code> as a meta-annotation to create custom composed annotations. For
-example, you can create a custom <code>@DisabledOnMac</code> annotation as follows:</p>
+<p><code>@DisabledIf</code> 를 meta-annotation으로 사용하여 custom composed annotation을 만들 수 있습니다.
+예를 들어 다음과 같이 custom <code>@DisabledOnMac</code> annotation을 만들 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3221,13 +3056,10 @@ annotation class DisabledOnMac {}</code></pre>
 <div class="sect3">
 <h4 id="integration-testing-annotations-meta">Meta-Annotation Support for Testing</h4>
 <div class="paragraph">
-<p>You can use most test-related annotations as
-<a href="core.html#beans-meta-annotations">meta-annotations</a> to create custom composed
-annotations and reduce configuration duplication across a test suite.</p>
+<p>대부분의 테스트 관련 annotation을 <a href="core.html#beans-meta-annotations">meta-annotations</a>으로 사용하여 custom composed annotation을 만들고 test suite에서 구성 중복을 줄일 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>You can use each of the following as a meta-annotation in conjunction with the
-<a href="#testcontext-framework">TestContext framework</a>.</p>
+<p><a href="#testcontext-framework">TestContext framework</a>와 함께 다음 각 항목을 meta-annotation으로 사용할 수 있습니다.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3283,39 +3115,39 @@ annotations and reduce configuration duplication across a test suite.</p>
 <p><code>@SqlGroup</code></p>
 </li>
 <li>
-<p><code>@Repeat</code> <em>(only supported on JUnit 4)</em></p>
+<p><code>@Repeat</code> <em>(JUnit 4에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@Timed</code> <em>(only supported on JUnit 4)</em></p>
+<p><code>@Timed</code> <em>(JUnit 4에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@IfProfileValue</code> <em>(only supported on JUnit 4)</em></p>
+<p><code>@IfProfileValue</code> <em>(JUnit 4에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@ProfileValueSourceConfiguration</code> <em>(only supported on JUnit 4)</em></p>
+<p><code>@ProfileValueSourceConfiguration</code> <em>(JUnit 4에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@SpringJUnitConfig</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@SpringJUnitConfig</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@SpringJUnitWebConfig</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@SpringJUnitWebConfig</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@TestConstructor</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@TestConstructor</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@NestedTestConfiguration</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@NestedTestConfiguration</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@EnabledIf</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@EnabledIf</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 <li>
-<p><code>@DisabledIf</code> <em>(only supported on JUnit Jupiter)</em></p>
+<p><code>@DisabledIf</code> <em>(JUnit Jupiter에서만 지원됨)</em></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Consider the following example:</p>
+<p>다음 예를 고려하십시오:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3350,9 +3182,7 @@ class UserRepositoryTests { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we discover that we are repeating the preceding configuration across our JUnit 4-based
-test suite, we can reduce the duplication by introducing a custom composed annotation
-that centralizes the common test configuration for Spring, as follows:</p>
+<p>JUnit 4 기반 test suite에서 이전 구성을 반복하고 있음을 발견하면 다음과 같이 Spring의 common test configuration을 중앙 집중화하는 custom composed annotation을 도입하여 중복을 줄일 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3377,8 +3207,7 @@ annotation class TransactionalDevTestConfig { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then we can use our custom <code>@TransactionalDevTestConfig</code> annotation to simplify the
-configuration of individual JUnit 4 based test classes, as follows:</p>
+<p>그런 다음 custom <code>@TransactionalDevTestConfig</code> annotation을 사용하여 다음과 같이 개별 JUnit 4 기반 test class의 구성을 단순화 할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3405,9 +3234,8 @@ class UserRepositoryTests</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we write tests that use JUnit Jupiter, we can reduce code duplication even further,
-since annotations in JUnit 5 can also be used as meta-annotations. Consider the following
-example:</p>
+<p>JUnit Jupiter를 사용하는 테스트를 작성하면 JUnit 5의 annotation을 meta-annotation으로도 사용할 수 있으므로 코드 중복을 더욱 줄일 수 있습니다.
+다음 예를 고려하십시오:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3442,10 +3270,7 @@ class UserRepositoryTests { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we discover that we are repeating the preceding configuration across our JUnit
-Jupiter-based test suite, we can reduce the duplication by introducing a custom composed
-annotation that centralizes the common test configuration for Spring and JUnit Jupiter,
-as follows:</p>
+<p>JUnit Jupiter 기반 test suite에서 이전 구성을 반복하고 있음을 발견하면 다음과 같이 Spring 및 JUnit Jupiter의 common test configuration을 중앙 집중화하는 custom composed annotation을 도입하여 중복을 줄일 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3472,8 +3297,7 @@ annotation class TransactionalDevTestConfig { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then we can use our custom <code>@TransactionalDevTestConfig</code> annotation to simplify the
-configuration of individual JUnit Jupiter based test classes, as follows:</p>
+<p>그런 다음 custom <code>@TransactionalDevTestConfig</code> annotation을 사용하여 다음과 같이 개별 JUnit Jupiter 기반 test class의 구성을 단순화 할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3496,12 +3320,8 @@ class UserRepositoryTests { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Since JUnit Jupiter supports the use of <code>@Test</code>, <code>@RepeatedTest</code>, <code>ParameterizedTest</code>,
-and others as meta-annotations, you can also create custom composed annotations at the
-test method level. For example, if we wish to create a composed annotation that combines
-the <code>@Test</code> and <code>@Tag</code> annotations from JUnit Jupiter with the <code>@Transactional</code>
-annotation from Spring, we could create an <code>@TransactionalIntegrationTest</code> annotation, as
-follows:</p>
+<p>JUnit Jupiter는 <code>@Test</code>, <code>@RepeatedTest</code>, <code>ParameterizedTest</code> 및 다른 meta-annotation의 사용을 지원하므로 test method 수준에서 custom composed annotation을 만들 수도 있습니다.
+예를 들어 JUnit Jupiter의 <code>@Test</code> 및 <code>@Tag</code> annotation을 Spring의 <code>@Transactional</code> annotation과 결합하는 composed annotation을 작성하려는 경우 다음과 같이 <code>@TransactionalIntegrationTest</code> annotation을 작성할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3526,8 +3346,7 @@ annotation class TransactionalIntegrationTest { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then we can use our custom <code>@TransactionalIntegrationTest</code> annotation to simplify the
-configuration of individual JUnit Jupiter based test methods, as follows:</p>
+<p>그런 다음 custom <code>@TransactionalIntegrationTest</code> annotation을 사용하여 다음과 같이 개별 JUnit Jupiter 기반 test method의 구성을 단순화 할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -3550,91 +3369,71 @@ fun deleteOrder() { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>For further details, see the
-<a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model">Spring Annotation Programming Model</a>
-wiki page.</p>
+<p>자세한 내용은 <a href="https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model">Spring Annotation Programming Model</a> wiki page를 참조하세요.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="testcontext-framework">Spring TestContext Framework</h3>
 <div class="paragraph">
-<p>The Spring TestContext Framework (located in the <code>org.springframework.test.context</code>
-package) provides generic, annotation-driven unit and integration testing support that is
-agnostic of the testing framework in use. The TestContext framework also places a great
-deal of importance on convention over configuration, with reasonable defaults that you
-can override through annotation-based configuration.</p>
+<p>Spring TestContext Framework (<code>org.springframework.test.context</code> package에 위치함)는 사용중인 test framework와 무관한 일반적인 annotation 기반 단위 및 통합 테스트 지원을 제공합니다.
+TestContext framework는 또한 annotation 기반 구성을 통해 재정의 할 수 있는 합리적인 기본값을 사용하여 구성에 대한 규칙을 중요시 합니다.</p>
 </div>
 <div class="paragraph">
-<p>In addition to generic testing infrastructure, the TestContext framework provides
-explicit support for JUnit 4, JUnit Jupiter (AKA JUnit 5), and TestNG. For JUnit 4 and
-TestNG, Spring provides <code>abstract</code> support classes. Furthermore, Spring provides a custom
-JUnit <code>Runner</code> and custom JUnit <code>Rules</code> for JUnit 4 and a custom <code>Extension</code> for JUnit
-Jupiter that let you write so-called POJO test classes. POJO test classes are not
-required to extend a particular class hierarchy, such as the <code>abstract</code> support classes.</p>
+<p>일반 test infrastructure 외에도 TestContext framework는 JUnit 4, JUnit Jupiter (AKA JUnit 5), 및 TestNG에 대한 명시적인 지원을 제공합니다.
+JUnit 4 및 TestNG의 경우 Spring은 <code>abstract</code> support class를 제공합니다.
+또한 Spring은 custom JUnit <code>Runner</code> 및 JUnit 4 용 custom <code>Rules</code> 및 소위 POJO test class를 작성할 수있는 JUnit Jupiter 용 custom <code>Extension`을 제공합니다.
+POJO test class는 `abstract</code> support class와 같은 특정 class hierarchy를 확장하는데 필요하지 않습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following section provides an overview of the internals of the TestContext framework.
-If you are interested only in using the framework and are not interested in extending it
-with your own custom listeners or custom loaders, feel free to go directly to the
-configuration (<a href="#testcontext-ctx-management">context management</a>,
-<a href="#testcontext-fixture-di">dependency injection</a>, <a href="#testcontext-tx">transaction
-management</a>), <a href="#testcontext-support-classes">support classes</a>, and
-<a href="#integration-testing-annotations">annotation support</a> sections.</p>
+<p>다음 section에서는 TestContext framework의 내부에 대한 개요를 제공합니다.
+framework의 사용에만 관심이 있고 custom listener 또는 custom loader로 확장하는데 관심이 없는 경우 configuration (<a href="#testcontext-ctx-management">context management</a>, <a href="#testcontext-fixture-di">dependency injection</a>, <a href="#testcontext-tx">transaction management</a>), <a href="#testcontext-support-classes">support classes</a> 및 <a href="#integration-testing-annotations">annotation support</a> section으로 직접 이동하세요.</p>
 </div>
 <div class="sect3">
 <h4 id="testcontext-key-abstractions">Key Abstractions</h4>
 <div class="paragraph">
-<p>The core of the framework consists of the <code>TestContextManager</code> class and the
-<code>TestContext</code>, <code>TestExecutionListener</code>, and <code>SmartContextLoader</code> interfaces. A
-<code>TestContextManager</code> is created for each test class (for example, for the execution of
-all test methods within a single test class in JUnit Jupiter). The <code>TestContextManager</code>,
-in turn, manages a <code>TestContext</code> that holds the context of the current test. The
-<code>TestContextManager</code> also updates the state of the <code>TestContext</code> as the test progresses
-and delegates to <code>TestExecutionListener</code> implementations, which instrument the actual
-test execution by providing dependency injection, managing transactions, and so on. A
-<code>SmartContextLoader</code> is responsible for loading an <code>ApplicationContext</code> for a given test
-class. See the <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/package-summary.html">javadoc</a> and the
-Spring test suite for further information and examples of various implementations.</p>
+<p>framework의 핵심은 <code>TestContextManager</code> class 와 <code>TestContext</code>, <code>TestExecutionListener</code> 및 <code>SmartContextLoader</code> interfaces로 구성됩니다.
+<code>TestContextManager</code> 는 각 test class에 대해 생성됩니다. (예: JUnit Jupiter의 단일 test class 내에서 모든 test method를 실행하는 경우)
+<code>TestContextManager</code> 는 차례로 현재 테스트의 context를 보유하는 <code>TestContext`를 관리합니다.
+`TestContextManager</code> 는 또한 테스트가 진행됨에 따라 <code>TestContext</code> 의 상태를 업데이트하고 <code>TestExecutionListener</code> 구현에 위임합니다.
+이 구현은 dependency injection, managing transactions 등을 통해 실제 테스트 실행을 계측합니다.
+<code>SmartContextLoader</code> 는 주어진 test class에 대한 <code>ApplicationContext</code> 을 로드하는 역할을 합니다.
+다양한 구현에 대한 추가 정보와 예제는 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/package-summary.html">javadoc</a> 및 Spring test suite를 참조하세요.</p>
 </div>
 <div class="sect4">
 <h5 id="_testcontext"><code>TestContext</code></h5>
 <div class="paragraph">
-<p><code>TestContext</code> encapsulates the context in which a test is run (agnostic of the
-actual testing framework in use) and provides context management and caching support for
-the test instance for which it is responsible. The <code>TestContext</code> also delegates to a
-<code>SmartContextLoader</code> to load an <code>ApplicationContext</code> if requested.</p>
+<p><code>TestContext</code> 는 테스트가 실행되는 context를 캡슐화하고 (사용 중인 실제 테스트 프레임 워크에 관계없이) 해당 테스트 인스턴스에 대한 context 관리 및 캐싱 지원을 제공합니다.
+<code>TestContext</code> 는 또한 요청 된 경우 <code>ApplicationContext`를 로드하도록 `SmartContextLoader</code> 에 위임합니다.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_testcontextmanager"><code>TestContextManager</code></h5>
 <div class="paragraph">
-<p><code>TestContextManager</code> is the main entry point into the Spring TestContext Framework and is
-responsible for managing a single <code>TestContext</code> and signaling events to each registered
-<code>TestExecutionListener</code> at well-defined test execution points:</p>
+<p><code>TestContextManager</code> 는 Spring TestContext Framework의 주요 진입점이며 단일 <code>TestContext</code> 를 관리하고 잘 정의된 test 실행 지점에서 등록된 <code>TestExecutionListener</code> 에 이벤트 신호를 보내는 역할을 합니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Prior to any &#8220;before class&#8221; or &#8220;before all&#8221; methods of a particular testing framework.</p>
+<p>특정 test framework의 &#8220;before class&#8221; 또는 &#8220;before all&#8221; method 이전</p>
 </li>
 <li>
-<p>Test instance post-processing.</p>
+<p>Test instance 이후 처리</p>
 </li>
 <li>
-<p>Prior to any &#8220;before&#8221; or &#8220;before each&#8221; methods of a particular testing framework.</p>
+<p>특정 test framework의 &#8220;before&#8221; 또는 &#8220;before each&#8221; method 이전.</p>
 </li>
 <li>
-<p>Immediately before execution of the test method but after test setup.</p>
+<p>test method 실행 직전, test setup 후</p>
 </li>
 <li>
-<p>Immediately after execution of the test method but before test tear down.</p>
+<p>test method 실행 직후 test 해체 전.</p>
 </li>
 <li>
-<p>After any &#8220;after&#8221; or &#8220;after each&#8221; methods of a particular testing framework.</p>
+<p>특정 test framework의 &#8220;after&#8221; 또는 &#8220;after each&#8221; method 이후.</p>
 </li>
 <li>
-<p>After any &#8220;after class&#8221; or &#8220;after all&#8221; methods of a particular testing framework.</p>
+<p>특정 test framework의 &#8220;after class&#8221; 또는 &#8220;after all&#8221; method 이후.</p>
 </li>
 </ul>
 </div>
@@ -3642,69 +3441,51 @@ responsible for managing a single <code>TestContext</code> and signaling events 
 <div class="sect4">
 <h5 id="_testexecutionlistener"><code>TestExecutionListener</code></h5>
 <div class="paragraph">
-<p><code>TestExecutionListener</code> defines the API for reacting to test-execution events published by
-the <code>TestContextManager</code> with which the listener is registered. See <a href="#testcontext-tel-config"><code>TestExecutionListener</code> Configuration</a>.</p>
+<p><code>TestExecutionListener</code> 는 listener가 등록된 `TestContextManager`에서 게시한 테스트 실행 이벤트에 반응하기위한 API를 정의합니다.
+<a href="#testcontext-tel-config"><code>TestExecutionListener</code> Configuration</a> 를 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_context_loaders">Context Loaders</h5>
 <div class="paragraph">
-<p><code>ContextLoader</code> is a strategy interface for loading an <code>ApplicationContext</code> for an
-integration test managed by the Spring TestContext Framework. You should implement
-<code>SmartContextLoader</code> instead of this interface to provide support for component classes,
-active bean definition profiles, test property sources, context hierarchies, and
-<code>WebApplicationContext</code> support.</p>
+<p><code>ContextLoader`는 Spring TestContext Framework에서 관리하는 통합 테스트를 위한 `ApplicationContext</code> 를 로드하기 위한 strategy interface입니다.
+component classes, active bean definition profiles, test property sources, context hierarchies 및 <code>WebApplicationContext</code> 지원에 대한 지원을 제공하려면 이 interface 대신 <code>SmartContextLoader</code> 를 구현해야합니다.</p>
 </div>
 <div class="paragraph">
-<p><code>SmartContextLoader</code> is an extension of the <code>ContextLoader</code> interface that supersedes the
-original minimal <code>ContextLoader</code> SPI. Specifically, a <code>SmartContextLoader</code> can choose to
-process resource locations, component classes, or context initializers. Furthermore, a
-<code>SmartContextLoader</code> can set active bean definition profiles and test property sources in
-the context that it loads.</p>
+<p><code>SmartContextLoader</code> 는 original minimal <code>ContextLoader</code> SPI를 대체하는 <code>ContextLoader</code> interface의 확장입니다.
+특히 <code>SmartContextLoader</code> 는 resource locations, component classes 또는 context initializers를 처리하도록 선택할 수 있습니다.
+또한 `SmartContextLoader`는 로드되는 context에서 active bean definition profile 및 test property sources를 설정할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>Spring provides the following implementations:</p>
+<p>Spring은 다음 구현을 제공합니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>DelegatingSmartContextLoader</code>: One of two default loaders, it delegates internally to
-an <code>AnnotationConfigContextLoader</code>, a <code>GenericXmlContextLoader</code>, or a
-<code>GenericGroovyXmlContextLoader</code>, depending either on the configuration declared for the
-test class or on the presence of default locations or default configuration classes.
-Groovy support is enabled only if Groovy is on the classpath.</p>
+<p><code>DelegatingSmartContextLoader</code>: 2개의 기본 loader 중 하나이며 test class에 대해 선언된 configuration 또는 default location 또는 default configuration class의 존재 여부에 따라 <code>AnnotationConfigContextLoader</code>, <code>GenericXmlContextLoader</code> 또는 <code>GenericGroovyXmlContextLoader</code> 에 내부적으로 위임합니다.
+Groovy 지원은 Groovy가 classpath에 있는 경우에만 활성화됩니다.</p>
 </li>
 <li>
-<p><code>WebDelegatingSmartContextLoader</code>: One of two default loaders, it delegates internally
-to an <code>AnnotationConfigWebContextLoader</code>, a <code>GenericXmlWebContextLoader</code>, or a
-<code>GenericGroovyXmlWebContextLoader</code>, depending either on the configuration declared for
-the test class or on the presence of default locations or default configuration
-classes. A web <code>ContextLoader</code> is used only if <code>@WebAppConfiguration</code> is present on the
-test class. Groovy support is enabled only if Groovy is on the classpath.</p>
+<p><code>WebDelegatingSmartContextLoader</code>: 2개의 기본 loader 중 하나이며 test class에 대해 선언된 configuration 또는 default location 또는 default configuration class의 존재 여부에 따라 <code>AnnotationConfigWebContextLoader</code>, <code>GenericXmlWebContextLoader</code> 또는 <code>GenericGroovyXmlWebContextLoader</code> 에 내부적으로 위임합니다.
+Groovy 지원은 Groovy가 classpath에 있는 경우에만 활성화됩니다.</p>
 </li>
 <li>
-<p><code>AnnotationConfigContextLoader</code>: Loads a standard <code>ApplicationContext</code> from component
-classes.</p>
+<p><code>AnnotationConfigContextLoader</code>: component class에서 standard <code>ApplicationContext</code> 를 로드합니다.</p>
 </li>
 <li>
-<p><code>AnnotationConfigWebContextLoader</code>: Loads a <code>WebApplicationContext</code> from component
-classes.</p>
+<p><code>AnnotationConfigWebContextLoader</code>: component class에서 standard <code>WebApplicationContext</code> 를 로드합니다.</p>
 </li>
 <li>
-<p><code>GenericGroovyXmlContextLoader</code>: Loads a standard <code>ApplicationContext</code> from resource
-locations that are either Groovy scripts or XML configuration files.</p>
+<p><code>GenericGroovyXmlContextLoader</code>: Groovy script 또는 XML configuration file인 resource에서 standard <code>ApplicationContext</code> 를 로드합니다.</p>
 </li>
 <li>
-<p><code>GenericGroovyXmlWebContextLoader</code>: Loads a <code>WebApplicationContext</code> from resource
-locations that are either Groovy scripts or XML configuration files.</p>
+<p><code>GenericGroovyXmlWebContextLoader</code>: Groovy script 또는 XML configuration file인 resource에서 standard <code>WebApplicationContext</code> 를 로드합니다.</p>
 </li>
 <li>
-<p><code>GenericXmlContextLoader</code>: Loads a standard <code>ApplicationContext</code> from XML resource
-locations.</p>
+<p><code>GenericXmlContextLoader</code>: XML resource location에서 standard <code>ApplicationContext</code> 를 로드합니다.</p>
 </li>
 <li>
-<p><code>GenericXmlWebContextLoader</code>: Loads a <code>WebApplicationContext</code> from XML resource
-locations.</p>
+<p><code>GenericXmlWebContextLoader</code>: XML resource location에서 standard <code>WebApplicationContext</code> 를 로드합니다.</p>
 </li>
 </ul>
 </div>
@@ -11594,7 +11375,7 @@ integration tests written in Kotlin using <a href="https://mockk.io/">MockK</a> 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-09 15:34:10 +0900
+Last updated 2021-04-13 04:29:59 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

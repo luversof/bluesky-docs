@@ -274,11 +274,8 @@ ORM 도구와 함께 사용하는 경우 <<testcontext-tx-false-positives, 오�
 ====
 <<testcontext-support-classes-junit4, `AbstractTransactionalJUnit4SpringContextTests`>> 및 <<testcontext-support-classes-testng, `AbstractTransactionalTestNGSpringContextTests`>>는 앞서 언급한 `JdbcTestUtils` 의 method를 위임한 편리한 method를 제공합니다.
 
-The `spring-jdbc` module provides support for configuring and launching an embedded
-database, which you can use in integration tests that interact with a database.
-For details, see <<data-access.adoc#jdbc-embedded-database-support, Embedded Database
-Support>> and <<data-access.adoc#jdbc-embedded-database-dao-testing, Testing Data Access
-Logic with an Embedded Database>>.
+`spring-jdbc` module은 데이터베이스와 상호 작용하는 통합 테스트에서 사용할 수 있는 embedded database 구성 및 실행을 지원합니다.
+자세한 내용은 <<data-access.adoc#jdbc-embedded-database-support, Embedded Database 지원>> 및 <<data-access.adoc#jdbc-embedded-database-dao-testing, Embedded Database로 dasta access logic 테스트하기>>를 참조하세요.
 ====
 
 
@@ -286,8 +283,8 @@ Logic with an Embedded Database>>.
 [[integration-testing-annotations]]
 === Annotations
 
-This section covers annotations that you can use when you test Spring applications.
-It includes the following topics:
+이 section은 Spring application을 테스트 할 때 사용할 수 있는 annotation을 다룹니다.
+여기에는 다음 항목이 포함됩니다:
 
 * <<integration-testing-annotations-spring>>
 * <<integration-testing-annotations-standard>>
@@ -299,12 +296,10 @@ It includes the following topics:
 [[integration-testing-annotations-spring]]
 ==== Spring Testing Annotations
 
-The Spring Framework provides the following set of Spring-specific annotations that you
-can use in your unit and integration tests in conjunction with the TestContext framework.
-See the corresponding javadoc for further information, including default attribute
-values, attribute aliases, and other details.
+Spring Framework는 TestContext framework와 함께 단위 및 통합 테스트에서 사용할 수 있는 다음과 같은 Spring 관련 annotation set을 제공합니다.
+default attribute, attribute alias 및 기타 세부 사항을 포함한 추가 정보는 해당 javadoc을 참조하세요.
 
-Spring's testing annotations include the following:
+Spring의 test annotation에는 다음이 포함됩니다:
 
 * <<spring-testing-annotation-bootstrapwith>>
 * <<spring-testing-annotation-contextconfiguration>>
@@ -328,27 +323,21 @@ Spring's testing annotations include the following:
 [[spring-testing-annotation-bootstrapwith]]
 ===== `@BootstrapWith`
 
-`@BootstrapWith` is a class-level annotation that you can use to configure how the Spring
-TestContext Framework is bootstrapped. Specifically, you can use `@BootstrapWith` to
-specify a custom `TestContextBootstrapper`. See the section on
-<<testcontext-bootstrapping, bootstrapping the TestContext framework>> for further details.
+`@BootstrapWith` 는 Spring TestContext Framework가 bootstrap되는 방법을 구성하는데 사용할 수 있는 class-level annotation 입니다.
+특히 `@BootstrapWith` 를 사용하여 custom `TestContextBootstrapper` 를 지정합니다.
+자세한 내용은 <<testcontext-bootstrapping, bootstrapping the TestContext framework>> section을 참조하세요. 
 
 [[spring-testing-annotation-contextconfiguration]]
 ===== `@ContextConfiguration`
 
-`@ContextConfiguration` defines class-level metadata that is used to determine how to
-load and configure an `ApplicationContext` for integration tests. Specifically,
-`@ContextConfiguration` declares the application context resource `locations` or the
-component `classes` used to load the context.
+`@ContextConfiguration` 은 통합 테스트를 위해 `ApplicationContext` 를 로드하고 구성하는 방법을 결정하는데 사용되는 class-level metadata를 정의합니다. 
+특히 `@ContextConfiguration` 는 context를 로드하는데 사용되는 application context resource `locations` 또는 component `classes` 를 선언합니다.   
 
-Resource locations are typically XML configuration files or Groovy scripts located in the
-classpath, while component classes are typically `@Configuration` classes. However,
-resource locations can also refer to files and scripts in the file system, and component
-classes can be `@Component` classes, `@Service` classes, and so on. See
-<<testcontext-ctx-management-javaconfig-component-classes>> for further details.
+Resource locations은 일반적으로 XML configuration file 또는 Groovy script이며 component class는 일반적으로 `@Configuration` class입니다.
+그러나 resource locastion은 file system의 file 및 script를 참조할 수도 있으며 component class는 `@Component` classes, `@Service` classes 등이 될 수 있습니다.
+자세한 내용은 <<testcontext-ctx-management-javaconfig-component-classes>>를 참조하세요.
 
-The following example shows a `@ContextConfiguration` annotation that refers to an XML
-file:
+다음 예제는 xml file을 참조하는 `@ContextConfiguration` annotation을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -358,7 +347,7 @@ file:
 		// class body...
 	}
 ----
-<1> Referring to an XML file.
+<1> XML file을 참조합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -368,10 +357,10 @@ file:
 		// class body...
 	}
 ----
-<1> Referring to an XML file.
+<1> XML file을 참조합니다.
 
 
-The following example shows a `@ContextConfiguration` annotation that refers to a class:
+다음 예제는 class를 참조하는 `@ContextConfiguration` annotation을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -381,7 +370,7 @@ The following example shows a `@ContextConfiguration` annotation that refers to 
 		// class body...
 	}
 ----
-<1> Referring to a class.
+<1> class를 참조합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -391,12 +380,11 @@ The following example shows a `@ContextConfiguration` annotation that refers to 
 		// class body...
 	}
 ----
-<1> Referring to a class.
+<1> class를 참조합니다.
 
 
-As an alternative or in addition to declaring resource locations or component classes,
-you can use `@ContextConfiguration` to declare `ApplicationContextInitializer` classes.
-The following example shows such a case:
+대안으로 resource location 또는 component class를 선언하는 것 외에 `@ContextConfiguration` 를 사용하여 `ApplicationContextInitializer` class를 선언할 수 있습니다.
+다음 예는 이러한 경우를 보여줍니다: 
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -417,13 +405,10 @@ The following example shows such a case:
 ----
 <1> Declaring an initializer class.
 
+선택적으로 `@ContextConfiguration` 를 사용하여 `ContextLoader` strategy를 선언할 수도 있습니다.
+그러나 default loader가 `initializers` 및 resource `locations` 또는 component `classes` 를 지원하므로 일반적으로 loader를 명시적으로 구성할 필요가 없습니다.
 
-You can optionally use `@ContextConfiguration` to declare the `ContextLoader` strategy as
-well. Note, however, that you typically do not need to explicitly configure the loader,
-since the default loader supports `initializers` and either resource `locations` or
-component `classes`.
-
-The following example uses both a location and a loader:
+다음 예제에서는 location과 loader를 모두 사용합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -433,7 +418,7 @@ The following example uses both a location and a loader:
 		// class body...
 	}
 ----
-<1> Configuring both a location and a custom loader.
+<1> location과 custom loader를 모두 구성합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -443,30 +428,21 @@ The following example uses both a location and a loader:
 		// class body...
 	}
 ----
-<1> Configuring both a location and a custom loader.
+<1> location과 custom loader를 모두 구성합니다.
 
 
-NOTE: `@ContextConfiguration` provides support for inheriting resource locations or
-configuration classes as well as context initializers that are declared by superclasses
-or enclosing classes.
+NOTE: `@ContextConfiguration` 는 resource location 또는 configuration class의 상속은 물론 superclass 또는 enclosing class에 의해 선언된 context initializer를 제공합니다.
 
-See <<testcontext-ctx-management>>,
-<<testcontext-junit-jupiter-nested-test-configuration>>, and the `@ContextConfiguration`
-javadocs for further details.
+자세한 내용은 <<testcontext-ctx-management>>, <<testcontext-junit-jupiter-nested-test-configuration>>, 및 `@ContextConfiguration` javadoc을 참조하세요. 
 
 [[spring-testing-annotation-webappconfiguration]]
 ===== `@WebAppConfiguration`
 
-`@WebAppConfiguration` is a class-level annotation that you can use to declare that the
-`ApplicationContext` loaded for an integration test should be a `WebApplicationContext`.
-The mere presence of `@WebAppConfiguration` on a test class ensures that a
-`WebApplicationContext` is loaded for the test, using the default value of
-`"file:src/main/webapp"` for the path to the root of the web application (that is, the
-resource base path). The resource base path is used behind the scenes to create a
-`MockServletContext`, which serves as the `ServletContext` for the test's
-`WebApplicationContext`.
+`@WebAppConfiguration`  은 통합 테스트를 위해 로드된 `ApplicationContext` 가 `WebApplicationContext` 여야 함을 선언하는데 사용할 수 있는 class-level annotation 입니다.
+`@WebAppConfiguration` 이 test class에 존재하기만 하면 web application의 root(resource base path)에 대한 `"file:src/main/webapp"` default value를 사용하여 `WebApplicationContext` 가 테스트용으로 로드됩니다.
+resource base path는 테스트의 `WebApplicationContext` 에 대한 `ServletContext` 역할을 하는 `MockServletContext` 를 만드는데 사용됩니다.
 
-The following example shows how to use the `@WebAppConfiguration` annotation:
+다음 예는 `@WebAppConfiguration` annotation을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -487,13 +463,13 @@ The following example shows how to use the `@WebAppConfiguration` annotation:
 		// class body...
 	}
 ----
-<1> The `@WebAppConfiguration` annotation.
+<1> `@WebAppConfiguration` annotation.
 
 
-To override the default, you can specify a different base resource path by using the
-implicit `value` attribute. Both `classpath:` and `file:` resource prefixes are
-supported. If no resource prefix is supplied, the path is assumed to be a file system
-resource. The following example shows how to specify a classpath resource:
+기본 값을 재정의 하려면 implicit `value` attribute를 사용하여 다른 base resource path를 지정할 수 있습니다. 
+`classpath:` 및 `file:` resource prefix가 지원됩니다.
+resource prefix가 제공되지 않으면 path는 file system resource로 간주됩니다.
+다음 예는 classpath resource를 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -504,7 +480,7 @@ resource. The following example shows how to specify a classpath resource:
 		// class body...
 	}
 ----
-<1> Specifying a classpath resource.
+<1> classpath resource 지정.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -515,24 +491,18 @@ resource. The following example shows how to specify a classpath resource:
 		// class body...
 	}
 ----
-<1> Specifying a classpath resource.
+<1> classpath resource 지정.
 
 
-Note that `@WebAppConfiguration` must be used in conjunction with
-`@ContextConfiguration`, either within a single test class or within a test class
-hierarchy. See the
-{api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`]
-javadoc for further details.
+`@WebAppConfiguration` 는 single test class 또는 test class hierarchy 내에서 `@ContextConfiguration` 와 함께 사용해야 합니다.  
+자세한 내용은 {api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`] javadoc을 참조하세요. 
 
 [[spring-testing-annotation-contexthierarchy]]
 ===== `@ContextHierarchy`
 
-`@ContextHierarchy` is a class-level annotation that is used to define a hierarchy of
-`ApplicationContext` instances for integration tests. `@ContextHierarchy` should be
-declared with a list of one or more `@ContextConfiguration` instances, each of which
-defines a level in the context hierarchy. The following examples demonstrate the use of
-`@ContextHierarchy` within a single test class (`@ContextHierarchy` can also be used
-within a test class hierarchy):
+`@ContextHierarchy` 는 통합 테스트를 위한 `ApplicationContext` instance의 hierarchy를 정의하는데 사용되는 class-level annotation 입니다. 
+`@ContextHierarchy` 는 하나 이상의 `@ContextConfiguration` instances 목록으로 선언되어야 하며, 각 instance는 context hierarchy의 level을 정의합니다.
+다음 예는 single test class내에서 `@ContextHierarchy` 의 사용을 보여줍니다. (`@ContextHierarchy` 는 test class hierarchy 내에서도 사용할 수 있음):
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -580,21 +550,15 @@ within a test class hierarchy):
 	}
 ----
 
-If you need to merge or override the configuration for a given level of the context
-hierarchy within a test class hierarchy, you must explicitly name that level by supplying
-the same value to the `name` attribute in `@ContextConfiguration` at each corresponding
-level in the class hierarchy. See <<testcontext-ctx-management-ctx-hierarchies>> and the
-{api-spring-framework}/test/context/ContextHierarchy.html[`@ContextHierarchy`] javadoc
-for further examples.
+test class hierarchy 내에서 지정된 level에 대한 context hierarchy 구성을 병합하거나 재정의해야하는 경우 class hierarchy의 각 해당 level에서 `@ContextConfiguration` 의 `name` attribute에 동일한 값을 제공하여 해당 level의 name을 명시적으로 지정해야 합니다. 
+추가 예제는 <<testcontext-ctx-management-ctx-hierarchies>> 및 {api-spring-framework}/test/context/ContextHierarchy.html[`@ContextHierarchy`] javadoc을 참조하세요.
 
 [[spring-testing-annotation-activeprofiles]]
 ===== `@ActiveProfiles`
 
-`@ActiveProfiles` is a class-level annotation that is used to declare which bean
-definition profiles should be active when loading an `ApplicationContext` for an
-integration test.
+`@ActiveProfiles` 통합 테스트를 위해 `ApplicationContext` 을 로드할 때 활성화 되어야 하는 bean definition profile을 선언하는데 사용되는 class-level annotation 입니다. 
 
-The following example indicates that the `dev` profile should be active:
+다음 예는 `dev` profile이 활성화 되어야 함을 나타냅니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -605,7 +569,7 @@ The following example indicates that the `dev` profile should be active:
 		// class body...
 	}
 ----
-<1> Indicate that the `dev` profile should be active.
+<1> `dev` profile이 활성화 되어야 함을 나타냅니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -616,11 +580,9 @@ The following example indicates that the `dev` profile should be active:
 		// class body...
 	}
 ----
-<1> Indicate that the `dev` profile should be active.
+<1> `dev` profile이 활성화 되어야 함을 나타냅니다.
 
-
-The following example indicates that both the `dev` and the `integration` profiles should
-be active:
+다음 예는 `dev` 및 `integration` profile이 모두 활성화되어야 함을 나타냅니다: 
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -631,7 +593,7 @@ be active:
 		// class body...
 	}
 ----
-<1> Indicate that the `dev` and `integration` profiles should be active.
+<1> `dev` 및 `integration` profile이 활성화되어야 함을 나타냅니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -642,29 +604,19 @@ be active:
 		// class body...
 	}
 ----
-<1> Indicate that the `dev` and `integration` profiles should be active.
+<1> `dev` 및 `integration` profile이 활성화되어야 함을 나타냅니다.
 
 
-NOTE: `@ActiveProfiles` provides support for inheriting active bean definition profiles
-declared by superclasses and enclosing classes by default. You can also resolve active
-bean definition profiles programmatically by implementing a custom
-<<testcontext-ctx-management-env-profiles-ActiveProfilesResolver, `ActiveProfilesResolver`>>
-and registering it by using the `resolver` attribute of `@ActiveProfiles`.
+NOTE: `@ActiveProfiles` 기본적으로 superclass 및 enclosing class에 의해 선언된 active bean profile 상속을 지원합니다.
+또한 custom <<testcontext-ctx-management-env-profiles-ActiveProfilesResolver, `ActiveProfilesResolver`>>를 구현하고 `@ActiveProfiles` 의 `resolver` attribute를 사용하여 등록함으로써 active bean definition profile을 programming 방식으로 해결할 수 있습니다.
 
-See <<testcontext-ctx-management-env-profiles>>,
-<<testcontext-junit-jupiter-nested-test-configuration>>, and the
-{api-spring-framework}/test/context/ActiveProfiles.html[`@ActiveProfiles`] javadoc for
-examples and further details.
+자세한 내용은 <<testcontext-ctx-management-env-profiles>>, <<testcontext-junit-jupiter-nested-test-configuration>> 및 {api-spring-framework}/test/context/ActiveProfiles.html[`@ActiveProfiles`] javadoc을 참조하세요.
 
 [[spring-testing-annotation-testpropertysource]]
 ===== `@TestPropertySource`
 
-`@TestPropertySource` is a class-level annotation that you can use to configure the
-locations of properties files and inlined properties to be added to the set of
-`PropertySources` in the `Environment` for an `ApplicationContext` loaded for an
-integration test.
-
-The following example demonstrates how to declare a properties file from the classpath:
+`@TestPropertySource` 는 통합 테스트를 위해 로드된 `ApplicationContext` 에 대해 `Environment` 안에서 `PropertySources` set에 추가할 properties file과 inline property의 localtion을 구성하는데 사용할 수 있는 class-level annotation 입니다.
+다음 예제는 classpath에서 properties file을 선언하는 방법을 보여줍니다;
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -675,7 +627,7 @@ The following example demonstrates how to declare a properties file from the cla
 		// class body...
 	}
 ----
-<1> Get properties from `test.properties` in the root of the classpath.
+<1> classpath의 root에 있는 `test.properties` 에서 property를 가져옵니다. 
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -686,10 +638,9 @@ The following example demonstrates how to declare a properties file from the cla
 		// class body...
 	}
 ----
-<1> Get properties from `test.properties` in the root of the classpath.
+<1> classpath의 root에 있는 `test.properties` 에서 property를 가져옵니다.
 
-
-The following example demonstrates how to declare inlined properties:
+다음 예제는 inline property를 선언하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -700,7 +651,7 @@ The following example demonstrates how to declare inlined properties:
 		// class body...
 	}
 ----
-<1> Declare `timezone` and `port` properties.
+<1> `timezone` 및 `port` property 선언.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -711,21 +662,18 @@ The following example demonstrates how to declare inlined properties:
 		// class body...
 	}
 ----
-<1> Declare `timezone` and `port` properties.
+<1> `timezone` 및 `port` property 선언.
 
-See <<testcontext-ctx-management-property-sources>> for examples and further details.
+예제 및 자세한 내용은 <<testcontext-ctx-management-property-sources>>를 참조하세요.
 
 [[spring-testing-annotation-dynamicpropertysource]]
 ===== `@DynamicPropertySource`
 
-`@DynamicPropertySource` is a method-level annotation that you can use to register
-_dynamic_ properties to be added to the set of `PropertySources` in the `Environment` for
-an `ApplicationContext` loaded for an integration test. Dynamic properties are useful
-when you do not know the value of the properties upfront – for example, if the properties
-are managed by an external resource such as for a container managed by the
-https://www.testcontainers.org/[Testcontainers] project.
+`@DynamicPropertySource` 는 통합 테스트를 위해 로드된 `ApplicationContext` 에 대해  `Environment` 에서 `PropertySources` set에 추가할 _dynamic_ property를 등록할 때 사용할 수 있는 method-level annotation 입니다.
+Dynamic property는 property의 값을 미리 모르는 경우 유용합니다.
+예를 들어 https://www.testcontainers.org/[Testcontainers] project에서 관리하는 container와 같은 외부 resource에서 property를 관리하는 경우입니다.
 
-The following example demonstrates how to register a dynamic property:
+다음 예제는 dynamic property를 등록하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -743,9 +691,9 @@ The following example demonstrates how to register a dynamic property:
 		// tests ...
 	}
 ----
-<1> Annotate a `static` method with `@DynamicPropertySource`.
-<2> Accept a `DynamicPropertyRegistry` as an argument.
-<3> Register a dynamic `server.port` property to be retrieved lazily from the server.
+<1> `@DynamicPropertySource`와 함께 `static` method를 annotate 합니다.
+<2> `DynamicPropertyRegistry` 를 argument 사용합니다.
+<3> server에서 lazy하게 검색할 dynamic `server.port` property를 등록합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -768,33 +716,25 @@ The following example demonstrates how to register a dynamic property:
 		// tests ...
 	}
 ----
-<1> Annotate a `static` method with `@DynamicPropertySource`.
-<2> Accept a `DynamicPropertyRegistry` as an argument.
-<3> Register a dynamic `server.port` property to be retrieved lazily from the server.
+<1> `@DynamicPropertySource`와 함께 `static` method를 annotate 합니다.
+<2> `DynamicPropertyRegistry` 를 argument 사용합니다.
+<3> server에서 lazy하게 검색할 dynamic `server.port` property를 등록합니다.
 
-See <<testcontext-ctx-management-dynamic-property-sources>> for further details.
+자세한 내용은 <<testcontext-ctx-management-dynamic-property-sources>>를 참조하세요.
 
 [[spring-testing-annotation-dirtiescontext]]
 ===== `@DirtiesContext`
 
-`@DirtiesContext` indicates that the underlying Spring `ApplicationContext` has been
-dirtied during the execution of a test (that is, the test modified or corrupted it in
-some manner -- for example, by changing the state of a singleton bean) and should be
-closed. When an application context is marked as dirty, it is removed from the testing
-framework's cache and closed. As a consequence, the underlying Spring container is
-rebuilt for any subsequent test that requires a context with the same configuration
-metadata.
+`@DirtiesContext` 는 테스트 실행 중 기본 Spring `ApplicationContext` 가 더럽혀졌음(어떤 방식으로 인해 수정되거나 손상되는 경우 -- 예를 들어 singleton bean의 상태가 변경됨)을 의미하며 이는 종료가 되어야 합니다. 
+Application context가 dirty로 표시되면 test framework의 cache에서 제거되고 닫힙니다.
+결과적으로 기본 Spring container는 동일한 configuration metadata를 가진 context가 필요한 모든 후속 테스트를 위해 rebuild 됩니다.
 
-You can use `@DirtiesContext` as both a class-level and a method-level annotation within
-the same class or class hierarchy. In such scenarios, the `ApplicationContext` is marked
-as dirty before or after any such annotated method as well as before or after the current
-test class, depending on the configured `methodMode` and `classMode`.
+동일한 class 또는 class hierarchy 내에서 `@DirtiesContext` 를 class-level과 method-level annotation으로 모두 사용할 수 있습니다.
+이러한 시나리오에서 `ApplicationContext` 은 구성된 `methodMode` 와 `classMode` 에 따라 current test class 전과 후에 annotation이 달린 method가 더러워진 것으로 표시됩니다.
 
-The following examples explain when the context would be dirtied for various
-configuration scenarios:
+다음 예는 다양한 configuration 시나리오에서 context가 더러워지는 시기를 설명합니다:
 
-* Before the current test class, when declared on a class with class mode set to
-`BEFORE_CLASS`.
+* current test class 전에 class mode가 `BEFORE_CLASS` 로 설정된 class에 선언되었을 때
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -804,7 +744,7 @@ configuration scenarios:
 		// some tests that require a new Spring container
 	}
 ----
-<1> Dirty the context before the current test class.
+<1> current test class 이전의 context를 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -814,10 +754,9 @@ configuration scenarios:
 		// some tests that require a new Spring container
 	}
 ----
-<1> Dirty the context before the current test class.
+<1> current test class 이전의 context를 dirty 합니다.
 
-* After the current test class, when declared on a class with class mode set to
-`AFTER_CLASS` (i.e., the default class mode).
+* current test class 이후 class mode가 `AFTER_CLASS` (즉, default class mode)로 설정된 class에 선언되었을 때
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -827,7 +766,7 @@ configuration scenarios:
 		// some tests that result in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after the current test class.
+<1> current test class 이후의 context를 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -837,11 +776,10 @@ configuration scenarios:
 		// some tests that result in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after the current test class.
+<1> current test class 이후의 context를 dirty 합니다.
 
 
-* Before each test method in the current test class, when declared on a class with class
-mode set to `BEFORE_EACH_TEST_METHOD.`
+* current test class의 각 test method 이전에 class mode가 `BEFORE_EACH_TEST_METHOD` 로 설정된 class에 선언되었을 때
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -851,7 +789,7 @@ mode set to `BEFORE_EACH_TEST_METHOD.`
 		// some tests that require a new Spring container
 	}
 ----
-<1> Dirty the context before each test method.
+<1> 각 test method 전에 context를 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -861,11 +799,10 @@ mode set to `BEFORE_EACH_TEST_METHOD.`
 		// some tests that require a new Spring container
 	}
 ----
-<1> Dirty the context before each test method.
+<1> 각 test method 전에 context를 dirty 합니다.
 
 
-* After each test method in the current test class, when declared on a class with class
-mode set to `AFTER_EACH_TEST_METHOD.`
+* current test class 의 각 test method 이후에 class mode가 `AFTER_EACH_TEST_METHOD` 로 설정된 class에 선언되었을 때
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -875,7 +812,7 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some tests that result in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after each test method.
+<1> 각 test method 이후 context가 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -885,11 +822,10 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some tests that result in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after each test method.
+<1> 각 test method 이후 context가 dirty 합니다.
 
 
-* Before the current test, when declared on a method with the method mode set to
-`BEFORE_METHOD`.
+* current test 전에 method mode가 `BEFORE_METHOD`로 설정된 method에 선언된 경우
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -900,7 +836,7 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some logic that requires a new Spring container
 	}
 ----
-<1> Dirty the context before the current test method.
+<1> current test method 전에 context가 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -911,10 +847,9 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some logic that requires a new Spring container
 	}
 ----
-<1> Dirty the context before the current test method.
+<1> current test method 전에 context가 dirty 합니다.
 
-* After the current test, when declared on a method with the method mode set to
-`AFTER_METHOD` (i.e., the default method mode).
+* current test 이후 method mode가 `AFTER_METHOD` (즉, default method mode)로 설정된 method에 선언된 경우
 +
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -925,7 +860,7 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some logic that results in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after the current test method.
+<1> current test method 이후 context가 dirty 합니다.
 +
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -936,18 +871,12 @@ mode set to `AFTER_EACH_TEST_METHOD.`
 		// some logic that results in the Spring container being dirtied
 	}
 ----
-<1> Dirty the context after the current test method.
+<1> current test method 이후 context가 dirty 합니다.
 
-
-If you use `@DirtiesContext` in a test whose context is configured as part of a context
-hierarchy with `@ContextHierarchy`, you can use the `hierarchyMode` flag to control how
-the context cache is cleared. By default, an exhaustive algorithm is used to clear the
-context cache, including not only the current level but also all other context
-hierarchies that share an ancestor context common to the current test. All
-`ApplicationContext` instances that reside in a sub-hierarchy of the common ancestor
-context are removed from the context cache and closed. If the exhaustive algorithm is
-overkill for a particular use case, you can specify the simpler current level algorithm,
-as the following example shows.
+context가 `@ContextHierarchy` 로 context hierarchy의 일부로 구성된 테스트에서 `@DirtiesContext` 를 사용하면 `hierarchyMode` flag를 사용하여 context cache가 삭제되는 방법을 제어할 수 있습니다.
+기본적으로 현재 수준 뿐만 아니라 현재 테스트에 공통된 상위 context를 공유하는 다른 모든 context hierarchy를 포함하여 전체 알고리즘을 사용하여 context cache를 지웁니다.
+공통 상위 context의 하위 hierarchy에 있는 모든 `ApplicationContext` instance는 context cache에서 제거되고 닫힙니다.
+특정 사용 사례에 대한 전체 알고리즘이 과다한 경우 다음 예와 같이 더 간단한 현재 수준 알고리즘을 지정할 수 있습니다. 
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -969,7 +898,7 @@ as the following example shows.
 		}
 	}
 ----
-<1> Use the current-level algorithm.
+<1> 현재 수준 알고리즘을 사용합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -990,22 +919,18 @@ as the following example shows.
 		}
 	}
 ----
-<1> Use the current-level algorithm.
+<1> 현재 수준 알고리즘을 사용합니다.
 
 
-For further details regarding the `EXHAUSTIVE` and `CURRENT_LEVEL` algorithms, see the
-{api-spring-framework}/test/annotation/DirtiesContext.HierarchyMode.html[`DirtiesContext.HierarchyMode`]
-javadoc.
+`EXHAUSTIVE` 및 `CURRENT_LEVEL` 알고리즘에 대한 자세한 내용은 {api-spring-framework}/test/annotation/DirtiesContext.HierarchyMode.html[`DirtiesContext.HierarchyMode`] javadoc을 참조하세요. 
 
 [[spring-testing-annotation-testexecutionlisteners]]
 ===== `@TestExecutionListeners`
 
-`@TestExecutionListeners` defines class-level metadata for configuring the
-`TestExecutionListener` implementations that should be registered with the
-`TestContextManager`. Typically, `@TestExecutionListeners` is used in conjunction with
-`@ContextConfiguration`.
+`@TestExecutionListeners` 는 `TestContextManager` 에 등록해야 하는 `TestExecutionListener` 구현을 구성하기 위한 class-level metadasta를 정의합니다.  
+일반적으로 `@TestExecutionListeners` 는 `@ContextConfiguration` 와 함께 사용됩니다. 
 
-The following example shows how to register two `TestExecutionListener` implementations:
+다음 예제는 2개의 `TestExecutionListener` 구현을 등록하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1016,7 +941,7 @@ The following example shows how to register two `TestExecutionListener` implemen
 		// class body...
 	}
 ----
-<1> Register two `TestExecutionListener` implementations.
+<1> 2개의 `TestExecutionListener` 구현을 등록합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1027,38 +952,29 @@ The following example shows how to register two `TestExecutionListener` implemen
 		// class body...
 	}
 ----
-<1> Register two `TestExecutionListener` implementations.
+<1> 2개의 `TestExecutionListener` 구현을 등록합니다.
 
 
-By default, `@TestExecutionListeners` provides support for inheriting listeners from
-superclasses or enclosing classes. See
-<<testcontext-junit-jupiter-nested-test-configuration>> and the 
-{api-spring-framework}/test/context/TestExecutionListeners.html[`@TestExecutionListeners`
-javadoc] for an example and further details.
+기본적으로 `@TestExecutionListeners` 는 superclass 또는 enclosing class에서 listener 상속을 지원합니다.
+예제 및 추가 세부사항은 <<testcontext-junit-jupiter-nested-test-configuration>> 및 {api-spring-framework}/test/context/TestExecutionListeners.html[`@TestExecutionListeners` javadoc]을 참조하세요.  
 
 [[spring-testing-annotation-recordapplicationevents]]
 ===== `@RecordApplicationEvents`
 
-`@RecordApplicationEvents` is a class-level annotation that is used to instruct the
-_Spring TestContext Framework_ to record all application events that are published in the
-`ApplicationContext` during the execution of a single test.
+`@RecordApplicationEvents` 는 _Spring TestContext Framework_ 에 단일 테스트를 실행하는 동안 `ApplicationContext` 에 게시된 모든 application event를 기록하도록 지시하는데 사용되는 class-level annotation 입니다.
 
-The recorded events can be accessed via the `ApplicationEvents` API within tests.
+기록된 event는 테스트 내에서 `ApplicationEvents` API를 통해 access 할 수 있습니다. 
 
-See <<testcontext-application-events>> and the 
-{api-spring-framework}/test/context/event/RecordApplicationEvents.html[`@RecordApplicationEvents`
-javadoc] for an example and further details.
+예제 및 추가 세부사항은 <<testcontext-application-events>> 및 {api-spring-framework}/test/context/event/RecordApplicationEvents.html[`@RecordApplicationEvents` javadoc] 을 참조하세요.
 
 [[spring-testing-annotation-commit]]
 ===== `@Commit`
 
-`@Commit` indicates that the transaction for a transactional test method should be
-committed after the test method has completed. You can use `@Commit` as a direct
-replacement for `@Rollback(false)` to more explicitly convey the intent of the code.
-Analogous to `@Rollback`, `@Commit` can also be declared as a class-level or method-level
-annotation.
+`@Commit` 은 transcation test method에 대한 transaction이 test method가 완료된 후 commit 되어야 함을 나타냅니다.
+`@Commit`을 `@Rollback(false)` 의 대체로 사용하여 코드의 의도를 좀더 명시적으로 전달할 수 있습니다. 
+`@Rollback` 과 마찬가지로 `@Commit` 도 class-level 또는 method-level annotation으로 선언할 수 있습니다.
 
-The following example shows how to use the `@Commit` annotation:
+다음 예는 `@Commit` annotation을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1069,7 +985,7 @@ The following example shows how to use the `@Commit` annotation:
 		// ...
 	}
 ----
-<1> Commit the result of the test to the database.
+<1> 테스트 결과를 데이터베이스에 commit 합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1080,25 +996,20 @@ The following example shows how to use the `@Commit` annotation:
 		// ...
 	}
 ----
-<1> Commit the result of the test to the database.
+<1> 테스트 결과를 데이터베이스에 commit 합니다.
 
 
 [[spring-testing-annotation-rollback]]
 ===== `@Rollback`
 
-`@Rollback` indicates whether the transaction for a transactional test method should be
-rolled back after the test method has completed. If `true`, the transaction is rolled
-back. Otherwise, the transaction is committed (see also
-<<spring-testing-annotation-commit>>). Rollback for integration tests in the Spring
-TestContext Framework defaults to `true` even if `@Rollback` is not explicitly declared.
+`@Rollback` 은 test method가 완료된 후 transaction test method에 대한 transaction을 rollback 해야하는지 여부를 나타냅니다.
+`true` 인 경우 transaction이 rollback 되며 그렇지 않으면 commit 됩니다. (<<spring-testing-annotation-commit>> 참조)
+Spring TestContext Framework에서 통합 테스트를 위한 rollback은 `@Rollback` 이 명시적으로 선언되지 않은 경우 기본적으로 `true` 로 설정됩니다. 
 
-When declared as a class-level annotation, `@Rollback` defines the default rollback
-semantics for all test methods within the test class hierarchy. When declared as a
-method-level annotation, `@Rollback` defines rollback semantics for the specific test
-method, potentially overriding class-level `@Rollback` or `@Commit` semantics.
+class-level annotation으로 선언되면 `@Rollback` 은 test class hierarchy 내의 모든 test method에 대한 기본 rolllback 체계를 정의합니다.
+method-level annotation으로 선언되면 `@Rollback` 은 특정 test method에 대한 rollback 체계를 정의하여 잠재적으로 class-level `@Rollback` 또는 `@Commit` 체계를 재정의합니다. 
 
-The following example causes a test method's result to not be rolled back (that is, the
-result is committed to the database):
+다음 예제에서는 test method의 결과가 rollback되지 않도록 합니다. (즉, 결과가 데이터베이스에 commit 됨):
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1109,7 +1020,7 @@ result is committed to the database):
 		// ...
 	}
 ----
-<1> Do not roll back the result.
+<1> 결과를 rollback 하지 않습니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1120,19 +1031,16 @@ result is committed to the database):
 		// ...
 	}
 ----
-<1> Do not roll back the result.
+<1> 결과를 rollback 하지 않습니다.
 
 
 [[spring-testing-annotation-beforetransaction]]
 ===== `@BeforeTransaction`
 
-`@BeforeTransaction` indicates that the annotated `void` method should be run before a
-transaction is started, for test methods that have been configured to run within a
-transaction by using Spring's `@Transactional` annotation. `@BeforeTransaction` methods
-are not required to be `public` and may be declared on Java 8-based interface default
-methods.
+`@BeforeTransaction` 은 Spring의 `@Transactional` annotation을 사용하여 transaction 내에서 실행되도록 구성된 test method의 경우 annotation이 있는 method가 transaction이 시작되기 전에 실행되어야 함을 나타냅니다.
+`@BeforeTransaction` method는 public일 필요는 없으며 Java 8 기반 interface default method에 선언될 수 있습니다.
 
-The following example shows how to use the `@BeforeTransaction` annotation:
+다음 예는 `@BeforeTransaction` annotation을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1142,7 +1050,7 @@ The following example shows how to use the `@BeforeTransaction` annotation:
 		// logic to be run before a transaction is started
 	}
 ----
-<1> Run this method before a transaction.
+<1> transaction 이전에 method를 실행합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1152,18 +1060,15 @@ The following example shows how to use the `@BeforeTransaction` annotation:
 		// logic to be run before a transaction is started
 	}
 ----
-<1> Run this method before a transaction.
+<1> transaction 이전에 method를 실행합니다.
 
 
 [[spring-testing-annotation-aftertransaction]]
 ===== `@AfterTransaction`
 
-`@AfterTransaction` indicates that the annotated `void` method should be run after a
-transaction is ended, for test methods that have been configured to run within a
-transaction by using Spring's `@Transactional` annotation. `@AfterTransaction` methods
-are not required to be `public` and may be declared on Java 8-based interface default
-methods.
-
+`@AfterTransaction` 은 Spring의  `@Transactional` annotation을 사용하여  transaction 내에서 실행되도록 구성된 test method에 대한 transaction이 종료된 후 annotation이 달린 `void` method를 실행해야 함을 나타냅니다.
+`@AfterTransaction` method는 `public` 일 필요는 없으며 Java 8 기반 interface default method에 선언될 수 있습니다.
+ 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
 ----
@@ -1172,7 +1077,7 @@ methods.
 		// logic to be run after a transaction has ended
 	}
 ----
-<1> Run this method after a transaction.
+<1> transaction 이후에 method를 실행합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1182,15 +1087,14 @@ methods.
 		// logic to be run after a transaction has ended
 	}
 ----
-<1> Run this method after a transaction.
+<1> transaction 이후에 method를 실행합니다.
 
 
 [[spring-testing-annotation-sql]]
 ===== `@Sql`
 
-`@Sql` is used to annotate a test class or test method to configure SQL scripts to be run
-against a given database during integration tests. The following example shows how to use
-it:
+`@Sql` 은 통합 테스트 중에 지정된 데이터베이스에 대해 실행될 SQL script를 구성하기 위해 test class 또는 test method에 annotation을 추가하는데 사용됩니다.
+다음 예제는 사용방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1201,7 +1105,7 @@ it:
 		// run code that relies on the test schema and test data
 	}
 ----
-<1> Run two scripts for this test.
+<1> 이 테스트를 위해 두 개의 script를 실행합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1212,16 +1116,16 @@ it:
 		// run code that relies on the test schema and test data
 	}
 ----
-<1> Run two scripts for this test.
+<1> 이 테스트를 위해 두 개의 script를 실행합니다.
 
-See <<testcontext-executing-sql-declaratively>> for further details.
+자세한 내용은 <<testcontext-executing-sql-declaratively>>을 참조하세요.
 
 
 [[spring-testing-annotation-sqlconfig]]
 ===== `@SqlConfig`
 
-`@SqlConfig` defines metadata that is used to determine how to parse and run SQL scripts
-configured with the `@Sql` annotation. The following example shows how to use it:
+`@SqlConfig` 는 `@Sql` annotation으로 구성된 SQL script를 구문 분석하고 실행하는 방법을 결정하는데 사용되는 metadata를 정의합니다.
+다음 예제는 사용 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1235,7 +1139,7 @@ configured with the `@Sql` annotation. The following example shows how to use it
 		// run code that relies on the test data
 	}
 ----
-<1> Set the comment prefix and the separator in SQL scripts.
+<1> SQL script에서 comment prefix와 separator를 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1246,20 +1150,18 @@ configured with the `@Sql` annotation. The following example shows how to use it
 		// run code that relies on the test data
 	}
 ----
-<1> Set the comment prefix and the separator in SQL scripts.
+<1> SQL script에서 comment prefix와 separator를 설정합니다.
 
 [[spring-testing-annotation-sqlmergemode]]
 ===== `@SqlMergeMode`
 
-`@SqlMergeMode` is used to annotate a test class or test method to configure whether
-method-level `@Sql` declarations are merged with class-level `@Sql` declarations. If
-`@SqlMergeMode` is not declared on a test class or test method, the `OVERRIDE` merge mode
-will be used by default. With the `OVERRIDE` mode, method-level `@Sql` declarations will
-effectively override class-level `@Sql` declarations.
+`@SqlMergeMode` 는 method-level `@Sql` 선언이 class-level `@Sql` 선언과 병합되는지 여부를 구성하기 위해 test class 또는 test method에 annotation을 추가하는 데 사용됩니다.
+test class나 test method에서 `@SqlMergeMode` 가 선언되지 않으면 기본적으로 `OVERRIDE` merge mode가 사용됩니다.
+`OVERRIDE` mode를 사용하면 method-level `@Sql` 선언이 class-level `@Sql` 선언을 효과적으로 재정의 합니다. 
 
-Note that a method-level `@SqlMergeMode` declaration overrides a class-level declaration.
+method-level `@SqlMergeMode` 선언은 class-level 선언을 재정의합니다.
 
-The following example shows how to use `@SqlMergeMode` at the class level.
+다음 예제는 class level에서 `@SqlMergeMode` 을 사용하는 방법을 보여줍니다. 
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1276,7 +1178,7 @@ The following example shows how to use `@SqlMergeMode` at the class level.
 		}
 	}
 ----
-<1> Set the `@Sql` merge mode to `MERGE` for all test methods in the class.
+<1> class의 모든 test method에 대해 `@Sql` merge mode를 `MERGE` 로 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1293,9 +1195,9 @@ The following example shows how to use `@SqlMergeMode` at the class level.
 		}
 	}
 ----
-<1> Set the `@Sql` merge mode to `MERGE` for all test methods in the class.
+<1> class의 모든 test method에 대해 `@Sql` merge mode를 `MERGE` 로 설정합니다.
 
-The following example shows how to use `@SqlMergeMode` at the method level.
+다음 예제는 method level에서 `@SqlMergeMode` 을 사용하는 방법을 보여줍니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1312,7 +1214,7 @@ The following example shows how to use `@SqlMergeMode` at the method level.
 		}
 	}
 ----
-<1> Set the `@Sql` merge mode to `MERGE` for a specific test method.
+<1> 특정 test method에 대해 `@Sql` merge mode를 `MERGE` 로 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1329,17 +1231,15 @@ The following example shows how to use `@SqlMergeMode` at the method level.
 		}
 	}
 ----
-<1> Set the `@Sql` merge mode to `MERGE` for a specific test method.
+<1> 특정 test method에 대해 `@Sql` merge mode를 `MERGE` 로 설정합니다.
 
 
 [[spring-testing-annotation-sqlgroup]]
 ===== `@SqlGroup`
 
-`@SqlGroup` is a container annotation that aggregates several `@Sql` annotations. You can
-use `@SqlGroup` natively to declare several nested `@Sql` annotations, or you can use it
-in conjunction with Java 8's support for repeatable annotations, where `@Sql` can be
-declared several times on the same class or method, implicitly generating this container
-annotation. The following example shows how to declare an SQL group:
+`@SqlGroup` 은 여러 `@Sql` annotation을 사용할 때 쓰이는 container annotation입니다.
+`@SqlGroup` 을 사용하여 여러 개의 중첩된 `@Sql` annotation을 선언하거나 Java 8의 repeatable annotation 지원과 함께 사용할 수 있으며 , 여기서 `@Sql` 은 동일한 class나 method에서 여러 번 선언되어 이 container annotation을 암시적으로 생성할 수 있습니다.
+다음 예는 SQL group을 선언하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1353,7 +1253,7 @@ annotation. The following example shows how to declare an SQL group:
 		// run code that uses the test schema and test data
 	}
 ----
-<1> Declare a group of SQL scripts.
+<1> SQL script group을 선언합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1366,51 +1266,43 @@ annotation. The following example shows how to declare an SQL group:
 		// run code that uses the test schema and test data
 	}
 ----
-<1> Declare a group of SQL scripts.
+<1> SQL script group을 선언합니다.
 
 [[integration-testing-annotations-standard]]
 ==== Standard Annotation Support
 
-The following annotations are supported with standard semantics for all configurations of
-the Spring TestContext Framework. Note that these annotations are not specific to tests
-and can be used anywhere in the Spring Framework.
+다음 annotation은 Spring TestContest Framework의 모든 구성에 대한 standard semantic으로 지원됩니다.
+이러한 annotation은 테스트에만 국한되지 않으며 Spring Framework 어느 곳에서나 사용할 수 있습니다.
 
 * `@Autowired`
 * `@Qualifier`
 * `@Value`
-* `@Resource` (javax.annotation) if JSR-250 is present
-* `@ManagedBean` (javax.annotation) if JSR-250 is present
-* `@Inject` (javax.inject) if JSR-330 is present
-* `@Named` (javax.inject) if JSR-330 is present
-* `@PersistenceContext` (javax.persistence) if JPA is present
-* `@PersistenceUnit` (javax.persistence) if JPA is present
+* `@Resource` (javax.annotation) JSR-250가 있는 경우
+* `@ManagedBean` (javax.annotation) JSR-250가 있는 경우
+* `@Inject` (javax.inject) JSR-330가 있는 경우
+* `@Named` (javax.inject) JSR-330가 있는 경우
+* `@PersistenceContext` (javax.persistence) JPA가 있는 경우
+* `@PersistenceUnit` (javax.persistence) JPA가 있는 경우
 * `@Required`
 * `@Transactional` (org.springframework.transaction.annotation)
-  _with <<testcontext-tx-attribute-support, limited attribute support>>_
+  _with <<testcontext-tx-attribute-support, 제한된 attribute 지원>>_
 
 .JSR-250 Lifecycle Annotations
 [NOTE]
 ====
-In the Spring TestContext Framework, you can use `@PostConstruct` and `@PreDestroy` with
-standard semantics on any application components configured in the `ApplicationContext`.
-However, these lifecycle annotations have limited usage within an actual test class.
+Spring TestContext Framework에서는 `ApplicationContext` 에서 구성된 모든 application component에 standard semantic과 함께 `@PostConstruct` 및 `@PreDestroy` 를 사용할 수 있습니다. 
+하지만 이러한 lifecycle annotation은 실제 test class 내에서 제한적으로 사용됩니다.
 
-If a method within a test class is annotated with `@PostConstruct`, that method runs
-before any before methods of the underlying test framework (for example, methods
-annotated with JUnit Jupiter's `@BeforeEach`), and that applies for every test method in
-the test class. On the other hand, if a method within a test class is annotated with
-`@PreDestroy`, that method never runs. Therefore, within a test class, we recommend that
-you use test lifecycle callbacks from the underlying test framework instead of
-`@PostConstruct` and `@PreDestroy`.
+test class 내의 method에 `@PostConstruct` annotation이 달린 경우 해당 method는 기본 test framework의 어떤 method 보다 먼저 실행되며 (예 : JUnit Jupiter의 `@BeforeEach` annotation이 달린 method) test class의 모든 test method에 적용됩니다. 
+반면 test class 내의 method에 `@PreDestroy` annotation이 달린 경우 해당 method는 실행되지 않습니다.
+따라서 test class 내에서 `@PostConstruct` 및 `@PreDestroy` 대신 기본 test framework에서 test lifecycle callback을 사용하는 것이 좋습니다.
 ====
 
 
 [[integration-testing-annotations-junit4]]
 ==== Spring JUnit 4 Testing Annotations
 
-The following annotations are supported only when used in conjunction with the
-<<testcontext-junit4-runner, SpringRunner>>, <<testcontext-junit4-rules, Spring's JUnit 4
-rules>>, or <<testcontext-support-classes-junit4, Spring's JUnit 4 support classes>>:
+다음 annotation은 <<testcontext-junit4-runner, SpringRunner>>, <<testcontext-junit4-rules, Spring's JUnit 4 rules>>, 또는 <<testcontext-support-classes-junit4, Spring's JUnit 4 support classes>> 와 함께 사용되는 경우에만 지원됩니다:
 
 * <<integration-testing-annotations-junit4-ifprofilevalue>>
 * <<integration-testing-annotations-junit4-profilevaluesourceconfiguration>>
@@ -1420,19 +1312,16 @@ rules>>, or <<testcontext-support-classes-junit4, Spring's JUnit 4 support class
 [[integration-testing-annotations-junit4-ifprofilevalue]]
 ===== `@IfProfileValue`
 
-`@IfProfileValue` indicates that the annotated test is enabled for a specific testing
-environment. If the configured `ProfileValueSource` returns a matching `value` for the
-provided `name`, the test is enabled. Otherwise, the test is disabled and, effectively,
-ignored.
+`@IfProfileValue` 은 해당 annotation이 달린 테스트가 특정 테스트 환경에 대해 활성화 됨을 나타냅니다.
+구성된 `ProfileValueSource` 가 제공된 `name` 에 일치하는 `value` 를 반환하는 경우 테스트가 활성화됩니다.
 
-You can apply `@IfProfileValue` at the class level, the method level, or both.
-Class-level usage of `@IfProfileValue` takes precedence over method-level usage for any
-methods within that class or its subclasses. Specifically, a test is enabled if it is
-enabled both at the class level and at the method level. The absence of `@IfProfileValue`
-means the test is implicitly enabled. This is analogous to the semantics of JUnit 4's
-`@Ignore` annotation, except that the presence of `@Ignore` always disables a test.
+`@IfProfileValue` 는 class level, method level 또는 둘다 적용할 수 있습니다.
+`@IfProfileValue` 의 class-level 사용은 해당 class 또는 subclass 내의 모든 method에 대한 method-level 사용보다 우선합니다.
+특히 class level 과 method level에서 모두 활성화되면 테스트가 활성화됩니다.
+`@IfProfileValue` 가 없으면 테스트가 암묵적으로 활성화 되었음을 의미합니다.
+이것은 `@Ignore` 가 존재하면 항상 테스트가 비활성화 된다는 점을 제외하면 JUnit 4의 `@Ignore` annotation의 의미와 유사합니다. 
 
-The following example shows a test that has an `@IfProfileValue` annotation:
+다음 예는 `@IfProfileValue` annotation이 있는 테스트를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1443,7 +1332,7 @@ The following example shows a test that has an `@IfProfileValue` annotation:
 		// some logic that should run only on Java VMs from Oracle Corporation
 	}
 ----
-<1> Run this test only when the Java vendor is "Oracle Corporation".
+<1> Java vendor가 "Oracle Corporation" 인 경우에만 테스트가 실행됩니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1454,12 +1343,10 @@ The following example shows a test that has an `@IfProfileValue` annotation:
 		// some logic that should run only on Java VMs from Oracle Corporation
 	}
 ----
-<1> Run this test only when the Java vendor is "Oracle Corporation".
+<1> Java vendor가 "Oracle Corporation" 인 경우에만 테스트가 실행됩니다.
 
 
-Alternatively, you can configure `@IfProfileValue` with a list of `values` (with `OR`
-semantics) to achieve TestNG-like support for test groups in a JUnit 4 environment.
-Consider the following example:
+또는 `values` 목록 (`OR` 의미 포함)과 함께 `@IfProfileValue` 를 구성하여 JUnit 4 환경에서 test group을 TestNG 처럼 지원할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1470,7 +1357,7 @@ Consider the following example:
 		// some logic that should run only for unit and integration test groups
 	}
 ----
-<1> Run this test for unit tests and integration tests.
+<1>  unit tests 및 integration tests를 위해 이 테스트를 실행합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1481,17 +1368,15 @@ Consider the following example:
 		// some logic that should run only for unit and integration test groups
 	}
 ----
-<1> Run this test for unit tests and integration tests.
+<1> unit tests 및 integration tests를 위해 이 테스트를 실행합니다.
 
 
 [[integration-testing-annotations-junit4-profilevaluesourceconfiguration]]
 ===== `@ProfileValueSourceConfiguration`
 
-`@ProfileValueSourceConfiguration` is a class-level annotation that specifies what type
-of `ProfileValueSource` to use when retrieving profile values configured through the
-`@IfProfileValue` annotation. If `@ProfileValueSourceConfiguration` is not declared for a
-test, `SystemProfileValueSource` is used by default. The following example shows how to
-use `@ProfileValueSourceConfiguration`:
+`@ProfileValueSourceConfiguration` 은  `@IfProfileValue` annotation을 통해 구성된 profile value를 검색 할 때 사용할 `ProfileValueSource` 의 유형을 지정하는 class-level annotation 입니다. 
+테스트에 대해 `@ProfileValueSourceConfiguration` 이 선언되지 않은 경우 기본적으로 `SystemProfileValueSource` 가 사용됩니다.
+다음 예는 `@ProfileValueSourceConfiguration` 을 사용하는 방법을 보여줍니다.:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1501,7 +1386,7 @@ use `@ProfileValueSourceConfiguration`:
 		// class body...
 	}
 ----
-<1> Use a custom profile value source.
+<1> custom profile value source를 사용합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1511,19 +1396,17 @@ use `@ProfileValueSourceConfiguration`:
 		// class body...
 	}
 ----
-<1> Use a custom profile value source.
+<1> custom profile value source를 사용합니다.
 
 
 [[integration-testing-annotations-junit4-timed]]
 ===== `@Timed`
 
-`@Timed` indicates that the annotated test method must finish execution in a specified
-time period (in milliseconds). If the text execution time exceeds the specified time
-period, the test fails.
+`@Timed` 는 해당 annotation이 달린 test method가 지정된 기간 내에(millisecond 안에) 실행을 완료해야 함을 나타냅니다.  
+테스트 실행 시간이 지정된 시간을 초과하면 테스트가 실패합니다.
 
-The time period includes running the test method itself, any repetitions of the test (see
-`@Repeat`), as well as any setting up or tearing down of the test fixture. The following
-example shows how to use it:
+time period에는 test method 자체 실행. rest repeat (`@Repeat` 참조), test fixture 설정 또는 해제가 포함됩니다.
+다음 예제는 사용 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1533,7 +1416,7 @@ example shows how to use it:
 		// some logic that should not take longer than 1 second to run
 	}
 ----
-<1> Set the time period for the test to one second.
+<1> 테스트 기간을 1초로 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1543,25 +1426,20 @@ example shows how to use it:
 		// some logic that should not take longer than 1 second to run
 	}
 ----
-<1> Set the time period for the test to one second.
+<1> 테스트 기간을 1초로 설정합니다.
 
-
-Spring's `@Timed` annotation has different semantics than JUnit 4's `@Test(timeout=...)`
-support. Specifically, due to the manner in which JUnit 4 handles test execution timeouts
-(that is, by executing the test method in a separate `Thread`), `@Test(timeout=...)`
-preemptively fails the test if the test takes too long. Spring's `@Timed`, on the other
-hand, does not preemptively fail the test but rather waits for the test to complete
-before failing.
+Spring의 `@Timed` annotation은 JUnit 4의 `@Test(timeout=...)` 지원과 다른 의미를 가지고 있습니다.
+특히 JUnit4가 테스트 실행 시간 초과(즉, 별도의 `Thread` 에서 test method를 실행하여)를 처리하는 방식으로 인해 `@Test(timeout=...)` 는 테스트가 너무 오래 걸릴 경우 선제적으로 테스트를 실패처리합니다. 
+반면에 Spring의 `@Timed` 는 선제적으로 fail 처리를 하지 않고 test가 종료되기를 기다렸다가 fail 처리를 합니다.
 
 [[integration-testing-annotations-junit4-repeat]]
 ===== `@Repeat`
 
-`@Repeat` indicates that the annotated test method must be run repeatedly. The number of
-times that the test method is to be run is specified in the annotation.
+`@Repeat` 는 해당 annotation이 달린 test method를 반복적으로 실행해야 함을 나타냅니다.
+test method가 실행되는 횟수는 annotation에 지정됩니다.
 
-The scope of execution to be repeated includes execution of the test method itself as
-well as any setting up or tearing down of the test fixture. The following example shows
-how to use the `@Repeat` annotation:
+반복되는 실행 범위에는 test method 자체의 실행과 test fixture의 설정 또는 해제가 포함됩니다.
+다음 예는 `@Repeat` annotation을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1572,7 +1450,7 @@ how to use the `@Repeat` annotation:
 		// ...
 	}
 ----
-<1> Repeat this test ten times.
+<1> 이 테스트를 10번 반복합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1583,16 +1461,14 @@ how to use the `@Repeat` annotation:
 		// ...
 	}
 ----
-<1> Repeat this test ten times.
+<1> 이 테스트를 10번 반복합니다.
 
 
 
 [[integration-testing-annotations-junit-jupiter]]
 ==== Spring JUnit Jupiter Testing Annotations
 
-The following annotations are supported when used in conjunction with the
-<<testcontext-junit-jupiter-extension, `SpringExtension`>> and JUnit Jupiter
-(that is, the programming model in JUnit 5):
+다음 annotation은 <<testcontext-junit-jupiter-extension, `SpringExtension`>> 및 JUnit Jupiter(JUnit 5의 programming model)와 함께 사용될 때 지원됩니다:
 
 * <<integration-testing-annotations-junit-jupiter-springjunitconfig>>
 * <<integration-testing-annotations-junit-jupiter-springjunitwebconfig>>
@@ -1604,15 +1480,11 @@ The following annotations are supported when used in conjunction with the
 [[integration-testing-annotations-junit-jupiter-springjunitconfig]]
 ===== `@SpringJUnitConfig`
 
-`@SpringJUnitConfig` is a composed annotation that combines
-`@ExtendWith(SpringExtension.class)` from JUnit Jupiter with `@ContextConfiguration` from
-the Spring TestContext Framework. It can be used at the class level as a drop-in
-replacement for `@ContextConfiguration`. With regard to configuration options, the only
-difference between `@ContextConfiguration` and `@SpringJUnitConfig` is that component
-classes may be declared with the `value` attribute in `@SpringJUnitConfig`.
+`@SpringJUnitConfig` 는 JUnit Jupiter의 `@ExtendWith(SpringExtension.class)` 과 Spring TestContext Framework의 `@ContextConfiguration` 을 결합하여 구성된 annotation입니다. 
+class level에서 `@ContextConfiguration` 을 대체하여 사용할 수 있습니다.
+`@ContextConfiguration` 과 `@SpringJUnitConfig` 사이의 유일한 차이점은 `@SpringJUnitConfig` 는 component class를 `value` attribute로 선언할 수 있다는 것입니다. 
 
-The following example shows how to use the `@SpringJUnitConfig` annotation to specify a
-configuration class:
+다음 예제는 `@SpringJUnitConfig` annotation을 사용하여 configuration class를 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1622,7 +1494,7 @@ configuration class:
 		// class body...
 	}
 ----
-<1> Specify the configuration class.
+<1> configuration class를 지정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1632,11 +1504,10 @@ configuration class:
 		// class body...
 	}
 ----
-<1> Specify the configuration class.
+<1> configuration class를 지정합니다.
 
 
-The following example shows how to use the `@SpringJUnitConfig` annotation to specify the
-location of a configuration file:
+다음 예제는 `@SpringJUnitConfig` annotation을 사용하여 configuration file의 location을 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1646,7 +1517,7 @@ location of a configuration file:
 		// class body...
 	}
 ----
-<1> Specify the location of a configuration file.
+<1> configuration file의 location을 지정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1656,28 +1527,20 @@ location of a configuration file:
 		// class body...
 	}
 ----
-<1> Specify the location of a configuration file.
+<1> configuration file의 location을 지정합니다.
 
 
-See <<testcontext-ctx-management>> as well as the javadoc for
-{api-spring-framework}/test/context/junit/jupiter/SpringJUnitConfig.html[`@SpringJUnitConfig`]
-and `@ContextConfiguration` for further details.
+자세한 내용은 <<testcontext-ctx-management>>, {api-spring-framework}/test/context/junit/jupiter/SpringJUnitConfig.html[`@SpringJUnitConfig`] javadoc 및 `@ContextConfiguration`을 참조하세요.
 
 [[integration-testing-annotations-junit-jupiter-springjunitwebconfig]]
 ===== `@SpringJUnitWebConfig`
 
-`@SpringJUnitWebConfig` is a composed annotation that combines
-`@ExtendWith(SpringExtension.class)` from JUnit Jupiter with `@ContextConfiguration` and
-`@WebAppConfiguration` from the Spring TestContext Framework. You can use it at the class
-level as a drop-in replacement for `@ContextConfiguration` and `@WebAppConfiguration`.
-With regard to configuration options, the only difference between `@ContextConfiguration`
-and `@SpringJUnitWebConfig` is that you can declare component classes by using the
-`value` attribute in `@SpringJUnitWebConfig`. In addition, you can override the `value`
-attribute from `@WebAppConfiguration` only by using the `resourcePath` attribute in
-`@SpringJUnitWebConfig`.
+`@SpringJUnitWebConfig` 는 JUnit Jupiter의 `@ExtendWith(SpringExtension.class)` 과 Spring TestContext Framework의 `@ContextConfiguration` 및 `@WebAppConfiguration` 을 결합하여 구성된 annotation입니다. 
+class level에서 `@ContextConfiguration` 및 `@WebAppConfiguration` 을 대체하여 사용할 수 있습니다.
+`@ContextConfiguration` 과 `@SpringJUnitWebConfig` 사이의 유일한 차이점은 `@SpringJUnitWebConfig` 는 component class를 `value` attribute로 선언할 수 있다는 것입니다.
+또한 `@WebAppConfiguration` 의 `value` attribute를 `@SpringJUnitWebConfig` 에서 `resourcePath` attribute를 사용하여 재정의할 수 있습니다.
 
-The following example shows how to use the `@SpringJUnitWebConfig` annotation to specify
-a configuration class:
+다음 예제는 `@SpringJUnitWebConfig` annotation를 사용하여 configuration class를 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1687,7 +1550,7 @@ a configuration class:
 		// class body...
 	}
 ----
-<1> Specify the configuration class.
+<1> configuration class을 지정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1697,11 +1560,10 @@ a configuration class:
 		// class body...
 	}
 ----
-<1> Specify the configuration class.
+<1> configuration class을 지정합니다.
 
 
-The following example shows how to use the `@SpringJUnitWebConfig` annotation to specify the
-location of a configuration file:
+다음 예제는 `@SpringJUnitWebConfig` annotation을 사용하여 configuration file의 location을 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1711,7 +1573,7 @@ location of a configuration file:
 		// class body...
 	}
 ----
-<1> Specify the location of a configuration file.
+<1> configuration file의 location을 지정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -1721,71 +1583,50 @@ location of a configuration file:
 		// class body...
 	}
 ----
-<1> Specify the location of a configuration file.
+<1> configuration file의 location을 지정합니다.
 
-
-See <<testcontext-ctx-management>> as well as the javadoc for
-{api-spring-framework}/test/context/junit/jupiter/web/SpringJUnitWebConfig.html[`@SpringJUnitWebConfig`],
-{api-spring-framework}/test/context/ContextConfiguration.html[`@ContextConfiguration`], and
-{api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`]
-for further details.
+자세한 내용은 <<testcontext-ctx-management>>, {api-spring-framework}/test/context/junit/jupiter/web/SpringJUnitWebConfig.html[`@SpringJUnitWebConfig`], {api-spring-framework}/test/context/ContextConfiguration.html[`@ContextConfiguration`], 및 {api-spring-framework}/test/context/web/WebAppConfiguration.html[`@WebAppConfiguration`]의 javadoc을 참조하세요.
 
 [[integration-testing-annotations-testconstructor]]
 ===== `@TestConstructor`
 
-`@TestConstructor` is a type-level annotation that is used to configure how the parameters
-of a test class constructor are autowired from components in the test's
-`ApplicationContext`.
+`@TestConstructor` 은 test class construct의 parameter를 테스트의 `ApplicationContext` 의 component로부터 autowired 되는 방식을 구성하는데 사용되는 type-level annotation 입니다. 
+`@TestConstructor` is a type-level annotation that is used to configure how the parameters of a test class constructor are autowired from components in the test's `ApplicationContext`.
 
-If `@TestConstructor` is not present or meta-present on a test class, the default _test
-constructor autowire mode_ will be used. See the tip below for details on how to change
-the default mode. Note, however, that a local declaration of `@Autowired` on a
-constructor takes precedence over both `@TestConstructor` and the default mode.
+`@TestConstructor` 가 없거나 test class에 meta가 있는 경우 기본적으로 _test constructor autowire mode_ 가 사용됩니다.
+default mode를 변경하는 방법에 대한 자세한 내용은 아래 tip을 참조하세요. 
+그러나 constructor에 대한 `@Autowired` 의 local 선언이 `@TestConstructor` 와 default mode보다 우선한다는 점에 유의하세요.
 
 .Changing the default test constructor autowire mode
 [TIP]
 =====
-The default _test constructor autowire mode_ can be changed by setting the
-`spring.test.constructor.autowire.mode` JVM system property to `all`. Alternatively, the
-default mode may be set via the
-<<appendix.adoc#appendix-spring-properties,`SpringProperties`>> mechanism.
+기본 _test constructor autowire mode_ 는 `spring.test.constructor.autowire.mode` JVM system property를 `all` 로 설정하여 변경할 수 있습니다.  
+또는 <<appendix.adoc#appendix-spring-properties,`SpringProperties`>> 메커니즘을 통해 default mode를 설정할 수 있습니다. 
 
-As of Spring Framework 5.3, the default mode may also be configured as a
-https://junit.org/junit5/docs/current/user-guide/#running-tests-config-params[JUnit Platform configuration parameter].
+Spring Framework 5.3부터 defaut mode는 https://junit.org/junit5/docs/current/user-guide/#running-tests-config-params[JUnit Platform configuration parameter]로 구성될 수도 있습니다.
 
-If the `spring.test.constructor.autowire.mode` property is not set, test class
-constructors will not be automatically autowired.
+만약 `spring.test.constructor.autowire.mode` property가 설정되지 않은 경우 test class constructor는 autowired가 자동으로 처리되지 않습니다.
 =====
 
-NOTE: As of Spring Framework 5.2, `@TestConstructor` is only supported in conjunction
-with the `SpringExtension` for use with JUnit Jupiter. Note that the `SpringExtension` is
-often automatically registered for you – for example, when using annotations such as
-`@SpringJUnitConfig` and `@SpringJUnitWebConfig` or various test-related annotations from
-Spring Boot Test.
+NOTE: Spring Framework 5.2부터 @TestConstructor` 는 JUnit Jupiter과 함께 사용하기 위한 `SpringExtension` 과 결합만 지원됩니다.
+Spring Boot Test에서 `@SpringJUnitConfig` 및 `@SpringJUnitWebConfig` 또는 다양한 test관련 annotation을 사용할 때 `SpringExtension` 은 자동으로 등록되는 경우가 많습니다. 
 
 [[integration-testing-annotations-nestedtestconfiguration]]
 ===== `@NestedTestConfiguration`
 
-`@NestedTestConfiguration` is a type-level annotation that is used to configure how
-Spring test configuration annotations are processed within enclosing class hierarchies
-for inner test classes.
+`@NestedTestConfiguration` 은 inner test class를 위한 enclosing class hierarchy 에서 Spring test configuration annotation이 처리되는 방식을 구성하는데 사용되는 type-level annotaion 입니다.
 
-If `@NestedTestConfiguration` is not present or meta-present on a test class, in its
-super type hierarchy, or in its enclosing class hierarchy, the default _enclosing
-configuration inheritance mode_ will be used. See the tip below for details on how to
-change the default mode.
+`@NestedTestConfiguration` 가 test class, super type hierarchy 또는 enclosing class hierarchy에 없거나 meta가 포함되어 있는 경우 default _enclosing configuration inheritance mode_ 가 사용됩니다.  
+default mode를 변경하는 방법에 대한 자세한 내용은 아래 tip을 참조하세요.
 
 .Changing the default enclosing configuration inheritance mode
 [TIP]
 =====
-The default _enclosing configuration inheritance mode_ is `INHERIT`, but it can be
-changed by setting the `spring.test.enclosing.configuration` JVM system property to
-`OVERRIDE`. Alternatively, the default mode may be set via the
-<<appendix.adoc#appendix-spring-properties,`SpringProperties`>> mechanism.
+default _enclosing configuration inheritance mode_ 는 `INHERIT` 이지만 `spring.test.enclosing.configuration` JVM system property를 `OVERRIDE` 로 설정하여 변경할 수 있습니다. 
+또는 default mode는 <<appendix.adoc#appendix-spring-properties,`SpringProperties`>> 매커니즘을 통해 default mode를 설정할 수 있습니다.
 =====
 
-The <<testcontext-framework>> honors `@NestedTestConfiguration` semantics for the
-following annotations.
+<<testcontext-framework>>는 다음 annotation에 대해 `@NestedTestConfiguration` semantic을 존중합니다.
 
 * <<spring-testing-annotation-bootstrapwith>>
 * <<spring-testing-annotation-contextconfiguration>>
@@ -1805,37 +1646,30 @@ following annotations.
 * <<spring-testing-annotation-sqlmergemode>>
 * <<integration-testing-annotations-testconstructor>>
 
-NOTE: The use of `@NestedTestConfiguration` typically only makes sense in conjunction
-with `@Nested` test classes in JUnit Jupiter; however, there may be other testing
-frameworks with support for Spring and nested test classes that make use of this
-annotation.
+NOTE: `@NestedTestConfiguration` 의 사용은 일반적으로 JUnit Jupiter의 `@Nested` test classes와 함께 사용하는 경우에만 의미가 있습니다.  
+그러나 이 annotation을 사용하는 Spring 및 nested test class를 지원하는 다른 test framework가 있을 수 있습니다.
 
-See <<testcontext-junit-jupiter-nested-test-configuration>> for an example and further
-details.
+예제 및 자세한 내용은 <<testcontext-junit-jupiter-nested-test-configuration>>을 참조하세요. 
 
 [[integration-testing-annotations-junit-jupiter-enabledif]]
 ===== `@EnabledIf`
 
-`@EnabledIf` is used to signal that the annotated JUnit Jupiter test class or test method
-is enabled and should be run if the supplied `expression` evaluates to `true`.
-Specifically, if the expression evaluates to `Boolean.TRUE` or a `String` equal to `true`
-(ignoring case), the test is enabled. When applied at the class level, all test methods
-within that class are automatically enabled by default as well.
+`@EnabledIf` 는 annotation이 달린 JUnit Jupiter test class 또는 test method가 활성화 되었음을 알리는데 사용되며 제공된 `expression` 이 `true` 로 평가되면 실행되어야 합니다.
+특히 표현식이 `Boolean.TRUE` 또는 `true` 와 같은 `String` (대소문자 무시)으로 평가되면 테스트가 활성화됩니다. 
+class level에서 적용하면 해당 class 내의 모든 test method도 기본적으로 자동으로 활성화됩니다.
 
-Expressions can be any of the following:
+표현식은 다음 중 하나일 수 있습니다:
 
-* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. For example:
+* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. 예를 들면:
   `@EnabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")`
 * Placeholder for a property available in the Spring <<core.adoc#beans-environment, `Environment`>>.
-  For example: `@EnabledIf("${smoke.tests.enabled}")`
-* Text literal. For example: `@EnabledIf("true")`
+  예를 들면: `@EnabledIf("${smoke.tests.enabled}")`
+* Text literal. 예를 들면: `@EnabledIf("true")`
 
-Note, however, that a text literal that is not the result of dynamic resolution of a
-property placeholder is of zero practical value, since `@EnabledIf("false")` is
-equivalent to `@Disabled` and `@EnabledIf("true")` is logically meaningless.
+그러나 `@EnabledIf("false")` 는 `@Disabled` 와 같고 `@EnabledIf("true")` 는 논리적으로 의미가 없기 때문에 property placeholder의 동적 확인 결과가 아닌 text literal은 값이 zero practical value입니다. .
 
-You can use `@EnabledIf` as a meta-annotation to create custom composed annotations. For
-example, you can create a custom `@EnabledOnMac` annotation as follows:
+`@EnabledIf` 를 meta-annotation으로 사용하여 custom composed annotation을 만들 수 있습니다.
+예를 들어 다음과 같이 custom `@EnabledOnMac` annotation을 만들 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1863,26 +1697,23 @@ example, you can create a custom `@EnabledOnMac` annotation as follows:
 [[integration-testing-annotations-junit-jupiter-disabledif]]
 ===== `@DisabledIf`
 
-`@DisabledIf` is used to signal that the annotated JUnit Jupiter test class or test
-method is disabled and should not be run if the supplied `expression` evaluates to
-`true`. Specifically, if the expression evaluates to `Boolean.TRUE` or a `String` equal
-to `true` (ignoring case), the test is disabled. When applied at the class level, all
-test methods within that class are automatically disabled as well.
+`@DisabledIf` 는 주석이 달린 JUnit Jupiter test class 또는 test method가 비활성화 되었음을 알리는데 사용되며 제공된 `expression` 이 `true` 로 평가되면 실행되서는 안됩니다.
+특히 표현식이 `Boolean.TRUE` 또는 `true` 와 같은 `String` (대소문자 무시)로 평가되면 테스트가 비활성화됩니다.
+class level에서 적용하면 해당 class 내의 모든 test method도 기본적으로 자동으로 비활성화됩니다.
 
-Expressions can be any of the following:
+표현식은 다음 중 하나일 수 있습니다:
 
-* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. For example:
+* <<core.adoc#expressions, Spring Expression Language>> (SpEL) expression. 예를 들면:
   `@DisabledIf("#{systemProperties['os.name'].toLowerCase().contains('mac')}")`
 * Placeholder for a property available in the Spring <<core.adoc#beans-environment, `Environment`>>.
-  For example: `@DisabledIf("${smoke.tests.disabled}")`
-* Text literal. For example: `@DisabledIf("true")`
+  예를 들면: `@DisabledIf("${smoke.tests.disabled}")`
+* Text literal. 예를 들면: `@DisabledIf("true")`
 
-Note, however, that a text literal that is not the result of dynamic resolution of a
-property placeholder is of zero practical value, since `@DisabledIf("true")` is
-equivalent to `@Disabled` and `@DisabledIf("false")` is logically meaningless.
+그러나 `@DisabledIf("true")` 는 `@Disabled` 와 같고 `@DisabledIf("false")` 는 논리적으로 의미가 없으므로 property placeholder의 동적 확인 결과가 아닌 텍스트 리터럴은 값이 zero practical value입니다. .
 
-You can use `@DisabledIf` as a meta-annotation to create custom composed annotations. For
-example, you can create a custom `@DisabledOnMac` annotation as follows:
+
+`@DisabledIf` 를 meta-annotation으로 사용하여 custom composed annotation을 만들 수 있습니다.
+예를 들어 다음과 같이 custom `@DisabledOnMac` annotation을 만들 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1911,12 +1742,9 @@ example, you can create a custom `@DisabledOnMac` annotation as follows:
 [[integration-testing-annotations-meta]]
 ==== Meta-Annotation Support for Testing
 
-You can use most test-related annotations as
-<<core.adoc#beans-meta-annotations, meta-annotations>> to create custom composed
-annotations and reduce configuration duplication across a test suite.
+대부분의 테스트 관련 annotation을 <<core.adoc#beans-meta-annotations, meta-annotations>>으로 사용하여 custom composed annotation을 만들고 test suite에서 구성 중복을 줄일 수 있습니다.
 
-You can use each of the following as a meta-annotation in conjunction with the
-<<testcontext-framework, TestContext framework>>.
+<<testcontext-framework, TestContext framework>>와 함께 다음 각 항목을 meta-annotation으로 사용할 수 있습니다.
 
 * `@BootstrapWith`
 * `@ContextConfiguration`
@@ -1935,18 +1763,18 @@ You can use each of the following as a meta-annotation in conjunction with the
 * `@SqlConfig`
 * `@SqlMergeMode`
 * `@SqlGroup`
-* `@Repeat` _(only supported on JUnit 4)_
-* `@Timed` _(only supported on JUnit 4)_
-* `@IfProfileValue` _(only supported on JUnit 4)_
-* `@ProfileValueSourceConfiguration` _(only supported on JUnit 4)_
-* `@SpringJUnitConfig` _(only supported on JUnit Jupiter)_
-* `@SpringJUnitWebConfig` _(only supported on JUnit Jupiter)_
-* `@TestConstructor` _(only supported on JUnit Jupiter)_
-* `@NestedTestConfiguration` _(only supported on JUnit Jupiter)_
-* `@EnabledIf` _(only supported on JUnit Jupiter)_
-* `@DisabledIf` _(only supported on JUnit Jupiter)_
+* `@Repeat` _(JUnit 4에서만 지원됨)_
+* `@Timed` _(JUnit 4에서만 지원됨)_
+* `@IfProfileValue` _(JUnit 4에서만 지원됨)_
+* `@ProfileValueSourceConfiguration` _(JUnit 4에서만 지원됨)_
+* `@SpringJUnitConfig` _(JUnit Jupiter에서만 지원됨)_
+* `@SpringJUnitWebConfig` _(JUnit Jupiter에서만 지원됨)_
+* `@TestConstructor` _(JUnit Jupiter에서만 지원됨)_
+* `@NestedTestConfiguration` _(JUnit Jupiter에서만 지원됨)_
+* `@EnabledIf` _(JUnit Jupiter에서만 지원됨)_
+* `@DisabledIf` _(JUnit Jupiter에서만 지원됨)_
 
-Consider the following example:
+다음 예를 고려하십시오:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -1980,9 +1808,7 @@ Consider the following example:
 	class UserRepositoryTests { }
 ----
 
-If we discover that we are repeating the preceding configuration across our JUnit 4-based
-test suite, we can reduce the duplication by introducing a custom composed annotation
-that centralizes the common test configuration for Spring, as follows:
+JUnit 4 기반 test suite에서 이전 구성을 반복하고 있음을 발견하면 다음과 같이 Spring의 common test configuration을 중앙 집중화하는 custom composed annotation을 도입하여 중복을 줄일 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2006,8 +1832,7 @@ that centralizes the common test configuration for Spring, as follows:
 	annotation class TransactionalDevTestConfig { }
 ----
 
-Then we can use our custom `@TransactionalDevTestConfig` annotation to simplify the
-configuration of individual JUnit 4 based test classes, as follows:
+그런 다음 custom `@TransactionalDevTestConfig` annotation을 사용하여 다음과 같이 개별 JUnit 4 기반 test class의 구성을 단순화 할 수 있습니다: 
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2033,9 +1858,8 @@ configuration of individual JUnit 4 based test classes, as follows:
 	class UserRepositoryTests
 ----
 
-If we write tests that use JUnit Jupiter, we can reduce code duplication even further,
-since annotations in JUnit 5 can also be used as meta-annotations. Consider the following
-example:
+JUnit Jupiter를 사용하는 테스트를 작성하면 JUnit 5의 annotation을 meta-annotation으로도 사용할 수 있으므로 코드 중복을 더욱 줄일 수 있습니다.
+다음 예를 고려하십시오:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2068,10 +1892,7 @@ example:
 	class UserRepositoryTests { }
 ----
 
-If we discover that we are repeating the preceding configuration across our JUnit
-Jupiter-based test suite, we can reduce the duplication by introducing a custom composed
-annotation that centralizes the common test configuration for Spring and JUnit Jupiter,
-as follows:
+JUnit Jupiter 기반 test suite에서 이전 구성을 반복하고 있음을 발견하면 다음과 같이 Spring 및 JUnit Jupiter의 common test configuration을 중앙 집중화하는 custom composed annotation을 도입하여 중복을 줄일 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2096,8 +1917,7 @@ as follows:
 	annotation class TransactionalDevTestConfig { }
 ----
 
-Then we can use our custom `@TransactionalDevTestConfig` annotation to simplify the
-configuration of individual JUnit Jupiter based test classes, as follows:
+그런 다음 custom `@TransactionalDevTestConfig` annotation을 사용하여 다음과 같이 개별 JUnit Jupiter 기반 test class의 구성을 단순화 할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2118,12 +1938,8 @@ configuration of individual JUnit Jupiter based test classes, as follows:
 	class UserRepositoryTests { }
 ----
 
-Since JUnit Jupiter supports the use of `@Test`, `@RepeatedTest`, `ParameterizedTest`,
-and others as meta-annotations, you can also create custom composed annotations at the
-test method level. For example, if we wish to create a composed annotation that combines
-the `@Test` and `@Tag` annotations from JUnit Jupiter with the `@Transactional`
-annotation from Spring, we could create an `@TransactionalIntegrationTest` annotation, as
-follows:
+JUnit Jupiter는 `@Test`, `@RepeatedTest`, `ParameterizedTest` 및 다른 meta-annotation의 사용을 지원하므로 test method 수준에서 custom composed annotation을 만들 수도 있습니다.
+예를 들어 JUnit Jupiter의 `@Test` 및 `@Tag` annotation을 Spring의 `@Transactional` annotation과 결합하는 composed annotation을 작성하려는 경우 다음과 같이 `@TransactionalIntegrationTest` annotation을 작성할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2146,8 +1962,7 @@ follows:
 	annotation class TransactionalIntegrationTest { }
 ----
 
-Then we can use our custom `@TransactionalIntegrationTest` annotation to simplify the
-configuration of individual JUnit Jupiter based test methods, as follows:
+그런 다음 custom `@TransactionalIntegrationTest` annotation을 사용하여 다음과 같이 개별 JUnit Jupiter 기반 test method의 구성을 단순화 할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2169,117 +1984,77 @@ configuration of individual JUnit Jupiter based test methods, as follows:
 	fun deleteOrder() { }
 ----
 
-For further details, see the
-https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model[Spring Annotation Programming Model]
-wiki page.
-
+자세한 내용은 https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model[Spring Annotation Programming Model] wiki page를 참조하세요.
 
 
 [[testcontext-framework]]
 === Spring TestContext Framework
 
-The Spring TestContext Framework (located in the `org.springframework.test.context`
-package) provides generic, annotation-driven unit and integration testing support that is
-agnostic of the testing framework in use. The TestContext framework also places a great
-deal of importance on convention over configuration, with reasonable defaults that you
-can override through annotation-based configuration.
+Spring TestContext Framework (`org.springframework.test.context` package에 위치함)는 사용중인 test framework와 무관한 일반적인 annotation 기반 단위 및 통합 테스트 지원을 제공합니다. 
+TestContext framework는 또한 annotation 기반 구성을 통해 재정의 할 수 있는 합리적인 기본값을 사용하여 구성에 대한 규칙을 중요시 합니다. 
 
-In addition to generic testing infrastructure, the TestContext framework provides
-explicit support for JUnit 4, JUnit Jupiter (AKA JUnit 5), and TestNG. For JUnit 4 and
-TestNG, Spring provides `abstract` support classes. Furthermore, Spring provides a custom
-JUnit `Runner` and custom JUnit `Rules` for JUnit 4 and a custom `Extension` for JUnit
-Jupiter that let you write so-called POJO test classes. POJO test classes are not
-required to extend a particular class hierarchy, such as the `abstract` support classes.
+일반 test infrastructure 외에도 TestContext framework는 JUnit 4, JUnit Jupiter (AKA JUnit 5), 및 TestNG에 대한 명시적인 지원을 제공합니다.
+JUnit 4 및 TestNG의 경우 Spring은 `abstract` support class를 제공합니다.
+또한 Spring은 custom JUnit `Runner` 및 JUnit 4 용 custom `Rules` 및 소위 POJO test class를 작성할 수있는 JUnit Jupiter 용 custom `Extension`을 제공합니다.
+POJO test class는 `abstract` support class와 같은 특정 class hierarchy를 확장하는데 필요하지 않습니다.
 
-The following section provides an overview of the internals of the TestContext framework.
-If you are interested only in using the framework and are not interested in extending it
-with your own custom listeners or custom loaders, feel free to go directly to the
-configuration (<<testcontext-ctx-management, context management>>,
-<<testcontext-fixture-di, dependency injection>>, <<testcontext-tx,transaction
-management>>), <<testcontext-support-classes, support classes>>, and
-<<integration-testing-annotations, annotation support>> sections.
-
+다음 section에서는 TestContext framework의 내부에 대한 개요를 제공합니다.
+framework의 사용에만 관심이 있고 custom listener 또는 custom loader로 확장하는데 관심이 없는 경우 configuration (<<testcontext-ctx-management, context management>>, <<testcontext-fixture-di, dependency injection>>, <<testcontext-tx,transaction management>>), <<testcontext-support-classes, support classes>> 및 <<integration-testing-annotations, annotation support>> section으로 직접 이동하세요. 
 
 [[testcontext-key-abstractions]]
 ==== Key Abstractions
 
-The core of the framework consists of the `TestContextManager` class and the
-`TestContext`, `TestExecutionListener`, and `SmartContextLoader` interfaces. A
-`TestContextManager` is created for each test class (for example, for the execution of
-all test methods within a single test class in JUnit Jupiter). The `TestContextManager`,
-in turn, manages a `TestContext` that holds the context of the current test. The
-`TestContextManager` also updates the state of the `TestContext` as the test progresses
-and delegates to `TestExecutionListener` implementations, which instrument the actual
-test execution by providing dependency injection, managing transactions, and so on. A
-`SmartContextLoader` is responsible for loading an `ApplicationContext` for a given test
-class. See the {api-spring-framework}/test/context/package-summary.html[javadoc] and the
-Spring test suite for further information and examples of various implementations.
+framework의 핵심은 `TestContextManager` class 와 `TestContext`, `TestExecutionListener` 및 `SmartContextLoader` interfaces로 구성됩니다.
+`TestContextManager` 는 각 test class에 대해 생성됩니다. (예: JUnit Jupiter의 단일 test class 내에서 모든 test method를 실행하는 경우)
+`TestContextManager` 는 차례로 현재 테스트의 context를 보유하는 `TestContext`를 관리합니다.
+`TestContextManager` 는 또한 테스트가 진행됨에 따라 `TestContext` 의 상태를 업데이트하고 `TestExecutionListener` 구현에 위임합니다.
+이 구현은 dependency injection, managing transactions 등을 통해 실제 테스트 실행을 계측합니다. 
+`SmartContextLoader` 는 주어진 test class에 대한 `ApplicationContext` 을 로드하는 역할을 합니다.
+다양한 구현에 대한 추가 정보와 예제는 {api-spring-framework}/test/context/package-summary.html[javadoc] 및 Spring test suite를 참조하세요.
 
 ===== `TestContext`
 
-`TestContext` encapsulates the context in which a test is run (agnostic of the
-actual testing framework in use) and provides context management and caching support for
-the test instance for which it is responsible. The `TestContext` also delegates to a
-`SmartContextLoader` to load an `ApplicationContext` if requested.
+`TestContext` 는 테스트가 실행되는 context를 캡슐화하고 (사용 중인 실제 테스트 프레임 워크에 관계없이) 해당 테스트 인스턴스에 대한 context 관리 및 캐싱 지원을 제공합니다.
+`TestContext` 는 또한 요청 된 경우 `ApplicationContext`를 로드하도록 `SmartContextLoader` 에 위임합니다.
 
 ===== `TestContextManager`
 
-`TestContextManager` is the main entry point into the Spring TestContext Framework and is
-responsible for managing a single `TestContext` and signaling events to each registered
-`TestExecutionListener` at well-defined test execution points:
+`TestContextManager` 는 Spring TestContext Framework의 주요 진입점이며 단일 `TestContext` 를 관리하고 잘 정의된 test 실행 지점에서 등록된 `TestExecutionListener` 에 이벤트 신호를 보내는 역할을 합니다:
 
-* Prior to any "`before class`" or "`before all`" methods of a particular testing framework.
-* Test instance post-processing.
-* Prior to any "`before`" or "`before each`" methods of a particular testing framework.
-* Immediately before execution of the test method but after test setup.
-* Immediately after execution of the test method but before test tear down.
-* After any "`after`" or "`after each`" methods of a particular testing framework.
-* After any "`after class`" or "`after all`" methods of a particular testing framework.
+* 특정 test framework의 "`before class`" 또는 "`before all`" method 이전 
+* Test instance 이후 처리
+* 특정 test framework의 "`before`" 또는 "`before each`" method 이전.
+* test method 실행 직전, test setup 후
+* test method 실행 직후 test 해체 전.
+* 특정 test framework의 "`after`" 또는 "`after each`" method 이후.
+* 특정 test framework의 "`after class`" 또는 "`after all`" method 이후.
 
 ===== `TestExecutionListener`
 
-`TestExecutionListener` defines the API for reacting to test-execution events published by
-the `TestContextManager` with which the listener is registered. See <<testcontext-tel-config>>.
+`TestExecutionListener` 는 listener가 등록된 `TestContextManager`에서 게시한 테스트 실행 이벤트에 반응하기위한 API를 정의합니다.
+<<testcontext-tel-config>> 를 참조하세요.
 
 ===== Context Loaders
 
-`ContextLoader` is a strategy interface for loading an `ApplicationContext` for an
-integration test managed by the Spring TestContext Framework. You should implement
-`SmartContextLoader` instead of this interface to provide support for component classes,
-active bean definition profiles, test property sources, context hierarchies, and
-`WebApplicationContext` support.
+`ContextLoader`는 Spring TestContext Framework에서 관리하는 통합 테스트를 위한 `ApplicationContext` 를 로드하기 위한 strategy interface입니다.
+component classes, active bean definition profiles, test property sources, context hierarchies 및 `WebApplicationContext` 지원에 대한 지원을 제공하려면 이 interface 대신 `SmartContextLoader` 를 구현해야합니다.
 
-`SmartContextLoader` is an extension of the `ContextLoader` interface that supersedes the
-original minimal `ContextLoader` SPI. Specifically, a `SmartContextLoader` can choose to
-process resource locations, component classes, or context initializers. Furthermore, a
-`SmartContextLoader` can set active bean definition profiles and test property sources in
-the context that it loads.
+`SmartContextLoader` 는 original minimal `ContextLoader` SPI를 대체하는 `ContextLoader` interface의 확장입니다.
+특히 `SmartContextLoader` 는 resource locations, component classes 또는 context initializers를 처리하도록 선택할 수 있습니다.
+또한 `SmartContextLoader`는 로드되는 context에서 active bean definition profile 및 test property sources를 설정할 수 있습니다.
 
-Spring provides the following implementations:
+Spring은 다음 구현을 제공합니다:
 
-* `DelegatingSmartContextLoader`: One of two default loaders, it delegates internally to
-  an `AnnotationConfigContextLoader`, a `GenericXmlContextLoader`, or a
-  `GenericGroovyXmlContextLoader`, depending either on the configuration declared for the
-  test class or on the presence of default locations or default configuration classes.
-  Groovy support is enabled only if Groovy is on the classpath.
-* `WebDelegatingSmartContextLoader`: One of two default loaders, it delegates internally
-  to an `AnnotationConfigWebContextLoader`, a `GenericXmlWebContextLoader`, or a
-  `GenericGroovyXmlWebContextLoader`, depending either on the configuration declared for
-  the test class or on the presence of default locations or default configuration
-  classes. A web `ContextLoader` is used only if `@WebAppConfiguration` is present on the
-  test class. Groovy support is enabled only if Groovy is on the classpath.
-* `AnnotationConfigContextLoader`: Loads a standard `ApplicationContext` from component
-  classes.
-* `AnnotationConfigWebContextLoader`: Loads a `WebApplicationContext` from component
-  classes.
-* `GenericGroovyXmlContextLoader`: Loads a standard `ApplicationContext` from resource
-  locations that are either Groovy scripts or XML configuration files.
-* `GenericGroovyXmlWebContextLoader`: Loads a `WebApplicationContext` from resource
-  locations that are either Groovy scripts or XML configuration files.
-* `GenericXmlContextLoader`: Loads a standard `ApplicationContext` from XML resource
-  locations.
-* `GenericXmlWebContextLoader`: Loads a `WebApplicationContext` from XML resource
-  locations.
+* `DelegatingSmartContextLoader`: 2개의 기본 loader 중 하나이며 test class에 대해 선언된 configuration 또는 default location 또는 default configuration class의 존재 여부에 따라 `AnnotationConfigContextLoader`, `GenericXmlContextLoader` 또는 `GenericGroovyXmlContextLoader` 에 내부적으로 위임합니다.
+Groovy 지원은 Groovy가 classpath에 있는 경우에만 활성화됩니다.
+* `WebDelegatingSmartContextLoader`: 2개의 기본 loader 중 하나이며 test class에 대해 선언된 configuration 또는 default location 또는 default configuration class의 존재 여부에 따라 `AnnotationConfigWebContextLoader`, `GenericXmlWebContextLoader` 또는 `GenericGroovyXmlWebContextLoader` 에 내부적으로 위임합니다.
+Groovy 지원은 Groovy가 classpath에 있는 경우에만 활성화됩니다.
+* `AnnotationConfigContextLoader`: component class에서 standard `ApplicationContext` 를 로드합니다.
+* `AnnotationConfigWebContextLoader`: component class에서 standard `WebApplicationContext` 를 로드합니다.
+* `GenericGroovyXmlContextLoader`: Groovy script 또는 XML configuration file인 resource에서 standard `ApplicationContext` 를 로드합니다.
+* `GenericGroovyXmlWebContextLoader`: Groovy script 또는 XML configuration file인 resource에서 standard `WebApplicationContext` 를 로드합니다.
+* `GenericXmlContextLoader`: XML resource location에서 standard `ApplicationContext` 를 로드합니다.
+* `GenericXmlWebContextLoader`: XML resource location에서 standard `WebApplicationContext` 를 로드합니다.
 
 
 [[testcontext-bootstrapping]]

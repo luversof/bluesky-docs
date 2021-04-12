@@ -1,4 +1,3 @@
-include::{docdir}/_attributes.adoc[]
 = Bluesky Docs
 :toc!:
 

@@ -3502,7 +3502,7 @@ key-value 쌍에 대해 지원되는 구문은 Java properties file의 항목에
 Spring Framework 5.2부터 `@TestPropertySource` 를 _repeatable annotation_으로 사용할 수 있습니다.
 즉, single test class에서 `@TestPropertySource` 의 여러 선언을 가질 수 있으며 이후 `@TestPropertySource` annotation의 `locations` 와 `properties`가 이전 `@TestPropertySource` annotation의 `locations` 와 `properties` 를 재정의합니다.
 
-또한 각각 `@TestPropertySource`로 meta annotation이 추가된 test class에 구성된 여러 annotation을 선언할 수 있으며 이러한 모든 `@TestPropertySource` 선언은 test property sources에 기여합니다.
+또한 각각 `@TestPropertySource` 로 meta annotation이 추가된 test class에 구성된 여러 annotation을 선언할 수 있으며 이러한 모든 `@TestPropertySource` 선언은 test property sources에 기여합니다.
 
 직접 존재하는 `@TestPropertySource` annotation은 항상 meta 존재하는 `@TestPropertySource` annotation보다 우선합니다.
 즉, 직접 존재하는 `@TestPropertySource` annotation의 `locations` 및 `properties` 는 meta-annotation으로 사용되는 `@TestPropertySource` annotation의 `locations` 및 `properties` 를 재정의합니다.
@@ -3554,7 +3554,7 @@ Test properties는 `@PropertySource` 를 사용하여 선언적으로 또는 프
 
 ====== Inheriting and Overriding Test Property Sources
 
-`@TestPropertySource`는 superclass에서 선언한 properties file 및 inline properties의 resource location을 상속해야하는지 여부를 나타내는 boolean `inheritLocations` 및 `inheritProperties`attribute를 지원합니다.
+`@TestPropertySource` 는 superclass에서 선언한 properties file 및 inline properties의 resource location을 상속해야하는지 여부를 나타내는 boolean `inheritLocations` 및 `inheritProperties` attribute를 지원합니다.
 두 flag의 기본 값은 `true` 입니다.
 즉, test class는 모든 superclass에서 선언한 location과 inline properties를 상속합니다.
 특히, test class의 location 및 inline properties는 superclass에서 선언한 location 및 inline properties에 추가됩니다.

@@ -961,7 +961,7 @@ context가 `@ContextHierarchy` 로 context hierarchy의 일부로 구성된 테�
 [[spring-testing-annotation-recordapplicationevents]]
 ===== `@RecordApplicationEvents`
 
-`@RecordApplicationEvents` 는 _Spring TestContext Framework_ 에 단일 테스트를 실행하는 동안 `ApplicationContext` 에 게시된 모든 application event를 기록하도록 지시하는데 사용되는 class-level annotation 입니다.
+`@RecordApplicationEvents` 는 _Spring TestContext Framework_ 에 단일 테스트를 실행하는 동안 `ApplicationContext` 에 publish 된 모든 application event를 기록하도록 지시하는데 사용되는 class-level annotation 입니다.
 
 기록된 event는 테스트 내에서 `ApplicationEvents` API를 통해 access 할 수 있습니다. 
 
@@ -1697,7 +1697,7 @@ class level에서 적용하면 해당 class 내의 모든 test method도 기본�
 [[integration-testing-annotations-junit-jupiter-disabledif]]
 ===== `@DisabledIf`
 
-`@DisabledIf` 는 주석이 달린 JUnit Jupiter test class 또는 test method가 비활성화 되었음을 알리는데 사용되며 제공된 `expression` 이 `true` 로 평가되면 실행되서는 안됩니다.
+`@DisabledIf` 는 annotation이 달린 JUnit Jupiter test class 또는 test method가 비활성화 되었음을 알리는데 사용되며 제공된 `expression` 이 `true` 로 평가되면 실행되서는 안됩니다.
 특히 표현식이 `Boolean.TRUE` 또는 `true` 와 같은 `String` (대소문자 무시)로 평가되면 테스트가 비활성화됩니다.
 class level에서 적용하면 해당 class 내의 모든 test method도 기본적으로 자동으로 비활성화됩니다.
 
@@ -2031,7 +2031,7 @@ framework의 핵심은 `TestContextManager` class 와 `TestContext`, `TestExecut
 
 ===== `TestExecutionListener`
 
-`TestExecutionListener` 는 listener가 등록된 `TestContextManager`에서 게시한 테스트 실행 이벤트에 반응하기위한 API를 정의합니다.
+`TestExecutionListener` 는 listener가 등록된 `TestContextManager`에서 publish 한 테스트 실행 이벤트에 반응하기위한 API를 정의합니다.
 <<testcontext-tel-config>> 를 참조하세요.
 
 ===== Context Loaders
@@ -2060,99 +2060,61 @@ Groovy 지원은 Groovy가 classpath에 있는 경우에만 활성화됩니다.
 [[testcontext-bootstrapping]]
 ==== Bootstrapping the TestContext Framework
 
-The default configuration for the internals of the Spring TestContext Framework is
-sufficient for all common use cases. However, there are times when a development team or
-third party framework would like to change the default `ContextLoader`, implement a
-custom `TestContext` or `ContextCache`, augment the default sets of
-`ContextCustomizerFactory` and `TestExecutionListener` implementations, and so on. For
-such low-level control over how the TestContext framework operates, Spring provides a
-bootstrapping strategy.
+Spring TestContext Framework의 내부에 대한 모든 기본 구성은 일반적인 사용 사례에 충분합니다.
+그러나 개발 팀 또는 third party framework가 default `ContextLoader` 를 변경하고 custom `TestContext` 또는 `ContextCache`를 구현하고, `ContextCustomizerFactory` 및 `TestExecutionListener` 구현의 default set를 확장하려는 경우가 있습니다.
+TestContext framework가 작동하는 방법에 대한 low-level의 제어를 위해 Spring은 bootstrapping strategy를 제공합니다.
 
-`TestContextBootstrapper` defines the SPI for bootstrapping the TestContext framework. A
-`TestContextBootstrapper` is used by the `TestContextManager` to load the
-`TestExecutionListener` implementations for the current test and to build the
-`TestContext` that it manages. You can configure a custom bootstrapping strategy for a
-test class (or test class hierarchy) by using `@BootstrapWith`, either directly or as a
-meta-annotation. If a bootstrapper is not explicitly configured by using
-`@BootstrapWith`, either the `DefaultTestContextBootstrapper` or the
-`WebTestContextBootstrapper` is used, depending on the presence of `@WebAppConfiguration`.
+`TestContextBootstrapper` 는 TestContext framework를 bootstrapping 하기위한 SPI를 정의합니다.
+`TestContextBootstrapper` 는 `TestContextManager` 에서 현재 테스트에 대한 `TestExecutionListener` 구현을 로드하고 관리하는 `TestContext` 를 빌드하는데 사용됩니다.  
+`@BootstrapWith` 를 직접 사용하거나 meta-annotation을 사용하여 test class (또는 test class hierarchy)에 대한 custom bootstrapping strategy를 구성할 수 있습니다.
+bootstrapper가 `@BootstrapWith` 를 사용하여 명시적으로 구성되지 않은 경우 `@WebAppConfiguration` 의 존재 여부에 따라 `DefaultTestContextBootstrapper` 또는 `WebTestContextBootstrapper` 가 사용됩니다. 
 
-Since the `TestContextBootstrapper` SPI is likely to change in the future (to accommodate
-new requirements), we strongly encourage implementers not to implement this interface
-directly but rather to extend `AbstractTestContextBootstrapper` or one of its concrete
-subclasses instead.
-
+`TestContextBootstrapper` SPI는 향후 (새로운 요구사항을 수용하기 위해) 변경 될 가능성이 있으므로 구현자가 interface를 직접 구현하지 말고 대신 `AbstractTestContextBootstrapper` 또는 구체적인 subclass 중 하나를 확장하는 것이 좋습니다.  
 
 [[testcontext-tel-config]]
 ==== `TestExecutionListener` Configuration
 
-Spring provides the following `TestExecutionListener` implementations that are registered
-by default, exactly in the following order:
+Spring은 기본적으로 정확히 다음 순서로 등록 된 다음 `TestExecutionListener` 구현을 제공합니다:
 
-* `ServletTestExecutionListener`: Configures Servlet API mocks for a
-  `WebApplicationContext`.
-* `DirtiesContextBeforeModesTestExecutionListener`: Handles the `@DirtiesContext`
-  annotation for "`before`" modes.
-* `ApplicationEventsTestExecutionListener`: Provides support for
-  <<testcontext-application-events, `ApplicationEvents`>>.
-* `DependencyInjectionTestExecutionListener`: Provides dependency injection for the test
-  instance.
-* `DirtiesContextTestExecutionListener`: Handles the `@DirtiesContext` annotation for
-  "`after`" modes.
-* `TransactionalTestExecutionListener`: Provides transactional test execution with
-  default rollback semantics.
-* `SqlScriptsTestExecutionListener`: Runs SQL scripts configured by using the `@Sql`
-  annotation.
-* `EventPublishingTestExecutionListener`: Publishes test execution events to the test's
-  `ApplicationContext` (see <<testcontext-test-execution-events>>).
+* `ServletTestExecutionListener`: `WebApplicationContext` 에 대한 Servlet API mock을 구성합니다.
+* `DirtiesContextBeforeModesTestExecutionListener`: "`before`" mode에 대한 `@DirtiesContext` annotation을 처리합니다.
+* `ApplicationEventsTestExecutionListener`: <<testcontext-application-events, `ApplicationEvents`>>에 대한 지원을 제공합니다.
+* `DependencyInjectionTestExecutionListener`: test instance에 대한 dependency injection을 제공합니다.
+* `DirtiesContextTestExecutionListener`: "`after`" mode에 대한 `@DirtiesContext` annotation을 처리합니다.
+* `TransactionalTestExecutionListener`: default rollback semantic과 함께 transactional test 실행을 제공합니다.
+* `SqlScriptsTestExecutionListener`: `@Sql` annotation을 사용하여 구성된 SQL script를 실행합니다.
+* `EventPublishingTestExecutionListener`: 테스트의 `ApplicationContext` 에 test execution event를 publish합니다 (<<testcontext-test-execution-events>> 참조).
 
 [[testcontext-tel-config-registering-tels]]
 ===== Registering `TestExecutionListener` Implementations
 
-You can register `TestExecutionListener` implementations for a test class and its
-subclasses by using the `@TestExecutionListeners` annotation. See
-<<integration-testing-annotations, annotation support>> and the javadoc for
-{api-spring-framework}/test/context/TestExecutionListeners.html[`@TestExecutionListeners`]
-for details and examples.
+`@TestExecutionListeners` annotation을 사용하여 test class 및 subclass에 대한 `TestExecutionListener` 구현을 등록 할 수 있습니다.
+자세한 내용과 예제는 {api-spring-framework}/test/context/TestExecutionListeners.html[`@TestExecutionListeners`]에 대한  <<integration-testing-annotations, annotation 지원>> 및 javadoc을 참조하세요.
 
 [[testcontext-tel-config-automatic-discovery]]
 ===== Automatic Discovery of Default `TestExecutionListener` Implementations
 
-Registering `TestExecutionListener` implementations by using `@TestExecutionListeners` is
-suitable for custom listeners that are used in limited testing scenarios. However, it can
-become cumbersome if a custom listener needs to be used across an entire test suite. This
-issue is addressed through support for automatic discovery of default
-`TestExecutionListener` implementations through the `SpringFactoriesLoader` mechanism.
+`@TestExecutionListeners` 를 사용하여 `TestExecutionListener` 구현을 등록하는 것은 제한된 테스트 시나리오에서 사용되는 custom listener에 적합합니다.
+그러나 custom listener를 전체 test suite에서 사용해야하는 경우 번거로울 수 있습니다.
+이 문제는 `SpringFactoriesLoader` 메커니즘을 통한 default `TestExecutionListener` 구현의 자동 검색 지원을 통해 해결됩니다.
 
-Specifically, the `spring-test` module declares all core default `TestExecutionListener`
-implementations under the `org.springframework.test.context.TestExecutionListener` key in
-its `META-INF/spring.factories` properties file. Third-party frameworks and developers
-can contribute their own `TestExecutionListener` implementations to the list of default
-listeners in the same manner through their own `META-INF/spring.factories` properties
-file.
+특히 `spring-test` module은 `META-INF/spring.factories` properties file의 `org.springframework.test.context.TestExecutionListener` key 아래에 모든 핵심 default `TestExecutionListener` 구현을 선언합니다.
+Third-party frameworks 및 개발자는 자체 `META-INF/spring.factories` properties file을 통해 동일한 방식으로 자체 `TestExecutionListener` 구현을 default listener 목록에 제공 할 수 있습니다.
 
 [[testcontext-tel-config-ordering]]
 ===== Ordering `TestExecutionListener` Implementations
 
-When the TestContext framework discovers default `TestExecutionListener` implementations
-through the <<testcontext-tel-config-automatic-discovery, aforementioned>>
-`SpringFactoriesLoader` mechanism, the instantiated listeners are sorted by using
-Spring's `AnnotationAwareOrderComparator`, which honors Spring's `Ordered` interface and
-`@Order` annotation for ordering. `AbstractTestExecutionListener` and all default
-`TestExecutionListener` implementations provided by Spring implement `Ordered` with
-appropriate values. Third-party frameworks and developers should therefore make sure that
-their default `TestExecutionListener` implementations are registered in the proper order
-by implementing `Ordered` or declaring `@Order`. See the javadoc for the `getOrder()`
-methods of the core default `TestExecutionListener` implementations for details on what
-values are assigned to each core listener.
+TestContext framework가 <<testcontext-tel-config-automatic-discovery, 앞서 언급한>> `SpringFactoriesLoader` 메커니즘을 통해 default `TestExecutionListener` 구현을 발견하면 인스턴스화 된 listener는 Spring의 `Ordered` interface와 `@Order` annotation을 준수하는 Spring의 `AnnotationAwareOrderComparator` 를 사용하여 정렬됩니다.
+`AbstractTestExecutionListener` 및 Spring에서 제공하는 모든 default `TestExecutionListener` 구현은 적절한 값으로 `Ordered` 를 구현합니다.
+따라서 third-party framework 및 개발자는 `Ordered` 를 구현하거나 `@Order` 를 선언하여 default `TestExecutionListener` 구현이 올바른 순서로 등록되었는지 확인해야합니다.
+각 core listener에 할당되는 값에 대한 세부 사항은 core default `TestExecutionListener` 구현의 `getOrder()` method에 대한 javadoc을 참조하세요.
 
 [[testcontext-tel-config-merging]]
 ===== Merging `TestExecutionListener` Implementations
 
-If a custom `TestExecutionListener` is registered via `@TestExecutionListeners`, the
-default listeners are not registered. In most common testing scenarios, this effectively
-forces the developer to manually declare all default listeners in addition to any custom
-listeners. The following listing demonstrates this style of configuration:
+custom `TestExecutionListener` 가 `@TestExecutionListeners` 를 통해 등록된 경우 default listener는 등록되지 않습니다
+대부분의 일반적인 테스트 시나리오에서 이는 개발자가 모든 custom listener 외에 모든 default listener를 수동으로 선언하도록 효과적으로 강제합니다.
+다음 목록은 이러한 구성 스타일을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2190,31 +2152,19 @@ listeners. The following listing demonstrates this style of configuration:
 	}
 ----
 
-The challenge with this approach is that it requires that the developer know exactly
-which listeners are registered by default. Moreover, the set of default listeners can
-change from release to release -- for example, `SqlScriptsTestExecutionListener` was
-introduced in Spring Framework 4.1, and `DirtiesContextBeforeModesTestExecutionListener`
-was introduced in Spring Framework 4.2. Furthermore, third-party frameworks like Spring
-Boot and Spring Security register their own default `TestExecutionListener`
-implementations by using the aforementioned <<testcontext-tel-config-automatic-discovery,
-automatic discovery mechanism>>.
+이 접근 방식의 문제는 개발자가 기본적으로 등록된 listener를 정확히 알아야한다는 것입니다.
+또한 default listener set은 release에서 release로 변경 될 수 있습니다.
+예를 들어 `SqlScriptsTestExecutionListener` 는 Spring Framework 4.1에 도입되었고 `DirtiesContextBeforeModesTestExecutionListener` 는 Spring Framework 4.2에 도입되었습니다.
+또한 Spring Boot 및 Spring Security와 같은 third-party framework는 앞서 언급한 <testcontext-tel-config-automatic-discovery,automatic discovery mechanism>>을 사용하여 자체 기본 `TestExecutionListener` 구현을 등록합니다.
 
-To avoid having to be aware of and re-declare all default listeners, you can set the
-`mergeMode` attribute of `@TestExecutionListeners` to `MergeMode.MERGE_WITH_DEFAULTS`.
-`MERGE_WITH_DEFAULTS` indicates that locally declared listeners should be merged with the
-default listeners. The merging algorithm ensures that duplicates are removed from the
-list and that the resulting set of merged listeners is sorted according to the semantics
-of `AnnotationAwareOrderComparator`, as described in <<testcontext-tel-config-ordering>>.
-If a listener implements `Ordered` or is annotated with `@Order`, it can influence the
-position in which it is merged with the defaults. Otherwise, locally declared listeners
-are appended to the list of default listeners when merged.
+모든 default listener를 인식하고 다시 선언 할 필요가 없도록 `@TestExecutionListeners`의 `mergeMode` attribute를 `MergeMode.MERGE_WITH_DEFAULTS` 로 설정할 수 있습니다.
+`MERGE_WITH_DEFAULTS` 는 local로 선언된 listener가 default listener와 병합되어야 함을 나타냅니다.
+병합 알고리즘은 <<testcontext-tel-config-ordering>>에 설명 된대로 목록에서 중복 항목이 제거되고 병합된 listener의 result set이 `AnnotationAwareOrderComparator` 의 의미 체계에 따라 정렬되도록합니다.
+listener가 `Ordered` 를 구현하거나 `@Order` 로 annotation이 달린 경우 기본 값과 병합되는 위치에 영향을 줄 수 있습니다.
+그렇지 않으면 lcoal로 선언된 listener가 병합 될 때 default listener 목록에 추가됩니다.
 
-For example, if the `MyCustomTestExecutionListener` class in the previous example
-configures its `order` value (for example, `500`) to be less than the order of the
-`ServletTestExecutionListener` (which happens to be `1000`), the
-`MyCustomTestExecutionListener` can then be automatically merged with the list of
-defaults in front of the `ServletTestExecutionListener`, and the previous example could
-be replaced with the following:
+예를 들어, 이전 예제의 `MyCustomTestExecutionListener` class 가 `order` value (예 : `500`)를 `ServletTestExecutionListener` 의 order (`1000` 이 됨)보다 작게 구성하면 `MyCustomTestExecutionListener` 가 기본값 목록과 자동으로 병합 될 수 있습니다.
+`ServletTestExecutionListener` 앞에서 이전 예제를 다음으로 대체 할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2244,31 +2194,18 @@ be replaced with the following:
 [[testcontext-application-events]]
 ==== Application Events
 
-Since Spring Framework 5.3.3, the TestContext framework provides support for recording
-<<core.adoc#context-functionality-events, application events>> published in the
-`ApplicationContext` so that assertions can be performed against those events within
-tests. All events published during the execution of a single test are made available via
-the `ApplicationEvents` API which allows you to process the events as a
-`java.util.Stream`.
+Spring Framework 5.3.3부터 TestContext framework는 `ApplicationContext` 에 publish 된 <<core.adoc#context-functionality-events, application events>> 기록을 지원하므로 테스트 내에서 해당 이벤트에 대해 assertion을 수행 할 수 있습니다.
+단일 테스트 실행 중에 publish 된 모든 이벤트는 이벤트를 `java.util.Stream` 으로 처리 할 수 있는 `ApplicationEvents` API를 통해 사용할 수 있습니다.
 
-To use `ApplicationEvents` in your tests, do the following.
+테스트에서 `ApplicationEvents` 를 사용하려면 다음을 수행하십시오.
 
-* Ensure that your test class is annotated or meta-annotated with
-  <<spring-testing-annotation-recordapplicationevents>>.
-* Ensure that the `ApplicationEventsTestExecutionListener` is registered. Note, however,
-  that `ApplicationEventsTestExecutionListener` is registered by default and only needs
-  to be manually registered if you have custom configuration via
-  `@TestExecutionListeners` that does not include the default listeners.
-* Annotate a field of type `ApplicationEvents` with `@Autowired` and use that instance of
-  `ApplicationEvents` in your test and lifecycle methods (such as `@BeforeEach` and
-  `@AfterEach` methods in JUnit Jupiter).
-** When using the <<testcontext-junit-jupiter-extension>>, you may declare a method
-   parameter of type `ApplicationEvents` in a test or lifecycle method as an alternative
-   to an `@Autowired` field in the test class.
+* test class가 <<spring-testing-annotation-recordapplicationevents>>로 annotation 처리되거나 meta-annotation 처리되었는지 확인하십시오.
+* `ApplicationEventsTestExecutionListener` 가 등록되었는지 확인하십시오.
+그러나 `ApplicationEventsTestExecutionListener` 는 기본적으로 등록되며 default listener를 포함하지 않는 `@TestExecutionListeners` 를 통해 custom configuration이 있는 경우에만 수동으로 등록해야합니다.
+* `@Autowired` 로 `ApplicationEvents` type의 field에 annotation을 달고 테스트 및 lifecycle method (예 : JUnit Jupiter의 `@BeforeEach` 및 `@AfterEach` method)에서 `ApplicationEvents` instance를 사용합니다.
+** <<testcontext-junit-jupiter-extension>>을 사용할 때 테스트 클래스의 `@Autowired` field 대신 테스트 또는 lifecycle method에서 `ApplicationEvents` type의 method parameter를 선언 할 수 있습니다.
 
-The following test class uses the `SpringExtension` for JUnit Jupiter and
-https://assertj.github.io/doc/[AssertJ] to assert the types of application events
-published while invoking a method in a Spring-managed component:
+다음 테스트 클래스는 JUnit Jupiter 및 https://assertj.github.io/doc/[AssertJ] 용 `SpringExtension` 을 사용하여 Spring 관리 component에서 method를 호출하는 동안 publish 된 application event type을 주장합니다:
 
 // Don't use "quotes" in the "subs" section because of the asterisks in /* ... */
 [source,java,indent=0,subs="verbatim",role="primary"]
@@ -2294,9 +2231,9 @@ published while invoking a method in a Spring-managed component:
 		}
 	}
 ----
-<1> Annotate the test class with `@RecordApplicationEvents`.
-<2> Inject the `ApplicationEvents` instance for the current test.
-<3> Use the `ApplicationEvents` API to count how many `OrderSubmitted` events were published.
+<1> `@RecordApplicationEvents` 로 테스트 클래스에 주석을 답니다.
+<2> 현재 테스트에 대한 `ApplicationEvents` instance를 inject합니다.
+<3> `ApplicationEvents` API를 사용하여 publish 된 `OrderSubmitted` 이벤트 수를 계산합니다.
 
 // Don't use "quotes" in the "subs" section because of the asterisks in /* ... */
 [source,kotlin,indent=0,subs="verbatim",role="secondary"]
@@ -2322,22 +2259,18 @@ published while invoking a method in a Spring-managed component:
 		}
 	}
 ----
-<1> Annotate the test class with `@RecordApplicationEvents`.
-<2> Inject the `ApplicationEvents` instance for the current test.
-<3> Use the `ApplicationEvents` API to count how many `OrderSubmitted` events were published.
+<1> `@RecordApplicationEvents` 로 테스트 클래스에 주석을 답니다.
+<2> 현재 테스트에 대한 `ApplicationEvents` instance를 inject합니다.
+<3> `ApplicationEvents` API를 사용하여 publish 된 `OrderSubmitted` 이벤트 수를 계산합니다.
 
-See the
-{api-spring-framework}/test/context/event/ApplicationEvents.html[`ApplicationEvents`
-javadoc] for further details regarding the `ApplicationEvents` API.
+`ApplicationEvents` API에 대한 자세한 내용은 {api-spring-framework}/test/context/event/ApplicationEvents.html[`ApplicationEvents` javadoc]을 참조하십시오.
 
 [[testcontext-test-execution-events]]
 ==== Test Execution Events
 
-The `EventPublishingTestExecutionListener` introduced in Spring Framework 5.2 offers an
-alternative approach to implementing a custom `TestExecutionListener`. Components in the
-test's `ApplicationContext` can listen to the following events published by the
-`EventPublishingTestExecutionListener`, each of which corresponds to a method in the
-`TestExecutionListener` API.
+Spring Framework 5.2에 도입된 `EventPublishingTestExecutionListener` 는 custom `TestExecutionListener` 구현에 대한 대안적인 접근 방식을 제공합니다.
+테스트의 `ApplicationContext` 에 있는 component는 `EventPublishingTestExecutionListener` 가 publish 한 다음 이벤트를 수신 할 수 있습니다.
+각 이벤트는 `TestExecutionListener` API의 method에 해당합니다.
 
 * `BeforeTestClassEvent`
 * `PrepareTestInstanceEvent`
@@ -2347,24 +2280,16 @@ test's `ApplicationContext` can listen to the following events published by the
 * `AfterTestMethodEvent`
 * `AfterTestClassEvent`
 
-NOTE: These events are only published if the `ApplicationContext` has already been loaded.
+NOTE: 이러한 이벤트는 `ApplicationContext`가 이미 로드된 경우에만 publish 됩니다.
 
-These events may be consumed for various reasons, such as resetting mock beans or tracing
-test execution. One advantage of consuming test execution events rather than implementing
-a custom `TestExecutionListener` is that test execution events may be consumed by any
-Spring bean registered in the test `ApplicationContext`, and such beans may benefit
-directly from dependency injection and other features of the `ApplicationContext`. In
-contrast, a `TestExecutionListener` is not a bean in the `ApplicationContext`.
+이러한 이벤트는 mock bean 재설정 또는 테스트 실행 추적과 같은 다양한 이유로 사용될 수 있습니다.
+custom `TestExecutionListener` 를 구현하는 것보다  test execution event를 사용하는 한 가지 장점은 test execution event가 test `ApplicationContext` 에 등록된 Spring bean에 의해 사용될 수 있으며 이러한 bean은 dependency injection 및 `ApplicationContext`의 다른 기능으로부터 직접 혜택을 받을 수 있다는 것입니다.
+반대로 `TestExecutionListener` 는 `ApplicationContext` 의 bean이 아닙니다.
 
-In order to listen to test execution events, a Spring bean may choose to implement the
-`org.springframework.context.ApplicationListener` interface. Alternatively, listener
-methods can be annotated with `@EventListener` and configured to listen to one of the
-particular event types listed above (see
-<<core.adoc#context-functionality-events-annotation, Annotation-based Event Listeners>>).
-Due to the popularity of this approach, Spring provides the following dedicated
-`@EventListener` annotations to simplify registration of test execution event listeners.
-These annotations reside in the `org.springframework.test.context.event.annotation`
-package.
+test execution event를 수신하기 위해 Spring bean은 `org.springframework.context.ApplicationListener` interface를 구현하도록 선택할 수 있습니다.
+또는 listener method에 `@EventListener`로 annotation을 달고 위에 나열된 특정 event types 중 하나를 수신하도록 구성 할 수 있습니다 (<<core.adoc#context-functionality-events-annotation, Annotation-based Event Listeners>> 참조).
+이 접근법의 인기로 인해 Spring은 test execution event listener의 등록을 단순화하기 위해 다음과 같은 전용 `@EventListener` annotation을 제공합니다.
+이러한 annotation은 `org.springframework.test.context.event.annotation` package에 있습니다.
 
 * `@BeforeTestClass`
 * `@PrepareTestInstance`
@@ -2377,40 +2302,30 @@ package.
 [[testcontext-test-execution-events-exception-handling]]
 ===== Exception Handling
 
-By default, if a test execution event listener throws an exception while consuming an
-event, that exception will propagate to the underlying testing framework in use (such as
-JUnit or TestNG). For example, if the consumption of a `BeforeTestMethodEvent` results in
-an exception, the corresponding test method will fail as a result of the exception. In
-contrast, if an asynchronous test execution event listener throws an exception, the
-exception will not propagate to the underlying testing framework. For further details on
-asynchronous exception handling, consult the class-level javadoc for `@EventListener`.
+기본적으로 test execution event listener가 event를 사용하는 동안 exception을 발생시키면 해당 exception은 사용중인 기본 testing framework(예 : JUnit 또는 TestNG)으로 전파됩니다.
+예를 들어 `BeforeTestMethodEvent` 를 사용하여 exception이 발생하면 해당 test method가 exception으로 인해 실패합니다.
+반대로 asynchronous test execution event listener 가 exception을 throw하면 exception이 기본 testing framework로 전파되지 않습니다.
+asynchronous exception handling에 대한 자세한 내용은 `@EventListener` 에 대한 class-level javadoc을 참조하세요.
 
 [[testcontext-test-execution-events-async]]
 ===== Asynchronous Listeners
 
-If you want a particular test execution event listener to process events asynchronously,
-you can use Spring's <<integration.adoc#scheduling-annotation-support-async,regular
-`@Async` support>>. For further details, consult the class-level javadoc for
-`@EventListener`.
+특정 test execution event listener가 event를 비동기적으로 처리하도록 하려면 Spring의 <<integration.adoc#scheduling-annotation-support-async,일반 `@Async` 지원>>을 사용할 수 있습니다.
+자세한 내용은 `@EventListener` 에 대한 class-level javadoc을 참조하세요.
 
 
 [[testcontext-ctx-management]]
 ==== Context Management
 
-Each `TestContext` provides context management and caching support for the test instance
-for which it is responsible. Test instances do not automatically receive access to the
-configured `ApplicationContext`. However, if a test class implements the
-`ApplicationContextAware` interface, a reference to the `ApplicationContext` is supplied
-to the test instance. Note that `AbstractJUnit4SpringContextTests` and
-`AbstractTestNGSpringContextTests` implement `ApplicationContextAware` and, therefore,
-provide access to the `ApplicationContext` automatically.
+각 `TestContext` 는 담당하는 test instance에 대한 context 관리 및 캐싱 지원을 제공합니다.
+test instances는 구성된 `ApplicationContext` 에 대한 액세스를 자동으로 받지 않습니다.
+그러나 test class가 `ApplicationContextAware` interface를 구현하는 경우 `ApplicationContext` 에 대한 참조가 test instance에 제공됩니다.
+`AbstractJUnit4SpringContextTests` 및 `AbstractTestNGSpringContextTests` 는 `ApplicationContextAware` 를 구현하므로 `ApplicationContext` 에 대한 액세스를 자동으로 제공합니다.
 
 .@Autowired ApplicationContext
 [TIP]
 =====
-As an alternative to implementing the `ApplicationContextAware` interface, you can inject
-the application context for your test class through the `@Autowired` annotation on either
-a field or setter method, as the following example shows:
+`ApplicationContextAware` interface를 구현하는 대신 다음 예제와 같이 field 또는 setter method에서 `@Autowired` annotation을 통해 테스트 클래스에 대한 application context를 inject 할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2441,8 +2356,7 @@ a field or setter method, as the following example shows:
 <1> Injecting the `ApplicationContext`.
 
 
-Similarly, if your test is configured to load a `WebApplicationContext`, you can inject
-the web application context into your test, as follows:
+마찬가지로 테스트가 web application context를 로드하도록 구성된 경우 다음과 같이 `WebApplicationContext`를 테스트에 inject 할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2474,25 +2388,16 @@ the web application context into your test, as follows:
 <2> Injecting the `WebApplicationContext`.
 
 
-Dependency injection by using `@Autowired` is provided by the
-`DependencyInjectionTestExecutionListener`, which is configured by default
-(see <<testcontext-fixture-di>>).
+`@Autowired` 를 사용한 dependency injection은 기본적으로 구성되는 `DependencyInjectionTestExecutionListener` 에서 제공합니다 (<<testcontext-fixture-di>> 참조).
 =====
 
-Test classes that use the TestContext framework do not need to extend any particular
-class or implement a specific interface to configure their application context. Instead,
-configuration is achieved by declaring the `@ContextConfiguration` annotation at the
-class level. If your test class does not explicitly declare application context resource
-locations or component classes, the configured `ContextLoader` determines how to load a
-context from a default location or default configuration classes. In addition to context
-resource locations and component classes, an application context can also be configured
-through application context initializers.
+TestContext framework를 사용하는 test class는 application context를 구성하기 위해 특정 class를 확장하거나 특정 interface를 구현할 필요가 없습니다.
+대신 class level에서 `@ContextConfiguration` annotation을 선언하여 구성을 수행합니다.
+test class가 application context resource location 또는 component class를 명시적으로 선언하지 않는 경우 구성된 `ContextLoader` 는 default location 또는 default configuration class에서 context를 로드하는 방법을 결정합니다.
+context resource location 및 component class 외에도 application context initializer를 통해 application context를 구성 할 수도 있습니다.
 
-The following sections explain how to use Spring's `@ContextConfiguration` annotation to
-configure a test `ApplicationContext` by using XML configuration files, Groovy scripts,
-component classes (typically `@Configuration` classes), or context initializers.
-Alternatively, you can implement and configure your own custom `SmartContextLoader` for
-advanced use cases.
+다음 section에서는 XML configuration file, Groovy script, component class (일반적으로 `@Configuration` class) 또는 context initializer를 사용하여 test `ApplicationContext` 를 구성하기 위해 Spring의 `@ContextConfiguration` annotation을 사용하는 방법을 설명합니다.
+또는 advanced use case를 위해 고유한 custom `SmartContextLoader` 를 구현하고 구성 할 수 있습니다.
 
 * <<testcontext-ctx-management-xml>>
 * <<testcontext-ctx-management-groovy>>
@@ -2510,14 +2415,10 @@ advanced use cases.
 [[testcontext-ctx-management-xml]]
 ===== Context Configuration with XML resources
 
-To load an `ApplicationContext` for your tests by using XML configuration files, annotate
-your test class with `@ContextConfiguration` and configure the `locations` attribute with
-an array that contains the resource locations of XML configuration metadata. A plain or
-relative path (for example, `context.xml`) is treated as a classpath resource that is
-relative to the package in which the test class is defined. A path starting with a slash
-is treated as an absolute classpath location (for example, `/org/example/config.xml`). A
-path that represents a resource URL (i.e., a path prefixed with `classpath:`, `file:`,
-`http:`, etc.) is used _as is_.
+XML configuration file을 사용하여 테스트 용 `ApplicationContext` 를 로드하려면 `@ContextConfiguration` 으로 test class에 annotation을 달고 XML configuration metadata의 resource location이 포함된 배열로  `locations` attribute를 구성합니다.
+plain 또는 relative path (예 : `context.xml`)는 test class가 정의된 package에 상대적인 classpath resource 로 처리됩니다.
+slash로 시작하는 path는 absolute classpath location(예 : `/org/example/config.xml`)으로 처리됩니다.
+resource URL을 나타내는 path (즉, `classpath:`, `file:`, `http:` 등이 prefix로 붙은 path)는 _그대로_ 사용됩니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2530,7 +2431,7 @@ path that represents a resource URL (i.e., a path prefixed with `classpath:`, `f
 		// class body...
 	}
 ----
-<1> Setting the locations attribute to a list of XML files.
+<1> locations attribute를 XML file 목록으로 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2543,14 +2444,11 @@ path that represents a resource URL (i.e., a path prefixed with `classpath:`, `f
 		// class body...
 	}
 ----
-<1> Setting the locations attribute to a list of XML files.
+<1> locations attribute를 XML file 목록으로 설정합니다.
 
 
-`@ContextConfiguration` supports an alias for the `locations` attribute through the
-standard Java `value` attribute. Thus, if you do not need to declare additional
-attributes in `@ContextConfiguration`, you can omit the declaration of the `locations`
-attribute name and declare the resource locations by using the shorthand format
-demonstrated in the following example:
+`@ContextConfiguration`은 standard Java `value` attribute를 통해 `locations` attribute에 대한 alias를 지원합니다.
+따라서 `@ContextConfiguration` 에서 추가 attribute를 선언할 필요가 없는 경우 `locations` attribute name의 선언을 생략하고 다음 예제에 설명된 shorthand format을 사용하여 resource location을 선언할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2561,7 +2459,7 @@ demonstrated in the following example:
 		// class body...
 	}
 ----
-<1> Specifying XML files without using the `location` attribute.
+<1> `location` attribute를 사용하지 않고 XML file을 지정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2572,16 +2470,13 @@ demonstrated in the following example:
 		// class body...
 	}
 ----
-<1> Specifying XML files without using the `location` attribute.
+<1> `location` attribute를 사용하지 않고 XML file을 지정합니다.
 
 
-If you omit both the `locations` and the `value` attributes from the
-`@ContextConfiguration` annotation, the TestContext framework tries to detect a default
-XML resource location. Specifically, `GenericXmlContextLoader` and
-`GenericXmlWebContextLoader` detect a default location based on the name of the test
-class. If your class is named `com.example.MyTest`, `GenericXmlContextLoader` loads your
-application context from `"classpath:com/example/MyTest-context.xml"`. The following
-example shows how to do so:
+`@ContextConfiguration` annotation에서 `locations` 및 `value` attribute를 모두 생략하면 TestContext framework가 default XML resource location을 감지하려고합니다.
+특히 `GenericXmlContextLoader` 및 `GenericXmlWebContextLoader` 는 test class의 이름을 기반으로 default location을 감지합니다.
+class name이 `com.example.MyTest` 인 경우 `GenericXmlContextLoader` 는 `"classpath:com/example/MyTest-context.xml"` 에서 application context를 로드합니다.
+다음 예는 이를 수행하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2594,7 +2489,7 @@ example shows how to do so:
 		// class body...
 	}
 ----
-<1> Loading configuration from the default location.
+<1> default location에서 구성 로드.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2607,24 +2502,19 @@ example shows how to do so:
 		// class body...
 	}
 ----
-<1> Loading configuration from the default location.
+<1> default location에서 구성 로드.
 
 
 [[testcontext-ctx-management-groovy]]
 ===== Context Configuration with Groovy Scripts
 
-To load an `ApplicationContext` for your tests by using Groovy scripts that use the
-<<core.adoc#groovy-bean-definition-dsl, Groovy Bean Definition DSL>>, you can annotate
-your test class with `@ContextConfiguration` and configure the `locations` or `value`
-attribute with an array that contains the resource locations of Groovy scripts. Resource
-lookup semantics for Groovy scripts are the same as those described for
-<<testcontext-ctx-management-xml, XML configuration files>>.
+<<core.adoc#groovy-bean-definition-dsl, Groovy Bean Definition DSL>>을 사용하는 Groovy script를 사용하여 테스트 용 `ApplicationContext` 를 로드하려면 `@ContextConfiguration` 으로 test class에 annotation을 달고 Groovy script의 resource location을 포함하는 배열로 `locations` 또는 `value` attribute를 구성 할 수 있습니다.
+Groovy script에 대한 resource lookcup semantic은 <<testcontext-ctx-management-xml, XML configuration files>>에 대해 설명된 것과 동일합니다.
 
 .Enabling Groovy script support
-TIP: Support for using Groovy scripts to load an `ApplicationContext` in the Spring
-TestContext Framework is enabled automatically if Groovy is on the classpath.
+TIP: Groovy가 classpath에 있으면 Spring TestContext Framework에서 `ApplicationContext` 를 로드하기 위해 Groovy script를 사용하는 지원이 자동으로 활성화됩니다.
 
-The following example shows how to specify Groovy configuration files:
+다음 예는 Groovy configuration file을 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2649,16 +2539,13 @@ The following example shows how to specify Groovy configuration files:
 		// class body...
 	}
 ----
-<1> Specifying the location of Groovy configuration files.
+<1> Groovy configuration file location 지정.
 
 
-If you omit both the `locations` and `value` attributes from the `@ContextConfiguration`
-annotation, the TestContext framework tries to detect a default Groovy script.
-Specifically, `GenericGroovyXmlContextLoader` and `GenericGroovyXmlWebContextLoader`
-detect a default location based on the name of the test class. If your class is named
-`com.example.MyTest`, the Groovy context loader loads your application context from
-`"classpath:com/example/MyTestContext.groovy"`. The following example shows how to use
-the default:
+`@ContextConfiguration` annotation에서 `locations` 및 `value` attribute를 모두 생략하면 TestContext framework는 기본 Groovy script를 감지하려고 합니다.
+특히 `GenericGroovyXmlContextLoader` 및 `GenericGroovyXmlWebContextLoader` 는 test class의 이름을 기반으로 default location을 감지합니다.
+class name이 `com.example.MyTest` 이면 Groovy context loader 는 `"classpath:com/example/MyTestContext.groovy"` 에서 application context를 로드합니다.
+다음 예는 default 값을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2671,7 +2558,7 @@ the default:
 		// class body...
 	}
 ----
-<1> Loading configuration from the default location.
+<1> default location에서 configuration 로드.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2684,19 +2571,17 @@ the default:
 		// class body...
 	}
 ----
-<1> Loading configuration from the default location.
+<1> default location에서 configuration 로드.
 
 
 .Declaring XML configuration and Groovy scripts simultaneously
 [TIP]
 =====
-You can declare both XML configuration files and Groovy scripts simultaneously by using
-the `locations` or `value` attribute of `@ContextConfiguration`. If the path to a
-configured resource location ends with `.xml`, it is loaded by using an
-`XmlBeanDefinitionReader`. Otherwise, it is loaded by using a
-`GroovyBeanDefinitionReader`.
+`@ContextConfiguration` 의 `locations` 또는 `value` attribute를 사용하여 ML configuration file과 Groovy script를 동시에 선언 할 수 있습니다.
+구성된 resource location에 대한 경로가 `.xml` 로 끝나면 `XmlBeanDefinitionReader` 를 사용하여 로드됩니다.
+그렇지 않으면 `GroovyBeanDefinitionReader` 를 사용하여 로드됩니다.
 
-The following listing shows how to combine both in an integration test:
+다음 목록은 통합 테스트에서 두 가지를 결합하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2725,10 +2610,8 @@ The following listing shows how to combine both in an integration test:
 [[testcontext-ctx-management-javaconfig]]
 ===== Context Configuration with Component Classes
 
-To load an `ApplicationContext` for your tests by using component classes (see
-<<core.adoc#beans-java, Java-based container configuration>>), you can annotate your test
-class with `@ContextConfiguration` and configure the `classes` attribute with an array
-that contains references to component classes. The following example shows how to do so:
+component class를 사용하여 테스트 용 `ApplicationContext` 를 로드하려면(<<core.adoc#beans-java, Java-based container configuration>> 참조) `@ContextConfiguration` 으로 test class에 annotation을 달고 component class에 대한 참조를 포함하는 배열로 `classes` attribute를 구성할 수 있습니다.
+다음 예는이를 수행하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2740,7 +2623,7 @@ that contains references to component classes. The following example shows how t
 		// class body...
 	}
 ----
-<1> Specifying component classes.
+<1> component class 지정.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2752,41 +2635,29 @@ that contains references to component classes. The following example shows how t
 		// class body...
 	}
 ----
-<1> Specifying component classes.
+<1> component class 지정.
 
 
 [[testcontext-ctx-management-javaconfig-component-classes]]
 .Component Classes
 [TIP]
 ====
-The term "`component class`" can refer to any of the following:
+"`component class`" 라는 용어는 다음 중 하나를 나타낼 수 있습니다:
 
-* A class annotated with `@Configuration`.
-* A component (that is, a class annotated with `@Component`, `@Service`, `@Repository`, or other stereotype annotations).
-* A JSR-330 compliant class that is annotated with `javax.inject` annotations.
-* Any class that contains `@Bean`-methods.
-* Any other class that is intended to be registered as a Spring component (i.e., a Spring
-  bean in the `ApplicationContext`), potentially taking advantage of automatic autowiring
-  of a single constructor without the use of Spring annotations.
+* `@Configuration` 으로 annotation이 달린 class.
+* A component (즉, `@Component` ,  `@Service` , `@Repository` 또는 기타  stereotype annotations이 있는 class).
+* `javax.inject` annotation으로 annotation이 있는 JSR-330 준수 class.
+* `@Bean`-method를 포함하는 모든 class.
+* Spring component (즉, `ApplicationContext` 의 Spring bean)로 등록되도록 의도된 다른 class, 잠재적으로 Spring annotation을 사용하지 않고 single constructor의 자동 autowire를 활용할 수 있습니다.
 
-See the javadoc of
-{api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] and
-{api-spring-framework}/context/annotation/Bean.html[`@Bean`] for further information
-regarding the configuration and semantics of component classes, paying special attention
-to the discussion of `@Bean` Lite Mode.
+`@Bean` Lite mode에 대한 논의에 특별한 주의를 기울이면서 component class의 구성 및 의미에 대한 자세한 정보는 {api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] 및 {api-spring-framework}/context/annotation/Bean.html[`@Bean`]의 javadoc을 참조하세요.
 ====
 
-If you omit the `classes` attribute from the `@ContextConfiguration` annotation, the
-TestContext framework tries to detect the presence of default configuration classes.
-Specifically, `AnnotationConfigContextLoader` and `AnnotationConfigWebContextLoader`
-detect all `static` nested classes of the test class that meet the requirements for
-configuration class implementations, as specified in the
-{api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] javadoc.
-Note that the name of the configuration class is arbitrary. In addition, a test class can
-contain more than one `static` nested configuration class if desired. In the following
-example, the `OrderServiceTest` class declares a `static` nested configuration class
-named `Config` that is automatically used to load the `ApplicationContext` for the test
-class:
+`@ContextConfiguration` annotation에서 `classes` attribute를 생략하면 TestContext framework는 default configuration class의 존재를 감지하려고합니다.
+특히 `AnnotationConfigContextLoader` 및 `AnnotationConfigWebContextLoader` 는 {api-spring-framework}/context/annotation/Configuration.html[`@Configuration`] javadoc에 지정된대로 configuration class 구현 요구 사항을 충족하는 test class의 모든 `static` nested class를 감지합니다.
+configuration class의 이름은 임의적입니다. 
+또한 test class 는 원하는 경우 둘 이상의 `static` nested configuration class를 포함 할 수 있습니다.
+다음 예제에서 `OrderServiceTest` class는 test class에 대한 `ApplicationContext` 를 로드하는데 자동으로 사용되는 `Config` 라는 `static` nested configuration class를 선언합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2818,7 +2689,7 @@ class:
 
 	}
 ----
-<1> Loading configuration information from the nested `Config` class.
+<1> nested `Config` class에서 configuration 로드.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2847,56 +2718,34 @@ class:
 		}
 	}
 ----
-<1> Loading configuration information from the nested `Config` class.
+<1> nested `Config` class에서 configuration 로드.
 
 
 [[testcontext-ctx-management-mixed-config]]
 ===== Mixing XML, Groovy Scripts, and Component Classes
 
-It may sometimes be desirable to mix XML configuration files, Groovy scripts, and
-component classes (typically `@Configuration` classes) to configure an
-`ApplicationContext` for your tests. For example, if you use XML configuration in
-production, you may decide that you want to use `@Configuration` classes to configure
-specific Spring-managed components for your tests, or vice versa.
+XML configuration file, Groovy script 및 component class (일반적으로 `@Configuration` class)를 혼합하여 테스트를 위한 `ApplicationContext` 를 구성하는 것이 바람직 할 수 있습니다.
+예를 들어, production에서 XML configuration을 사용하는 경우 `@Configuration` class를 사용하여 테스트를 위한 특정 Spring 관리 components를 구성할지 또는 그 반대인지 결정할 수 있습니다.
+또한 일부 third-party framework(예: Spring Boot)는 다양한 유형의 resources(예 : XML configuration file, Groovy script 및 `@Configuration` class)에서 동시에 `ApplicationContext` 를 로드하기 위한 최상의 지원을 제공합니다.
+역사적으로 Spring Framework는 standard deployment에 대해 이를 지원하지 않았습니다.
+결과적으로 Spring Framework가 `spring-test` module에서 제공하는 대부분의 `SmartContextLoader` 구현은 각 test context에 대해 하나의 resource type만 지원합니다.
+그러나 이것이 둘 다 사용할 수 없다는 의미는 아닙니다.
+일반적인 규칙에 대한 한 가지 예외는 `GenericGroovyXmlContextLoader` 및 `GenericGroovyXmlWebContextLoader` 가 XML configuration file과 Groovy script를 동시에 지원한다는 것입니다.
+또한 third-party framework는 `@ContextConfiguration` 을 통해 `locations` 과 `classes`의 선언을 모두 지원하도록 선택할 수 있으며 TestContext framework의 표준 테스트 지원을 통해 다음 옵션을 사용할 수 있습니다.
 
-Furthermore, some third-party frameworks (such as Spring Boot) provide first-class
-support for loading an `ApplicationContext` from different types of resources
-simultaneously (for example, XML configuration files, Groovy scripts, and
-`@Configuration` classes). The Spring Framework, historically, has not supported this for
-standard deployments. Consequently, most of the `SmartContextLoader` implementations that
-the Spring Framework delivers in the `spring-test` module support only one resource type
-for each test context. However, this does not mean that you cannot use both. One
-exception to the general rule is that the `GenericGroovyXmlContextLoader` and
-`GenericGroovyXmlWebContextLoader` support both XML configuration files and Groovy
-scripts simultaneously. Furthermore, third-party frameworks may choose to support the
-declaration of both `locations` and `classes` through `@ContextConfiguration`, and, with
-the standard testing support in the TestContext framework, you have the following options.
-
-If you want to use resource locations (for example, XML or Groovy) and `@Configuration`
-classes to configure your tests, you must pick one as the entry point, and that one must
-include or import the other. For example, in XML or Groovy scripts, you can include
-`@Configuration` classes by using component scanning or defining them as normal Spring
-beans, whereas, in a `@Configuration` class, you can use `@ImportResource` to import XML
-configuration files or Groovy scripts. Note that this behavior is semantically equivalent
-to how you configure your application in production: In production configuration, you
-define either a set of XML or Groovy resource locations or a set of `@Configuration`
-classes from which your production `ApplicationContext` is loaded, but you still have the
-freedom to include or import the other type of configuration.
+resource location(예 : XML 또는 Groovy) 및 `@Configuration` class를 사용하여 테스트를 구성하려는 경우 하나를 진입점으로 선택하고 다른 하나를 포함하거나 가져와야합니다.
+예를 들어 XML 또는 Groovy script에서는 component scan을 사용하거나 일반 Spring Bean으로 정의하여 `@Configuration` class를 포함 할 수 있지만 @Configuration 클래스에서는 `@ImportResource` 를 사용하여 XML configuration file 또는 Groovy script를 가져올 수 있습니다.
+이 동작은 production에서 application을 구성하는 방법과 의미 상 동일합니다:
+production configuration에서 XML 또는 Groovy resource location set 또는 production `ApplicationContext` 가 로드되는 `@Configuration` class set을 정의하지만 여전히 다른 유형의 configuration을 include 또는 import 할 수 있습니다.
 
 [[testcontext-ctx-management-initializers]]
 ===== Context Configuration with Context Initializers
 
-To configure an `ApplicationContext` for your tests by using context initializers,
-annotate your test class with `@ContextConfiguration` and configure the `initializers`
-attribute with an array that contains references to classes that implement
-`ApplicationContextInitializer`. The declared context initializers are then used to
-initialize the `ConfigurableApplicationContext` that is loaded for your tests. Note that
-the concrete `ConfigurableApplicationContext` type supported by each declared initializer
-must be compatible with the type of `ApplicationContext` created by the
-`SmartContextLoader` in use (typically a `GenericApplicationContext`). Furthermore, the
-order in which the initializers are invoked depends on whether they implement Spring's
-`Ordered` interface or are annotated with Spring's `@Order` annotation or the standard
-`@Priority` annotation. The following example shows how to use initializers:
+context initializer를 사용하여 테스트에 대한 `ApplicationContext` 를 구성하려면 `@ContextConfiguration` 으로 test class에 annotation을 달고 `ApplicationContextInitializer` 를 구현하는 class에 대한 참조를 포함하는 배열로 `initializers` attribute를 구성합니다.
+선언된 컨텍스트 context initializers는 테스트를 위해 로드된 `ConfigurableApplicationContext` 를 초기화하는 데 사용됩니다.
+선언된 각 initializer가 지원하는 구체적인 `ConfigurableApplicationContext` type은 사용중인 `SmartContextLoader` (일반적으로 `GenericApplicationContext`)에 의해 생성된 `ApplicationContext` type과 호환되어야 합니다.
+또한 initializer가 호출되는 순서는 Spring의 `Ordered` interface를 구현하는지 아니면 Spring의 `@Order` annotation 또는 표준 `@Priority` annotation으로 주석 처리되는지에 따라 다릅니다.
+다음 예제는 initializer를 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2911,7 +2760,7 @@ order in which the initializers are invoked depends on whether they implement Sp
 		// class body...
 	}
 ----
-<1> Specifying configuration by using a configuration class and an initializer.
+<1> configuration class 및 initializer를 사용하여 configuration  지정.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2926,14 +2775,12 @@ order in which the initializers are invoked depends on whether they implement Sp
 		// class body...
 	}
 ----
-<1> Specifying configuration by using a configuration class and an initializer.
+<1> configuration class 및 initializer를 사용하여 configuration  지정.
 
 
-You can also omit the declaration of XML configuration files, Groovy scripts, or
-component classes in `@ContextConfiguration` entirely and instead declare only
-`ApplicationContextInitializer` classes, which are then responsible for registering beans
-in the context -- for example, by programmatically loading bean definitions from XML
-files or configuration classes. The following example shows how to do so:
+또한 `@ContextConfiguration` 에서 XML configuration file, Groovy script 또는 component class의 선언을 완전히 생략하고 대신 `ApplicationContextInitializer` class만 선언하여 context에 bean을 등록 할 수 있습니다.
+예를 들어 XML file 또는 configuration class에서 프로그래밍 방식으로 bean definition을 로드합니다.
+다음 예는 이를 수행하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -2946,7 +2793,7 @@ files or configuration classes. The following example shows how to do so:
 		// class body...
 	}
 ----
-<1> Specifying configuration by using only an initializer.
+<1> initializer만 사용하여 configuration 지정.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -2959,36 +2806,27 @@ files or configuration classes. The following example shows how to do so:
 		// class body...
 	}
 ----
-<1> Specifying configuration by using only an initializer.
+<1> initializer만 사용하여 configuration 지정.
 
 
 [[testcontext-ctx-management-inheritance]]
 ===== Context Configuration Inheritance
 
-`@ContextConfiguration` supports boolean `inheritLocations` and `inheritInitializers`
-attributes that denote whether resource locations or component classes and context
-initializers declared by superclasses should be inherited. The default value for both
-flags is `true`. This means that a test class inherits the resource locations or
-component classes as well as the context initializers declared by any superclasses.
-Specifically, the resource locations or component classes for a test class are appended
-to the list of resource locations or annotated classes declared by superclasses.
-Similarly, the initializers for a given test class are added to the set of initializers
-defined by test superclasses. Thus, subclasses have the option of extending the resource
-locations, component classes, or context initializers.
+`@ContextConfiguration` 은 resource locations 또는 component classe와 superclasses에 의해 선언된 context initializers를 상속해야하는지 여부를 나타내는 boolean `inheritLocations` 및 `inheritInitializers` attribute를 지원합니다.
+두 flag의 기본값은 true입니다.
+이는 test class가 resource location 또는 component class 뿐만 아니라 superclasses에서 선언한 context initializer를 상속한다는 것을 의미합니다.
+특히 test class의 resource location 또는 component class는 resource location 또는 superclasses에서 선언한 annotation이 있는 class 목록에 추가됩니다.
+유사하게, 주어진 test class의 initializer는 test superclasses에 의해 정의된 initializer set에 추가됩니다.
+따라서 subclasses에는 resource location, component class 또는 context initializer를 확장하는 옵션이 있습니다.
 
-If the `inheritLocations` or `inheritInitializers` attribute in `@ContextConfiguration`
-is set to `false`, the resource locations or component classes and the context
-initializers, respectively, for the test class shadow and effectively replace the
-configuration defined by superclasses.
+`@ContextConfiguration` 의 `inheritLocations` 또는 `inheritInitializers` attribute가 `false` 로 설정되면 test class shadow에 대한 resource location 또는 component class와 context initializers가 각각 superclass에 정의된 configuration을 효과적으로 대체합니다.
 
-NOTE: As of Spring Framework 5.3, test configuration may also be inherited from enclosing
-classes. See <<testcontext-junit-jupiter-nested-test-configuration>> for details.
+NOTE: Spring Framework 5.3부터 test configuration은 enclosing class에서 상속될 수도 있습니다.
+자세한 내용은 <<testcontext-junit-jupiter-nested-test-configuration>>을 참조하세요.
 
-In the next example, which uses XML resource locations, the `ApplicationContext` for
-`ExtendedTest` is loaded from `base-config.xml` and `extended-config.xml`, in that order.
-Beans defined in `extended-config.xml` can, therefore, override (that is, replace) those
-defined in `base-config.xml`. The following example shows how one class can extend
-another and use both its own configuration file and the superclass's configuration file:
+XML resource location을 사용하는 다음 예제에서 `ExtendedTest` 에 대한 `ApplicationContext` 는 `base-config.xml` 및 `extended-config.xml` 에서 순서대로 로드됩니다.
+따라서 `extended-config.xml` 에 정의된 bean은 `base-config.xml` 에 정의된 bean을 override(즉, replace) 할 수 있습니다.
+다음 예제는 한 class가 다른 class를 확장하고 자체 configuration file과 superclass의 configuration file을 모두 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3008,8 +2846,8 @@ another and use both its own configuration file and the superclass's configurati
 		// class body...
 	}
 ----
-<1> Configuration file defined in the superclass.
-<2> Configuration file defined in the subclass.
+<1> superclass에 정의된 configuration file 입니다.
+<2> subclass에 정의된 configuration file 입니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -3029,15 +2867,13 @@ another and use both its own configuration file and the superclass's configurati
 		// class body...
 	}
 ----
-<1> Configuration file defined in the superclass.
-<2> Configuration file defined in the subclass.
+<1> superclass에 정의된 configuration file 입니다.
+<2> subclass에 정의된 configuration file 입니다.
 
 
-Similarly, in the next example, which uses component classes, the `ApplicationContext`
-for `ExtendedTest` is loaded from the `BaseConfig` and `ExtendedConfig` classes, in that
-order. Beans defined in `ExtendedConfig` can, therefore, override (that is, replace)
-those defined in `BaseConfig`. The following example shows how one class can extend
-another and use both its own configuration class and the superclass's configuration class:
+마찬가지로 component class를 사용하는 다음 예제에서 `ExtendedTest` 에 대한 `ApplicationContext` 는 `BaseConfig` 및 `ExtendedConfig` class에서 순서대로 로드됩니다.
+따라서 `ExtendedConfig` 에 정의된 bean은 `BaseConfig` 에 정의된 bean을 override(즉, replace) 할 수 있습니다.
+다음 예제는 한 class가 다른 class를 확장하고 자체 configuration class와 superclass의 configuration class를 모두 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3054,8 +2890,8 @@ another and use both its own configuration class and the superclass's configurat
 		// class body...
 	}
 ----
-<1> Configuration class defined in the superclass.
-<2> Configuration class defined in the subclass.
+<1> superclass에 정의된 configuration file 입니다.
+<2> subclass에 정의된 configuration file 입니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -3072,16 +2908,13 @@ another and use both its own configuration class and the superclass's configurat
 		// class body...
 	}
 ----
-<1> Configuration class defined in the superclass.
-<2> Configuration class defined in the subclass.
+<1> superclass에 정의된 configuration file 입니다.
+<2> subclass에 정의된 configuration file 입니다.
 
 
-In the next example, which uses context initializers, the `ApplicationContext` for
-`ExtendedTest` is initialized by using `BaseInitializer` and `ExtendedInitializer`. Note,
-however, that the order in which the initializers are invoked depends on whether they
-implement Spring's `Ordered` interface or are annotated with Spring's `@Order` annotation
-or the standard `@Priority` annotation. The following example shows how one class can
-extend another and use both its own initializer and the superclass's initializer:
+context initializer를 사용하는 다음 예제에서 `ExtendedTest` 용 `ApplicationContext` 는 `BaseInitializer` 및 `ExtendedInitializer` 를 사용하여 초기화됩니다.
+그러나 initializer가 호출되는 순서는 Spring의 `Ordered` interface를 구현하는지 또는 Spring의 `@Order` annotation 또는 표준 `@Priority` annotation으로 주석 처리되는지 여부에 따라 다릅니다.
+다음 예제는 한 class가 다른 class를 확장하고 자체 initializer와 superclass의 initializer를 모두 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3099,8 +2932,8 @@ extend another and use both its own initializer and the superclass's initializer
 		// class body...
 	}
 ----
-<1> Initializer defined in the superclass.
-<2> Initializer defined in the subclass.
+<1> superclass에 정의된 initializer 입니다.
+<2> subclass에 정의된 initializer 입니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -3118,24 +2951,19 @@ extend another and use both its own initializer and the superclass's initializer
 		// class body...
 	}
 ----
-<1> Initializer defined in the superclass.
-<2> Initializer defined in the subclass.
+<1> superclass에 정의된 initializer 입니다.
+<2> subclass에 정의된 initializer 입니다.
 
 
 [[testcontext-ctx-management-env-profiles]]
 ===== Context Configuration with Environment Profiles
 
-The Spring Framework has first-class support for the notion of environments and profiles
-(AKA "bean definition profiles"), and integration tests can be configured to activate
-particular bean definition profiles for various testing scenarios. This is achieved by
-annotating a test class with the `@ActiveProfiles` annotation and supplying a list of
-profiles that should be activated when loading the `ApplicationContext` for the test.
+Spring Framework는 environment 및 profile (일명 "bean definition profiles") 개념에 대한 최고 수준의 지원을 제공하며 다양한 테스트 시나리오에 대해 특정 bean definition profile을 활성화하도록 통합 테스트를 구성 할 수 있습니다.
+이는 `@ActiveProfiles` annotation으로 test class에 annotation을 작성하고 테스트를 위해 `ApplicationContext`를 로드할 때 활성화해야하는 profile 목록을 제공하여 수행됩니다.
 
-NOTE: You can use `@ActiveProfiles` with any implementation of the `SmartContextLoader`
-SPI, but `@ActiveProfiles` is not supported with implementations of the older
-`ContextLoader` SPI.
+NOTE: `SmartContextLoader` SPI 구현과 함께 `@ActiveProfiles` 를 사용할 수 있지만 이전 `ContextLoader` SPI 구현에서는 `@ActiveProfiles` 가 지원되지 않습니다.
 
-Consider two examples with XML configuration and `@Configuration` classes:
+XML configuration 및 `@Configuration` class가 있는 두 가지 예를 고려하십시오:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
 ----
@@ -3220,27 +3048,21 @@ Consider two examples with XML configuration and `@Configuration` classes:
 	}
 ----
 
-When `TransferServiceTest` is run, its `ApplicationContext` is loaded from the
-`app-config.xml` configuration file in the root of the classpath. If you inspect
-`app-config.xml`, you can see that the `accountRepository` bean has a dependency on a
-`dataSource` bean. However, `dataSource` is not defined as a top-level bean. Instead,
-`dataSource` is defined three times: in the `production` profile, in the `dev` profile,
-and in the `default` profile.
+`TransferServiceTest` 가 실행되면 해당 `ApplicationContext` 가 classpath의 root에 있는 `app-config.xml` configuration file에서 로드됩니다.
+`app-config.xml` 을 살펴보면 `accountRepository` bean이 `dataSource` bean에 종속되어 있음을 알 수 있습니다.
+단, `dataSource` 는 top-level bean으로 정의되어 있지 않습니다.
+대신 `dataSource` 는 `production` profile, `dev` profile 및 `default` profile에 세 번 정의됩니다.
 
-By annotating `TransferServiceTest` with `@ActiveProfiles("dev")`, we instruct the Spring
-TestContext Framework to load the `ApplicationContext` with the active profiles set to
-`{"dev"}`. As a result, an embedded database is created and populated with test data, and
-the `accountRepository` bean is wired with a reference to the development `DataSource`.
-That is likely what we want in an integration test.
+`@ActiveProfiles("dev")` 로 `TransferServiceTest` 에 annotation을 달아 Spring TestContext framework에 active profile이 `{"dev"}` 로 설정된 `ApplicationContext` 를 로드하도록 지시합니다.
+결과적으로 embedded database가 생성되고 테스트 데이터로 채워지며 `accountRepository` bean은 개발 `DastaSource` 에 대한 참조와 연결됩니다.
+그것은 통합 테스트에서 우리가 원하는 것입니다.
 
-It is sometimes useful to assign beans to a `default` profile. Beans within the default
-profile are included only when no other profile is specifically activated. You can use
-this to define "`fallback`" beans to be used in the application's default state. For
-example, you may explicitly provide a data source for `dev` and `production` profiles,
-but define an in-memory data source as a default when neither of these is active.
+bean을 `default` profile에 할당하는 것이 때때로 유용합니다.
+default profile 내의 bean은 다른 profile이 특별히 활성화되지 않은 경우에만 포함됩니다.
+이를 사용하여 application의 default state에서 사용할 "`fallback`" bean을 정의 할 수 있습니다.
+예를 들어 `dev` 및 `production` profile에 대한 data source를 명시 적으로 제공 할 수 있지만 둘 다 활성화되지 않은 경우 in-memory data source를 기본값으로 정의할 수 있습니다.
 
-The following code listings demonstrate how to implement the same configuration and
-integration test with `@Configuration` classes instead of XML:
+다음 code 목록은 XML 대신 `@Configuration` class를 사용하여 동일한 configuration 및 통합 테스트를 구현하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3430,32 +3252,22 @@ integration test with `@Configuration` classes instead of XML:
 	}
 ----
 
-In this variation, we have split the XML configuration into four independent
-`@Configuration` classes:
+이 변형에서는 XML configuration을 4개의 독립적인 `@Configuration` class로 나누었습니다:
 
-* `TransferServiceConfig`: Acquires a `dataSource` through dependency injection by using
-  `@Autowired`.
-* `StandaloneDataConfig`: Defines a `dataSource` for an embedded database suitable for
-  developer tests.
-* `JndiDataConfig`: Defines a `dataSource` that is retrieved from JNDI in a production
-  environment.
-* `DefaultDataConfig`: Defines a `dataSource` for a default embedded database, in case no
-  profile is active.
+* `TransferServiceConfig`: `@Autowired` 를 사용하여 dependency injection을 통해 `dataSource` 를 획득합니다.
+* `StandaloneDataConfig`: 개발자 테스트에 적합한 embedded database의 `dataSource` 를 정의합니다
+* `JndiDataConfig`: production environment의 JNDI에서 검색되는 `dataSource` 를 정의합니다.
+* `DefaultDataConfig`: profile이 활성화되지 않은 경우 default embedded database에 대한 `dataSource` 를 정의합니다.
 
-As with the XML-based configuration example, we still annotate `TransferServiceTest` with
-`@ActiveProfiles("dev")`, but this time we specify all four configuration classes by
-using the `@ContextConfiguration` annotation. The body of the test class itself remains
-completely unchanged.
+XML-based configuration 예제와 마찬가지로 여전히 `@ActiveProfiles("dev")` 로 `TransferServiceTest` 에 annotation을 달지만 이번에는 `@ContextConfiguration` annotation을 사용하여 네 가지 configuration classe를 모두 지정합니다.
+test class의 본문 자체는 완전히 변경되지 않습니다.
 
-It is often the case that a single set of profiles is used across multiple test classes
-within a given project. Thus, to avoid duplicate declarations of the `@ActiveProfiles`
-annotation, you can declare `@ActiveProfiles` once on a base class, and subclasses
-automatically inherit the `@ActiveProfiles` configuration from the base class. In the
-following example, the declaration of `@ActiveProfiles` (as well as other annotations)
-has been moved to an abstract superclass, `AbstractIntegrationTest`:
+특정 프로젝트 내의 여러 test class에서 profile single set이 사용되는 경우가 많습니다.
+따라서 `@ActiveProfiles` annotation의 중복 선언을 방지하기 위해 base class에서 `@ActiveProfiles` 를 한 번 선언할 수 있으며 subclass는 base class에서 `@ActiveProfiles` configuration을 자동으로 상속합니다.
+다음 예제에서 `@ActiveProfiles` 선언 (및 기타 annotation)이 abstract superclass 인 `AbstractIntegrationTest` 로 이동되었습니다:
 
-NOTE: As of Spring Framework 5.3, test configuration may also be inherited from enclosing
-classes. See <<testcontext-junit-jupiter-nested-test-configuration>> for details.
+NOTE: Spring Framework 5.3부터 테스트 구성은 enclosing class에서 상속 될 수도 있습니다.
+자세한 내용은 <<testcontext-junit-jupiter-nested-test-configuration>>을 참조하십시오.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3514,8 +3326,7 @@ classes. See <<testcontext-junit-jupiter-nested-test-configuration>> for details
 	}
 ----
 
-`@ActiveProfiles` also supports an `inheritProfiles` attribute that can be used to
-disable the inheritance of active profiles, as the following example shows:
+`@ActiveProfiles` 는 다음 예제와 같이 active profile의 상속을 비활성화 하는데 사용할 수있는 `inheritProfiles` attribute도 지원합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3538,21 +3349,18 @@ disable the inheritance of active profiles, as the following example shows:
 ----
 
 [[testcontext-ctx-management-env-profiles-ActiveProfilesResolver]]
-Furthermore, it is sometimes necessary to resolve active profiles for tests
-programmatically instead of declaratively -- for example, based on:
+또한, 테스트 용 active profile을 선언적 방식이 아닌 프로그래밍 방식으로 해결해야하는 경우도 있습니다.
+예를 들면 다음과 같습니다:
 
-* The current operating system.
-* Whether tests are being run on a continuous integration build server.
-* The presence of certain environment variables.
-* The presence of custom class-level annotations.
-* Other concerns.
+* 현재 운영 체제.
+* 지속적 통합 빌드 서버에서 테스트가 실행되고 있는지 여부.
+* 특정 environment variable의 존재 여부.
+* custom class-level annotation 존재 여부
+* 기타 문제
 
-To resolve active bean definition profiles programmatically, you can implement
-a custom `ActiveProfilesResolver` and register it by using the `resolver`
-attribute of `@ActiveProfiles`. For further information, see the corresponding
-{api-spring-framework}/test/context/ActiveProfilesResolver.html[javadoc].
-The following example demonstrates how to implement and register a custom
-`OperatingSystemActiveProfilesResolver`:
+프로그래밍 방식으로 active Bean definition profile을 분석하려면 custom `ActiveProfilesResolver` 를 구현하고 `@ActiveProfiles`의 `resolver` attribute을 사용하여 등록할 수 있습니다.
+자세한 정보는 해당 {api-spring-framework}/test/context/ActiveProfilesResolver.html[javadoc]을 참조하세요.
+다음 예제는 custom `OperatingSystemActiveProfilesResolver` 를 구현하고 등록하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3607,43 +3415,31 @@ The following example demonstrates how to implement and register a custom
 [[testcontext-ctx-management-property-sources]]
 ===== Context Configuration with Test Property Sources
 
-The Spring Framework has first-class support for the notion of an environment with a
-hierarchy of property sources, and you can configure integration tests with test-specific
-property sources. In contrast to the `@PropertySource` annotation used on
-`@Configuration` classes, you can declare the `@TestPropertySource` annotation on a test
-class to declare resource locations for test properties files or inlined properties.
-These test property sources are added to the set of `PropertySources` in the
-`Environment` for the `ApplicationContext` loaded for the annotated integration test.
+Spring Framework는 property sources hierarchy가 있는 environment 개념에 대한 최고 수준의 지원을 제공하며 테스트 별 property sources로 통합 테스트를 구성할 수 있습니다.
+`@Configuration` class에서 사용되는 `@PropertySource` annotation과 달리 test class에서 `@TestPropertySource` annotation을 선언하여 test properties file 또는 inlined properties에 대한 resource location을 선언할 수 있습니다.
+이러한 test property source는 annotation이 있는 통합 테스트를 위해 로드된 `ApplicationContext` 에 대한 `Environment` 의 `PropertySources` set에 추가됩니다.
 
 [NOTE]
 ====
-You can use `@TestPropertySource` with any implementation of the `SmartContextLoader`
-SPI, but `@TestPropertySource` is not supported with implementations of the older
-`ContextLoader` SPI.
+`SmartContextLoader` SPI의 모든 구현과 함께 `@TestPropertySource` 를 사용할 수 있지만 `@TestPropertySource` 는 이전 `ContextLoader` SPI의 구현에서 지원되지 않습니다.
 
-Implementations of `SmartContextLoader` gain access to merged test property source values
-through the `getPropertySourceLocations()` and `getPropertySourceProperties()` methods in
-`MergedContextConfiguration`.
+`SmartContextLoader` 의 구현은 `MergedContextConfiguration` 의 `getPropertySourceLocations()` 및 `getPropertySourceProperties()` method를 통해 병합된 test property source value에 액세스 할 수 있습니다.
 ====
 
 ====== Declaring Test Property Sources
 
-You can configure test properties files by using the `locations` or `value` attribute of
-`@TestPropertySource`.
+`@TestPropertySource`의 `locations` 또는 `value` attribute을 사용하여 test properties file을 구성 할 수 있습니다.
 
-Both traditional and XML-based properties file formats are supported -- for example,
-`"classpath:/com/example/test.properties"` or `"file:///path/to/file.xml"`.
+기존 및 XML XML-based properties file format이 모두 지원됩니다 — 예 : `"classpath:/com/example/test.properties"` 또는 `"file:///path/to/file.xml"`
 
-Each path is interpreted as a Spring `Resource`. A plain path (for example,
-`"test.properties"`) is treated as a classpath resource that is relative to the package
-in which the test class is defined. A path starting with a slash is treated as an
-absolute classpath resource (for example: `"/org/example/test.xml"`). A path that
-references a URL (for example, a path prefixed with `classpath:`, `file:`, or `http:`) is
-loaded by using the specified resource protocol. Resource location wildcards (such as
-`**/*.properties`) are not permitted: Each location must evaluate to exactly one
-`.properties` or `.xml` resource.
+각 경로는 Spring `Resource` 로 해석됩니다.
+일반 path(예 : `"test.properties"`)는 test class가 정의된 package에 상대적인 classpath resource로 처리됩니다.
+slash로 시작하는 path는 absolute classpath resource로 처리됩니다 (예 : `"/org/example/test.xml"`).
+URL을 참조하는 path(예 : `classpath:`, `file:` 또는 `http:` prefix가 붙은 path)는 지정된 resource protocol을 사용하여로드됩니다.
+resource location wildcards (예 : `**/*.properties`)는 허용되지 않습니다.
+각 위치는 정확히 하나의 `.properties` 또는 `.xml` resource로 평가되어야 합니다.
 
-The following example uses a test properties file:
+다음 예제에서는 test properties file을 사용합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3654,7 +3450,7 @@ The following example uses a test properties file:
 		// class body...
 	}
 ----
-<1> Specifying a properties file with an absolute path.
+<1> absolute path로 properties 지정.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -3665,22 +3461,19 @@ The following example uses a test properties file:
 		// class body...
 	}
 ----
-<1> Specifying a properties file with an absolute path.
+<1> absolute path로 properties 지정.
 
 
-You can configure inlined properties in the form of key-value pairs by using the
-`properties` attribute of `@TestPropertySource`, as shown in the next example. All
-key-value pairs are added to the enclosing `Environment` as a single test
-`PropertySource` with the highest precedence.
+다음 예제와 같이 `@TestPropertySource` 의 `properties` attribute를 사용하여 key-value 쌍의 형태로 inline properties를 구성할 수 있습니다.
+모든 key-value 쌍은 우선 순위가 가장 높은 단일 테스트 `PropertySource`로 둘러싸는 `Environment` 에 추가됩니다.
 
-The supported syntax for key-value pairs is the same as the syntax defined for entries in
-a Java properties file:
+key-value 쌍에 대해 지원되는 구문은 Java properties file의 항목에 대해 정의된 구문과 동일합니다:
 
 * `key=value`
 * `key:value`
 * `key value`
 
-The following example sets two inlined properties:
+다음 예제는 2개의 inline properties를 설정합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3691,7 +3484,7 @@ The following example sets two inlined properties:
 		// class body...
 	}
 ----
-<1> Setting two properties by using two variations of the key-value syntax.
+<1> key-value 구문의 두 가지 변형을 사용하여 2개의 properties를 설정합니다.
 
 [source,kotlin,indent=0,subs="verbatim,quotes",role="secondary"]
 .Kotlin
@@ -3702,53 +3495,37 @@ The following example sets two inlined properties:
 		// class body...
 	}
 ----
-<1> Setting two properties by using two variations of the key-value syntax.
+<1> key-value 구문의 두 가지 변형을 사용하여 2개의 properties를 설정합니다.
 
 [NOTE]
 ====
-As of Spring Framework 5.2, `@TestPropertySource` can be used as _repeatable annotation_.
-That means that you can have multiple declarations of `@TestPropertySource` on a single
-test class, with the `locations` and `properties` from later `@TestPropertySource`
-annotations overriding those from previous `@TestPropertySource` annotations.
+Spring Framework 5.2부터 `@TestPropertySource` 를 _repeatable annotation_으로 사용할 수 있습니다.
+즉, single test class에서 `@TestPropertySource` 의 여러 선언을 가질 수 있으며 이후 `@TestPropertySource` annotation의 `locations` 와 `properties`가 이전 `@TestPropertySource` annotation의 `locations` 와 `properties` 를 재정의합니다.
 
-In addition, you may declare multiple composed annotations on a test class that are each
-meta-annotated with `@TestPropertySource`, and all of those `@TestPropertySource`
-declarations will contribute to your test property sources.
+또한 각각 `@TestPropertySource`로 meta annotation이 추가된 test class에 구성된 여러 annotation을 선언할 수 있으며 이러한 모든 `@TestPropertySource` 선언은 test property sources에 기여합니다.
 
-Directly present `@TestPropertySource` annotations always take precedence over
-meta-present `@TestPropertySource` annotations. In other words, `locations` and
-`properties` from a directly present `@TestPropertySource` annotation will override the
-`locations` and `properties` from a `@TestPropertySource` annotation used as a
-meta-annotation.
+직접 존재하는 `@TestPropertySource` annotation은 항상 meta 존재하는 `@TestPropertySource` annotation보다 우선합니다.
+즉, 직접 존재하는 `@TestPropertySource` annotation의 `locations` 및 `properties` 는 meta-annotation으로 사용되는 `@TestPropertySource` annotation의 `locations` 및 `properties` 를 재정의합니다.
 ====
 
 
 ====== Default Properties File Detection
 
-If `@TestPropertySource` is declared as an empty annotation (that is, without explicit
-values for the `locations` or `properties` attributes), an attempt is made to detect a
-default properties file relative to the class that declared the annotation. For example,
-if the annotated test class is `com.example.MyTest`, the corresponding default properties
-file is `classpath:com/example/MyTest.properties`. If the default cannot be detected, an
-`IllegalStateException` is thrown.
+`@TestPropertySource`가 빈 annotation으로 선언 된 경우 (즉, `locations` 또는 `properties` attributes에 대한 명시적 값이 없음) annotation을 선언한 class와 관련된 default properties file을 감지하려고 시도합니다.
+예를 들어, annotation이 달린 test class가 `com.example.MyTest` 인 경우 해당 default properties file은 `classpath:com/example/MyTest.properties` 입니다.
+기본값을 감지할 수 없는 경우 `IllegalStateException` 이 발생합니다.
 
 ====== Precedence
 
-Test properties have higher precedence than those defined in the operating system's
-environment, Java system properties, or property sources added by the application
-declaratively by using `@PropertySource` or programmatically. Thus, test properties can
-be used to selectively override properties loaded from system and application property
-sources. Furthermore, inlined properties have higher precedence than properties loaded
-from resource locations. Note, however, that properties registered via
-<<testcontext-ctx-management-dynamic-property-sources, `@DynamicPropertySource`>> have
-higher precedence than those loaded via `@TestPropertySource`.
+Test properties는 `@PropertySource` 를 사용하여 선언적으로 또는 프로그래밍 방식으로 application에서 추가한 operating system's environment, Java system properties 또는 property sources에 정의된 properties 보다 우선 순위가 높습니다.
+따라서 test properties를 사용하여 system 및 application property sources에서 로드된 properties를 선택적으로 재정의 할 수 있습니다.
+또한 inline properties는 resource location에서 로드된 properties보다 우선 순위가 높습니다.
+그러나 <<testcontext-ctx-management-dynamic-property-sources, `@DynamicPropertySource`>> 를 통해 등록된 properties는 `@TestPropertySource`를 통해 로드된 properties보다 우선 순위가 높습니다.
 
-In the next example, the `timezone` and `port` properties and any properties defined in
-`"/test.properties"` override any properties of the same name that are defined in system
-and application property sources. Furthermore, if the `"/test.properties"` file defines
-entries for the `timezone` and `port` properties those are overridden by the inlined
-properties declared by using the `properties` attribute. The following example shows how
-to specify properties both in a file and inline:
+다음 예에서 `"/test.properties"` 에 정의된 `timezone` 및 `port` properties와 모든 properties는 system 및 application property sources에 정의된 동일한 이름의 properties를 재정의합니다.
+또한 `"/test.properties"` file이 `timezone` 및 `port` properties에 대한 항목을 정의하면 `properties` attribute를 사용하여 선언된 inline properties에 의해 재정의됩니다.
+
+다음 예제는 file과 inline 모두에서 properties를 지정하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3777,29 +3554,22 @@ to specify properties both in a file and inline:
 
 ====== Inheriting and Overriding Test Property Sources
 
-`@TestPropertySource` supports boolean `inheritLocations` and `inheritProperties`
-attributes that denote whether resource locations for properties files and inlined
-properties declared by superclasses should be inherited. The default value for both flags
-is `true`. This means that a test class inherits the locations and inlined properties
-declared by any superclasses. Specifically, the locations and inlined properties for a
-test class are appended to the locations and inlined properties declared by superclasses.
-Thus, subclasses have the option of extending the locations and inlined properties. Note
-that properties that appear later shadow (that is, override) properties of the same name
-that appear earlier. In addition, the aforementioned precedence rules apply for inherited
-test property sources as well.
+`@TestPropertySource`는 superclass에서 선언한 properties file 및 inline properties의 resource location을 상속해야하는지 여부를 나타내는 boolean `inheritLocations` 및 `inheritProperties`attribute를 지원합니다.
+두 flag의 기본 값은 `true` 입니다.
+즉, test class는 모든 superclass에서 선언한 location과 inline properties를 상속합니다.
+특히, test class의 location 및 inline properties는 superclass에서 선언한 location 및 inline properties에 추가됩니다.
+따라서 subclasses에는 location 및 inline properties를 확장하는 option이 있습니다.
+나중에 나타나는 properties는 이전에 나타나는 동일한 이름의 properties를 shadow (즉, override)합니다.
+또한 앞서 언급한 우선 순위 규칙은 상속된 test property source에도 적용됩니다.
 
-If the `inheritLocations` or `inheritProperties` attribute in `@TestPropertySource` is
-set to `false`, the locations or inlined properties, respectively, for the test class
-shadow and effectively replace the configuration defined by superclasses.
+`@TestPropertySource` 의 `inheritLocations` 또는 `inheritProperties` attribute가 false로 설정되면 test class shadow에 대한 location 또는 inline properties가 각각 superclass에 정의된 configuration을 효과적으로 대체합니다.
 
-NOTE: As of Spring Framework 5.3, test configuration may also be inherited from enclosing
-classes. See <<testcontext-junit-jupiter-nested-test-configuration>> for details.
+NOTE: Spring Framework 5.3부터 test configuration은 enclosing class에서 상속될 수도 있습니다.
+자세한 내용은 <<testcontext-junit-jupiter-nested-test-configuration>>을 참조하십시오.
 
-In the next example, the `ApplicationContext` for `BaseTest` is loaded by using only the
-`base.properties` file as a test property source. In contrast, the `ApplicationContext`
-for `ExtendedTest` is loaded by using the `base.properties` and `extended.properties`
-files as test property source locations. The following example shows how to define
-properties in both a subclass and its superclass by using `properties` files:
+다음 예에서는 `base.properties` file만 test property source로 사용하여 `BaseTest` 에 대한 `ApplicationContext` 를 로드합니다.
+반대로 `ExtendedTest` 용 `ApplicationContext` 는 `base.properties` 및 `extended.properties` file을 test property source location으로 사용하여 로드됩니다.
+다음 예제에서는 `properties` file을 사용하여 subclass와 해당 superclass 모두에서 properties을 정의하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3832,10 +3602,9 @@ properties in both a subclass and its superclass by using `properties` files:
 	}
 ----
 
-In the next example, the `ApplicationContext` for `BaseTest` is loaded by using only the
-inlined `key1` property. In contrast, the `ApplicationContext` for `ExtendedTest` is
-loaded by using the inlined `key1` and `key2` properties. The following example shows how
-to define properties in both a subclass and its superclass by using inline properties:
+다음 예제에서는 인라인 된 `key1` property만 사용하여 `BaseTest` 에 대한 `ApplicationContext` 를 로드합니다.
+반대로 `ExtendedTest` 용 `ApplicationContext` 는 인라인 된 `key1` 및 `key2` properties를 사용하여 로드됩니다.
+다음 예제는 inline properties를 사용하여 subclass와 해당 superclass 모두에서 properties를 정의하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -3871,41 +3640,24 @@ to define properties in both a subclass and its superclass by using inline prope
 [[testcontext-ctx-management-dynamic-property-sources]]
 ===== Context Configuration with Dynamic Property Sources
 
-As of Spring Framework 5.2.5, the TestContext framework provides support for _dynamic_
-properties via the `@DynamicPropertySource` annotation. This annotation can be used in
-integration tests that need to add properties with dynamic values to the set of
-`PropertySources` in the `Environment` for the `ApplicationContext` loaded for the
-integration test.
+Spring Framework 5.2.5부터 TestContext framework는 `@DynamicPropertySource` annotation을 통해 _dynamic_ properties에 대한 지원을 제공합니다.
+이 annotation은 통합 테스트를 위해 로드된 `ApplicationContext` 에 대한 `Environment` 의 `PropertySources` set에 dynamic value가 있는 properties를 추가해야하는 통합 테스트에서 사용할 수 있습니다.
 
 [NOTE]
 ====
-The `@DynamicPropertySource` annotation and its supporting infrastructure were
-originally designed to allow properties from
-https://www.testcontainers.org/[Testcontainers] based tests to be exposed easily to
-Spring integration tests. However, this feature may also be used with any form of
-external resource whose lifecycle is maintained outside the test's `ApplicationContext`.
+`@DynamicPropertySource` annotation 및 지원 인프라는 원래 https://www.testcontainers.org/[Testcontainers] 기반 테스트의 properties를 Spring 통합 테스트에 쉽게 노출할 수 있도록 설계되었습니다.
+그러나 이 기능은 lifecycle이 테스트의 `ApplicationContext` 외부에서 유지되는 모든 형태의 external resource와 함께 사용할 수도 있습니다.
 ====
 
-In contrast to the <<testcontext-ctx-management-property-sources,`@TestPropertySource`>>
-annotation that is applied at the class level, `@DynamicPropertySource` must be applied
-to a `static` method that accepts a single `DynamicPropertyRegistry` argument which is
-used to add _name-value_ pairs to the `Environment`. Values are dynamic and provided via
-a `Supplier` which is only invoked when the property is resolved. Typically, method
-references are used to supply values, as can be seen in the following example which uses
-the Testcontainers project to manage a Redis container outside of the Spring
-`ApplicationContext`. The IP address and port of the managed Redis container are made
-available to components within the test's `ApplicationContext` via the `redis.host` and
-`redis.port` properties. These properties can be accessed via Spring's `Environment`
-abstraction or injected directly into Spring-managed components – for example, via
-`@Value("${redis.host}")` and `@Value("${redis.port}")`, respectively.
+class level에서 적용되는 <<testcontext-ctx-management-property-sources,`@TestPropertySource`>> annotation과 달리 `@DynamicPropertySource` 는 `Environment` 에 _name-value_ 쌍을 추가하는 데 사용되는 single `DynamicPropertyRegistry` argument를 허용하는 `static` method 에 적용되어야합니다.
+값은 동적이며 property이 해결 될 때만 호출되는 `Supplier` 를 통해 제공됩니다.
+일반적으로 Spring `ApplicationContext` 외부에서 Redis 컨테이너를 관리하기 위해 Testcontainers 프로젝트를 사용하는 다음 예제에서 볼 수 있듯이 method 참조는 값을 제공하는 데 사용됩니다.
+관리되는 Redis 컨테이너의 IP address와 port는 `redis.host` 및 `redis.port` properties를 통해 테스트의 `ApplicationContext` 내의 component에서 사용할 수 있습니다.
+이러한 properties는 Spring의 `Environment` 추상화를 통해 액세스하거나 Spring 관리 components에 직접 inject 할 수 있습니다 (예 : 각각 `@Value("${redis.host}")` 및 `@Value("${redis.port}")`).
 
 [TIP]
 ====
-If you use `@DynamicPropertySource` in a base class and discover that tests in subclasses
-fail because the dynamic properties change between subclasses, you may need to annotate
-your base class with <<spring-testing-annotation-dirtiescontext, `@DirtiesContext`>> to
-ensure that each subclass gets its own `ApplicationContext` with the correct dynamic
-properties.
+base class에서 `@DynamicPropertySource`를 사용하고 subclass간에  dynamic properties가 변경되어 subclass의 테스트가 실패하는 것을 발견하면 각 subclass가 올바른 dynamic properties 가 있는 고유한 `ApplicationContext` 를 가져 오도록 base class에 <<spring-testing-annotation-dirtiescontext, `@DirtiesContext`>>를 annotation 처리해야할 수 있습니다.
 ====
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]

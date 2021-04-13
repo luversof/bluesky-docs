@@ -3657,7 +3657,7 @@ class level에서 적용되는 <<testcontext-ctx-management-property-sources,`@T
 
 [TIP]
 ====
-base class에서 `@DynamicPropertySource`를 사용하고 subclass간에  dynamic properties가 변경되어 subclass의 테스트가 실패하는 것을 발견하면 각 subclass가 올바른 dynamic properties 가 있는 고유한 `ApplicationContext` 를 가져 오도록 base class에 <<spring-testing-annotation-dirtiescontext, `@DirtiesContext`>>를 annotation 처리해야할 수 있습니다.
+base class에서 `@DynamicPropertySource` 를 사용하고 subclass간에  dynamic properties가 변경되어 subclass의 테스트가 실패하는 것을 발견하면 각 subclass가 올바른 dynamic properties 가 있는 고유한 `ApplicationContext` 를 가져 오도록 base class에 <<spring-testing-annotation-dirtiescontext, `@DirtiesContext`>>를 annotation 처리해야할 수 있습니다.
 ====
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]

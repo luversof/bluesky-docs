@@ -2280,14 +2280,14 @@ Spring Framework 5.2에 도입된 `EventPublishingTestExecutionListener` 는 cus
 * `AfterTestMethodEvent`
 * `AfterTestClassEvent`
 
-NOTE: 이러한 이벤트는 `ApplicationContext`가 이미 로드된 경우에만 publish 됩니다.
+NOTE: 이러한 이벤트는 `ApplicationContext` 가 이미 로드된 경우에만 publish 됩니다.
 
 이러한 이벤트는 mock bean 재설정 또는 테스트 실행 추적과 같은 다양한 이유로 사용될 수 있습니다.
-custom `TestExecutionListener` 를 구현하는 것보다  test execution event를 사용하는 한 가지 장점은 test execution event가 test `ApplicationContext` 에 등록된 Spring bean에 의해 사용될 수 있으며 이러한 bean은 dependency injection 및 `ApplicationContext`의 다른 기능으로부터 직접 혜택을 받을 수 있다는 것입니다.
+custom `TestExecutionListener` 를 구현하는 것보다  test execution event를 사용하는 한 가지 장점은 test execution event가 test `ApplicationContext` 에 등록된 Spring bean에 의해 사용될 수 있으며 이러한 bean은 dependency injection 및 `ApplicationContext` 의 다른 기능으로부터 직접 혜택을 받을 수 있다는 것입니다.
 반대로 `TestExecutionListener` 는 `ApplicationContext` 의 bean이 아닙니다.
 
 test execution event를 수신하기 위해 Spring bean은 `org.springframework.context.ApplicationListener` interface를 구현하도록 선택할 수 있습니다.
-또는 listener method에 `@EventListener`로 annotation을 달고 위에 나열된 특정 event types 중 하나를 수신하도록 구성 할 수 있습니다 (<<core.adoc#context-functionality-events-annotation, Annotation-based Event Listeners>> 참조).
+또는 listener method에 `@EventListener` 로 annotation을 달고 위에 나열된 특정 event types 중 하나를 수신하도록 구성 할 수 있습니다 (<<core.adoc#context-functionality-events-annotation, Annotation-based Event Listeners>> 참조).
 이 접근법의 인기로 인해 Spring은 test execution event listener의 등록을 단순화하기 위해 다음과 같은 전용 `@EventListener` annotation을 제공합니다.
 이러한 annotation은 `org.springframework.test.context.event.annotation` package에 있습니다.
 
@@ -2447,7 +2447,7 @@ resource URL을 나타내는 path (즉, `classpath:`, `file:`, `http:` 등이 pr
 <1> locations attribute를 XML file 목록으로 설정합니다.
 
 
-`@ContextConfiguration`은 standard Java `value` attribute를 통해 `locations` attribute에 대한 alias를 지원합니다.
+`@ContextConfiguration` 은 standard Java `value` attribute를 통해 `locations` attribute에 대한 alias를 지원합니다.
 따라서 `@ContextConfiguration` 에서 추가 attribute를 선언할 필요가 없는 경우 `locations` attribute name의 선언을 생략하고 다음 예제에 설명된 shorthand format을 사용하여 resource location을 선언할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -3428,7 +3428,7 @@ Spring Framework는 property sources hierarchy가 있는 environment 개념에 �
 
 ====== Declaring Test Property Sources
 
-`@TestPropertySource`의 `locations` 또는 `value` attribute을 사용하여 test properties file을 구성 할 수 있습니다.
+`@TestPropertySource` 의 `locations` 또는 `value` attribute을 사용하여 test properties file을 구성 할 수 있습니다.
 
 기존 및 XML XML-based properties file format이 모두 지원됩니다 — 예 : `"classpath:/com/example/test.properties"` 또는 `"file:///path/to/file.xml"`
 
@@ -3465,7 +3465,7 @@ resource location wildcards (예 : `**/*.properties`)는 허용되지 않습니�
 
 
 다음 예제와 같이 `@TestPropertySource` 의 `properties` attribute를 사용하여 key-value 쌍의 형태로 inline properties를 구성할 수 있습니다.
-모든 key-value 쌍은 우선 순위가 가장 높은 단일 테스트 `PropertySource`로 둘러싸는 `Environment` 에 추가됩니다.
+모든 key-value 쌍은 우선 순위가 가장 높은 단일 테스트 `PropertySource` 로 둘러싸는 `Environment` 에 추가됩니다.
 
 key-value 쌍에 대해 지원되는 구문은 Java properties file의 항목에 대해 정의된 구문과 동일합니다:
 
@@ -3500,7 +3500,7 @@ key-value 쌍에 대해 지원되는 구문은 Java properties file의 항목에
 [NOTE]
 ====
 Spring Framework 5.2부터 `@TestPropertySource` 를 _repeatable annotation_으로 사용할 수 있습니다.
-즉, single test class에서 `@TestPropertySource` 의 여러 선언을 가질 수 있으며 이후 `@TestPropertySource` annotation의 `locations` 와 `properties`가 이전 `@TestPropertySource` annotation의 `locations` 와 `properties` 를 재정의합니다.
+즉, single test class에서 `@TestPropertySource` 의 여러 선언을 가질 수 있으며 이후 `@TestPropertySource` annotation의 `locations` 와 `properties` 가 이전 `@TestPropertySource` annotation의 `locations` 와 `properties` 를 재정의합니다.
 
 또한 각각 `@TestPropertySource` 로 meta annotation이 추가된 test class에 구성된 여러 annotation을 선언할 수 있으며 이러한 모든 `@TestPropertySource` 선언은 test property sources에 기여합니다.
 
@@ -3511,7 +3511,7 @@ Spring Framework 5.2부터 `@TestPropertySource` 를 _repeatable annotation_으�
 
 ====== Default Properties File Detection
 
-`@TestPropertySource`가 빈 annotation으로 선언 된 경우 (즉, `locations` 또는 `properties` attributes에 대한 명시적 값이 없음) annotation을 선언한 class와 관련된 default properties file을 감지하려고 시도합니다.
+`@TestPropertySource` 가 빈 annotation으로 선언 된 경우 (즉, `locations` 또는 `properties` attributes에 대한 명시적 값이 없음) annotation을 선언한 class와 관련된 default properties file을 감지하려고 시도합니다.
 예를 들어, annotation이 달린 test class가 `com.example.MyTest` 인 경우 해당 default properties file은 `classpath:com/example/MyTest.properties` 입니다.
 기본값을 감지할 수 없는 경우 `IllegalStateException` 이 발생합니다.
 
@@ -3708,42 +3708,28 @@ base class에서 `@DynamicPropertySource` 를 사용하고 subclass간에  dynam
 
 ====== Precedence
 
-Dynamic properties have higher precedence than those loaded from `@TestPropertySource`,
-the operating system's environment, Java system properties, or property sources added by
-the application declaratively by using `@PropertySource` or programmatically. Thus,
-dynamic properties can be used to selectively override properties loaded via
-`@TestPropertySource`, system property sources, and application property sources.
+dynamic properties는 `@TestPropertySource`, operating system의 environment, Java system properties 또는 `@PropertySource` 를 사용하여 선언적으로 또는 프로그래밍 방식으로 application에서 추가한 property sources에서 로드된 properties보다 우선 순위가 높습니다.
+따라서 dynamic properties을 사용하여 `@TestPropertySource`, system property source 및 application property source를 통해 로드된 prooperties를 선택적으로 override 할 수 있습니다.
 
 [[testcontext-ctx-management-web]]
 ===== Loading a `WebApplicationContext`
 
-To instruct the TestContext framework to load a `WebApplicationContext` instead of a
-standard `ApplicationContext`, you can annotate the respective test class with
-`@WebAppConfiguration`.
+TestContext framework에 표준 `ApplicationContext` 대신 `WebApplicationContext` 를 로드하도록 지시하려면 `@WebAppConfiguration` 을 사용하여 각 test class에 annotation을 달 수 있습니다.
 
-The presence of `@WebAppConfiguration` on your test class instructs the TestContext
-framework (TCF) that a `WebApplicationContext` (WAC) should be loaded for your
-integration tests. In the background, the TCF makes sure that a `MockServletContext` is
-created and supplied to your test's WAC. By default, the base resource path for your
-`MockServletContext` is set to `src/main/webapp`. This is interpreted as a path relative
-to the root of your JVM (normally the path to your project). If you are familiar with the
-directory structure of a web application in a Maven project, you know that
-`src/main/webapp` is the default location for the root of your WAR. If you need to
-override this default, you can provide an alternate path to the `@WebAppConfiguration`
-annotation (for example, `@WebAppConfiguration("src/test/webapp")`). If you wish to
-reference a base resource path from the classpath instead of the file system, you can use
-Spring's `classpath:` prefix.
+test class에 `@WebAppConfiguration` 이 있으면 TestContext framework(TCF)에 통합 테스트를 위해 `WebApplicationContext` (WAC)를 로드해야한다고 지시합니다.
+background에서 TCF는 `MockServletContext` 가 생성되어 테스트의 WAC에 제공되는지 확인합니다.
+기본적으로 `MockServletContext` 의 base resource path는 `src/main/webapp` 으로 설정됩니다.
+이것은 JVM의 root에 relative path (일반적으로 project의 path)로 해석됩니다.
+Maven project에서 web application의 directory 구조에 익숙하다면 `src/main/webapp` 이 WAR root의 default location이라는 것을 알고 있습니다.
+이 기본값을 재정의해야하는 경우 `@WebAppConfiguration` annotation에 대한 대체 path를 제공할 수 있습니다 (예 : `@WebAppConfiguration("src/test/webapp")`).
+file system 대신 classpath에서 base resource path를 참조하려면 Spring의 `classpath:` prefix를 사용할 수 있습니다.
 
-Note that Spring's testing support for `WebApplicationContext` implementations is on par
-with its support for standard `ApplicationContext` implementations. When testing with a
-`WebApplicationContext`, you are free to declare XML configuration files, Groovy scripts,
-or `@Configuration` classes by using `@ContextConfiguration`. You are also free to use
-any other test annotations, such as `@ActiveProfiles`, `@TestExecutionListeners`, `@Sql`,
-`@Rollback`, and others.
+`WebApplicationContext` 구현에 대한 Spring의 테스트 지원은 표준 `ApplicationContext` 구현에 대한 지원과 동등합니다.
+`WebApplicationContext` 로 테스트 할 때 `@ContextConfiguration` 을 사용하여 XML configuration file, Groovy script 또는 `@Configuration` class를 자유롭게 선언할 수 있습니다.
+또한 `@ActiveProfiles`, `@TestExecutionListeners`, `@Sql`, `@Rollback` 등과 같은 다른 test annotation을 자유롭게 사용할 수 있습니다.
 
-The remaining examples in this section show some of the various configuration options for
-loading a `WebApplicationContext`. The following example shows the TestContext
-framework's support for convention over configuration:
+이 section의 나머지 예제는 `WebApplicationContext` 를 로드하기 위한 다양한 configuration option중 일부를 보여줍니다.
+다음 예는 configuration에 대한 규칙에 대한 TestContext framework의 지원을 보여줍니다:
 
 .Conventions
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -3777,15 +3763,10 @@ framework's support for convention over configuration:
 	}
 ----
 
-If you annotate a test class with `@WebAppConfiguration` without specifying a resource
-base path, the resource path effectively defaults to `file:src/main/webapp`. Similarly,
-if you declare `@ContextConfiguration` without specifying resource `locations`, component
-`classes`, or context `initializers`, Spring tries to detect the presence of your
-configuration by using conventions (that is, `WacTests-context.xml` in the same package
-as the `WacTests` class or static nested `@Configuration` classes).
+resource base path를 지정하지 않고 `@WebAppConfiguration` 으로 test class에 annotation을 추가하는 경우 resource path는 사실상 `file:src/main/webapp` 로 기본 설정됩니다.
+마찬가지로 resource `locations`, component `classes` 또는 context `initializers` 를 지정하지 않고 `@ContextConfiguration` 을 선언하면 Spring은 규칙 (즉, `WacTests` class 또는 static nested `@Configuration` class와 동일한 package에 있는 `WacTests-context.xml`)을 사용하여 configuration의 존재를 감지하려고합니다.
 
-The following example shows how to explicitly declare a resource base path with
-`@WebAppConfiguration` and an XML resource location with `@ContextConfiguration`:
+다음 예제는 `@WebAppConfiguration` 을 사용하여 resource base path를 명시적으로 선언하고 `@ContextConfiguration` 을 사용하여 XML resource location을 명시적으로 선언하는 방법을 보여줍니다:
 
 .Default resource semantics
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -3817,12 +3798,10 @@ The following example shows how to explicitly declare a resource base path with
 	}
 ----
 
-The important thing to note here is the different semantics for paths with these two
-annotations. By default, `@WebAppConfiguration` resource paths are file system based,
-whereas `@ContextConfiguration` resource locations are classpath based.
+여기서 주목해야 할 중요한 것은 이 두 annotation이 있는 path에 대한 다른 의미 체계입니다.
+기본적으로 `@WebAppConfiguration` resource path는 file system 기반인 반면 `@ContextConfiguration` 리소스 위치는 classpath 기반입니다.
 
-The following example shows that we can override the default resource semantics for both
-annotations by specifying a Spring resource prefix:
+다음 예제는 Spring resource prefix를 지정하여 두 annotation에 대한 default resource 체계를 재정의할 수 있음을 보여줍니다:
 
 .Explicit resource semantics
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -3854,26 +3833,17 @@ annotations by specifying a Spring resource prefix:
 	}
 ----
 
-Contrast the comments in this example with the previous example.
+이 예제의 annotation을 이전 예제와 대조하십시오
 
 .[[testcontext-ctx-management-web-mocks]]Working with Web Mocks
 --
-To provide comprehensive web testing support, the TestContext framework has a
-`ServletTestExecutionListener` that is enabled by default. When testing against a
-`WebApplicationContext`, this <<testcontext-key-abstractions, `TestExecutionListener`>>
-sets up default thread-local state by using Spring Web's `RequestContextHolder` before
-each test method and creates a `MockHttpServletRequest`, a `MockHttpServletResponse`, and
-a `ServletWebRequest` based on the base resource path configured with
-`@WebAppConfiguration`. `ServletTestExecutionListener` also ensures that the
-`MockHttpServletResponse` and `ServletWebRequest` can be injected into the test instance,
-and, once the test is complete, it cleans up thread-local state.
+포괄적인 웹 테스트 지원을 제공하기 위해 TestContext framework에는 기본적으로 활성화되는 `ServletTestExecutionListener` 가 있습니다.
+`WebApplicationContext` 에 대해 테스트 할 때 이 <<testcontext-key-abstractions, `TestExecutionListener`>> 는 각 test method 전에 Spring Web의 `RequestContextHolder` 를 사용하여 default thread-local state를 설정하고 `@WebAppConfiguration` 으로 구성된 base resource path를 기반으로 `MockHttpServletRequest`, `MockHttpServletResponse` 및 `ServletWebRequest` 를 생성합니다.
+`ServletTestExecutionListener` 는 또한 `MockHttpServletResponse` 및 `ServletWebRequest` 가 test instance에 inject 될 수 있는지 확인하고 테스트가 완료되면 thread-local state를 정리합니다.
 
-Once you have a `WebApplicationContext` loaded for your test, you might find that you
-need to interact with the web mocks -- for example, to set up your test fixture or to
-perform assertions after invoking your web component. The following example shows which
-mocks can be autowired into your test instance. Note that the `WebApplicationContext` and
-`MockServletContext` are both cached across the test suite, whereas the other mocks are
-managed per test method by the `ServletTestExecutionListener`.
+테스트를 위해 `WebApplicationContext`가 로드되면 web mock과 상호 작용해야 한다는 것을 알게 될 것입니다 — 예를 들어, text fixture를 설정하거나 web component를 호출한 후 assertion을 수행합니다.
+다음 예는 test instance에 autowired 될 수 있는 mock을 보여줍니다.
+`WebApplicationContext` 및 `MockServletContext` 는 모두 test suite에 cache되는 반면 다른 mock은 `ServletTestExecutionListener` 에 의해 test method 별로 관리됩니다.
 
 .Injecting mocks
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
@@ -3936,22 +3906,17 @@ managed per test method by the `ServletTestExecutionListener`.
 [[testcontext-ctx-management-caching]]
 ===== Context Caching
 
-Once the TestContext framework loads an `ApplicationContext` (or `WebApplicationContext`)
-for a test, that context is cached and reused for all subsequent tests that declare the
-same unique context configuration within the same test suite. To understand how caching
-works, it is important to understand what is meant by "`unique`" and "`test suite.`"
+TestContext framework가 test를 위해 `ApplicationContext` (또는 `WebApplicationContext`)를 로드하면 해당 context는 동일한 test suite 내에서 동일한 고유 context configuration을 선언하는 모든 후속 테스트에 대해 cache되고 재사용됩니다.
+caching이 작동하는 방식을 이해하려면 "`unique`" 및 "`test suite.`" 가 의미하는 바를 이해하는 것이 중요합니다.
 
-An `ApplicationContext` can be uniquely identified by the combination of configuration
-parameters that is used to load it. Consequently, the unique combination of configuration
-parameters is used to generate a key under which the context is cached. The TestContext
-framework uses the following configuration parameters to build the context cache key:
+`ApplicationContext` 는 로드하는 데 사용되는 configuration parameter의 조합으로 고유하게 식별 될 수 있습니다.
+따라서 configuration parameter의 고유한 조합을 사용하여 context가 cache되는 key를 생성합니다.
+TestContext framework는 다음 configuration parameter를 사용하여 context cache key를 빌드합니다:
 
 * `locations` (from `@ContextConfiguration`)
 * `classes` (from `@ContextConfiguration`)
 * `contextInitializerClasses` (from `@ContextConfiguration`)
-* `contextCustomizers` (from `ContextCustomizerFactory`) – this includes
-  `@DynamicPropertySource` methods as well as various features from Spring Boot's
-  testing support such as `@MockBean` and `@SpyBean`.
+* `contextCustomizers` (from `ContextCustomizerFactory`) – 여기에는 `@DynamicPropertySource` method와 `@MockBean` 및 `@SpyBean` 과 같은 Spring Boot의 테스트 지원의 다양한 기능이 포함됩니다.
 * `contextLoader` (from `@ContextConfiguration`)
 * `parent` (from `@ContextHierarchy`)
 * `activeProfiles` (from `@ActiveProfiles`)
@@ -3959,142 +3924,84 @@ framework uses the following configuration parameters to build the context cache
 * `propertySourceProperties` (from `@TestPropertySource`)
 * `resourceBasePath` (from `@WebAppConfiguration`)
 
-For example, if `TestClassA` specifies `{"app-config.xml", "test-config.xml"}` for the
-`locations` (or `value`) attribute of `@ContextConfiguration`, the TestContext framework
-loads the corresponding `ApplicationContext` and stores it in a `static` context cache
-under a key that is based solely on those locations. So, if `TestClassB` also defines
-`{"app-config.xml", "test-config.xml"}` for its locations (either explicitly or
-implicitly through inheritance) but does not define `@WebAppConfiguration`, a different
-`ContextLoader`, different active profiles, different context initializers, different
-test property sources, or a different parent context, then the same `ApplicationContext`
-is shared by both test classes. This means that the setup cost for loading an application
-context is incurred only once (per test suite), and subsequent test execution is much
-faster.
+예를 들어 `TestClassA` 가 `@ContextConfiguration` 의 `locations` (또는 `value`) attribute에 대해 `{"app-config.xml", "test-config.xml"}` 을 지정하면 TestContext framework는 해당 `ApplicationContext` 를 로드하고 이를 해당 위치만을 기반으로 하는 key 아래 `static` context cache에 저장합니다.
+따라서 `TestClassB` 가 해당 location에 대해 `{"app-config.xml", "test-config.xml"}` 을 정의하지만 (상속을 통해 명시적으로 또는 암시적으로) `@WebAppConfiguration`, 다른 `ContextLoader`, 다른 active profile, 다른 context initializers, 다른 test property source 또는 다른 parent context인 경우 동일한 `ApplicationContext` 가 두 test class에서 공유됩니다.
+즉, application context를 로드하기위한 setup cost는 test suite 당 한 번만 발생하고 후속 테스트 실행이 훨씬 빠릅니다.
 
 .Test suites and forked processes
 [NOTE]
 ====
-The Spring TestContext framework stores application contexts in a static cache. This
-means that the context is literally stored in a `static` variable. In other words, if
-tests run in separate processes, the static cache is cleared between each test
-execution, which effectively disables the caching mechanism.
+Spring TestContext framework는 static cache에 application context를 저장합니다.
+이것은 context가 말그대로 `static` variable에 저장됨을 의미합니다.
+즉, 테스트가 별도의 프로세스에서 실행되는 경우 각 테스트 실행 사이에 static cache가 삭제되어 caching mechanism이 효과적으로 비활성화됩니다.
 
-To benefit from the caching mechanism, all tests must run within the same process or test
-suite. This can be achieved by executing all tests as a group within an IDE. Similarly,
-when executing tests with a build framework such as Ant, Maven, or Gradle, it is
-important to make sure that the build framework does not fork between tests. For example,
-if the
-https://maven.apache.org/plugins/maven-surefire-plugin/test-mojo.html#forkMode[`forkMode`]
-for the Maven Surefire plug-in is set to `always` or `pertest`, the TestContext framework
-cannot cache application contexts between test classes, and the build process runs
-significantly more slowly as a result.
+caching mechanism의 이점을 얻으려면 모든 테스트가 동일한 프로세스 또는 test suite 내에서 실행되어야합니다.
+이것은 IDE 내에서 모든 테스트를 group으로 실행하여 달성할 수 있습니다.
+마찬가지로 Ant, Maven 또는 Gradle과 같은 build framework로 테스트를 실행할 때 build framework가 테스트간에 분기되지 않는지 확인하는 것이 중요합니다.
+예를 들어 Maven Surefire plug-in의 https://maven.apache.org/plugins/maven-surefire-plugin/test-mojo.html#forkMode[`forkMode`]가 `always` 또는 `pertest` 로 설정된 경우 TestContext framework는 test class간에 application context를 cache 할 수 없으며 결과적으로 빌드 프로세스가 훨씬 더 느리게 실행됩니다.
 ====
 
-The size of the context cache is bounded with a default maximum size of 32. Whenever the
-maximum size is reached, a least recently used (LRU) eviction policy is used to evict and
-close stale contexts. You can configure the maximum size from the command line or a build
-script by setting a JVM system property named `spring.test.context.cache.maxSize`. As an
-alternative, you can set the same property via the
-<<appendix.adoc#appendix-spring-properties,`SpringProperties`>> mechanism.
+context cache의 크기는 기본 최대 크기 인 32로 제한됩니다.
+최대 크기에 도달 할 때마다 최소 최근 사용(LRU : least recently used) 제거 정책이 stale context를 제거하고 닫는데 사용됩니다.
+`spring.test.context.cache.maxSize` 라는 JVM system property를 설정하여 JVM system property 또는 build script에서 maximum size를 구성할 수 있습니다.
 
-Since having a large number of application contexts loaded within a given test suite can
-cause the suite to take an unnecessarily long time to run, it is often beneficial to
-know exactly how many contexts have been loaded and cached. To view the statistics for
-the underlying context cache, you can set the log level for the
-`org.springframework.test.context.cache` logging category to `DEBUG`.
+주어진 test suite 내에 많은 수의 application context를 로드하면 suite를 실행하는데 불필요하게 오랜 시간이 소요될 수 있으므로 로드 및 cache 된 context 수를 정확히 아는 것이 종종 도움이됩니다.
+기본 context cache에 대한 통계를 보려면 `org.springframework.test.context.cache` logging category에 대한 로그 수준을 `DEBUG` 로 설정할 수 있습니다.
 
-In the unlikely case that a test corrupts the application context and requires reloading
-(for example, by modifying a bean definition or the state of an application object), you
-can annotate your test class or test method with `@DirtiesContext` (see the discussion of
-`@DirtiesContext` in <<spring-testing-annotation-dirtiescontext, Spring Testing
-Annotations>>). This instructs Spring to remove the context from the cache and rebuild
-the application context before running the next test that requires the same application
-context. Note that support for the `@DirtiesContext` annotation is provided by the
-`DirtiesContextBeforeModesTestExecutionListener` and the
-`DirtiesContextTestExecutionListener`, which are enabled by default.
+테스트가 application context를 손상시키고 다시 로드해야하는 경우 (예: bean definition 또는 application object의 state 수정), `@DirtiesContext` 를 사용하여 test class 또는 test method에 annotation을 달 수 있습니다 (<<spring-testing-annotation-dirtiescontext, Spring Testing Annotations>> 의 `@DirtiesContext` 참조).
+이것은 Spring이 동일한 application context를 요구하는 다음 테스트를 실행하기 전에 cache에서 context를 제거하고 application context를 다시 빌드하도록 지시합니다.
+`@DirtiesContext` annotation에 대한 지원은 기본적으로 사용되는 `DirtiesContextBeforeModesTestExecutionListener` 및 `DirtiesContextTestExecutionListener` 에서 제공됩니다.
 
 .ApplicationContext lifecycle and console logging
 [NOTE]
 ====
-When you need to debug a test executed with the Spring TestContext Framework, it can be
-useful to analyze the console output (that is, output to the `SYSOUT` and `SYSERR`
-streams). Some build tools and IDEs are able to associate console output with a given
-test; however, some console output cannot be easily associated with a given test.
+Spring TestContext Framework로 실행된 테스트를 디버깅해야 할 때 conole output (즉, `SYSOUT` 및 `SYSERR` stream에 대한 output)을 분석하는 것이 유용할 수 있습니다.
+일부 build tool 및 IDE는 console output을 주어진 테스트와 연결할 수 있습니다.
+그러나 일부 colsole output은 주어진 테스트와 쉽게 연관될 수 없습니다.
 
-With regard to console logging triggered by the Spring Framework itself or by components
-registered in the `ApplicationContext`, it is important to understand the lifecycle of an
-`ApplicationContext` that has been loaded by the Spring TestContext Framework within a
-test suite.
+Spring Framework 자체 또는 `ApplicationContext` 에 등록된 component에 의해 트리거되는 console logging과 관련하여 test suite 내에서 Spring TestContext Framework에 의해 로드된 `ApplicationContext` 의 lifecycle을 이해하는 것이 중요합니다.
 
-The `ApplicationContext` for a test is typically loaded when an instance of the test
-class is being prepared -- for example, to perform dependency injection into `@Autowired`
-fields of the test instance. This means that any console logging triggered during the
-initialization of the `ApplicationContext` typically cannot be associated with an
-individual test method. However, if the context is closed immediately before the
-execution of a test method according to <<spring-testing-annotation-dirtiescontext>>
-semantics, a new instance of the context will be loaded just prior to execution of the
-test method. In the latter scenario, an IDE or build tool may potentially associate
-console logging with the individual test method.
+테스트에 대한 `ApplicationContext` 는 일반적으로 test class의 instance가 준비될 때 로드됩니다 — 예를 들어 test instance의 `@Autowired` field에 dependency injection을 수행합니다.
+즉, `ApplicationContext` 초기화 중에 trigger 된 console logging은 일반적으로 개별 test method와 연결할 수 없습니다.
+그러나 <<spring-testing-annotation-dirtiescontext>> semantic에 따라 test method 실행 직전에 context가 닫히면 test method 실행 직전에 context의 new instance가 로드됩니다.
+후자의 시나리오에서 IDE 또는 build tool은 잠재적으로 console logging을 개별 test method과 연결할 수 있습니다.
 
-The `ApplicationContext` for a test can be closed via one of the following scenarios.
+테스트에 대한 `ApplicationContext` 는 다음 시나리오 중 하나를 통해 닫을 수 있습니다.
 
-* The context is closed according to `@DirtiesContext` semantics.
-* The context is closed because it has been automatically evicted from the cache
-  according to the LRU eviction policy.
-* The context is closed via a JVM shutdown hook when the JVM for the test suite
-  terminates.
+* context는 `@DirtiesContext` semantic에 따라 닫힙니다.
+* context는 LRU 제거 정책에 따라 cache에서 자동으로 제거 되었기 때문에 닫힙니다.
+* context는 test suite 용 JVM이 종료 될 때 JVM shutdown hook을 통해 닫힙니다.
 
-If the context is closed according to `@DirtiesContext` semantics after a particular test
-method, an IDE or build tool may potentially associate console logging with the
-individual test method. If the context is closed according to `@DirtiesContext` semantics
-after a test class, any console logging triggered during the shutdown of the
-`ApplicationContext` cannot be associated with an individual test method. Similarly, any
-console logging triggered during the shutdown phase via a JVM shutdown hook cannot be
-associated with an individual test method.
+특정 test method 이후 `@DirtiesContext` semantic에 따라 context가 닫히면 IDE 또는 build tool이 잠재적으로 console logging을 개별 test method와 연결할 수 있습니다.
+test class 이후 `@DirtiesContext` semantic에 따라 context가 닫히면 `ApplicationContext` 종료 중에 trigger 된 console logging을 개별 test method와 연결할 수 없습니다.
+마찬가지로 JVM shutdown hook을 통해 종료 단계 중에 trigger 된 console logging은 개별 test method와 연관될 수 없습니다.
 
-When a Spring `ApplicationContext` is closed via a JVM shutdown hook, callbacks executed
-during the shutdown phase are executed on a thread named `SpringContextShutdownHook`. So,
-if you wish to disable console logging triggered when the `ApplicationContext` is closed
-via a JVM shutdown hook, you may be able to register a custom filter with your logging
-framework that allows you to ignore any logging initiated by that thread.
+JVM shutdown hook를 통해 Spring `ApplicationContext` 가 닫히면 종료 단계에서 실행되는 callback이 `SpringContextShutdownHook` 이라는 thread에서 실행됩니다
+따라서 `ApplicationContext` 가 JVM shutdown hook을 통해 닫힐 때 trigger되는 console logging을 비활성화하려면 해당 thread에서 시작된 logging을 무시할 수있는 logging framework에 custom filter를 등록할 수 있습니다.
 ====
 
 [[testcontext-ctx-management-ctx-hierarchies]]
 ===== Context Hierarchies
 
-When writing integration tests that rely on a loaded Spring `ApplicationContext`, it is
-often sufficient to test against a single context. However, there are times when it is
-beneficial or even necessary to test against a hierarchy of `ApplicationContext`
-instances. For example, if you are developing a Spring MVC web application, you typically
-have a root `WebApplicationContext` loaded by Spring's `ContextLoaderListener` and a
-child `WebApplicationContext` loaded by Spring's `DispatcherServlet`. This results in a
-parent-child context hierarchy where shared components and infrastructure configuration
-are declared in the root context and consumed in the child context by web-specific
-components. Another use case can be found in Spring Batch applications, where you often
-have a parent context that provides configuration for shared batch infrastructure and a
-child context for the configuration of a specific batch job.
+로드된 Spring `ApplicationContext` 에 의존하는 통합 테스트를 작성할 때 종종 single context에 대해 테스트하는 것으로 충분합니다.
+그러나 `ApplicationContext` instance의 hierarchy에 대해 테스트하는 것이 유익하거나 필요한 경우가 있습니다.
+예를 들어 Spring MVC web application을 개발하는 경우 일반적으로 Spring의 `ContextLoaderListener` 에 의해 로드된 root `WebApplicationContext` 와 Spring의 `DispatcherServlet` 에 의해 로드된 child WebApplicationContext가 있습니다.
+그 결과 shared component 및 infrastructure configuration이 root context에서 선언되고 web-specific component에 의해 child context에서 사용되는 parent-child context hierarchy가 생성됩니다.
+또 다른 사용 사례는 Spring Batch application에서 찾을 수 있습니다. 
+여기서 shared batch infrastructure에 대한 configuration을 제공하는 parent context와 특정 batch job의 구성에 대한 child context가 있는 경우가 많습니다.
 
-You can write integration tests that use context hierarchies by declaring context
-configuration with the `@ContextHierarchy` annotation, either on an individual test class
-or within a test class hierarchy. If a context hierarchy is declared on multiple classes
-within a test class hierarchy, you can also merge or override the context configuration
-for a specific, named level in the context hierarchy. When merging configuration for a
-given level in the hierarchy, the configuration resource type (that is, XML configuration
-files or component classes) must be consistent. Otherwise, it is perfectly acceptable to
-have different levels in a context hierarchy configured using different resource types.
+개별 test class 또는 test class hierarchy 내에서 `@ContextHierarchy` annotation으로 context configuration을 선언하여 context hierarchy를 사용하는 통합 테스트를 작성할 수 있습니다.
+context hierarchy가 test class hierarchy 내의 여러 class에서 선언된 경우 context hierarchy의 특정 named level에 대한 context configuration을 merge하거나 override 할 수도 있습니다.
+hierarchy에서 주어진 level에 대한 configuration을 merge 할 때 configuration resource type(즉, XML configuration file 또는 component class)은 일관성이 있어야합니다.
+그렇지 않으면 서로 다른 resource type을 사용하여 구성된 context hierarchy에서 서로 다른 level을 갖는 것이 완벽하게 허용됩니다
 
-The remaining JUnit Jupiter based examples in this section show common configuration
-scenarios for integration tests that require the use of context hierarchies.
+이 section의 나머지 JUnit Jupiter 기반 예제는 hierarchy를 사용해야 하는 통합 테스트를 위한 일반적인 구성 시나리오를 보여줍니다.
 
 .Single test class with context hierarchy
 --
-`ControllerIntegrationTests` represents a typical integration testing scenario for a
-Spring MVC web application by declaring a context hierarchy that consists of two levels,
-one for the root `WebApplicationContext` (loaded by using the `TestAppConfig`
-`@Configuration` class) and one for the dispatcher servlet `WebApplicationContext`
-(loaded by using the `WebConfig` `@Configuration` class). The `WebApplicationContext`
-that is autowired into the test instance is the one for the child context (that is, the
-lowest context in the hierarchy). The following listing shows this configuration scenario:
+`ControllerIntegrationTests` 는 root `WebApplicationContext` (`TestAppConfig` `@Configuration` class를 사용하여 로드됨)와 dispatcher servlet `WebApplicationContext` (`WebConfig` `@Configuration` class를 사용하여 로드됨)의 2가지 level로 구성된 context hierarchy를 선언하여 Spring MVC web application에 대한 일반적인 통합 테스트 시나리오를 나타냅니다.
+test instance에 autowired 되는 `WebApplicationContext` 는 child context (즉, hierarchy에서 가장 낮은 context)에 대한 것입니다.
+다음 목록은 이 configuration 시나리오를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4135,18 +4042,13 @@ lowest context in the hierarchy). The following listing shows this configuration
 
 .Class hierarchy with implicit parent context
 --
-The test classes in this example define a context hierarchy within a test class
-hierarchy. `AbstractWebTests` declares the configuration for a root
-`WebApplicationContext` in a Spring-powered web application. Note, however, that
-`AbstractWebTests` does not declare `@ContextHierarchy`. Consequently, subclasses of
-`AbstractWebTests` can optionally participate in a context hierarchy or follow the
-standard semantics for `@ContextConfiguration`. `SoapWebServiceTests` and
-`RestWebServiceTests` both extend `AbstractWebTests` and define a context hierarchy by
-using `@ContextHierarchy`. The result is that three application contexts are loaded (one
-for each declaration of `@ContextConfiguration`), and the application context loaded
-based on the configuration in `AbstractWebTests` is set as the parent context for each of
-the contexts loaded for the concrete subclasses. The following listing shows this
-configuration scenario:
+이 예제의 test class는 test class hierarchy 내에서 context hierarchy를 정의합니다. 
+`AbstractWebTests` 는 Spring 기반 web application에서 root `WebApplicationContext` 에 대한 구성을 선언합니다.
+그러나 `AbstractWebTests` 는 `@ContextHierarchy` 를 선언하지 않습니다.
+결과적으로 `AbstractWebTests` 의 subclass는 선택적으로 context hierarchy에 참여하거나 `@ContextConfiguration` 의 standard semantic을 따를 수 있습니다.
+`SoapWebServiceTests` 및 `RestWebServiceTests` 는 모두 `AbstractWebTests` 를 extend 하고 `@ContextHierarchy` 를 사용하여 context hierarchy를 정의합니다.
+결과적으로 3개의 application context가 로드되고(`@ContextConfiguration` 의 각 선언에 대해 하나씩) `AbstractWebTests` 의 conifguration에 따라 로드된 application context가 구체적인 subclass에 대해 로드된 각 context의 parent context로 설정됩니다. 
+다음 목록은 이 configuration 시나리오를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4181,17 +4083,14 @@ configuration scenario:
 
 .Class hierarchy with merged context hierarchy configuration
 --
-The classes in this example show the use of named hierarchy levels in order to merge the
-configuration for specific levels in a context hierarchy. `BaseTests` defines two levels
-in the hierarchy, `parent` and `child`. `ExtendedTests` extends `BaseTests` and instructs
-the Spring TestContext Framework to merge the context configuration for the `child`
-hierarchy level, by ensuring that the names declared in the `name` attribute in
-`@ContextConfiguration` are both `child`. The result is that three application contexts
-are loaded: one for `/app-config.xml`, one for `/user-config.xml`, and one for
-`{"/user-config.xml", "/order-config.xml"}`. As with the previous example, the
-application context loaded from `/app-config.xml` is set as the parent context for the
-contexts loaded from `/user-config.xml` and `{"/user-config.xml", "/order-config.xml"}`.
-The following listing shows this configuration scenario:
+이 예제의 class는 context hierarchy의 특정 level에 대한 configuration을 merge하기 위해 named hierarchy level의 사용을 보여줍니다
+`BaseTests` 는 hierarchy에서 `parent` 와 `child` 의 2가지 level을 정의합니다.
+`ExtendedTests` 는 `BaseTests` 를 extend하고 `@ContextConfiguration` 의 `name` attribute에 선언된 name이 모두 `child` 인지 확인하여 `child` hierarchy level에 대한 context configuration을 merge하도록 Spring TestContext Framework에 지시합니다.
+그 결과 3개의 application context가 로드됩니다:
+하나는 `/app-config.xml` , 하나는 `/user-config.xml` , 다른 하나는 `{"/user-config.xml", "/order-config.xml"}` 입니다.
+이전 예제에서와 같이 `/app-config.xml` 에서 로드된 application context는 `/user-config.xml` 및 `{"/user-config.xml", "/order-config.xml"}` 에서 로드된 context의 parent context로 설정됩니다.
+
+다음 목록은 이 configuration 시나리오를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4227,12 +4126,10 @@ The following listing shows this configuration scenario:
 
 .Class hierarchy with overridden context hierarchy configuration
 --
-In contrast to the previous example, this example demonstrates how to override the
-configuration for a given named level in a context hierarchy by setting the
-`inheritLocations` flag in `@ContextConfiguration` to `false`. Consequently, the
-application context for `ExtendedTests` is loaded only from `/test-user-config.xml` and
-has its parent set to the context loaded from `/app-config.xml`. The following listing
-shows this configuration scenario:
+이전 예제와 달리 이 예제는 `@ContextConfiguration` 의 `inheritLocations` flag를 `false` 로 설정하여 context hierarchy에서 지정된 named level의 configuration을 override하는 방법을 보여줍니다.
+따라서 `ExtendedTests` 에 대한 application context는 `/test-user-config.xml` 에서만 로드되며 parent는 `/app-config.xml` 에서 로드된 context로 설정됩니다.
+
+다음 목록은 이 configuration 시나리오를 보여줍니다.:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4271,48 +4168,32 @@ shows this configuration scenario:
 ----
 
 .Dirtying a context within a context hierarchy
-NOTE: If you use `@DirtiesContext` in a test whose context is configured as part of a
-context hierarchy, you can use the `hierarchyMode` flag to control how the context cache
-is cleared. For further details, see the discussion of `@DirtiesContext` in
-<<spring-testing-annotation-dirtiescontext, Spring Testing Annotations>> and the
-{api-spring-framework}/test/annotation/DirtiesContext.html[`@DirtiesContext`] javadoc.
+NOTE: context가 context hierarchy의 일부로 구성된 테스트에서 `@DirtiesContext` 를 사용하는 경우 `hierarchyMode` flag를 사용하여 context cache를 지우는 방법을 제어할 수 있습니다.
+자세한 내용은 <<spring-testing-annotation-dirtiescontext, Spring Testing Annotations>>의 `@DirtiesContext` 토론 및 {api-spring-framework}/test/annotation/DirtiesContext.html[`@DirtiesContext`] javadoc을 참조하세요.
 --
 
 [[testcontext-fixture-di]]
 ==== Dependency Injection of Test Fixtures
 
-When you use the `DependencyInjectionTestExecutionListener` (which is configured by
-default), the dependencies of your test instances are injected from beans in the
-application context that you configured with `@ContextConfiguration` or related
-annotations. You may use setter injection, field injection, or both, depending on
-which annotations you choose and whether you place them on setter methods or fields.
-If you are using JUnit Jupiter you may also optionally use constructor injection
-(see <<testcontext-junit-jupiter-di>>). For consistency with Spring's annotation-based
-injection support, you may also use Spring's `@Autowired` annotation or the `@Inject`
-annotation from JSR-330 for field and setter injection.
+`DependencyInjectionTestExecutionListener` (기본적으로 구성됨)를 사용하면 `@ContextConfiguration` 또는 관련 annotation으로 구성한 application context의 bean에서 test instance의 dependency가 inject 됩니다.
+선택한 annotation과 setter method 또는 field에 배치하는지 여부에 따라 setter injection, field injection 또는 둘 다 사용할 수 있습니다.
+JUnit Jupiter를 사용하는 경우 선택적으로 constructor injection을 사용할 수도 있습니다 (<<testcontext-junit-jupiter-di>> 참조).
+Spring의 annotation 기반 injection 지원과의 일관성을 위해 Spring의 `@Autowired` annotation 또는 JSR-330의 `@Inject` annotation을 field 및 setter injection에 사용할 수도 있습니다.
 
-TIP: For testing frameworks other than JUnit Jupiter, the TestContext framework does not
-participate in instantiation of the test class. Thus, the use of `@Autowired` or
-`@Inject` for constructors has no effect for test classes.
+TIP: JUnit Jupiter 이외의 test framework의 경우 TestContext framework는 test class의 instance화에 참여하지 않습니다.
+따라서 constructor에 `@Autowired` 또는 `@Inject` 를 사용하는 것은 test class에 영향을 미치지 않습니다.
 
-NOTE: Although field injection is discouraged in production code, field injection is
-actually quite natural in test code. The rationale for the difference is that you will
-never instantiate your test class directly. Consequently, there is no need to be able to
-invoke a `public` constructor or setter method on your test class.
+NOTE: production code에서는 field injection이 권장되지 않지만 실제로 test code에서는 field injection이 매우 자연스럽습니다.
+차이점에 대한 근거는 test class를 직접 instance화하지 않는다는 것입니다.
+따라서 test class에서 `public` constructor 또는 setter method를 호출할 필요가 없습니다.
 
-Because `@Autowired` is used to perform <<core.adoc#beans-factory-autowire, autowiring by
-type>>, if you have multiple bean definitions of the same type, you cannot rely on this
-approach for those particular beans. In that case, you can use `@Autowired` in
-conjunction with `@Qualifier`. You can also choose to use `@Inject` in conjunction with
-`@Named`. Alternatively, if your test class has access to its `ApplicationContext`, you
-can perform an explicit lookup by using (for example) a call to
-`applicationContext.getBean("titleRepository", TitleRepository.class)`.
+`@Autowired` 는 <<core.adoc#beans-factory-autowire, type 별로 autowired를 수행>>하는데 사용되기 때문에 동일한 type의 bean definition이 여러 개 있는 경우 이러한 특정 bean에 대해 이 접근 방식을 사용할 수 없습니다.
+이 경우 `@Qualifier` 와 함께 `@Autowired` 를 사용할 수 있습니다.
+`@Named` 와 함께 `@Inject` 를 사용하도록 선택할 수도 있습니다.
+또는 test class가 해당 `ApplicationContext`에 access 할 수 있는 경우 (예를 들어) `applicationContext.getBean("titleRepository", TitleRepository.class)` 와 같이 호출하여 명시적 조회를 수행할 수 있습니다.
 
-If you do not want dependency injection applied to your test instances, do not annotate
-fields or setter methods with `@Autowired` or `@Inject`. Alternatively, you can disable
-dependency injection altogether by explicitly configuring your class with
-`@TestExecutionListeners` and omitting `DependencyInjectionTestExecutionListener.class`
-from the list of listeners.
+test instance에 dependency injection을 적용하지 않으려면 `@Autowired` 또는 `@Inject` 로 field 또는 setter method에 annotation을 달지 마십시오.
+또는 `@TestExecutionListeners` 로 class를 명시적으로 구성하고 listener 목록에서 `DependencyInjectionTestExecutionListener.class` 를 생략하여 dependency injection을 모두 비활성화할 수 있습니다.
 
 Consider the scenario of testing a `HibernateTitleRepository` class, as outlined in the
 <<integration-testing-goals, Goals>> section. The next two code listings demonstrate the

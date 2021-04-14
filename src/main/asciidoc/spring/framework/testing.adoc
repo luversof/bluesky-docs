@@ -4855,14 +4855,11 @@ TIP: 모든 before method (예 : JUnit Jupiter의 `@BeforeEach` annotation이 �
 
 [NOTE]
 =====
-When you test application code that manipulates the state of a Hibernate session or JPA
-persistence context, make sure to flush the underlying unit of work within test methods
-that run that code. Failing to flush the underlying unit of work can produce false
-positives: Your test passes, but the same code throws an exception in a live, production
-environment. Note that this applies to any ORM framework that maintains an in-memory unit
-of work. In the following Hibernate-based example test case, one method demonstrates a
-false positive, and the other method correctly exposes the results of flushing the
-session:
+Hibernate session 또는 JPA persistence context의 상태를 조작하는 애플리케이션 코드를 테스트 할 때 해당 코드를 실행하는 test method 내에서 기본 작업 단위를 flush 해야합니다.
+기본 작업 단위를 flush하지 못하면 오 탐지가 발생할 수 있습니다.
+테스트는 통과했지만 동일한 코드가 실제 프로덕션 환경에서 예외를 발생시킵니다.
+이는 in-memory 작업 단위를 유지하는 모든 ORM framework에 적용됩니다.
+다음 Hibernate 기반 예제 test case에서 한 method는 오 탐지를 보여주고 다른 method는 session을 flush 한 결과를 올바르게 노출합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4918,7 +4915,7 @@ session:
 	// ...
 ----
 
-The following example shows matching methods for JPA:
+다음 예는 JPA에 대한 matching methods를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -4978,50 +4975,33 @@ The following example shows matching methods for JPA:
 [[testcontext-executing-sql]]
 ==== Executing SQL Scripts
 
-When writing integration tests against a relational database, it is often beneficial to
-run SQL scripts to modify the database schema or insert test data into tables. The
-`spring-jdbc` module provides support for _initializing_ an embedded or existing database
-by executing SQL scripts when the Spring `ApplicationContext` is loaded. See
-<<data-access.adoc#jdbc-embedded-database-support, Embedded database support>> and
-<<data-access.adoc#jdbc-embedded-database-dao-testing, Testing data access logic with an
-embedded database>> for details.
+관계형 데이터베이스에 대한 통합 테스트를 작성할 때 SQL script를 실행하여 데이터베이스 스키마를 수정하거나 테스트 데이터를 테이블에 삽입하는 것이 유용한 경우가 많습니다.
+`spring-jdbc` module은 Spring `ApplicationContext` 가 로드될 때 SQL script를 실행하여 embedded 또는 기존 데이터베이스를 _초기화_ 하는 지원을 제공합니다.
+자세한 내용은 <<data-access.adoc#jdbc-embedded-database-support, Embedded database support>> 및 <<data-access.adoc#jdbc-embedded-database-dao-testing, Testing data access logic with an embedded database>>를 참조하십시오.
 
-Although it is very useful to initialize a database for testing _once_ when the
-`ApplicationContext` is loaded, sometimes it is essential to be able to modify the
-database _during_ integration tests. The following sections explain how to run SQL
-scripts programmatically and declaratively during integration tests.
+`ApplicationContext` 가 로드될 때 한 번 테스트하기 위해 데이터베이스를 초기화하는 것은 매우 유용하지만 때로는 통합 테스트 _중에_ 데이터베이스를 수정할 수 있어야합니다.
+다음 section에서는 통합 테스트 중에 SQL script를 프로그래밍 방식으로 선언적으로 실행하는 방법을 설명합니다.
 
 [[testcontext-executing-sql-programmatically]]
 ===== Executing SQL scripts programmatically
 
-Spring provides the following options for executing SQL scripts programmatically within
-integration test methods.
+Spring은 통합 test method 내에서 프로그래밍 방식으로 SQL script를 실행하기 위해 다음과 같은 옵션을 제공합니다.
 
 * `org.springframework.jdbc.datasource.init.ScriptUtils`
 * `org.springframework.jdbc.datasource.init.ResourceDatabasePopulator`
 * `org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests`
 * `org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests`
 
-`ScriptUtils` provides a collection of static utility methods for working with SQL
-scripts and is mainly intended for internal use within the framework. However, if you
-require full control over how SQL scripts are parsed and run, `ScriptUtils` may suit
-your needs better than some of the other alternatives described later. See the
-{api-spring-framework}/jdbc/datasource/init/ScriptUtils.html[javadoc] for individual
-methods in `ScriptUtils` for further details.
+`ScriptUtils` 는 SQL script 작업을 위한 static utility method 모음을 제공하며 주로 framework 내에서 내부용으로 사용됩니다
+그러나 SQL script를 구문 분석하고 실행하는 방법을 완전히 제어해야하는 경우 `ScriptUtils` 가 나중에 설명하는 다른 대안보다 더 잘 맞을 수 있습니다.
+자세한 내용은 `ScriptUtils` 의 개별 method에 대한 {api-spring-framework}/jdbc/datasource/init/ScriptUtils.html[javadoc]을 참조하십시오.
 
-`ResourceDatabasePopulator` provides an object-based API for programmatically populating,
-initializing, or cleaning up a database by using SQL scripts defined in external
-resources. `ResourceDatabasePopulator` provides options for configuring the character
-encoding, statement separator, comment delimiters, and error handling flags used when
-parsing and running the scripts. Each of the configuration options has a reasonable
-default value. See the
-{api-spring-framework}/jdbc/datasource/init/ResourceDatabasePopulator.html[javadoc] for
-details on default values. To run the scripts configured in a
-`ResourceDatabasePopulator`, you can invoke either the `populate(Connection)` method to
-run the populator against a `java.sql.Connection` or the `execute(DataSource)` method
-to run the populator against a `javax.sql.DataSource`. The following example
-specifies SQL scripts for a test schema and test data, sets the statement separator to
-`@@`, and run the scripts against a `DataSource`:
+`ResourceDatabasePopulator` 는 외부 resources에 정의된 SQL script를 사용하여 프로그래밍 방식으로 데이터베이스를 채우거나 초기화하거나 정리하기위한 object-based API를 제공합니다.
+`ResourceDatabasePopulator` 는 script를 구문 분석하고 실행할 때 사용되는 character encoding, statement separator, comment delimiters, 및 error handling flag를 구성하기 위한 옵션을 제공합니다.
+각 구성 옵션에는 적절한 기본값이 있습니다.
+기본값에 대한 자세한 내용은 {api-spring-framework}/jdbc/datasource/init/ResourceDatabasePopulator.html[javadoc]을 참조하십시오.
+`ResourceDatabasePopulator` 에 구성된 script를 실행하려면 `populate(Connection)` method를 호출하여 `java.sql.Connection` 에 대해 populator를 실행하거나 `execute(DataSource)` method를 호출하여 `javax.sql.DataSource` 에 대해 populator를 실행할 수 있습니다.
+다음 예제에서는 test schema 및 test data에 대한 SQL script를 지정하고 statement separator를 `@@` 로 설정하고 `DataSource` 에 대해 script를 실행합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5052,22 +5032,16 @@ specifies SQL scripts for a test schema and test data, sets the statement separa
 	}
 ----
 
-Note that `ResourceDatabasePopulator` internally delegates to `ScriptUtils` for parsing
-and running SQL scripts. Similarly, the `executeSqlScript(..)` methods in
-<<testcontext-support-classes-junit4, `AbstractTransactionalJUnit4SpringContextTests`>>
-and <<testcontext-support-classes-testng, `AbstractTransactionalTestNGSpringContextTests`>>
-internally use a `ResourceDatabasePopulator` to run SQL scripts. See the Javadoc for the
-various `executeSqlScript(..)` methods for further details.
+`ResourceDatabasePopulator`는 SQL script를 구문 분석하고 실행하기 위해 내부적으로 `ScriptUtils` 에 위임합니다. 
+마찬가지로 <<testcontext-support-classes-junit4, `AbstractTransactionalJUnit4SpringContextTests`>> 및 <<testcontext-support-classes-testng, `AbstractTransactionalTestNGSpringContextTests`>> 의 `executeSqlScript(..)` method는 내부적으로 `ResourceDatabasePopulator` 를 사용하여 SQL script를 실행합니다.
+자세한 내용은 다양한 `executeSqlScript(..)` method에 대한 Javadoc을 참조하십시오.
 
 [[testcontext-executing-sql-declaratively]]
 ===== Executing SQL scripts declaratively with @Sql
 
-In addition to the aforementioned mechanisms for running SQL scripts programmatically,
-you can declaratively configure SQL scripts in the Spring TestContext Framework.
-Specifically, you can declare the `@Sql` annotation on a test class or test method to
-configure individual SQL statements or the resource paths to SQL scripts that should be
-run against a given database before or after an integration test method. Support for
-`@Sql` is provided by the `SqlScriptsTestExecutionListener`, which is enabled by default.
+SQL script를 프로그래밍 방식으로 실행하기 위한 앞서 언급한 메커니즘 외에도 Spring TestContext Framework에서 SQL script를 선언적으로 구성할 수 있습니다.
+특히 test class 또는 test method에서 `@Sql` annotation을 선언하여 통합 테스트 method 전후에 주어진 데이터베이스에 대해 실행해야하는 SQL script에 대한 개별 SQL statement 또는 resource path를 구성 할 수 있습니다.
+`@Sql` 에 대한 지원은 기본적으로 활성화되어있는 `SqlScriptsTestExecutionListener` 에서 제공합니다.
 
 NOTE: Method-level `@Sql` declarations override class-level declarations by default. As
 of Spring Framework 5.2, however, this behavior may be configured per test class or per

@@ -6360,10 +6360,9 @@ production code에서는 field injection이 권장되지 않지만 실제로 tes
 또는 <code>@TestExecutionListeners</code> 로 class를 명시적으로 구성하고 listener 목록에서 <code>DependencyInjectionTestExecutionListener.class</code> 를 생략하여 dependency injection을 모두 비활성화할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>Consider the scenario of testing a <code>HibernateTitleRepository</code> class, as outlined in the
-<a href="#integration-testing-goals">Goals</a> section. The next two code listings demonstrate the
-use of <code>@Autowired</code> on fields and setter methods. The application context configuration
-is presented after all sample code listings.</p>
+<p><a href="#integration-testing-goals">Goals</a> section에 설명 된대로 <code>HibernateTitleRepository</code> class를 테스트하는 시나리오를 고려하십시오.
+다음 두 코드 목록은 field 및 setter method에서 <code>@Autowired</code> 를 사용하는 방법을 보여줍니다.
+application context configuration은 모든 샘플 코드 목록 뒤에 표시됩니다.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -6373,23 +6372,19 @@ is presented after all sample code listings.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The dependency injection behavior in the following code listings is not specific to JUnit
-Jupiter. The same DI techniques can be used in conjunction with any supported testing
-framework.</p>
+<p>다음 코드 목록의 dependency injection 동작은 JUnit Jupiter에만 국한되지 않습니다.
+지원되는 모든 test framework와 함께 동일한 DI 기술을 사용할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following examples make calls to static assertion methods, such as <code>assertNotNull()</code>,
-but without prepending the call with <code>Assertions</code>. In such cases, assume that the method
-was properly imported through an <code>import static</code> declaration that is not shown in the
-example.</p>
+<p>다음 예제는 <code>assertNotNull()</code> 과 같은 static assertion method를 호출하지만 호출 앞에 <code>Assertions</code> 을 추가하지 않습니다.
+이러한 경우 예제에 표시되지 않은 <code>import static</code> 선언을 통해 method를 올바르게 가져 왔다고 가정하십시오.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The first code listing shows a JUnit Jupiter based implementation of the test class that
-uses <code>@Autowired</code> for field injection:</p>
+<p>첫 번째 코드 목록은 field injection에 <code>@Autowired</code> 를 사용하는 test class의 JUnit Jupiter 기반 구현을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6432,8 +6427,7 @@ class HibernateTitleRepositoryTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can configure the class to use <code>@Autowired</code> for setter injection, as
-follows:</p>
+<p>또는 다음과 같이 setter injection에 <code>@Autowired</code> 를 사용하도록 class를 구성 할 수 있습니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6484,9 +6478,8 @@ class HibernateTitleRepositoryTests {
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding code listings use the same XML context file referenced by the
-<code>@ContextConfiguration</code> annotation (that is, <code>repository-config.xml</code>). The following
-shows this configuration:</p>
+<p>앞의 코드 목록은 <code>@ContextConfiguration</code> annotation에서 참조하는 동일한 XML context file (즉, <code>repository-config.xml</code>)을 사용합니다.
+다음은 이 configuration을 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -6516,12 +6509,8 @@ shows this configuration:</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>If you are extending from a Spring-provided test base class that happens to use
-<code>@Autowired</code> on one of its setter methods, you might have multiple beans of the affected
-type defined in your application context (for example, multiple <code>DataSource</code> beans). In
-such a case, you can override the setter method and use the <code>@Qualifier</code> annotation to
-indicate a specific target bean, as follows (but make sure to delegate to the overridden
-method in the superclass as well):</p>
+<p>setter method 중 하나에서 <code>@Autowired</code> 를 사용하는 Spring 제공 test base class에서 확장하는 경우 application context에 정의된 영향을 받는 type의 여러 bean이 있을 수 있습니다 (예: 여러 <code>DataSource</code> bean).
+이러한 경우 다음과 같이 setter method를 override하고 <code>@Qualifier</code> annotation을 사용하여 특정 대상 bean을 나타낼 수 있습니다 (그러나 superclass의 override 된 method에도 위임해야 함).</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6551,11 +6540,9 @@ method in the superclass as well):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The specified qualifier value indicates the specific <code>DataSource</code> bean to inject,
-narrowing the set of type matches to a specific bean. Its value is matched against
-<code>&lt;qualifier&gt;</code> declarations within the corresponding <code>&lt;bean&gt;</code> definitions. The bean name
-is used as a fallback qualifier value, so you can effectively also point to a specific
-bean by name there (as shown earlier, assuming that <code>myDataSource</code> is the bean <code>id</code>).</p>
+<p>지정된 qualifier value는 inject 할 특정 <code>DataSource</code> bean을 나타내며 type 일치 set을 특정 bean으로 좁힙니다.
+해당 값은 해당 <code>&lt;bean&gt;</code> 정의 내의 <code>&lt;qualifier&gt;</code> 선언과 일치합니다.
+bean name은 fallback qualifier value로 사용되므로 there으로 특정 bean을 효과적으로 가리킬 수도 있습니다 (앞에서 설명한 것처럼 <code>myDataSource</code> 가 bean <code>id</code> 라고 가정).</p>
 </div>
 </td>
 </tr>
@@ -6565,36 +6552,31 @@ bean by name there (as shown earlier, assuming that <code>myDataSource</code> is
 <div class="sect3">
 <h4 id="testcontext-web-scoped-beans">Testing Request- and Session-scoped Beans</h4>
 <div class="paragraph">
-<p>Spring has supported <a href="core.html#beans-factory-scopes-other">Request- and session-scoped
-beans</a> since the early years, and you can test your request-scoped and session-scoped
-beans by following these steps:</p>
+<p>Spring은 초기부터 <a href="core.html#beans-factory-scopes-other">Request- and session-scoped
+beans</a>을 지원했으며 다음 단계에 따라 request-scoped 및 session-scoped bean을 테스트 할 수 있습니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Ensure that a <code>WebApplicationContext</code> is loaded for your test by annotating your test
-class with <code>@WebAppConfiguration</code>.</p>
+<p><code>@WebAppConfiguration</code> 으로 test class에 annotation을 추가하여 테스트를 위해 <code>WebApplicationContext</code> 가 로드되었는지 확인하십시오.</p>
 </li>
 <li>
-<p>Inject the mock request or session into your test instance and prepare your test
-fixture as appropriate.</p>
+<p>mock request 또는 session을 test instance에 inject하고 test fixture를 적절하게 준비합니다.</p>
 </li>
 <li>
-<p>Invoke your web component that you retrieved from the configured
-<code>WebApplicationContext</code> (with dependency injection).</p>
+<p>구성된 <code>WebApplicationContext</code> 에서 검색한 web component를 invoke 합니다 (dependency injection 사용).</p>
 </li>
 <li>
-<p>Perform assertions against the mocks.</p>
+<p>mock에 대한 assertion을 수행합니다.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The next code snippet shows the XML configuration for a login use case. Note that the
-<code>userService</code> bean has a dependency on a request-scoped <code>loginAction</code> bean. Also, the
-<code>LoginAction</code> is instantiated by using <a href="core.html#expressions">SpEL expressions</a> that
-retrieve the username and password from the current HTTP request. In our test, we want to
-configure these request parameters through the mock managed by the TestContext framework.
-The following listing shows the configuration for this use case:</p>
+<p>다음 code snippet은 로그인 사용 사례에 대한 XML configuration을 보여줍니다.
+<code>userService</code> bean에는 request-scope의 <code>loginAction</code> bean에 대한 dependency이 있습니다.
+또한 <code>LoginAction</code> 은 현재 HTTP 요청에서 사용자 이름과 암호를 검색하는 <a href="core.html#expressions">SpEL expressions</a>을 사용하여 인스턴스화됩니다.
+테스트에서는 TestContext framework에서 관리하는 mock을 통해 이러한 request parameter를 구성하려고합니다.
+다음 목록은 이 사용 사례의 configuration을 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="title">Request-scoped bean configuration</div>
@@ -6615,14 +6597,11 @@ The following listing shows the configuration for this use case:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In <code>RequestScopedBeanTests</code>, we inject both the <code>UserService</code> (that is, the subject under
-test) and the <code>MockHttpServletRequest</code> into our test instance. Within our
-<code>requestScope()</code> test method, we set up our test fixture by setting request parameters in
-the provided <code>MockHttpServletRequest</code>. When the <code>loginUser()</code> method is invoked on our
-<code>userService</code>, we are assured that the user service has access to the request-scoped
-<code>loginAction</code> for the current <code>MockHttpServletRequest</code> (that is, the one in which we just
-set parameters). We can then perform assertions against the results based on the known
-inputs for the username and password. The following listing shows how to do so:</p>
+<p><code>RequestScopedBeanTests</code> 에서 <code>UserService</code> (즉, 테스트 대상)와 <code>MockHttpServletRequest</code> 를 test instasnce에 inject합니다.
+<code>requestScope()</code> test method 내에서 제공된 <code>MockHttpServletRequest</code> 에서 request parameter를 설정하여 test fixture를 설정합니다.
+<code>userService</code> 에서 <code>loginUser()</code> method가 호출되면 user service가 현재 <code>MockHttpServletRequest</code> (즉, 방금 parameter를 설정 한 것)에 대한 request scope의 <code>loginAction</code> 에 액세스 할 수 있습니다.
+그런 다음 사용자 이름 및 암호에 대해 알려진 입력을 기반으로 결과에 대해 assertion을 수행 할 수 있습니다.
+다음 목록은 그 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6665,12 +6644,11 @@ class RequestScopedBeanTests {
 </div>
 </div>
 <div class="paragraph">
-<p>The following code snippet is similar to the one we saw earlier for a request-scoped
-bean. However, this time, the <code>userService</code> bean has a dependency on a session-scoped
-<code>userPreferences</code> bean. Note that the <code>UserPreferences</code> bean is instantiated by using a
-SpEL expression that retrieves the theme from the current HTTP session. In our test, we
-need to configure a theme in the mock session managed by the TestContext framework. The
-following example shows how to do so:</p>
+<p>다음 code snippet은 이전에 request-scope bean에 대해 본 것과 유사합니다.
+그러나 이번에는 <code>userService</code> bean이 session-scope <code>userPreferences</code> bean에 종속되어 있습니다.
+<code>UserPreferences</code> bean은 현재 HTTP session에서 theme를 검색하는 SpEL expression을 사용하여 인스턴스화 됩니다.
+테스트에서 TestContext framework가 관리하는 mock session에서 theme를 구성해야합니다.
+다음 예는이를 수행하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock">
 <div class="title">Session-scoped bean configuration</div>
@@ -6690,13 +6668,10 @@ following example shows how to do so:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In <code>SessionScopedBeanTests</code>, we inject the <code>UserService</code> and the <code>MockHttpSession</code> into
-our test instance. Within our <code>sessionScope()</code> test method, we set up our test fixture by
-setting the expected <code>theme</code> attribute in the provided <code>MockHttpSession</code>. When the
-<code>processUserPreferences()</code> method is invoked on our <code>userService</code>, we are assured that
-the user service has access to the session-scoped <code>userPreferences</code> for the current
-<code>MockHttpSession</code>, and we can perform assertions against the results based on the
-configured theme. The following example shows how to do so:</p>
+<p><code>SessionScopedBeanTests</code> 에서 <code>UserService</code> 와 <code>MockHttpSession</code> 을 test instance에 inject합니다.
+<code>sessionScope()</code> test method 내에서 제공된 <code>MockHttpSession</code> 에 예상 theme attribute를 설정하여 test fixture를 설정합니다.
+<code>userService</code> 에서 <code>processUserPreferences()</code> method가 호출되면 user service가 현재 <code>MockHttpSession</code> 의 session-scope <code>userPreferences</code> 에 액세스 할 수 있으며 구성된 theme를 기반으로 결과에 대해 assertion을 수행 할 수 있습니다.
+다음 예는 이를 수행하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6740,27 +6715,17 @@ class SessionScopedBeanTests {
 <div class="sect3">
 <h4 id="testcontext-tx">Transaction Management</h4>
 <div class="paragraph">
-<p>In the TestContext framework, transactions are managed by the
-<code>TransactionalTestExecutionListener</code>, which is configured by default, even if you do not
-explicitly declare <code>@TestExecutionListeners</code> on your test class. To enable support for
-transactions, however, you must configure a <code>PlatformTransactionManager</code> bean in the
-<code>ApplicationContext</code> that is loaded with <code>@ContextConfiguration</code> semantics (further
-details are provided later). In addition, you must declare Spring&#8217;s <code>@Transactional</code>
-annotation either at the class or the method level for your tests.</p>
+<p>TestContext framework에서 transaction은 test class에서 <code>@TestExecutionListeners</code> 를 명시적으로 선언하지 않더라도 기본적으로 구성되는 <code>TransactionalTestExecutionListener</code> 에 의해 관리됩니다.
+그러나 transaction 지원을 사용하려면 <code>@ContextConfiguration</code> semantic으로 로드된 <code>ApplicationContext</code> 에서 <code>PlatformTransactionManager</code> bean을 구성해야합니다 (추가 세부 사항은 나중에 제공됨).
+또한 테스트를 위해 class 또는 method level에서 Spring의 <code>@Transactional</code> annotation을 선언해야합니다.</p>
 </div>
 <div class="sect4">
 <h5 id="testcontext-tx-test-managed-transactions">Test-managed Transactions</h5>
 <div class="paragraph">
-<p>Test-managed transactions are transactions that are managed declaratively by using the
-<code>TransactionalTestExecutionListener</code> or programmatically by using <code>TestTransaction</code>
-(described later). You should not confuse such transactions with Spring-managed
-transactions (those managed directly by Spring within the <code>ApplicationContext</code> loaded for
-tests) or application-managed transactions (those managed programmatically within
-application code that is invoked by tests). Spring-managed and application-managed
-transactions typically participate in test-managed transactions. However, you should use
-caution if Spring-managed or application-managed transactions are configured with any
-propagation type other than <code>REQUIRED</code> or <code>SUPPORTS</code> (see the discussion on
-<a href="data-access.html#tx-propagation">transaction propagation</a> for details).</p>
+<p>Test-managed transaction은 <code>TransactionalTestExecutionListener</code> 를 사용하여 선언적으로 관리하거나 <code>TestTransaction</code> (나중에 설명)을 사용하여 프로그래밍 방식으로 관리하는 transaction입니다.
+이러한 transaction을 Spring-managed transaction (테스트를 위해 로드된 <code>ApplicationContext</code> 내에서 Spring에 의해 직접 관리되는 transaction) 또는 application-managed transactions (테스트에 의해 호출되는 application code 내에서 프로그래밍 방식으로 관리되는 transaction)과 혼동해서는 안됩니다.
+Spring-managed 및 application-managed transaction은 일반적으로 test-managed transaction에 참여합니다.
+그러나 Spring-managed 또는 application-managed transaction이 <code>REQUIRED</code> 또는 <code>SUPPORTS</code> 이외의 propagation type으로 구성된 경우 주의해야합니다 (자세한 내용은 <a href="data-access.html#tx-propagation">transaction propagation</a>에 대한 논의 참조).</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -6771,33 +6736,28 @@ propagation type other than <code>REQUIRED</code> or <code>SUPPORTS</code> (see 
 <td class="content">
 <div class="title">Preemptive timeouts and test-managed transactions</div>
 <div class="paragraph">
-<p>Caution must be taken when using any form of preemptive timeouts from a testing framework
-in conjunction with Spring&#8217;s test-managed transactions.</p>
+<p>Spring의 test-managed transaction과 함께 test framework에서 사전 시간 초과 형식을 사용할 경우 주의해야 합니다.</p>
 </div>
 <div class="paragraph">
-<p>Specifically, Spring’s testing support binds transaction state to the current thread (via
-a <code>java.lang.ThreadLocal</code> variable) <em>before</em> the current test method is invoked. If a
-testing framework invokes the current test method in a new thread in order to support a
-preemptive timeout, any actions performed within the current test method will <em>not</em> be
-invoked within the test-managed transaction. Consequently, the result of any such actions
-will not be rolled back with the test-managed transaction. On the contrary, such actions
-will be committed to the persistent store&#8201;&#8212;&#8201;for example, a relational database&#8201;&#8212;&#8201;even
-though the test-managed transaction is properly rolled back by Spring.</p>
+<p>특히 Spring의 테스트 지원은 현재 test method가 호출되기 <em>전에</em> transaction state를 현재 thread (<code>java.lang.ThreadLocal</code> variable을 통해)에 바인딩합니다.
+test framework가 사전 시간 제한을 지원하기 위해 새 thread에서 현재 test method를 호출하는 경우 현재 test method 내에서 수행 된 모든 작업은 test-managed transaction 내에서 <em>호출되지 않습니다</em>.
+결과적으로 이러한 조치의 결과는 test-managed transaction으로 rollback되지 않습니다
+반대로 test-managed transaction이 Spring에 의해 적절하게 rollback 되더라도 이러한 작업은 persistent store (예: 관계형 데이터베이스)에 commit됩니다</p>
 </div>
 <div class="paragraph">
-<p>Situations in which this can occur include but are not limited to the following.</p>
+<p>이것이 발생할 수 있는 상황은 다음을 포함하지만 이에 국한되지 않습니다.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>JUnit 4&#8217;s <code>@Test(timeout = &#8230;&#8203;)</code> support and <code>TimeOut</code> rule</p>
+<p>JUnit 4&#8217;s <code>@Test(timeout = &#8230;&#8203;)</code> 지원 및 <code>TimeOut</code> rule</p>
 </li>
 <li>
 <p>JUnit Jupiter&#8217;s <code>assertTimeoutPreemptively(&#8230;&#8203;)</code> methods in the
 <code>org.junit.jupiter.api.Assertions</code> class</p>
 </li>
 <li>
-<p>TestNG&#8217;s <code>@Test(timeOut = &#8230;&#8203;)</code> support</p>
+<p>TestNG&#8217;s <code>@Test(timeOut = &#8230;&#8203;)</code> 지원</p>
 </li>
 </ul>
 </div>
@@ -6809,15 +6769,12 @@ though the test-managed transaction is properly rolled back by Spring.</p>
 <div class="sect4">
 <h5 id="testcontext-tx-enabling-transactions">Enabling and Disabling Transactions</h5>
 <div class="paragraph">
-<p>Annotating a test method with <code>@Transactional</code> causes the test to be run within a
-transaction that is, by default, automatically rolled back after completion of the test.
-If a test class is annotated with <code>@Transactional</code>, each test method within that class
-hierarchy runs within a transaction. Test methods that are not annotated with
-<code>@Transactional</code> (at the class or method level) are not run within a transaction. Note
-that <code>@Transactional</code> is not supported on test lifecycle methods — for example, methods
-annotated with JUnit Jupiter&#8217;s <code>@BeforeAll</code>, <code>@BeforeEach</code>, etc. Furthermore, tests that
-are annotated with <code>@Transactional</code> but have the <code>propagation</code> attribute set to
-<code>NOT_SUPPORTED</code> or <code>NEVER</code> are not run within a transaction.</p>
+<p><code>@Transactional`로 test method에 annotation을 달면 테스트가 기본적으로 테스트 완료 후 자동으로 rollback 되는 transaction 내에서 실행됩니다.
+test class에 `@Transactional</code> annotation이 추가 된 경우 해당 class hierarchy 내의 각 test method는 transaction 내에서 실행됩니다.
+<code>@Transactional</code> 로 annotation 처리되지 않은 test method (class 또는 method level)는 transaction 내에서 실행되지 않습니다.
+<code>@Transactional</code> 은 test lifecycle method에서 지원되지 않습니다.
+예를 들어 JUnit Jupiter의 <code>@BeforeAll</code>, <code>@BeforeEach</code> 등으로 annotation이 추가된 method가 있습니다.
+또한 <code>@Transactional</code> 로 annotation이 추가되었지만 <code>propagation</code> attribute가 <code>NOT_SUPPORTED</code> 또는 <code>NEVER</code> 로 설정된 테스트는 transaction 내에서 실행되지 않습니다.</p>
 </div>
 <table id="testcontext-tx-attribute-support" class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. <code>@Transactional</code> attribute support</caption>
@@ -6870,31 +6827,21 @@ are annotated with <code>@Transactional</code> but have the <code>propagation</c
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Method-level lifecycle methods — for example, methods annotated with JUnit Jupiter&#8217;s
-<code>@BeforeEach</code> or <code>@AfterEach</code> — are run within a test-managed transaction. On the other
-hand, suite-level and class-level lifecycle methods — for example, methods annotated with
-JUnit Jupiter&#8217;s <code>@BeforeAll</code> or <code>@AfterAll</code> and methods annotated with TestNG&#8217;s
-<code>@BeforeSuite</code>, <code>@AfterSuite</code>, <code>@BeforeClass</code>, or <code>@AfterClass</code> — are <em>not</em> run within a
-test-managed transaction.</p>
+<p>Method-level lifecycle method (예 : JUnit Jupiter의 <code>@BeforeEach</code> 또는 <code>@AfterEach</code> 로 annotation이 달린 method)는 test-managed transaction 내에서 실행됩니다.
+반면에 suite-level 및 class-level lifecycle method (예 : JUnit Jupiter의 <code>@BeforeAll</code> 또는 <code>@AfterAll</code> 로 annotation 처리 된 method 및 TestNG의 <code>@BeforeSuite</code>, <code>@AfterSuite</code>, <code>@BeforeClass</code> 또는 `@AfterClass`로 annotation 처리 된 method)는 test-managed transaction 내에서 <em>실행되지 않습니다</em>.</p>
 </div>
 <div class="paragraph">
-<p>If you need to run code in a suite-level or class-level lifecycle method within a
-transaction, you may wish to inject a corresponding <code>PlatformTransactionManager</code> into
-your test class and then use that with a <code>TransactionTemplate</code> for programmatic
-transaction management.</p>
+<p>transaction 내에서 suite-level 또는 class-level lifecycle method에서 코드를 실행해야하는 경우 해당 <code>PlatformTransactionManager</code> 를 test class에 inject 한 다음 이를 <code>TransactionTemplate</code> 과 함께 사용하여 프로그래밍 방식 transaction management를 수행 할 수 있습니다.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Note that <a href="#testcontext-support-classes-junit4"><code>AbstractTransactionalJUnit4SpringContextTests</code></a> and
-<a href="#testcontext-support-classes-testng"><code>AbstractTransactionalTestNGSpringContextTests</code></a>
-are preconfigured for transactional support at the class level.</p>
+<p><a href="#testcontext-support-classes-junit4"><code>AbstractTransactionalJUnit4SpringContextTests</code></a> 및 <a href="#testcontext-support-classes-testng"><code>AbstractTransactionalTestNGSpringContextTests</code></a> 는 class level에서 transactional 지원을 위해 미리 구성되어 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example demonstrates a common scenario for writing an integration test for
-a Hibernate-based <code>UserRepository</code>:</p>
+<p>다음 예제는 Hibernate 기반 <code>UserRepository</code> 에 대한 통합 테스트를 작성하는 일반적인 시나리오를 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -6983,34 +6930,27 @@ class HibernateUserRepositoryTests {
 </div>
 </div>
 <div class="paragraph">
-<p>As explained in <a href="#testcontext-tx-rollback-and-commit-behavior">Transaction Rollback and Commit Behavior</a>, there is no need to
-clean up the database after the <code>createUser()</code> method runs, since any changes made to the
-database are automatically rolled back by the <code>TransactionalTestExecutionListener</code>.</p>
+<p><a href="#testcontext-tx-rollback-and-commit-behavior">Transaction Rollback and Commit Behavior</a>에 설명된대로 데이터베이스에 대한 변경 사항은 <code>TransactionalTestExecutionListener`에 의해 자동으로 rollback되므로 `createUser()</code> method가 실행된 후 데이터베이스를 정리할 필요가 없습니다.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-tx-rollback-and-commit-behavior">Transaction Rollback and Commit Behavior</h5>
 <div class="paragraph">
-<p>By default, test transactions will be automatically rolled back after completion of the
-test; however, transactional commit and rollback behavior can be configured declaratively
-via the <code>@Commit</code> and <code>@Rollback</code> annotations. See the corresponding entries in the
-<a href="#integration-testing-annotations">annotation support</a> section for further details.</p>
+<p>기본적으로 test transaction은 테스트 완료 후 자동으로 rollback됩니다.
+그러나 transactional commit 및 rollback 동작은 <code>@Commit</code> 및 <code>@Rollback</code> annotation을 통해 선언적으로 구성할 수 있습니다.
+자세한 내용은 <a href="#integration-testing-annotations">annotation support</a> section의 해당 항목을 참조하십시오.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-tx-programmatic-tx-mgt">Programmatic Transaction Management</h5>
 <div class="paragraph">
-<p>You can interact with test-managed transactions programmatically by using the static
-methods in <code>TestTransaction</code>. For example, you can use <code>TestTransaction</code> within test
-methods, before methods, and after methods to start or end the current test-managed
-transaction or to configure the current test-managed transaction for rollback or commit.
-Support for <code>TestTransaction</code> is automatically available whenever the
-<code>TransactionalTestExecutionListener</code> is enabled.</p>
+<p><code>TestTransaction</code> 의 static method를 사용하여 프로그래밍 방식으로 test-managed transaction과 상호 작용할 수 있습니다.
+예를 들어 test method 내에서 <code>TestTransaction</code> 을 사용하여 before method 및 after method를 사용하여 현재 test-managed transaction을 시작 또는 종료하거나 rollback 또는 commit을 위해 현재 test-managed transaction을 구성할 수 있습니다.
+<code>TransactionalTestExecutionListener</code> 가 활성화 될 때마다 <code>TestTransaction</code> 에 대한 지원이 자동으로 제공됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example demonstrates some of the features of <code>TestTransaction</code>. See the
-javadoc for <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/transaction/TestTransaction.html"><code>TestTransaction</code></a>
-for further details.</p>
+<p>다음 예제는 <code>TestTransaction</code> 의 일부 기능을 보여줍니다.
+자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/transaction/TestTransaction.html"><code>TestTransaction</code></a>에 대한 javadoc을 참조하세요.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7021,20 +6961,19 @@ public class ProgrammaticTransactionManagementTests extends
 
     @Test
     public void transactionalTest() {
-        // assert initial state in test database:
+        // 테스트 데이터베이스에서 초기 상태를 assert합니다:
         assertNumUsers(2);
 
         deleteFromTables("user");
 
-        // changes to the database will be committed!
+        // 데이터베이스에 대한 변경 사항이 commit됩니다!
         TestTransaction.flagForCommit();
         TestTransaction.end();
         assertFalse(TestTransaction.isActive());
         assertNumUsers(0);
 
         TestTransaction.start();
-        // perform other actions against the database that will
-        // be automatically rolled back after the test completes...
+        // 테스트가 완료된 후 자동으로 롤백 될 데이터베이스에 대해 다른 작업을 수행합니다.
     }
 
     protected void assertNumUsers(int expected) {
@@ -7051,20 +6990,19 @@ class ProgrammaticTransactionManagementTests : AbstractTransactionalJUnit4Spring
 
     @Test
     fun transactionalTest() {
-        // assert initial state in test database:
+        // 테스트 데이터베이스에서 초기 상태를 assert합니다:
         assertNumUsers(2)
 
         deleteFromTables("user")
 
-        // changes to the database will be committed!
+        // 데이터베이스에 대한 변경 사항이 commit됩니다!
         TestTransaction.flagForCommit()
         TestTransaction.end()
         assertFalse(TestTransaction.isActive())
         assertNumUsers(0)
 
         TestTransaction.start()
-        // perform other actions against the database that will
-        // be automatically rolled back after the test completes...
+        // 테스트가 완료된 후 자동으로 롤백 될 데이터베이스에 대해 다른 작업을 수행합니다.
     }
 
     protected fun assertNumUsers(expected: Int) {
@@ -7077,15 +7015,10 @@ class ProgrammaticTransactionManagementTests : AbstractTransactionalJUnit4Spring
 <div class="sect4">
 <h5 id="testcontext-tx-before-and-after-tx">Running Code Outside of a Transaction</h5>
 <div class="paragraph">
-<p>Occasionally, you may need to run certain code before or after a transactional test
-method but outside the transactional context&#8201;&#8212;&#8201;for example, to verify the initial
-database state prior to running your test or to verify expected transactional commit
-behavior after your test runs (if the test was configured to commit the transaction).
-<code>TransactionalTestExecutionListener</code> supports the <code>@BeforeTransaction</code> and
-<code>@AfterTransaction</code> annotations for exactly such scenarios. You can annotate any <code>void</code>
-method in a test class or any <code>void</code> default method in a test interface with one of these
-annotations, and the <code>TransactionalTestExecutionListener</code> ensures that your before
-transaction method or after transaction method runs at the appropriate time.</p>
+<p>때때로 transactional test method 전후에 transactional context 외부에서 특정 코드를 실행해야 할 수 있습니다.
+예를 들어 테스트를 실행하기 전에 초기 데이터베이스 상태를 확인하거나 테스트 실행 후 예상되는 transactional commit 동작을 확인합니다 (테스트가 transaction을 commit하도록 구성된 경우).
+<code>TransactionalTestExecutionListener</code> 는 정확히 그러한 시나리오에 대해 <code>@BeforeTransaction</code> 및 <code>@AfterTransaction</code> annotation을 지원합니다.
+이러한 annotation 중 하나를 사용하여 test class의 모든 <code>void</code> method 또는 test interface의 모든 <code>void</code> default method에 annotation을 달 수 있으며 <code>TransactionalTestExecutionListener</code> 는 이전 transaction method 또는 이후 transaction method가 적절한 시간에 실행되도록 합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -7094,11 +7027,8 @@ transaction method or after transaction method runs at the appropriate time.</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Any before methods (such as methods annotated with JUnit Jupiter&#8217;s <code>@BeforeEach</code>)
-and any after methods (such as methods annotated with JUnit Jupiter&#8217;s <code>@AfterEach</code>) are
-run within a transaction. In addition, methods annotated with <code>@BeforeTransaction</code> or
-<code>@AfterTransaction</code> are not run for test methods that are not configured to run within a
-transaction.
+모든 before method (예 : JUnit Jupiter의 <code>@BeforeEach</code> annotation이 달린 method) 및 모든 after method (예 : JUnit Jupiter의 <code>@AfterEach</code> annotation이 달린 method)는 transaction 내에서 실행됩니다.
+또한 <code>@BeforeTransaction</code> 또는 <code>@AfterTransaction</code> annotation이 달린 method는 transaction 내에서 실행되도록 구성되지 않은 test method에 대해 실행되지 않습니다.
 </td>
 </tr>
 </table>
@@ -7107,27 +7037,19 @@ transaction.
 <div class="sect4">
 <h5 id="testcontext-tx-mgr-config">Configuring a Transaction Manager</h5>
 <div class="paragraph">
-<p><code>TransactionalTestExecutionListener</code> expects a <code>PlatformTransactionManager</code> bean to be
-defined in the Spring <code>ApplicationContext</code> for the test. If there are multiple instances
-of <code>PlatformTransactionManager</code> within the test&#8217;s <code>ApplicationContext</code>, you can declare a
-qualifier by using <code>@Transactional("myTxMgr")</code> or <code>@Transactional(transactionManager =
-"myTxMgr")</code>, or <code>TransactionManagementConfigurer</code> can be implemented by an
-<code>@Configuration</code> class. Consult the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/transaction/TestContextTransactionUtils.html#retrieveTransactionManager-org.springframework.test.context.TestContext-java.lang.String-">javadoc
-for <code>TestContextTransactionUtils.retrieveTransactionManager()</code></a> for details on the
-algorithm used to look up a transaction manager in the test&#8217;s <code>ApplicationContext</code>.</p>
+<p><code>TransactionalTestExecutionListener</code> 는 <code>PlatformTransactionManager</code> bean이 테스트를 위해 Spring <code>ApplicationContext</code> 에 정의될 것으로 예상합니다.
+테스트의 <code>ApplicationContext</code> 내에 <code>PlatformTransactionManager</code> 의 여러 instance가 있는 경우 <code>@Transactional("myTxMgr")</code> 또는 <code>@Transactional(transactionManager = "myTxMgr")</code> 을 사용하여 qualifier를 선언하거나 <code>@Configuration</code> class로 <code>TransactionManagementConfigurer</code> 를 구현할 수 있습니다.
+테스트의 <code>ApplicationContext</code> 에서 transaction manager를 찾는데 사용되는 알고리즘에 대한 자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/transaction/TestContextTransactionUtils.html#retrieveTransactionManager-org.springframework.test.context.TestContext-java.lang.String-">javadoc for <code>TestContextTransactionUtils.retrieveTransactionManager()</code></a> 에 대한 javadoc을 참조하십시오.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-tx-annotation-demo">Demonstration of All Transaction-related Annotations</h5>
 <div class="paragraph">
-<p>The following JUnit Jupiter based example displays a fictitious integration testing
-scenario that highlights all transaction-related annotations. The example is not intended
-to demonstrate best practices but rather to demonstrate how these annotations can be
-used. See the <a href="#integration-testing-annotations">annotation support</a> section for further
-information and configuration examples. <a href="#testcontext-executing-sql-declaratively-tx">Transaction management for <code>@Sql</code></a> contains an additional example that uses <code>@Sql</code> for
-declarative SQL script execution with default transaction rollback semantics. The
-following example shows the relevant annotations:</p>
+<p>다음 JUnit Jupiter 기반 예제는 모든 transaction-related annotation을 강조하는 가상의 통합 테스트 시나리오를 표시합니다.
+이 예제는 모범 사례를 보여주기위한 것이 아니라 이러한 annotation을 어떻게 사용할 수 있는지 보여주기 위한 것입니다.
+추가 정보 및 구성 예는 <a href="#integration-testing-annotations">annotation support</a> section을 참조하십시오.
+<a href="#testcontext-executing-sql-declaratively-tx"><code>@Sql</code> 에 대한 Transaction management</a>에는 default transaction rollback semantic과 함께 선언적 SQL script 실행에 <code>@Sql</code> 을 사용하는 추가 예제가 포함되어 있습니다.
+다음 예는 관련 annotations을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7139,29 +7061,29 @@ class FictitiousTransactionalTest {
 
     @BeforeTransaction
     void verifyInitialDatabaseState() {
-        // logic to verify the initial state before a transaction is started
+        // 트랜잭션이 시작되기 전에 초기 상태를 확인하는 logic
     }
 
     @BeforeEach
     void setUpTestDataWithinTransaction() {
-        // set up test data within the transaction
+        // 트랜잭션 내에서 테스트 데이터 설정
     }
 
     @Test
-    // overrides the class-level @Commit setting
+    // class-level @Commit setting을 override 합니다.
     @Rollback
     void modifyDatabaseWithinTransaction() {
-        // logic which uses the test data and modifies database state
+        // 테스트 데이터를 사용하고 데이터베이스 상태를 수정하는 logic
     }
 
     @AfterEach
     void tearDownWithinTransaction() {
-        // run "tear down" logic within the transaction
+        // 트랜잭션 내에서 "해체" logic 실행
     }
 
     @AfterTransaction
     void verifyFinalDatabaseState() {
-        // logic to verify the final state after transaction has rolled back
+        // 트랜잭션이 롤백 된 후 최종 상태를 확인하는 logic
     }
 
 }</code></pre>
@@ -7177,29 +7099,29 @@ class FictitiousTransactionalTest {
 
     @BeforeTransaction
     fun verifyInitialDatabaseState() {
-        // logic to verify the initial state before a transaction is started
+        // 트랜잭션이 시작되기 전에 초기 상태를 확인하는 logic
     }
 
     @BeforeEach
     fun setUpTestDataWithinTransaction() {
-        // set up test data within the transaction
+        // 트랜잭션 내에서 테스트 데이터 설정
     }
 
     @Test
-    // overrides the class-level @Commit setting
+    // class-level @Commit setting을 override 합니다.
     @Rollback
     fun modifyDatabaseWithinTransaction() {
-        // logic which uses the test data and modifies database state
+        // 테스트 데이터를 사용하고 데이터베이스 상태를 수정하는 logic
     }
 
     @AfterEach
     fun tearDownWithinTransaction() {
-        // run "tear down" logic within the transaction
+        // 트랜잭션 내에서 "해체" logic 실행
     }
 
     @AfterTransaction
     fun verifyFinalDatabaseState() {
-        // logic to verify the final state after transaction has rolled back
+        // 트랜잭션이 롤백 된 후 최종 상태를 확인하는 logic
     }
 
 }</code></pre>
@@ -11012,7 +10934,7 @@ integration tests written in Kotlin using <a href="https://mockk.io/">MockK</a> 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-14 15:53:46 +0900
+Last updated 2021-04-15 05:32:54 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

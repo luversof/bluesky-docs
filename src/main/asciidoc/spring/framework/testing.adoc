@@ -6027,26 +6027,21 @@ TestContext framework는 로드된 Spring configuration을 cache하기 때문에
 	}
 ----
 
-The `standaloneSetup`, on the other hand, is a little closer to a unit test. It tests one
-controller at a time. You can manually inject the controller with mock dependencies, and
-it does not involve loading Spring configuration. Such tests are more focused on style
-and make it easier to see which controller is being tested, whether any specific Spring
-MVC configuration is required to work, and so on. The `standaloneSetup` is also a very
-convenient way to write ad-hoc tests to verify specific behavior or to debug an issue.
+반면에 `standaloneSetup` 은 단위 테스트에 조금 더 가깝습니다.
+한 번에 하나의 컨트롤러를 테스트합니다.
+수동으로 controller에 mock dependency을 inject 할 수 있으며 Spring configuration 로드를 포함하지 않습니다.
+이러한 테스트는 스타일에 더 초점을 맞추고 어떤 controller가 테스트 되고 있는지, 특정 Spring MVC configuration이 작동해야 하는지 여부 등을 쉽게 확인할 수 있습니다.
+`standaloneSetup` 은 또한 특정 동작을 확인하거나 문제를 디버깅하기 위해 임시 테스트를 작성하는 매우 편리한 방법입니다.
 
-As with most "`integration versus unit testing`" debates, there is no right or wrong
-answer. However, using the `standaloneSetup` does imply the need for additional
-`webAppContextSetup` tests in order to verify your Spring MVC configuration.
-Alternatively, you can write all your tests with `webAppContextSetup`, in order to always
-test against your actual Spring MVC configuration.
+대부분의 "`integration versus unit testing`" 논쟁과 마찬가지로 정답이나 오답은 없습니다.
+그러나 `standaloneSetup` 을 사용하면 Spring MVC configuration을 확인하기 위해 추가 `webAppContextSetup` 테스트가 필요합니다.
+또는 실제 Spring MVC configuration에 대해 항상 테스트하기 위해 `webAppContextSetup` 으로 모든 테스트를 작성할 수 있습니다.
 
 [[spring-mvc-test-server-setup-steps]]
 ===== Setup Features
 
-No matter which MockMvc builder you use, all `MockMvcBuilder` implementations provide
-some common and very useful features. For example, you can declare an `Accept` header for
-all requests and expect a status of 200 as well as a `Content-Type` header in all
-responses, as follows:
+어떤 MockMvc builder를 사용하든 모든 `MockMvcBuilder` 구현은 공통적이고 매우 유용한 기능을 제공합니다.
+예를 들어 모든 요청에 대해 Accept header를 선언하고 다음과 같이 모든 응답에서 상태 200과 Content-Type header를 기대할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6066,10 +6061,9 @@ responses, as follows:
 	// Not possible in Kotlin until https://youtrack.jetbrains.com/issue/KT-22208 is fixed
 ----
 
-In addition, third-party frameworks (and applications) can pre-package setup
-instructions, such as those in a `MockMvcConfigurer`. The Spring Framework has one such
-built-in implementation that helps to save and re-use the HTTP session across requests.
-You can use it as follows:
+또한 third-party framework(및 application)는 `MockMvcConfigurer` 에 있는 것과 같은 설정 지침을 미리 package화 할 수 있습니다.
+Spring Framework에는 요청 간에 HTTP session을 저장하고 재사용하는데 도움이되는 이러한 내장 구현이 하나 있습니다.
+다음과 같이 사용할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6089,18 +6083,15 @@ You can use it as follows:
 	// Not possible in Kotlin until https://youtrack.jetbrains.com/issue/KT-22208 is fixed
 ----
 
-See the javadoc for
-{api-spring-framework}/test/web/servlet/setup/ConfigurableMockMvcBuilder.html[`ConfigurableMockMvcBuilder`]
-for a list of all MockMvc builder features or use the IDE to explore the available options.
+모든 MockMvc builder 기능 목록은 {api-spring-framework}/test/web/servlet/setup/ConfigurableMockMvcBuilder.html[`ConfigurableMockMvcBuilder`]의 javadoc을 참조하거나 IDE를 사용하여 사용가능한 옵션을 탐색하십시오.
 
 [[spring-mvc-test-server-performing-requests]]
 ===== Performing Requests
 
-This section shows how to use MockMvc on its own to perform requests and verify responses.
-If using MockMvc through the `WebTestClient` please see the corresponding section on
-<<webtestclient-tests>> instead.
+이 섹션에서는 MockMvc 자체를 사용하여 요청을 수행하고 응답을 확인하는 방법을 보여줍니다.
+`WebTestClient` 를 통해 MockMvc를 사용하는 경우에는 <<webtestclient-tests>>의 해당 section을 참조하십시오.
 
-To perform requests that use any HTTP method, as the following example shows:
+다음 예제와 같이 HTTP method를 사용하는 요청을 수행하려면:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6120,9 +6111,8 @@ To perform requests that use any HTTP method, as the following example shows:
 	}
 ----
 
-You can also perform file upload requests that internally use
-`MockMultipartHttpServletRequest` so that there is no actual parsing of a multipart
-request. Rather, you have to set it up to be similar to the following example:
+multipart request의 실제 구문 분석이 없도록 내부적으로 `MockMultipartHttpServletRequest` 를 사용하는 file upload request을 수행할 수도 있습니다.
+대신 다음 예제와 유사하게 설정해야합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6140,7 +6130,7 @@ request. Rather, you have to set it up to be similar to the following example:
 	}
 ----
 
-You can specify query parameters in URI template style, as the following example shows:
+다음 예와 같이 URI template style로 query parameter를 지정할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6153,8 +6143,7 @@ You can specify query parameters in URI template style, as the following example
 	mockMvc.get("/hotels?thing={thing}", "somewhere")
 ----
 
-You can also add Servlet request parameters that represent either query or form
-parameters, as the following example shows:
+다음 예와 같이 query 또는 form parameter를 나타내는 Servlet request parameter를 추가 할 수도 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6171,16 +6160,11 @@ parameters, as the following example shows:
 	}
 ----
 
-If application code relies on Servlet request parameters and does not check the query
-string explicitly (as is most often the case), it does not matter which option you use.
-Keep in mind, however, that query parameters provided with the URI template are decoded
-while request parameters provided through the `param(...)` method are expected to already
-be decoded.
+application code가 Servlet request parameter에 의존하고 query string을 명시적으로 확인하지 않는 경우(대부분의 경우) 사용하는 option은 중요하지 않습니다.
+단, URI template과 함께 제공되는 query parameter는 decoding 되는 반면 `param(…)` method를 통해 제공되는 request parameter는 이미 decoding 될 것으로 예상됩니다.
 
-In most cases, it is preferable to leave the context path and the Servlet path out of the
-request URI. If you must test with the full request URI, be sure to set the `contextPath`
-and `servletPath` accordingly so that request mappings work, as the following example
-shows:
+대부분의 경우 context path와 servlet path는 request URI에서 제외하는 것이 좋습니다.
+full request URI로 테스트 해야하는 경우 다음 예제와 같이 request mapping이 작동하도록 `contextPath` 및 `servletPath` 를 적절하게 설정해야합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6198,9 +6182,8 @@ shows:
 	}
 ----
 
-In the preceding example, it would be cumbersome to set the `contextPath` and
-`servletPath` with every performed request. Instead, you can set up default request
-properties, as the following example shows:
+앞의 예에서는 수행된 모든 request에 대해 `contextPath` 및 `servletPath` 를 설정하는 것이 번거롭습니다.
+대신 다음 예제와 같이 default request properties를 설정할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6224,16 +6207,15 @@ properties, as the following example shows:
 	// Not possible in Kotlin until https://youtrack.jetbrains.com/issue/KT-22208 is fixed
 ----
 
-The preceding properties affect every request performed through the `MockMvc` instance.
-If the same property is also specified on a given request, it overrides the default
-value. That is why the HTTP method and URI in the default request do not matter, since
-they must be specified on every request.
+앞의 properties는 `MockMvc` instance를 통해 수행되는 모든 request에 영향을 줍니다.
+지정된 request에도 동일한 property가 지정되면 기본값이 override 됩니다.
+이것이 기본 요청의 HTTP method와 URI가 모든 request에 지정되어야하기 때문에 중요하지 않은 이유입니다.
+따라서 모든 request에 대해 HTTP method와 URI를 지정해야 하므로 default request의 URI는 중요하지 않습니다.
 
 [[spring-mvc-test-server-defining-expectations]]
 ===== Defining Expectations
 
-You can define expectations by appending one or more `.andExpect(..)` calls after
-performing a request, as the following example shows:
+다음 예제와 같이 요청을 수행한 후 하나 이상의 `.andExpect(..)` 호출을 추가하여 기대치를 정의할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6253,20 +6235,17 @@ performing a request, as the following example shows:
 	}
 ----
 
-`MockMvcResultMatchers.*` provides a number of expectations, some of which are further
-nested with more detailed expectations.
+`MockMvcResultMatchers.*` 는 많은 기대치를 제공하며, 그 중 일부는 더 자세한 기대치로 더 중첩됩니다.
 
-Expectations fall in two general categories. The first category of assertions verifies
-properties of the response (for example, the response status, headers, and content).
-These are the most important results to assert.
+기대치는 두 가지 일반적인 범주로 나뉩니다.
+첫 번째 assertion 범주는 response의 properties (예: response status, header 및 content)을 확인합니다
+이것은 assert해야 할 가장 중요한 결과입니다.
 
-The second category of assertions goes beyond the response. These assertions let you
-inspect Spring MVC specific aspects, such as which controller method processed the
-request, whether an exception was raised and handled, what the content of the model is,
-what view was selected, what flash attributes were added, and so on. They also let you
-inspect Servlet specific aspects, such as request and session attributes.
+두 번째 assertion 범주는 response를 벗어납니다.
+이러한 assertion을 통해 request를 처리한 controller method, exception 발생 및 처리 여부, model의 content, 선택된 view, 추가된 flash attribute 등과 같은 Spring MVC 특정 측면을 검사할 수 있습니다.
+또한 request 및 session attribute과 같은 servlet 특정 측면을 검사할 수 있습니다.
 
-The following test asserts that binding or validation failed:
+다음 테스트는 binding 또는 validation 검사가 실패했다고 assert 합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6289,9 +6268,9 @@ The following test asserts that binding or validation failed:
 	}
 ----
 
-Many times, when writing tests, it is useful to dump the results of the performed
-request. You can do so as follows, where `print()` is a static import from
-`MockMvcResultHandlers`:
+여러번 테스트를 작성할 때 수행된 요청의 결과를 domp하는 것이 유용합니다.
+다음과 같이 할 수 있습니다.
+여기서 `print()` 는 `MockMvcResultHandlers` 에서 static import입니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6317,18 +6296,14 @@ request. You can do so as follows, where `print()` is a static import from
 		}
 ----
 
-As long as request processing does not cause an unhandled exception, the `print()` method
-prints all the available result data to `System.out`. There is also a `log()` method and
-two additional variants of the `print()` method, one that accepts an `OutputStream` and
-one that accepts a `Writer`. For example, invoking `print(System.err)` prints the result
-data to `System.err`, while invoking `print(myWriter)` prints the result data to a custom
-writer. If you want to have the result data logged instead of printed, you can invoke the
-`log()` method, which logs the result data as a single `DEBUG` message under the
-`org.springframework.test.web.servlet.result` logging category.
+요청 처리로 인해 처리되지 않은 exception이 발생하지 않는 한 `print()` method는 사용 가능한 모든 결과 데이터를 `System.out` 에 print합니다
+또한 `log()` method와 `print()` method의 두 가지 추가 변형이 있습니다.
+하나는 `OutputStream` 을 받아들이고 다른 하나는 `Writer` 를 받아들이는 것입니다.
+예를 들어, `print(System.err)` 를 호출하면 결과 데이터가 `System.err` 에 print 되고 `print(myWriter)` 를 호출하면 결과 데이터가 custom writer에 print 됩니다.
+결과 데이터를 print 하는 대신 log 하려면 `log()` method를 호출하면 결과 데이터가 `org.springframework.test.web.servlet.result` logging category 아래에 단일 `DEBUG` 메시지로 기록됩니다.
 
-In some cases, you may want to get direct access to the result and verify something that
-cannot be verified otherwise. This can be achieved by appending `.andReturn()` after all
-other expectations, as the following example shows:
+어떤 경우에는 결과에 직접 액세스하고 다른 방법으로는 확인할 수 없는 것을 확인해야 할 수 있습니다.
+다음 예제와 같이 다른 모든 expectation 뒤에 `.andReturn()` 을 추가하면됩니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6344,8 +6319,7 @@ other expectations, as the following example shows:
 	// ...
 ----
 
-If all tests repeat the same expectations, you can set up common expectations once when
-building the `MockMvc` instance, as the following example shows:
+모든 테스트가 동일한 expectation를 반복하는 경우 다음 예제와 같이 `MockMvc` instance를 빌드할 때 common expectation을 한 번 설정할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6361,12 +6335,9 @@ building the `MockMvc` instance, as the following example shows:
 	// Not possible in Kotlin until https://youtrack.jetbrains.com/issue/KT-22208 is fixed
 ----
 
-Note that common expectations are always applied and cannot be overridden without
-creating a separate `MockMvc` instance.
+common expectation은 항상 적용되며 별도의 `MockMvc` instance를 생성하지 않고는 override 할 수 없습니다.
 
-When a JSON response content contains hypermedia links created with
-https://github.com/spring-projects/spring-hateoas[Spring HATEOAS], you can verify the
-resulting links by using JsonPath expressions, as the following example shows:
+JSON response content에 https://github.com/spring-projects/spring-hateoas[Spring HATEOAS]로 생성된 hypermedia link가 포함된 경우 다음 예제와 같이 JsonPath expression을 사용하여 결과 링크를 확인할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6387,9 +6358,7 @@ resulting links by using JsonPath expressions, as the following example shows:
 	}
 ----
 
-When XML response content contains hypermedia links created with
-https://github.com/spring-projects/spring-hateoas[Spring HATEOAS], you can verify the
-resulting links by using XPath expressions:
+XML response content에 https://github.com/spring-projects/spring-hateoas[Spring HATEOAS]로 생성된 hypermedia link가 포함된 경우 XPath expression을 사용하여 결과 링크를 확인할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6415,20 +6384,13 @@ resulting links by using XPath expressions:
 [[spring-mvc-test-async-requests]]
 ===== Async Requests
 
-This section shows how to use MockMvc on its own to test asynchronous request handling.
-If using MockMvc through the <<webtestclient>>, there is nothing special to do to make
-asynchronous requests work as the `WebTestClient` automatically does what is described
-in this section.
+이 section에서는 asynchronous request handling을 테스트하기 위해 MockMvc 자체를 사용하는 방법을 보여줍니다.
+<<webtestclient>>를 통해 MockMvc를 사용하는 경우 `WebTestClient` 가 이 section에서 설명하는 작업을 자동으로 수행하므로 asynchronous request가 작동하도록 하기위해 특별히 수행할 작업이 없습니다.
 
-Servlet 3.0 asynchronous requests,
-<<web.adoc#mvc-ann-async,supported in Spring MVC>>, work by exiting the Servlet container
-thread and allowing the application to compute the response asynchronously, after which
-an async dispatch is made to complete processing on a Servlet container thread.
+<<web.adoc#mvc-ann-async,Spring MVC 에서 지원>>되는 Servlet 3.0 asynchronous request는 Servlet container thread를 종료하고 application이 response를 비동기적으로 계산할 수 있도록 허용한 후 async dispatch가 Servlet container thread에서 처리를 완료하도록 만들어집니다.
 
-In Spring MVC Test, async requests can be tested by asserting the produced async value
-first, then manually performing the async dispatch, and finally verifying the response.
-Below is an example test for controller methods that return `DeferredResult`, `Callable`,
-or reactive type such as Reactor `Mono`:
+Spring MVC test에서는 생성된 async value를 먼저 assert한 다음 수동으로 async dispatch를 ​​수행하고 마지막으로 response를 확인하여 async request를 테스트할 수 있습니다.
+다음은 `DeferredResult`, `Callable` 또는 Reactor `Mono` 와 같은 reactive type을 반환하는 controller method에 대한 예제 테스트입니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java

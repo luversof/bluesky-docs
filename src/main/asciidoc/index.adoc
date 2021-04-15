@@ -2,10 +2,11 @@
 :toc!:
 
 ****
-공부하면서 레퍼런스 문서를 부분적으로 번역해두었습니다.
+구글 번역이 번역해준 문서입니다.
 ****
 
 [horizontal]
+link:spring/framework/index.html[reference] :: Spring Framework
 link:spring/boot/index.html[reference] :: Spring Boot
 link:spring/cloud/data-flow/index.html[reference] :: Spring Cloud Data Flow
 link:spring/cloud/task/index.html[reference] :: Spring Cloud Task

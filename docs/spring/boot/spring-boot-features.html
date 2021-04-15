@@ -386,7 +386,7 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 <h4 id="boot-features-logging-color-coded-output"><a class="anchor" href="#boot-features-logging-color-coded-output"></a>1.2.1. Color-coded Output</h4>
 <div class="paragraph">
 <p>termintal이 ANSI를 지원하는 경우 가독성을 높이기 위해 색상 출력이 사용됩니다.
-<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
+<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
 </div>
 <div class="paragraph">
 <p>색 구분은 <code>%clr</code> conversion word를 사용하여 구성됩니다.
@@ -1016,7 +1016,7 @@ Profile section은 <code>&lt;configuration&gt;</code> 요소 내 모든 위치�
 <code>name</code> attribute를 사용하여 대상 configuration profile을 지정할 수 있습니다.
 <code>&lt;springProfile&gt;</code> tag는 profile name(예를 들어 <code>staging</code> ) 또는 profile expression을 포함할 수 있습니다.
 profile expression은 좀 더 복잡한 profile logic을 표현할 수 있습니다. (예: <code>production &amp; (eu-central | eu-west)</code> )
-자세한 내용은 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/core.html#beans-definition-profiles-java">reference guide</a>를 확인하세요.
+자세한 내용은 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/core.html#beans-definition-profiles-java">reference guide</a>를 확인하세요.
 다음 목록은 세 가지 sample profile을 보여줍니다.</p>
 </div>
 <div class="listingblock">
@@ -1127,7 +1127,7 @@ vintage engine을 사용하려면 <code>junit-vintage-engine</code> dependency�
 <p><a href="https://junit.org/junit5/">JUnit 5</a>: Java applications 단위 테스트를 위한 사실상 표준</p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#integration-testing">Spring Test</a> &amp; Spring Boot Test: Spring Boot applications을 위한 유틸리티 및 통합 테스트 지원.</p>
+<p><a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#integration-testing">Spring Test</a> &amp; Spring Boot Test: Spring Boot applications을 위한 유틸리티 및 통합 테스트 지원.</p>
 </li>
 <li>
 <p><a href="https://assertj.github.io/doc/">AssertJ</a>: A fluent assertion library.</p>
@@ -1167,7 +1167,7 @@ application을 배포하거나 다른 infrastructure와 연결할 필요 없이 
 Spring Framework인 <code>org.springframework:spring-test</code> 를 바로 dependency 설정하거나 <code>spring-boot-starter-test</code> &#8220;Starter&#8221; 를 통해 가져올 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p><code>spring-test</code> module을 이전에 사용하지 않았다면 Spring Framework reference의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testing">관련 section</a>을 읽는 것으로 시작해야 합니다.</p>
+<p><code>spring-test</code> module을 이전에 사용하지 않았다면 Spring Framework reference의 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#testing">관련 section</a>을 읽는 것으로 시작해야 합니다.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1356,7 +1356,7 @@ class MyTests {
 </td>
 <td class="content">
 만약 <code>@ComponentScan</code> 를 직접 사용한다면 (즉 <code>@SpringBootApplication</code> 을 통하지 않은 경우) <code>TypeExcludeFilter</code> 를 등록해야 합니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a>을 참조하세요.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a>을 참조하세요.
 </td>
 </tr>
 </table>
@@ -1412,7 +1412,7 @@ class ApplicationArgumentTests {
 <h4 id="boot-features-testing-spring-boot-applications-testing-with-mock-environment"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-with-mock-environment"></a>2.3.5. Testing with a mock environment</h4>
 <div class="paragraph">
 <p>default로 <code>@SpringBootTest</code> 는 server를 시작하지 않습니다.
-만약 mock environment에 테스트하려는 web endpoint가 있는 경우 다음 예제와 같이 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#spring-mvc-test-framework"><code>MockMvc</code></a> 를 추가로 구성할 수 있습니다:</p>
+만약 mock environment에 테스트하려는 web endpoint가 있는 경우 다음 예제와 같이 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#spring-mvc-test-framework"><code>MockMvc</code></a> 를 추가로 구성할 수 있습니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1470,7 +1470,7 @@ class MockMvcTests {
 </table>
 </div>
 <div class="paragraph">
-<p>또는 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 를 다음 예제와 같이 구성할 수 있습니다.</p>
+<p>또는 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 를 다음 예제와 같이 구성할 수 있습니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1540,7 +1540,7 @@ class MockWebTestClientTests {
 </div>
 <div class="paragraph">
 <p><code>@LocalServerPort</code> annotation은 <a href="howto.html#howto-discover-the-http-port-at-runtime">사용하는 실제 port 주입</a> 테스트에 사용됩니다.
-편의를 위해 시작된 서버에 대한 REST 호출을 수행해야 하는 테스트는 <code>@Autowire</code> 를 추가로 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 로 할 수 있는데, 이 client는 실행 중인 서버에 대한 상대 link를 확인하고 응답을 확인하기 위한 전용 API를 제공합니다.</p>
+편의를 위해 시작된 서버에 대한 REST 호출을 수행해야 하는 테스트는 <code>@Autowire</code> 를 추가로 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#webtestclient-tests"><code>WebTestClient</code></a> 로 할 수 있는데, 이 client는 실행 중인 서버에 대한 상대 link를 확인하고 응답을 확인하기 위한 전용 API를 제공합니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1780,7 +1780,7 @@ test가 실행될 때 application context refresh가 완료되어 mock behavior�
 </div>
 <div class="paragraph">
 <p>또한 <code>@SpyBean</code> 을 사용하여 Mockito <code>spy</code> 로 기존 beand을 wrapping 할 수 있습니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.3/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a>을 참조하세요</p>
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a>을 참조하세요</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2169,7 +2169,7 @@ Spring Security의 <code>MockMvc</code> 지원에 대한 좀더 자세한 내용
 <div class="sect3">
 <h4 id="boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests"><a class="anchor" href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-webflux-tests"></a>2.3.14. Auto-configured Spring WebFlux Tests</h4>
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/web-reactive.html">Spring WebFlux</a> controllers가 예상대로 작동하는지 테스트하려면 <code>@WebFluxTest</code> annotation을 사용할 수 있습니다.
+<p><a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/web-reactive.html">Spring WebFlux</a> controllers가 예상대로 작동하는지 테스트하려면 <code>@WebFluxTest</code> annotation을 사용할 수 있습니다.
 <code>@WebFluxTest</code> 는 Spring WebFlux infrastructure를 auto-configure 하고 scanned bean을 <code>@Controller</code>, <code>@ControllerAdvice</code>, <code>@JsonComponent</code>, <code>Converter</code>, <code>GenericConverter</code>, <code>WebFilter</code> 및 <code>WebFluxConfigurer</code> 로 제한합니다.
 <code>@WebFluxTest</code> annotation이 사용된 경우 표준 <code>@Component</code> 와 <code>@ConfigurationProperties</code> beans은 scan 되지 않습니다.
 <code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용할 수 있습니다.</p>
@@ -2202,7 +2202,7 @@ Spring Security의 <code>MockMvc</code> 지원에 대한 좀더 자세한 내용
 <p>종종 <code>@WebFluxTest</code> 는 single controller로 제한되며 <code>@MockBean</code> 과 함께 사용되어 필요한 collaborator에게 mock 구현을 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p><code>@WebFluxTest</code> 는 또한 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#webtestclient"><code>WebTestClient</code></a> 를 auto-configure합니다. 이 client는 전체 HTTP server를 시작할 필요 없이 WebFlux controller를 빠르게 테스트할 수 있는 강력한 방법을 제공합니다.</p>
+<p><code>@WebFluxTest</code> 는 또한 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#webtestclient"><code>WebTestClient</code></a> 를 auto-configure합니다. 이 client는 전체 HTTP server를 시작할 필요 없이 WebFlux controller를 빠르게 테스트할 수 있는 강력한 방법을 제공합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -2362,7 +2362,7 @@ classpath에 embedded database가 사용 가능한 경우 하나의 database도 
 </div>
 <div class="paragraph">
 <p>기본적으로 data JPA 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
-자세한 내용은  Spring Framework  참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>울 참조하세요.
+자세한 내용은  Spring Framework  참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>울 참조하세요.
 원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
@@ -2450,7 +2450,7 @@ class ExampleRepositoryTests {
 </div>
 <div class="paragraph">
 <p>기본적으로 JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
-자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
+자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
 원하지 않을 경우 다음과 같이 테스트 또는 전체 class에 대해 transaction 관리를 비활성화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
@@ -2494,7 +2494,7 @@ class ExampleNonTransactionalTests {
 </div>
 <div class="paragraph">
 <p>기본적으로 Data JDBC 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
-자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
+자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
 원하지 않을 경우  <a href="#boot-features-testing-spring-boot-applications-testing-autoconfigured-jdbc-test">JDBC example에서 보여진 것처럼</a> 테스트 또는 전체 테스트 class에 대해 transaction management를 비활성화 할 수 있습니다.</p>
 </div>
 <div class="paragraph">
@@ -2644,7 +2644,7 @@ class ExampleDataNeo4jTests {
 </div>
 <div class="paragraph">
 <p>기본적으로 Data Neo4j 테스트는 transactional이며 각 테스트가 끝날 때 roll back 됩니다.
-자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.4/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
+자세한 내용은 Spring Framework 참조 문서의 <a href="https://docs.spring.io/spring/docs/5.3.6/reference/html/testing.html#testcontext-tx-enabling-transactions">관련 section</a>을 참조하세요.
 원하지 않을 경우 다음과 같이 테스트 또는 전체 테스트 class에 대해 transaction management를 비활성화 할 수 있습니다:</p>
 </div>
 <div class="listingblock">
@@ -3530,7 +3530,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 06:04:37 +0900
+Last updated 2021-04-16 07:33:15 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

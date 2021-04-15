@@ -69,8 +69,8 @@
 							<attributes>
 								<!-- <java-version>${java.version}</java-version> -->
 								<spring-restdocs-version>${spring-restdocs.version}</spring-restdocs-version>
-								<spring-framework-version>5.3.4</spring-framework-version>
-								<spring-boot-version>2.4.3</spring-boot-version>
+								<spring-framework-version>5.3.6</spring-framework-version>
+								<spring-boot-version>2.4.4</spring-boot-version>
 								<spring-cloud-data-flow-version>2.2.0.RELEASE</spring-cloud-data-flow-version>
 								<spring-cloud-task-version>2.1.1.RELEASE</spring-cloud-task-version>
 								<!-- <basedir>${project.basedir}</basedir> -->

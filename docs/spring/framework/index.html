@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Monitoring</title>
+<title>Spring Framework Documentation</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
@@ -163,59 +163,57 @@ window.onload = function() {
 </head>
 <body class="book">
 <div id="header">
-<h1>Monitoring</h1>
-<div class="details">
-<span id="revnumber">version 2.2.0.RELEASE</span>
-</div>
+<h1>Spring Framework Documentation</h1>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Data Flow metrics architecture는 vendor-neutral application metrics facade인 Micrometer library를 중심으로 설계되었습니다.<br>
-가장 널리 사용되는 모니터링 시스템의  instrumentation client를 통해 간단한  facade를 제공합니다.<br>
-micrometer instrumentation library는 Spring Boot에서 application metric의 전달을 강화하고 배포된 stream을 모니터링 하는데 중요한 message rate와 error에 대한 metric을 포함합니다.</p>
+<p><strong>5.3.6</strong></p>
 </div>
-<div class="paragraph">
-<p>사전 구축된 application은 가장 널리 사용되는 두가지 모니터링 시스템인 Prometheus 및 InfluxDB를 지원하도록 구성됩니다.<br>
-사용할 모니터링 시스템을 선언적으로 선택할 수 있습니다.</p>
-</div>
-<div class="paragraph">
-<p>Data Flow는 stream 모니터링을 시작하는데 도움이 되도록 사용자 요구에 맞게 설치 및 customize할 수 있는 Grafana Dashboard를 제공합니다.</p>
-</div>
-<div class="paragraph">
-<p>다음 그림은 application을 모니터링하는 일반적인 구조를 보여줍니다.</p>
-</div>
-<div class="imageblock">
+<div class="sidebarblock">
 <div class="content">
-<img src="./images/micrometer-arch.webp" alt="micrometer arch">
+<div class="paragraph">
+<p><em>What&#8217;s New</em>, <em>Upgrade Notes</em>, <em>Supported Versions</em>, and other topics,
+independent of release cadence, are maintained externally on the project&#8217;s
+<a href="https://github.com/spring-projects/spring-framework/wiki"><strong>Github Wiki</strong></a>.</p>
 </div>
+</div>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a href="testing.html#testing">Testing</a> 
+</td>
+<td class="hdlist2">
+<p>Mock Objects, TestContext Framework,
+Spring MVC Test, WebTestClient.</p>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>다음 이미지는 time | filter | log DSL 표현식으로 정의된 두 개의 스트림 생성을 보여줍니다.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="./images/monitoring-stream-defs.webp" alt="monitoring stream defs">
-</div>
-</div>
-<div class="paragraph">
-<p>다음 그림은 Grafana의 대시 보드를 보여줍니다.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="./images/grafana-dashboard.webp" alt="grafana dashboard">
-</div>
+<p>Rod Johnson, Juergen Hoeller, Keith Donald, Colin Sampaleanu, Rob Harrop, Thomas Risberg,
+Alef Arendsen, Darren Davison, Dmitriy Kopylenko, Mark Pollack, Thierry Templier, Erwin
+Vervaet, Portia Tung, Ben Hale, Adrian Colyer, John Lewis, Costin Leau, Mark Fisher, Sam
+Brannen, Ramnivas Laddad, Arjen Poutsma, Chris Beams, Tareq Abedrabbo, Andy Clement, Dave
+Syer, Oliver Gierke, Rossen Stoyanchev, Phillip Webb, Rob Winch, Brian Clozel, Stephane
+Nicoll, Sebastien Deleuze, Jay Bryant, Mark Paluch</p>
 </div>
 <div class="paragraph">
-<p>Stream Monitoring Feature Guide에 모니터링 인프라를 설정하는 방법에 대한 자세한 정보가 포함되어 있습니다.</p>
+<p>Copyright © 2002 - 2021 Pivotal, Inc. All Rights Reserved.</p>
+</div>
+<div class="paragraph">
+<p>Copies of this document may be made for your own use and for distribution to others,
+provided that you do not charge any fee for such copies and further provided that each
+copy contains this Copyright Notice, whether distributed in print or electronically.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.2.0.RELEASE<br>
 Last updated 2021-04-16 07:33:16 +0900
 </div>
 </div>

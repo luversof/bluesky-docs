@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>WebTestClient</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LG0R87MZJ');
+</script>
+<script data-ad-client="ca-pub-6001719113094141" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body id="webtestclient" class="book">
+<div id="header">
+<h1>WebTestClient</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebTestClient</code> 는 server application 테스트를 위해 설계된 HTTP client입니다.
+Spring의 <a href="web-reactive.html#webflux-client">WebClient</a>를 wrapping하고 이를 사용하여 요청을 수행하지만 응답 확인을 위한 testing facade를 노출합니다.
+<code>WebTestClient</code> 를 사용하여 end-to-end HTTP 테스트를 수행 할 수 있습니다.
+또한 mock server request 및 response object를 통해 running server없이 Spring MVC 및 Spring WebFlux application을 테스트 하는데 사용할 수도 있습니다.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="languages.html#kotlin-webtestclient-issue">이 section</a>을 참조하세요.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webtestclient-setup">Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebTestClient</code> 를 설정하려면 binding 할 서버 설정을 선택해야합니다.
+이것은 여러 mock server 설정 중 하나이거나 live server에 대한 연결일 수 있습니다.</p>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-controller-config">Bind to Controller</h3>
+<div class="paragraph">
+<p>이 설정을 사용하면 running server없이 mock request 및  response object를 통해 특정 controller를 테스트 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux application의 경우 <a href="web-reactive.html#webflux-config">WebFlux Java config</a>에 해당하는 infrastructure를 로드하고 지정된 controller를 등록하고 요청을 처리하기위한 <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a>을 만드는 다음을 사용합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+		WebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = WebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 다음을 사용하여 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/web/servlet/setup/StandaloneMockMvcBuilder.html">StandaloneMockMvcBuilder</a>에 위임하여 <a href="web.html#mvc-config">WebMvc Java config</a>에 해당하는 infrastructure를 로드하고 주어진 controller를 등록하고 요청을 처리할 <a href="testing.html#spring-mvc-test-framework">MockMvc</a> instance를 만듭니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+		MockMvcWebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = MockMvcWebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-context-config">Bind to <code>ApplicationContext</code></h3>
+<div class="paragraph">
+<p>이 설정을 통해 Spring MVC 또는 Spring WebFlux infrastructure 및 controller 선언으로 Spring 구성을 로드하고 이를 사용하여 running server없이 mock request 및 response object를 통해 요청을 처리할 수 ​​있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux의 경우 다음을 사용하여 Spring <code>ApplicationContext</code> 가 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/web/server/adapter/WebHttpHandlerBuilder.html#applicationContext-org.springframework.context.ApplicationContext-">WebHttpHandlerBuilder</a>에 전달되어 요청을 처리할 <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a>을 생성합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringJUnitConfig(WebConfig.class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+	WebTestClient client;
+
+	@BeforeEach
+	void setUp(ApplicationContext context) {  <i class="conum" data-value="2"></i><b>(2)</b>
+		client = WebTestClient.bindToApplicationContext(context).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@SpringJUnitConfig(WebConfig::class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+	lateinit var client: WebTestClient
+
+	@BeforeEach
+	fun setUp(context: ApplicationContext) { <i class="conum" data-value="2"></i><b>(2)</b>
+		client = WebTestClient.bindToApplicationContext(context).build() <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 다음을 사용하여 Spring <code>ApplicationContext</code> 가 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/web/servlet/setup/MockMvcBuilders.html#webAppContextSetup-org.springframework.web.context.WebApplicationContext-">MockMvcBuilders.webAppContextSetup</a>에 전달되어 요청을 처리할 <a href="testing.html#spring-mvc-test-framework">MockMvc</a> 인스턴스를 생성합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+	@ContextConfiguration(classes = RootConfig.class),
+	@ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+	@Autowired
+	WebApplicationContext wac; <i class="conum" data-value="2"></i><b>(2)</b>
+
+	WebTestClient client;
+
+	@BeforeEach
+	void setUp() {
+		client = MockMvcWebTestClient.bindToApplicationContext(this.wac).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+	@ContextConfiguration(classes = RootConfig.class),
+	@ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+	@Autowired
+	lateinit var wac: WebApplicationContext; <i class="conum" data-value="2"></i><b>(2)</b>
+
+	lateinit var client: WebTestClient
+
+	@BeforeEach
+	fun setUp() { <i class="conum" data-value="2"></i><b>(2)</b>
+		client = MockMvcWebTestClient.bindToApplicationContext(wac).build() <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-fn-config">Bind to Router Function</h3>
+<div class="paragraph">
+<p>이 설정을 사용하면 running server없이 mock request 및 response object를 통해 <a href="web-reactive.html#webflux-fn">functional endpoints</a>를 테스트 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux의 경우 <code>RouterFunctions.toWebHandler</code> 에 위임하는 다음을 사용하여 요청을 처리할 서버 설정을 만듭니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">RouterFunction&lt;?&gt; route = ...
+client = WebTestClient.bindToRouterFunction(route).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val route: RouterFunction&lt;*&gt; = ...
+val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 현재 <a href="web.html#webmvc-fn">WebMvc functional endpoints</a>를 테스트하는 옵션이 없습니다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-server-config">Bind to Server</h3>
+<div class="paragraph">
+<p>이 설정은 running server에 연결하여 전체 end-to-end HTTP 테스트를 수행합니다;</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-client-config">Client Config</h3>
+<div class="paragraph">
+<p>앞에서 설명한 서버 설정 옵션 외에도 base URL, default headers, client filter 등을 포함한 client option을 구성 할 수 있습니다
+이러한 옵션은 <code>bindToServer()</code> 다음에 쉽게 사용할 수 있습니다.
+다른 모든 configuration option의 경우 다음과 같이 <code>configureClient()</code> 를 사용하여 server에서 client configuration으로 전환해야합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToController(new TestController())
+		.configureClient()
+		.baseUrl("/test")
+		.build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToController(TestController())
+		.configureClient()
+		.baseUrl("/test")
+		.build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webtestclient-tests">Writing Tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebTestClient</code> 는 <code>exchange()</code> 를 사용하여 요청을 수행하는 시점까지 <a href="web-reactive.html#webflux-client">WebClient</a>와 동일한 API를 제공합니다.
+form data, multipart data 등을 포함한 모든 콘텐츠로 요청을 준비하는 방법에 대한 예제는 <a href="web-reactive.html#webflux-client-body">WebClient</a> 설명서를 참조하십시오.</p>
+</div>
+<div class="paragraph">
+<p><code>exchange()</code> 호출 후 <code>WebTestClient</code> 는 <code>WebClient</code> 에서 분기되고 대신 응답을 확인하는 workflow를 계속합니다.</p>
+</div>
+<div class="paragraph">
+<p>response status 및 header를 assert하려면 다음을 사용하십시오:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+			.accept(MediaType.APPLICATION_JSON)
+			.exchange()
+			.expectStatus().isOk()
+			.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.accept(MediaType.APPLICATION_JSON)
+		.exchange()
+		.expectStatus().isOk()
+		.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>그런 다음 다음 중 하나를 통해 response body을 decoding 하도록 선택할 수 있습니다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>expectBody(Class&lt;T&gt;)</code>: Decode to single object.</p>
+</li>
+<li>
+<p><code>expectBodyList(Class&lt;T&gt;)</code>: Decode and collect objects to <code>List&lt;T&gt;</code>.</p>
+</li>
+<li>
+<p><code>expectBody()</code>: Decode to <code>byte[]</code> for <a href="#webtestclient-json">JSON Content</a> or an empty body.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>그리고 결과로 생성되는 higher level Object에 대해 assertion을 수행합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBodyList(Person.class).hasSize(3).contains(person);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBodyList
+
+client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBodyList&lt;Person&gt;().hasSize(3).contains(person)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>기본 제공 assertion이 충분하지 않으면 대신 object를 사용하고 다른 assertion을 수행할 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">   import org.springframework.test.web.reactive.server.expectBody
+
+client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.consumeWith(result -&gt; {
+			// custom assertions (e.g. AssertJ)...
+		});</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody&lt;Person&gt;()
+		.consumeWith {
+			// custom assertions (e.g. AssertJ)...
+		}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>또는 workflow를 종료하고 <code>EntityExchangeResult</code> 를 얻을 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBody
+
+val result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk
+		.expectBody&lt;Person&gt;()
+		.returnResult()</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Class&lt;T&gt;</code> 대신 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/core/ParameterizedTypeReference.html"><code>ParameterizedTypeReference</code></a>를 허용하는 overload 된 method를 찾습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-no-content">No Content</h3>
+<div class="paragraph">
+<p>응답에 내용이 없을 것으로 예상되는 경우 다음과 같이 assert 할 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.post().uri("/persons")
+		.body(personMono, Person.class)
+		.exchange()
+		.expectStatus().isCreated()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.post().uri("/persons")
+		.bodyValue(person)
+		.exchange()
+		.expectStatus().isCreated()
+		.expectBody().isEmpty()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>응답 콘텐츠를 무시하려는 경우 다음은 assertion없이 콘텐츠를 해제합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/123")
+		.exchange()
+		.expectStatus().isNotFound()
+		.expectBody(Void.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/123")
+		.exchange()
+		.expectStatus().isNotFound
+		.expectBody&lt;Unit&gt;()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-json">JSON Content</h3>
+<div class="paragraph">
+<p>대상 type없이 <code>expectBody()</code> 를 사용하여 higher level Object를 통하지 않고 raw content에 대한 assertion을 수행할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://jsonassert.skyscreamer.org">JSONAssert</a>를 사용하여 전체 JSON content를 확인하려면:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/jayway/JsonPath">JSONPath</a>로 JSON content를 확인하려면:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.jsonPath("$[0].name").isEqualTo("Jane")
+		.jsonPath("$[1].name").isEqualTo("Jason");</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.jsonPath("$[0].name").isEqualTo("Jane")
+		.jsonPath("$[1].name").isEqualTo("Jason")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-stream">Streaming Responses</h3>
+<div class="paragraph">
+<p><code>"text/event-stream"</code> 또는 <code>"application/x-ndjson"</code> 과 같이 잠재적으로 무한한 스트림을 테스트하려면 먼저 response status 및 header를 확인한 다음 <code>FluxExchangeResult</code> 를 가져옵니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">FluxExchangeResult&lt;MyEvent&gt; result = client.get().uri("/events")
+		.accept(TEXT_EVENT_STREAM)
+		.exchange()
+		.expectStatus().isOk()
+		.returnResult(MyEvent.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.returnResult
+
+val result = client.get().uri("/events")
+		.accept(TEXT_EVENT_STREAM)
+		.exchange()
+		.expectStatus().isOk()
+		.returnResult&lt;MyEvent&gt;()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이제 <code>reactor-test</code> 에서 <code>StepVerifier</code> 로 response stream을 사용할 준비가 되었습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Flux&lt;Event&gt; eventFlux = result.getResponseBody();
+
+StepVerifier.create(eventFlux)
+		.expectNext(person)
+		.expectNextCount(4)
+		.consumeNextWith(p -&gt; ...)
+		.thenCancel()
+		.verify();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val eventFlux = result.getResponseBody()
+
+StepVerifier.create(eventFlux)
+		.expectNext(person)
+		.expectNextCount(4)
+		.consumeNextWith { p -&gt; ... }
+		.thenCancel()
+		.verify()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-mockmvc">MockMvc Assertions</h3>
+<div class="paragraph">
+<p><code>WebTestClient</code> 는 HTTP client이므로 status, header 및 body를 포함하여 client response에 있는 내용만 확인할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>MockMvc server 설정으로 Spring MVC application을 테스트 할 때 server response에 대한 extra choice를 수행할 수 있습니다.
+body를 assert 한 후 <code>ExchangeResult</code> 를 가져오는 것으로 시작하려면 다음을 수행하십시오:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">// For a response with a body
+EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();
+
+// For a response without a body
+EntityExchangeResult&lt;Void&gt; result = client.get().uri("/path")
+		.exchange()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">// For a response with a body
+val result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();
+
+// For a response without a body
+val result = client.get().uri("/path")
+		.exchange()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>그런 다음 MockMvc server response assertion으로 전환합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">MockMvcWebTestClient.resultActionsFor(result)
+		.andExpect(model().attribute("integer", 3))
+		.andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">MockMvcWebTestClient.resultActionsFor(result)
+		.andExpect(model().attribute("integer", 3))
+		.andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-04-15 13:21:28 +0900
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>

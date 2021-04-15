@@ -6805,7 +6805,7 @@ of `AbstractTestNGSpringContextTests` for an example of how to instrument your t
 
 
 
-include::testing/testing-webtestclient.adoc[leveloffset=+2]
+include::spring/framework/original/testing/testing-webtestclient.adoc[leveloffset=+2]
 
 
 

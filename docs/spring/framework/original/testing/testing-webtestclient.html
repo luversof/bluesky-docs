@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>WebTestClient</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LG0R87MZJ');
+</script>
+<script data-ad-client="ca-pub-6001719113094141" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = block.querySelector('.colist')
+	if (colist != null) {
+		content.append();
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+</script>
+
+</head>
+<body id="webtestclient" class="book">
+<div id="header">
+<h1>WebTestClient</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebTestClient</code> is an HTTP client designed for testing server applications. It wraps
+Spring&#8217;s <a href="web-reactive.html#webflux-client">WebClient</a> and uses it to perform requests
+but exposes a testing facade for verifying responses. <code>WebTestClient</code> can be used to
+perform end-to-end HTTP tests. It can also be used to test Spring MVC and Spring WebFlux
+applications without a running server via mock server request and response objects.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Kotlin users: See <a href="languages.html#kotlin-webtestclient-issue">this section</a>
+related to use of the <code>WebTestClient</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webtestclient-setup">Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To set up a <code>WebTestClient</code> you need to choose a server setup to bind to. This can be one
+of several mock server setup choices or a connection to a live server.</p>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-controller-config">Bind to Controller</h3>
+<div class="paragraph">
+<p>This setup allows you to test specific controller(s) via mock request and response objects,
+without a running server.</p>
+</div>
+<div class="paragraph">
+<p>For WebFlux applications, use the following which loads infrastructure equivalent to the
+<a href="web-reactive.html#webflux-config">WebFlux Java config</a>, registers the given
+controller(s), and creates a <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a>
+to handle requests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+		WebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = WebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Spring MVC, use the following which delegates to the
+<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/web/servlet/setup/StandaloneMockMvcBuilder.html">StandaloneMockMvcBuilder</a>
+to load infrastructure equivalent to the <a href="web.html#mvc-config">WebMvc Java config</a>,
+registers the given controller(s), and creates an instance of
+<a href="testing.html#spring-mvc-test-framework">MockMvc</a> to handle requests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+		MockMvcWebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = MockMvcWebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-context-config">Bind to <code>ApplicationContext</code></h3>
+<div class="paragraph">
+<p>This setup allows you to load Spring configuration with Spring MVC or Spring WebFlux
+infrastructure and controller declarations and use it to handle requests via mock request
+and response objects, without a running server.</p>
+</div>
+<div class="paragraph">
+<p>For WebFlux, use the following where the Spring <code>ApplicationContext</code> is passed to
+<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/web/server/adapter/WebHttpHandlerBuilder.html#applicationContext-org.springframework.context.ApplicationContext-">WebHttpHandlerBuilder</a>
+to create the <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a> to handle
+requests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringJUnitConfig(WebConfig.class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+	WebTestClient client;
+
+	@BeforeEach
+	void setUp(ApplicationContext context) {  <i class="conum" data-value="2"></i><b>(2)</b>
+		client = WebTestClient.bindToApplicationContext(context).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@SpringJUnitConfig(WebConfig::class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+	lateinit var client: WebTestClient
+
+	@BeforeEach
+	fun setUp(context: ApplicationContext) { <i class="conum" data-value="2"></i><b>(2)</b>
+		client = WebTestClient.bindToApplicationContext(context).build() <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For Spring MVC, use the following where the Spring <code>ApplicationContext</code> is passed to
+<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/web/servlet/setup/MockMvcBuilders.html#webAppContextSetup-org.springframework.web.context.WebApplicationContext-">MockMvcBuilders.webAppContextSetup</a>
+to create a <a href="testing.html#spring-mvc-test-framework">MockMvc</a> instance to handle
+requests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+	@ContextConfiguration(classes = RootConfig.class),
+	@ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+	@Autowired
+	WebApplicationContext wac; <i class="conum" data-value="2"></i><b>(2)</b>
+
+	WebTestClient client;
+
+	@BeforeEach
+	void setUp() {
+		client = MockMvcWebTestClient.bindToApplicationContext(this.wac).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+	@ContextConfiguration(classes = RootConfig.class),
+	@ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+	@Autowired
+	lateinit var wac: WebApplicationContext; <i class="conum" data-value="2"></i><b>(2)</b>
+
+	lateinit var client: WebTestClient
+
+	@BeforeEach
+	fun setUp() { <i class="conum" data-value="2"></i><b>(2)</b>
+		client = MockMvcWebTestClient.bindToApplicationContext(wac).build() <i class="conum" data-value="3"></i><b>(3)</b>
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-fn-config">Bind to Router Function</h3>
+<div class="paragraph">
+<p>This setup allows you to test <a href="web-reactive.html#webflux-fn">functional endpoints</a> via
+mock request and response objects, without a running server.</p>
+</div>
+<div class="paragraph">
+<p>For WebFlux, use the following which delegates to <code>RouterFunctions.toWebHandler</code> to
+create a server setup to handle requests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">RouterFunction&lt;?&gt; route = ...
+client = WebTestClient.bindToRouterFunction(route).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val route: RouterFunction&lt;*&gt; = ...
+val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Spring MVC there are currently no options to test
+<a href="web.html#webmvc-fn">WebMvc functional endpoints</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-server-config">Bind to Server</h3>
+<div class="paragraph">
+<p>This setup connects to a running server to perform full, end-to-end HTTP tests:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-client-config">Client Config</h3>
+<div class="paragraph">
+<p>In addition to the server setup options described earlier, you can also configure client
+options, including base URL, default headers, client filters, and others. These options
+are readily available following <code>bindToServer()</code>. For all other configuration options,
+you need to use <code>configureClient()</code> to transition from server to client configuration, as
+follows:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToController(new TestController())
+		.configureClient()
+		.baseUrl("/test")
+		.build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToController(TestController())
+		.configureClient()
+		.baseUrl("/test")
+		.build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webtestclient-tests">Writing Tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebTestClient</code> provides an API identical to <a href="web-reactive.html#webflux-client">WebClient</a>
+up to the point of performing a request by using <code>exchange()</code>. See the
+<a href="web-reactive.html#webflux-client-body">WebClient</a> documentation for examples on how to
+prepare a request with any content including form data, multipart data, and more.</p>
+</div>
+<div class="paragraph">
+<p>After the call to <code>exchange()</code>, <code>WebTestClient</code> diverges from the <code>WebClient</code> and
+instead continues with a workflow to verify responses.</p>
+</div>
+<div class="paragraph">
+<p>To assert the response status and headers, use the following:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+			.accept(MediaType.APPLICATION_JSON)
+			.exchange()
+			.expectStatus().isOk()
+			.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.accept(MediaType.APPLICATION_JSON)
+		.exchange()
+		.expectStatus().isOk()
+		.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can then choose to decode the response body through one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>expectBody(Class&lt;T&gt;)</code>: Decode to single object.</p>
+</li>
+<li>
+<p><code>expectBodyList(Class&lt;T&gt;)</code>: Decode and collect objects to <code>List&lt;T&gt;</code>.</p>
+</li>
+<li>
+<p><code>expectBody()</code>: Decode to <code>byte[]</code> for <a href="#webtestclient-json">JSON Content</a> or an empty body.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And perform assertions on the resulting higher level Object(s):</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBodyList(Person.class).hasSize(3).contains(person);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBodyList
+
+client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBodyList&lt;Person&gt;().hasSize(3).contains(person)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the built-in assertions are insufficient, you can consume the object instead and
+perform any other assertions:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">   import org.springframework.test.web.reactive.server.expectBody
+
+client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.consumeWith(result -&gt; {
+			// custom assertions (e.g. AssertJ)...
+		});</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody&lt;Person&gt;()
+		.consumeWith {
+			// custom assertions (e.g. AssertJ)...
+		}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can exit the workflow and obtain an <code>EntityExchangeResult</code>:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBody
+
+val result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk
+		.expectBody&lt;Person&gt;()
+		.returnResult()</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When you need to decode to a target type with generics, look for the overloaded methods
+that accept
+<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/core/ParameterizedTypeReference.html"><code>ParameterizedTypeReference</code></a>
+instead of <code>Class&lt;T&gt;</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-no-content">No Content</h3>
+<div class="paragraph">
+<p>If the response is not expected to have content, you can assert that as follows:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.post().uri("/persons")
+		.body(personMono, Person.class)
+		.exchange()
+		.expectStatus().isCreated()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.post().uri("/persons")
+		.bodyValue(person)
+		.exchange()
+		.expectStatus().isCreated()
+		.expectBody().isEmpty()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to ignore the response content, the following releases the content without
+any assertions:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/123")
+		.exchange()
+		.expectStatus().isNotFound()
+		.expectBody(Void.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/123")
+		.exchange()
+		.expectStatus().isNotFound
+		.expectBody&lt;Unit&gt;()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-json">JSON Content</h3>
+<div class="paragraph">
+<p>You can use <code>expectBody()</code> without a target type to perform assertions on the raw
+content rather than through higher level Object(s).</p>
+</div>
+<div class="paragraph">
+<p>To verify the full JSON content with <a href="https://jsonassert.skyscreamer.org">JSONAssert</a>:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To verify JSON content with <a href="https://github.com/jayway/JsonPath">JSONPath</a>:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.jsonPath("$[0].name").isEqualTo("Jane")
+		.jsonPath("$[1].name").isEqualTo("Jason");</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody()
+		.jsonPath("$[0].name").isEqualTo("Jane")
+		.jsonPath("$[1].name").isEqualTo("Jason")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-stream">Streaming Responses</h3>
+<div class="paragraph">
+<p>To test potentially infinite streams such as <code>"text/event-stream"</code> or
+<code>"application/x-ndjson"</code>, start by verifying the response status and headers, and then
+obtain a <code>FluxExchangeResult</code>:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">FluxExchangeResult&lt;MyEvent&gt; result = client.get().uri("/events")
+		.accept(TEXT_EVENT_STREAM)
+		.exchange()
+		.expectStatus().isOk()
+		.returnResult(MyEvent.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.returnResult
+
+val result = client.get().uri("/events")
+		.accept(TEXT_EVENT_STREAM)
+		.exchange()
+		.expectStatus().isOk()
+		.returnResult&lt;MyEvent&gt;()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you&#8217;re ready to consume the response stream with <code>StepVerifier</code> from <code>reactor-test</code>:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Flux&lt;Event&gt; eventFlux = result.getResponseBody();
+
+StepVerifier.create(eventFlux)
+		.expectNext(person)
+		.expectNextCount(4)
+		.consumeNextWith(p -&gt; ...)
+		.thenCancel()
+		.verify();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val eventFlux = result.getResponseBody()
+
+StepVerifier.create(eventFlux)
+		.expectNext(person)
+		.expectNextCount(4)
+		.consumeNextWith { p -&gt; ... }
+		.thenCancel()
+		.verify()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient-mockmvc">MockMvc Assertions</h3>
+<div class="paragraph">
+<p><code>WebTestClient</code> is an HTTP client and as such it can only verify what is in the client
+response including status, headers, and body.</p>
+</div>
+<div class="paragraph">
+<p>When testing a Spring MVC application with a MockMvc server setup, you have the extra
+choice to perform further assertions on the server response. To do that start by
+obtaining an <code>ExchangeResult</code> after asserting the body:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">// For a response with a body
+EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();
+
+// For a response without a body
+EntityExchangeResult&lt;Void&gt; result = client.get().uri("/path")
+		.exchange()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">// For a response with a body
+val result = client.get().uri("/persons/1")
+		.exchange()
+		.expectStatus().isOk()
+		.expectBody(Person.class)
+		.returnResult();
+
+// For a response without a body
+val result = client.get().uri("/path")
+		.exchange()
+		.expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then switch to MockMvc server response assertions:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">MockMvcWebTestClient.resultActionsFor(result)
+		.andExpect(model().attribute("integer", 3))
+		.andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">MockMvcWebTestClient.resultActionsFor(result)
+		.andExpect(model().attribute("integer", 3))
+		.andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-04-15 13:21:28 +0900
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>

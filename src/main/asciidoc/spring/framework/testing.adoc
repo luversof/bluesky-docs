@@ -5043,23 +5043,19 @@ SQL script를 프로그래밍 방식으로 실행하기 위한 앞서 언급한 
 특히 test class 또는 test method에서 `@Sql` annotation을 선언하여 통합 테스트 method 전후에 주어진 데이터베이스에 대해 실행해야하는 SQL script에 대한 개별 SQL statement 또는 resource path를 구성 할 수 있습니다.
 `@Sql` 에 대한 지원은 기본적으로 활성화되어있는 `SqlScriptsTestExecutionListener` 에서 제공합니다.
 
-NOTE: Method-level `@Sql` declarations override class-level declarations by default. As
-of Spring Framework 5.2, however, this behavior may be configured per test class or per
-test method via `@SqlMergeMode`. See
-<<testcontext-executing-sql-declaratively-script-merging>> for further details.
+NOTE: method-level `@Sql` 선언은 기본적으로 class-level 선언을 재정의합니다.
+그러나 Spring Framework 5.2부터 이 동작은 `@SqlMergeMode` 를 통해 test class 또는 test method 별로 구성할 수 있습니다.
+자세한 내용은 <<testcontext-executing-sql-declaratively-script-merging>>를 참조하세요.
 
 [[testcontext-executing-sql-declaratively-script-resources]]
 ====== Path Resource Semantics
 
-Each path is interpreted as a Spring `Resource`. A plain path (for example,
-`"schema.sql"`) is treated as a classpath resource that is relative to the package in
-which the test class is defined. A path starting with a slash is treated as an absolute
-classpath resource (for example, `"/org/example/schema.sql"`). A path that references a
-URL (for example, a path prefixed with `classpath:`, `file:`, `http:`) is loaded by using
-the specified resource protocol.
+각 path는 Spring `Resource` 로 해석됩니다.
+일반 path(예: `"schema.sql"`)는 test class가 정의된 package에 상대적인 classpath resource로 처리됩니다.
+slash로 시작하는 path는 absolute classpath resource로 처리됩니다 (예 : `"/org/example/schema.sql"`).
+URL을 참조하는 path (예: `classpath:`, `file:`, `http:` prefix가 붙은 path)는 지정된 resource protocol을 사용하여 로드됩니다.
 
-The following example shows how to use `@Sql` at the class level and at the method level
-within a JUnit Jupiter based integration test class:
+다음 예제는 JUnit Jupiter 기반 통합 테스트 클래스 내에서 class level 및 method level에서 `@Sql` 을 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5104,27 +5100,20 @@ within a JUnit Jupiter based integration test class:
 [[testcontext-executing-sql-declaratively-script-detection]]
 ====== Default Script Detection
 
-If no SQL scripts or statements are specified, an attempt is made to detect a `default`
-script, depending on where `@Sql` is declared. If a default cannot be detected, an
-`IllegalStateException` is thrown.
+SQL script 나 statement가 지정되지 않은 경우 `@Sql` 이 선언된 위치에 따라 `default` script를 검색하려고 시도합니다.
+기본값을 감지할 수 없는 경우 `IllegalStateException` 이 발생합니다.
 
-* Class-level declaration: If the annotated test class is `com.example.MyTest`, the
-  corresponding default script is `classpath:com/example/MyTest.sql`.
-* Method-level declaration: If the annotated test method is named `testMethod()` and is
-  defined in the class `com.example.MyTest`, the corresponding default script is
-  `classpath:com/example/MyTest.testMethod.sql`.
+* class-level 선언 : annotation이 달린 test class가 `com.example.MyTest` 인 경우 해당 default script는 `classpath:com/example/MyTest.sql` 입니다.
+* method-level 선언: annotation이 달린 test method의 이름이 `testMethod()` 이고 `com.example.MyTest` class에 정의된 경우 해당 default script는 `classpath:com/example/MyTest.testMethod.sql` 입니다.
 
 [[testcontext-executing-sql-declaratively-multiple-annotations]]
 ====== Declaring Multiple `@Sql` Sets
 
-If you need to configure multiple sets of SQL scripts for a given test class or test
-method but with different syntax configuration, different error handling rules, or
-different execution phases per set, you can declare multiple instances of `@Sql`. With
-Java 8, you can use `@Sql` as a repeatable annotation. Otherwise, you can use the
-`@SqlGroup` annotation as an explicit container for declaring multiple instances of
-`@Sql`.
+주어진 test class 또는 test method에 대해 여러 SQL script set을 구성해야 하지만 다른 syntax configuration, 다른 error handling rule 또는 다른 execution phases per set를 사용하는 경우 `@Sql` 의 여러 instance를 선언 할 수 있습니다.
+Java 8에서는 `@Sql` 을 repeatable annotation으로 사용할 수 있습니다.
+그렇지 않으면 `@Sql` 의 여러 instance를 선언하기 위한 명시적 container로 `@SqlGroup` annotation을 사용할 수 있습니다.
 
-The following example shows how to use `@Sql` as a repeatable annotation with Java 8:
+다음 예제는 Java 8에서 `@Sql` 을 repeatable annotation으로 사용하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5142,13 +5131,10 @@ The following example shows how to use `@Sql` as a repeatable annotation with Ja
 	// Repeatable annotations with non-SOURCE retention are not yet supported by Kotlin
 ----
 
-In the scenario presented in the preceding example, the `test-schema.sql` script uses a
-different syntax for single-line comments.
+앞의 예제에 제시된 시나리오에서 `test-schema.sql` script는 single-line comments에 대해 다른 구문을 사용합니다.
 
-The following example is identical to the preceding example, except that the `@Sql`
-declarations are grouped together within `@SqlGroup`. With Java 8 and above, the use of
-`@SqlGroup` is optional, but you may need to use `@SqlGroup` for compatibility with
-other JVM languages such as Kotlin.
+다음 예제는 `@Sql` 선언이 `@SqlGroup` 내에서 함께 그룹화된다는 점을 제외하면 앞의 예제와 동일합니다.
+Java 8 이상에서 `@SqlGroup` 사용은 선택 사항이지만 Kotlin과 같은 다른 JVM 언어와의 호환성을 위해 `@SqlGroup` 을 사용해야할 수도 있습니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5177,10 +5163,8 @@ other JVM languages such as Kotlin.
 [[testcontext-executing-sql-declaratively-script-execution-phases]]
 ====== Script Execution Phases
 
-By default, SQL scripts are run before the corresponding test method. However, if
-you need to run a particular set of scripts after the test method (for example, to clean
-up database state), you can use the `executionPhase` attribute in `@Sql`, as the
-following example shows:
+기본적으로 SQL script는 해당 test method 전에 실행됩니다.
+그러나 test method 후에 특정 script set을 실행해야하는 경우(예: 데이터베이스 상태 정리) 다음 예제와 같이 `@Sql` 에서 `executionPhase` attribute를 사용할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5216,59 +5200,34 @@ following example shows:
 	}
 ----
 
-Note that `ISOLATED` and `AFTER_TEST_METHOD` are statically imported from
-`Sql.TransactionMode` and `Sql.ExecutionPhase`, respectively.
+`ISOLATED` 및 `AFTER_TEST_METHOD` 는 각각 `Sql.TransactionMode` 및 `Sql.ExecutionPhase` 에서 정적으로 가져옵니다.
 
 [[testcontext-executing-sql-declaratively-script-configuration]]
 ====== Script Configuration with `@SqlConfig`
 
-You can configure script parsing and error handling by using the `@SqlConfig` annotation.
-When declared as a class-level annotation on an integration test class, `@SqlConfig`
-serves as global configuration for all SQL scripts within the test class hierarchy. When
-declared directly by using the `config` attribute of the `@Sql` annotation, `@SqlConfig`
-serves as local configuration for the SQL scripts declared within the enclosing `@Sql`
-annotation. Every attribute in `@SqlConfig` has an implicit default value, which is
-documented in the javadoc of the corresponding attribute. Due to the rules defined for
-annotation attributes in the Java Language Specification, it is, unfortunately, not
-possible to assign a value of `null` to an annotation attribute. Thus, in order to
-support overrides of inherited global configuration, `@SqlConfig` attributes have an
-explicit default value of either `""` (for Strings), `{}` (for arrays), or `DEFAULT` (for
-enumerations). This approach lets local declarations of `@SqlConfig` selectively override
-individual attributes from global declarations of `@SqlConfig` by providing a value other
-than `""`, `{}`, or `DEFAULT`. Global `@SqlConfig` attributes are inherited whenever
-local `@SqlConfig` attributes do not supply an explicit value other than `""`, `{}`, or
-`DEFAULT`. Explicit local configuration, therefore, overrides global configuration.
+`@SqlConfig` annotation을 사용하여 script parsing 및 error handling을 구성할 수 있습니다.
+통합 테스트 클래스에서 class-level annotation으로 선언 된 경우 `@SqlConfig` 는 test class hierarchy 내의 모든 SQL script에 대한 global configuration 역할을 합니다.
+`@Sql` annotation의 `config` attribute을 사용하여 직접 선언할 때 `@SqlConfig` 는 둘러싸는 `@Sql` annotation 내에서 선언된 SQL script에 대한 local configuration 역할을 합니다.
+`@SqlConfig` 의 모든 attribute에는 해당 attribute의 javadoc에 문서화 된 암시적 기본값이 있습니다
+Java Language Specification의 annotation attribute에 대해 정의된 rule로 인해 안타깝게도 annotation attribute에 `null` 값을 할당할 수 없습니다.
+따라서 상속된 global configuration의 override를 지원하기 위해 `@SqlConfig` attribute에는 `""` (문자열의 경우), `{}` (배열의 경우) 또는 `DEFAULT` (열거형의 경우)의 명시적 기본값이 있습니다.
+이 접근 방식을 사용하면 `@SqlConfig` 의 로컬 선언이 `""`, `{}` 또는 `DEFAULT` 이외의 값을 제공하여 `@SqlConfig` 의 전역 선언에서 개별 attribute을 선택적으로 override 할 수 있습니다.
+global `@SqlConfig` attribute은 로컬 `@SqlConfig` attribute가 `""`, `{}` 또는 `DEFAULT` 이외의 명시적 값을 제공하지 않을 때마다 상속됩니다.
+따라서 명시적 local configuration이 global configuration보다 우선합니다.
 
-The configuration options provided by `@Sql` and `@SqlConfig` are equivalent to those
-supported by `ScriptUtils` and `ResourceDatabasePopulator` but are a superset of those
-provided by the `<jdbc:initialize-database/>` XML namespace element. See the javadoc of
-individual attributes in {api-spring-framework}/test/context/jdbc/Sql.html[`@Sql`] and
-{api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`] for details.
+`@Sql` 및 `@SqlConfig` 에서 제공하는 configuration option은 `ScriptUtils` 및 `ResourceDatabasePopulator` 에서 지원하는 option과 동일하지만 `<jdbc:initialize-database/>` XML namespace element에서 제공하는 option의 superset입니다.
+자세한 내용은 {api-spring-framework}/test/context/jdbc/Sql.html[`@Sql`] 및 {api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`]의 individual attributes에 대한 javadoc을 참조하십시오.
 
 [[testcontext-executing-sql-declaratively-tx]]
 *Transaction management for `@Sql`*
 
-By default, the `SqlScriptsTestExecutionListener` infers the desired transaction
-semantics for scripts configured by using `@Sql`. Specifically, SQL scripts are run
-without a transaction, within an existing Spring-managed transaction (for example, a
-transaction managed by the `TransactionalTestExecutionListener` for a test annotated with
-`@Transactional`), or within an isolated transaction, depending on the configured value
-of the `transactionMode` attribute in `@SqlConfig` and the presence of a
-`PlatformTransactionManager` in the test's `ApplicationContext`. As a bare minimum,
-however, a `javax.sql.DataSource` must be present in the test's `ApplicationContext`.
+기본적으로 `SqlScriptsTestExecutionListener` 는 `@Sql` 을 사용하여 구성된 script에 대해 원하는 transaction semantic을 유추합니다.
+특히 SQL script는 `@SqlConfig` 의 `transactionMode` attribute에 구성된 값과 test의 `ApplicationContext` 의 `PlatformTransactionManager` 존재 여부에 따라 transaction 없이 기존 Spring-managed transaction (예: `@Transactional` 로 annotation이 달린 테스트를 위해 `TransactionalTestExecutionListener` 가 관리하는 transaction) 내에서 또는 isolated transaction 내에서 실행됩니다.
+그러나 최소한 `javax.sql.DataSource` 는 테스트의 `ApplicationContext` 에 있어야합니다.
 
-If the algorithms used by `SqlScriptsTestExecutionListener` to detect a `DataSource` and
-`PlatformTransactionManager` and infer the transaction semantics do not suit your needs,
-you can specify explicit names by setting the `dataSource` and `transactionManager`
-attributes of `@SqlConfig`. Furthermore, you can control the transaction propagation
-behavior by setting the `transactionMode` attribute of `@SqlConfig` (for example, whether
-scripts should be run in an isolated transaction). Although a thorough discussion of all
-supported options for transaction management with `@Sql` is beyond the scope of this
-reference manual, the javadoc for
-{api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`] and
-{api-spring-framework}/test/context/jdbc/SqlScriptsTestExecutionListener.html[`SqlScriptsTestExecutionListener`]
-provide detailed information, and the following example shows a typical testing scenario
-that uses JUnit Jupiter and transactional tests with `@Sql`:
+`SqlScriptsTestExecutionListener` 에서 `DataSource` 및 `PlatformTransactionManager` 를 감지하고 transaction semantic을 유추하는데 사용하는 알고리즘이 사용자의 요구에 맞지않는 경우 `@SqlConfig` 의 `dataSource` 및 `transactionManager` attribute를 설정하여 명시적인 name을 지정할 수 있습니다.
+또한 `@SqlConfig` 의 `transactionMode` attribute를 설정하여 transaction propagation 동작을 제어할 수 있습니다 (예: script가 isolated transaction에서 실행되어야 하는지 여부).
+`@Sql` 을 사용하여 transaction management를 위해 지원되는 모든 option에 대한 철저한 논의는 이 참조 매뉴얼의 범위를 벗어나지만 {api-spring-framework}/test/context/jdbc/SqlConfig.html[`@SqlConfig`] 및 {api-spring-framework}/test/context/jdbc/SqlScriptsTestExecutionListener.html[`SqlScriptsTestExecutionListener`] 에 대한 javadoc은 자세한 정보를 제공하며 다음 예제는 `@sql` 을 사용하여 JUnit Jupiter 및 transactional test를 사용하는 일반적인 테스트 시나리오를 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5330,94 +5289,67 @@ that uses JUnit Jupiter and transactional tests with `@Sql`:
 	}
 ----
 
-Note that there is no need to clean up the database after the `usersTest()` method is
-run, since any changes made to the database (either within the test method or within the
-`/test-data.sql` script) are automatically rolled back by the
-`TransactionalTestExecutionListener` (see <<testcontext-tx,transaction management>> for
-details).
+`usersTest()` method가 실행된 후 데이터베이스를 정리할 필요가 없습니다.
+(test method 내에서 또는 `/test-data.sql` script 내에서) 데이터베이스에 대한 변경 사항은 `TransactionalTestExecutionListener` 에 의해 자동으로 롤백되기 때문입니다.
+(자세한 내용은 <<testcontext-tx,transaction management>> 참조).
 
 [[testcontext-executing-sql-declaratively-script-merging]]
 ====== Merging and Overriding Configuration with `@SqlMergeMode`
 
-As of Spring Framework 5.2, it is possible to merge method-level `@Sql` declarations with
-class-level declarations. For example, this allows you to provide the configuration for a
-database schema or some common test data once per test class and then provide additional,
-use case specific test data per test method. To enable `@Sql` merging, annotate either
-your test class or test method with `@SqlMergeMode(MERGE)`. To disable merging for a
-specific test method (or specific test subclass), you can switch back to the default mode
-via `@SqlMergeMode(OVERRIDE)`. Consult the <<spring-testing-annotation-sqlmergemode,
-`@SqlMergeMode` annotation documentation section>> for examples and further details.
+Spring Framework 5.2부터는 method-level의 `@Sql` 선언을 class-level 선언과 merge 할 수 있습니다.
+예를 들어 이를 통해 test class 당 한 번씩 database schema 또는 일부 common test data에 대한 구성을 제공한 다음 test method 별로 추가 use case별 test data를 제공할 수 있습니다.
+`@Sql` merging을 활성화하려면 `@SqlMergeMode(MERGE)` 를 사용하여 test class 또는 test method에 annotation을 추가합니다.
+특정 test method (또는 특정 tes subclass)에 대한 merging을 비활성화하려면 `@SqlMergeMode(OVERRIDE)` 를 통해 default mode로 다시 전환할 수 있습니다.
+예제 및 추가 세부 사항은 <<spring-testing-annotation-sqlmergemode, `@SqlMergeMode` annotation documentation section>>을 참조하세요.
 
 
 [[testcontext-parallel-test-execution]]
 ==== Parallel Test Execution
 
-Spring Framework 5.0 introduced basic support for executing tests in parallel within a
-single JVM when using the Spring TestContext Framework. In general, this means that most
-test classes or test methods can be run in parallel without any changes to test code
-or configuration.
+Spring Framework 5.0은 Spring TestContext Framework를 사용할 때 단일 JVM 내에서 병렬로 테스트를 실행하기위한 기본 지원을 도입했습니다.
+일반적으로 이는 테스트 코드나 구성을 변경하지 않고도 대부분의 test class 또는 test method를 병렬로 실행할 수 있음을 의미합니다.
 
-TIP: For details on how to set up parallel test execution, see the documentation for your
-testing framework, build tool, or IDE.
+TIP: 병렬 테스트 실행을 설정하는 방법에 대한 자세한 내용은 test framework, build tool 또는 IDE에 대한 설명서를 참조하세요.
 
-Keep in mind that the introduction of concurrency into your test suite can result in
-unexpected side effects, strange runtime behavior, and tests that fail intermittently or
-seemingly randomly. The Spring Team therefore provides the following general guidelines
-for when not to run tests in parallel.
+test suite에 동시성을 도입하면 예기치 않은 부작용, 이상한 런타임 동작 및 간헐적으로 또는 겉보기에 무작위로 실패하는 테스트가 발생할 수 있습니다.
+따라서 Spring 팀은 테스트를 병렬로 실행하지 않을 때 다음과 같은 일반적인 지침을 제공합니다.
 
-Do not run tests in parallel if the tests:
+다음과 같은 경우 테스트를 병렬로 실행하지 마십시오.:
 
-* Use Spring Framework's `@DirtiesContext` support.
-* Use Spring Boot's `@MockBean` or `@SpyBean` support.
-* Use JUnit 4's `@FixMethodOrder` support or any testing framework feature
-  that is designed to ensure that test methods run in a particular order. Note,
-  however, that this does not apply if entire test classes are run in parallel.
-* Change the state of shared services or systems such as a database, message broker,
-  filesystem, and others. This applies to both embedded and external systems.
+* Spring Framework의 `@DirtiesContext` 지원을 사용할 때.
+* Spring Boot의 `@MockBean` 또는 `@SpyBean` 지원을 사용할 때.
+* JUnit 4의 `@FixMethodOrder` 지원 또는 test method가 특정 순서로 실행되도록 설계된 test framework 기능을 사용할 때.
+그러나 전체 test class가 병렬로 실행되는 경우에는 적용되지 않습니다.
+* database, message broker, filesystem 등과 같은 공유 서비스 또는 시스템의 상태를 변경할 때.
+이는 embbed 및 external system 모두에 적용됩니다.
 
 [TIP]
 ====
-If parallel test execution fails with an exception stating that the `ApplicationContext`
-for the current test is no longer active, this typically means that the
-`ApplicationContext` was removed from the `ContextCache` in a different thread.
+현재 테스트에 대한 `ApplicationContext` 가 더이상 활성 상태가 아니라는 예외와 함께 병렬 테스트 실행이 실패하면 일반적으로 `ApplicationContext` 가 다른 thread의 `ContextCache` 에서 제거되었음을 의미합니다.
 
-This may be due to the use of `@DirtiesContext` or due to automatic eviction from the
-`ContextCache`. If `@DirtiesContext` is the culprit, you either need to find a way to
-avoid using `@DirtiesContext` or exclude such tests from parallel execution. If the
-maximum size of the `ContextCache` has been exceeded, you can increase the maximum size
-of the cache. See the discussion on <<testcontext-ctx-management-caching, context caching>>
-for details.
+이는 `@DirtiesContext` 의 사용 또는 `ContextCache` 의 자동 제거 때문일 수 있습니다.
+`@DirtiesContext` 가 범인인 경우 `@DirtiesContext` 사용을 피하는 방법을 찾거나 이러한 테스트를 병렬 실행에서 제외해야 합니다.
+`ContextCache` 의 최대 크기를 초과한 경우 cache의 최대 크기를 늘릴 수 있습니다.
+자세한 내용은 <<testcontext-ctx-management-caching, context caching>>에 대한 토론을 참조하십시오.
 ====
 
-WARNING: Parallel test execution in the Spring TestContext Framework is only possible if
-the underlying `TestContext` implementation provides a copy constructor, as explained in
-the javadoc for {api-spring-framework}/test/context/TestContext.html[`TestContext`]. The
-`DefaultTestContext` used in Spring provides such a constructor. However, if you use a
-third-party library that provides a custom `TestContext` implementation, you need to
-verify that it is suitable for parallel test execution.
-
+WARNING: Spring TestContext Framework의 병렬 테스트 실행은 {api-spring-framework}/test/context/TestContext.html[`TestContext`] 에 대한 javadoc에 설명된대로 기본 `TestContext` 구현이 copy constructor를 제공하는 경우에만 가능합니다.
+Spring에서 사용되는 `DefaultTestContext` 는 이러한 constructor를 제공합니다.
+그러나 custom `TestContext` 구현을 제공하는 third-party library를 사용하는 경우 병렬 테스트 실행에 적합한지 확인해야합니다.
 
 [[testcontext-support-classes]]
 ==== TestContext Framework Support Classes
 
-This section describes the various classes that support the Spring TestContext Framework.
+이 section에서는 Spring TestContext Framework를 지원하는 다양한 class를 설명합니다.
 
 [[testcontext-junit4-runner]]
 ===== Spring JUnit 4 Runner
 
-The Spring TestContext Framework offers full integration with JUnit 4 through a custom
-runner (supported on JUnit 4.12 or higher). By annotating test classes with
-`@RunWith(SpringJUnit4ClassRunner.class)` or the shorter `@RunWith(SpringRunner.class)`
-variant, developers can implement standard JUnit 4-based unit and integration tests and
-simultaneously reap the benefits of the TestContext framework, such as support for
-loading application contexts, dependency injection of test instances, transactional test
-method execution, and so on. If you want to use the Spring TestContext Framework with an
-alternative runner (such as JUnit 4's `Parameterized` runner) or third-party runners
-(such as the `MockitoJUnitRunner`), you can, optionally, use
-<<testcontext-junit4-rules, Spring's support for JUnit rules>> instead.
+Spring TestContext Framework는 custom runner를 통해 JUnit 4와의 완전한 통합을 제공합니다 (JUnit 4.12 이상에서 지원됨).
+`@RunWith(SpringJUnit4ClassRunner.class)` 또는 더 짧은 `@RunWith(SpringRunner.class)` 변형으로 test class에 annotation을 달면 개발자는 표준 JUnit4 기반 단위 및 통합 테스트를 구현하는 동시에 application context 로드 지원, test instance의 dependency injection, transactional test method 실행 등 TestContext framework의 이점을 얻을 수 있습니다.
+Spring TestContext Framework를 대체 runner(예: JUnit 4의 `Parameterized` runner) 또는 third-party runners(예: `MockitoJUnitRunner`)와 함께 사용하려는 경우 선택적으로 <<testcontext-junit4-rules, JUnit rule에 대한 Spring의 지원>>을 대신 사용할 수 있습니다
 
-The following code listing shows the minimal requirements for configuring a test class to
-run with the custom Spring `Runner`:
+다음 코드 목록은 custom Spring `Runner` 로 실행할 test class를 구성하기위한 최소 요구 사항을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5447,31 +5379,23 @@ run with the custom Spring `Runner`:
 	}
 ----
 
-In the preceding example, `@TestExecutionListeners` is configured with an empty list, to
-disable the default listeners, which otherwise would require an `ApplicationContext` to
-be configured through `@ContextConfiguration`.
+앞의 예제에서 `@TestExecutionListeners` 는 empty list로 구성되어 default listener를 비활성화합니다.
+그렇지 않으면 `@ContextConfiguration` 을 통해 `ApplicationContext` 를 구성해야합니다.
 
 [[testcontext-junit4-rules]]
 ===== Spring JUnit 4 Rules
 
-The `org.springframework.test.context.junit4.rules` package provides the following JUnit
-4 rules (supported on JUnit 4.12 or higher):
+`org.springframework.test.context.junit4.rules` package는 다음 JUnit 4 rule을 제공합니다 (JUnit 4.12 이상에서 지원됨):
 
 * `SpringClassRule`
 * `SpringMethodRule`
 
-`SpringClassRule` is a JUnit `TestRule` that supports class-level features of the Spring
-TestContext Framework, whereas `SpringMethodRule` is a JUnit `MethodRule` that supports
-instance-level and method-level features of the Spring TestContext Framework.
+`SpringClassRule` 은 Spring TestContext Framework의 class-level 기능을 지원하는 JUnit `TestRule` 이고 `SpringMethodRule` 은 Spring TestContext Framework의 instalce-level 및 method-level 기능을 지원하는 JUnit `MethodRule` 입니다.
 
-In contrast to the `SpringRunner`, Spring's rule-based JUnit support has the advantage of
-being independent of any `org.junit.runner.Runner` implementation and can, therefore, be
-combined with existing alternative runners (such as JUnit 4's `Parameterized`) or
-third-party runners (such as the `MockitoJUnitRunner`).
+`SpringRunner` 와 달리 Spring의 rule-based JUnit 지원은 `org.junit.runner.Runner` 구현과 독립적이라는 장점이 있으므로 기존 대체 runner(예: JUnit 4의 `Parameterized`) 또는 third-party runner(예: `MockitoJUnitRunner`)와 결합할 수 있습니다.
 
-To support the full functionality of the TestContext framework, you must combine a
-`SpringClassRule` with a `SpringMethodRule`. The following example shows the proper way
-to declare these rules in an integration test:
+TestContext framework의 전체 기능을 지원하려면 `SpringClassRule` 을 `SpringMethodRule` 과 결합해야합니다.
+다음 예는 통합 테스트에서 이러한 규칙을 선언하는 적절한 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5518,65 +5442,40 @@ to declare these rules in an integration test:
 [[testcontext-support-classes-junit4]]
 ===== JUnit 4 Support Classes
 
-The `org.springframework.test.context.junit4` package provides the following support
-classes for JUnit 4-based test cases (supported on JUnit 4.12 or higher):
+`org.springframework.test.context.junit4` package는 JUnit 4 기반 테스트 케이스에 대해 다음 지원 클래스를 제공합니다 (JUnit 4.12 이상에서 지원됨).
 
 * `AbstractJUnit4SpringContextTests`
 * `AbstractTransactionalJUnit4SpringContextTests`
 
-`AbstractJUnit4SpringContextTests` is an abstract base test class that integrates the
-Spring TestContext Framework with explicit `ApplicationContext` testing support in a
-JUnit 4 environment. When you extend `AbstractJUnit4SpringContextTests`, you can access a
-`protected` `applicationContext` instance variable that you can use to perform explicit
-bean lookups or to test the state of the context as a whole.
+`AbstractJUnit4SpringContextTests` 는 JUnit 4 환경에서 명시적인 `ApplicationContext` 테스트 지원과 Spring TestContext Framework를 통합하는 추상 기본 테스트 클래스입니다. `AbstractJUnit4SpringContextTests` 를 확장할 때 명시적인 bean lookup을 수행하거나 전체 context의 상태를 테스트하는데 사용할 수 있는 `protected` `applicationContext` instance variable에 액세스 할 수 있습니다. 
 
-`AbstractTransactionalJUnit4SpringContextTests` is an abstract transactional extension of
-`AbstractJUnit4SpringContextTests` that adds some convenience functionality for JDBC
-access. This class expects a `javax.sql.DataSource` bean and a
-`PlatformTransactionManager` bean to be defined in the `ApplicationContext`. When you
-extend `AbstractTransactionalJUnit4SpringContextTests`, you can access a `protected`
-`jdbcTemplate` instance variable that you can use to run SQL statements to query the
-database. You can use such queries to confirm database state both before and after
-running database-related application code, and Spring ensures that such queries run in
-the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <<testcontext-tx-false-positives, false positives>>.
-As mentioned in <<integration-testing-support-jdbc>>,
-`AbstractTransactionalJUnit4SpringContextTests` also provides convenience methods that
-delegate to methods in `JdbcTestUtils` by using the aforementioned `jdbcTemplate`.
-Furthermore, `AbstractTransactionalJUnit4SpringContextTests` provides an
-`executeSqlScript(..)` method for running SQL scripts against the configured `DataSource`.
+`AbstractTransactionalJUnit4SpringContextTests` 는 JDBC 액세스를 위한 몇 가지 편리한 기능을 추가하는 `AbstractJUnit4SpringContextTests` 의 abstract transactional extension입니다.
+이 class는 `javax.sql.DataSource` bean과 `PlatformTransactionManager` bean이 `ApplicationContext` 에 정의될 것으로 예상합니다
+`AbstractTransactionalJUnit4SpringContextTests` 를 확장하면 데이터베이스를 쿼리하기 위해 SQL 문을 실행하는 데 사용할 수 있는 `protected` `jdbcTemplate` instance variable에 액세스할 수 있습니다.
+이러한 쿼리를 사용하여 데이터베이스 관련 애플리케이션 코드를 실행하기 전후에 데이터베이스 상태를 확인할 수 있으며 Spring은 이러한 쿼리가 애플리케이션 코드와 동일한 transaction 범위에서 실행되도록합니다.
+ORM 도구와 함께 사용하는 경우 <<testcontext-tx-false-positives, false positives>>를 피하십시오.
+<<integration-testing-support-jdbc>>에서 언급했듯이 `AbstractTransactionalJUnit4SpringContextTests`는 앞서 언급한 `jdbcTemplate` 을 사용하여 `JdbcTestUtils` 의 method에 위임하는 편리한 method도 제공합니다.
+또한 `AbstractTransactionalJUnit4SpringContextTests` 는 구성된 `DataSource` 에 대해 SQL script를 실행하기위한 `executeSqlScript(..)` method를 제공합니다.
 
-TIP: These classes are a convenience for extension. If you do not want your test classes
-to be tied to a Spring-specific class hierarchy, you can configure your own custom test
-classes by using `@RunWith(SpringRunner.class)` or <<testcontext-junit4-rules, Spring's
-JUnit rules>>.
+TIP: 이 class는 확장에 편리합니다.
+test class가 Spring 특정 class hierarchy에 연결되는 것을 원하지 않는 경우 `@RunWith(SpringRunner.class)` 또는 <<testcontext-junit4-rules, Spring's JUnit rules>>을 사용하여 custom test class를 구성 할 수 있습니다.
 
 [[testcontext-junit-jupiter-extension]]
 ===== SpringExtension for JUnit Jupiter
 
-The Spring TestContext Framework offers full integration with the JUnit Jupiter testing
-framework, introduced in JUnit 5. By annotating test classes with
-`@ExtendWith(SpringExtension.class)`, you can implement standard JUnit Jupiter-based unit
-and integration tests and simultaneously reap the benefits of the TestContext framework,
-such as support for loading application contexts, dependency injection of test instances,
-transactional test method execution, and so on.
+Spring TestContext Framework는 JUnit 5에 도입된 JUnit Jupiter test framework와의 완전한 통합을 제공합니다.
+`@ExtendWith(SpringExtension.class)` 로 test class에 annotation을 달면 표준 JUnit Jupiter 기반 단위 및 통합 테스트를 구현하고 동시에 application context 로드 지원, test inatance의 dependency injection, transactional test method 실행 등 TestContext framework의 이점을 얻을수 있습니다.
 
-Furthermore, thanks to the rich extension API in JUnit Jupiter, Spring provides the
-following features above and beyond the feature set that Spring supports for JUnit 4 and
-TestNG:
+또한 JUnit Jupiter의 풍부한 확장 API 덕분에 Spring은 JUnit 4 및 TestNG에 대해 Spring이 지원하는 기능 set 이상의 다음 기능을 제공합니다:
 
-* Dependency injection for test constructors, test methods, and test lifecycle callback
-  methods. See <<testcontext-junit-jupiter-di>> for further details.
-* Powerful support for link:https://junit.org/junit5/docs/current/user-guide/#extensions-conditions[conditional
-  test execution] based on SpEL expressions, environment variables, system properties,
-  and so on. See the documentation for `@EnabledIf` and `@DisabledIf` in
-  <<integration-testing-annotations-junit-jupiter>> for further details and examples.
-* Custom composed annotations that combine annotations from Spring and JUnit Jupiter. See
-  the `@TransactionalDevTestConfig` and `@TransactionalIntegrationTest` examples in
-  <<integration-testing-annotations-meta>> for further details.
+* test constructors, test methods 및 test lifecycle callback method에 대한 Dependency injection.
+자세한 내용은 <<testcontext-junit-jupiter-di>>을 참조하십시오.
+* SpEL expressions, environment variables, system properties 등을 기반으로 하는 link:https://junit.org/junit5/docs/current/user-guide/#extensions-conditions[conditional test execution]을 강력하게 지원합니다.
+자세한 내용과 예제는 <<integration-testing-annotations-junit-jupiter>>의 `@EnabledIf` 및 `@DisabledIf` 에 대한 문서를 참조하십시오.
+* Spring 및 JUnit Jupiter의 주석을 결합하는 custom composed annotations.
+자세한 내용은 <<integration-testing-annotations-meta>>의 `@TransactionalDevTestConfig` 및 `@TransactionalIntegrationTest` 예제를 참조하십시오.
 
-The following code listing shows how to configure a test class to use the
-`SpringExtension` in conjunction with `@ContextConfiguration`:
+다음 코드 목록은 `@ContextConfiguration` 과 함께 `SpringExtension` 을 사용하도록 test class를 구성하는 방법을 보여줍니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5610,12 +5509,9 @@ The following code listing shows how to configure a test class to use the
 	}
 ----
 
-Since you can also use annotations in JUnit 5 as meta-annotations, Spring provides the
-`@SpringJUnitConfig` and `@SpringJUnitWebConfig` composed annotations to simplify the
-configuration of the test `ApplicationContext` and JUnit Jupiter.
+JUnit 5의 annotation도 meta-annotation으로 사용할 수 있으므로 Spring은 test `ApplicationContext` 및 JUnit Jupiter의 configuration을 단순화하기 위해 `@SpringJUnitConfig` 및 `@SpringJUnitWebConfig` 로 구성된 annotation을 제공합니다.
 
-The following example uses `@SpringJUnitConfig` to reduce the amount of configuration
-used in the previous example:
+다음 예제는 `@SpringJUnitConfig` 를 사용하여 이전 예제에서 사용된 구성의 양을 줄입니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5647,8 +5543,7 @@ used in the previous example:
 	}
 ----
 
-Similarly, the following example uses `@SpringJUnitWebConfig` to create a
-`WebApplicationContext` for use with JUnit Jupiter:
+마찬가지로 다음 예제에서는 `@SpringJUnitWebConfig` 를 사용하여 JUnit Jupiter와 함께 사용할 `WebApplicationContext` 를 만듭니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5680,69 +5575,44 @@ Similarly, the following example uses `@SpringJUnitWebConfig` to create a
 	}
 ----
 
-See the documentation for `@SpringJUnitConfig` and `@SpringJUnitWebConfig` in
-<<integration-testing-annotations-junit-jupiter>> for further details.
+자세한 내용은 <<integration-testing-annotations-junit-jupiter>>의 `@SpringJUnitConfig` 및 `@SpringJUnitWebConfig` 에 대한 문서를 참조하세요.
 
 [[testcontext-junit-jupiter-di]]
 ===== Dependency Injection with `SpringExtension`
 
-`SpringExtension` implements the
-link:https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution[`ParameterResolver`]
-extension API from JUnit Jupiter, which lets Spring provide dependency injection for test
-constructors, test methods, and test lifecycle callback methods.
+`SpringExtension` 은 JUnit Jupiter의 link:https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution[`ParameterResolver`] extension API를 구현하여 Spring이 test constructors, test methods 및 test lifecycle callback method에 대한 dependency injection을 제공할 수 있도록 합니다.
 
-Specifically, `SpringExtension` can inject dependencies from the test's
-`ApplicationContext` into test constructors and methods that are annotated with
-`@BeforeAll`, `@AfterAll`, `@BeforeEach`, `@AfterEach`, `@Test`, `@RepeatedTest`,
-`@ParameterizedTest`, and others.
+특히 `SpringExtension` 은 테스트의 `ApplicationContext` 에서 `@BeforeAll`, `@AfterAll`, `@BeforeEach`, `@AfterEach`, `@Test`, `@RepeatedTest`, `@ParameterizedTest` 등으로 annotation이 달린 test constructor 및 method dependency를 inject 할 수 있습니다.
 
 [[testcontext-junit-jupiter-di-constructor]]
 ====== Constructor Injection
 
-If a specific parameter in a constructor for a JUnit Jupiter test class is of type
-`ApplicationContext` (or a sub-type thereof) or is annotated or meta-annotated with
-`@Autowired`, `@Qualifier`, or `@Value`, Spring injects the value for that specific
-parameter with the corresponding bean or value from the test's `ApplicationContext`.
+JUnit Jupiter test class에 대한 constructor의 특정 parameter가 `ApplicationContext` (또는 그 sub-type) type이거나 `@Autowired`, `@Qualifier` 또는 `@Value`로 annotation 또는 meta-annotation이 추가 된 경우 Spring은 test의 `ApplicationContext` 로부터 해당 bean 또는 value를 가진 특정 parameter를 value로 inject합니다.
 
-Spring can also be configured to autowire all arguments for a test class constructor if
-the constructor is considered to be _autowirable_. A constructor is considered to be
-autowirable if one of the following conditions is met (in order of precedence).
+constructor가 _autowired 가능_한 것으로 간주되는 경우 test class constructor에 대한 모든 argument를 autowire 하도록 Spring을 구성할 수도 있습니다.
+다음 조건 중 하나가 충족되면 constructor는 _autowire 가능_한 것으로 간주됩니다 (우선 순위에 따라).
 
-* The constructor is annotated with `@Autowired`.
-* `@TestConstructor` is present or meta-present on the test class with the `autowireMode`
-  attribute set to `ALL`.
-* The default _test constructor autowire mode_ has been changed to `ALL`.
+* constructor가 `@Autowired` 로 annotation 처리 되었을 경우
+* `@TestConstructor` 가 `autowireMode` attribute가 `ALL` 로 설정된 test class에 존재하거나 메타 존재할 경우
+* default _test constructor autowire mode_가 `ALL` 로 변경되었을 경우
 
-See <<integration-testing-annotations-testconstructor>> for details on the use of
-`@TestConstructor` and how to change the global _test constructor autowire mode_.
+`@TestConstructor` 사용 및 global _test constructor autowire mode_를 변경하는 방법에 대한 자세한 내용은 <<integration-testing-annotations-testconstructor>>를 참조하십시오.
 
-WARNING: If the constructor for a test class is considered to be _autowirable_, Spring
-assumes the responsibility for resolving arguments for all parameters in the constructor.
-Consequently, no other `ParameterResolver` registered with JUnit Jupiter can resolve
-parameters for such a constructor.
+WARNING: test class의 constructor가 _autowire 가능_한 것으로 간주되면 Spring은 constructor의 모든 parameter에 대한 argument를 해결하는 책임을 맡습니다.
+따라서 JUnit Jupiter에 등록된 다른 `ParameterResolver` 는 이러한 constructor에 대한 parameter를 확인할 수 없습니다.
 
 [WARNING]
 ====
-Constructor injection for test classes must not be used in conjunction with JUnit
-Jupiter's `@TestInstance(PER_CLASS)` support if `@DirtiesContext` is used to close the
-test's `ApplicationContext` before or after test methods.
+`@DirtiesContext` 가 test method 전후에 테스트의 `ApplicationContext` 를 닫는데 사용되는 경우 test class에 대한 constructor injection을 JUnit Jupiter의 `@TestInstance(PER_CLASS)` 지원과 함께 사용해서는 안됩니다.
 
-The reason is that `@TestInstance(PER_CLASS)` instructs JUnit Jupiter to cache the test
-instance between test method invocations. Consequently, the test instance will retain
-references to beans that were originally injected from an `ApplicationContext` that has
-been subsequently closed. Since the constructor for the test class will only be invoked
-once in such scenarios, dependency injection will not occur again, and subsequent tests
-will interact with beans from the closed `ApplicationContext` which may result in errors.
+그 이유는 `@TestInstance(PER_CLASS)` 가 test method 호출 사이에 test instance를 cache하도록 JUnit Jupiter에 지시하기 때문입니다
+결과적으로 test instance는 이후에 닫힌 `ApplicationContext` 에서 원래 주입된 bean에 대한 참조를 유지합니다.
+test class의 constructor는 이러한 시나리오에서 한 번만 호출되므로 dependency injection이 다시 발생하지 않으며 후속 테스트는 닫힌 `ApplicationContext` 의 bean과 상호 작용하여 오류가 발생할 수 있습니다.
 
-To use `@DirtiesContext` with "before test method" or "after test method" modes in
-conjunction with `@TestInstance(PER_CLASS)`, one must configure dependencies from Spring
-to be supplied via field or setter injection so that they can be re-injected between test
-method invocations.
+`@TestInstance(PER_CLASS)` 와 함께 "before test method" 또는 "after test method" mode와 함께 `@DirtiesContext` 를 사용하려면 field 또는 setter injection을 통해 제공되는 Spring의 종속성을 구성하여 test method invocation 간에 re-inejct 될 수 있도록 해야 합니다.
 ====
 
-In the following example, Spring injects the `OrderService` bean from the
-`ApplicationContext` loaded from `TestConfig.class` into the
-`OrderServiceIntegrationTests` constructor.
+다음 예제에서 Spring은 `TestConfig.class` 에서 로드된 `ApplicationContext` 의 `OrderService` bean을 `OrderServiceIntegrationTests` constructor로 inject합니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5771,11 +5641,9 @@ In the following example, Spring injects the `OrderService` bean from the
 
 ----
 
-Note that this feature lets test dependencies be `final` and therefore immutable.
+이 기능을 사용하면 test dependency는 `final` 이며 변경할 수 없습니다.
 
-If the `spring.test.constructor.autowire.mode` property is to `all` (see
-<<integration-testing-annotations-testconstructor>>), we can omit the declaration of
-`@Autowired` on the constructor in the previous example, resulting in the following.
+`spring.test.constructor.autowire.mode` property가 `all` (<<integration-testing-annotations-testconstructor>> 참조)이면 이전 예제의 constructor에서 `@Autowired` 선언을 생략하여 다음과 같은 결과를 얻을 수 있습니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5805,13 +5673,9 @@ If the `spring.test.constructor.autowire.mode` property is to `all` (see
 [[testcontext-junit-jupiter-di-method]]
 ====== Method Injection
 
-If a parameter in a JUnit Jupiter test method or test lifecycle callback method is of
-type `ApplicationContext` (or a sub-type thereof) or is annotated or meta-annotated with
-`@Autowired`, `@Qualifier`, or `@Value`, Spring injects the value for that specific
-parameter with the corresponding bean from the test's `ApplicationContext`.
+JUnit Jupiter test method 또는 test lifecycle callback method의 parameter가 `ApplicationContext` (또는 그 sub-type) type이거나 `@Autowired`, `@Qualifier` 또는 `@Value` 로 annotation 또는 meta-annotation이 달린 경우, Spring은 해당 특정 parameter의 값을 테스트의 `ApplicationContext` 에서 해당 bean으로 inject합니다.
 
-In the following example, Spring injects the `OrderService` from the `ApplicationContext`
-loaded from `TestConfig.class` into the `deleteOrder()` test method:
+다음 예제에서 Spring은 `TestConfig.class` 에서 로드된 `ApplicationContext` 의 `OrderService` 를 `deleteOrder()` test method에 inject합니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5839,12 +5703,9 @@ loaded from `TestConfig.class` into the `deleteOrder()` test method:
 	}
 ----
 
-Due to the robustness of the `ParameterResolver` support in JUnit Jupiter, you can also
-have multiple dependencies injected into a single method, not only from Spring but also
-from JUnit Jupiter itself or other third-party extensions.
+JUnit Jupiter의 `ParameterResolver` 지원의 견고성으로 인해 Spring뿐만 아니라 JUnit Jupiter 자체 또는 third-party extension에서 단일 method에 여러 종속성을 주입 할 수도 있습니다.
 
-The following example shows how to have both Spring and JUnit Jupiter inject dependencies
-into the `placeOrderRepeatedly()` test method simultaneously.
+다음 예제는 Spring과 JUnit Jupiter가 동시에 `placeOrderRepeatedly()` test method에 종속성을 주입하는 방법을 보여줍니다.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5877,41 +5738,27 @@ into the `placeOrderRepeatedly()` test method simultaneously.
 	}
 ----
 
-Note that the use of `@RepeatedTest` from JUnit Jupiter lets the test method gain access
-to the `RepetitionInfo`.
+JUnit Jupiter에서 `@RepeatedTest` 를 사용하면 test method가 `RepetitionInfo` 에 액세스 할 수 있습니다.
 
 [[testcontext-junit-jupiter-nested-test-configuration]]
 ===== `@Nested` test class configuration
 
-The _Spring TestContext Framework_ has supported the use of test-related annotations on
-`@Nested` test classes in JUnit Jupiter since Spring Framework 5.0; however, until Spring
-Framework 5.3 class-level test configuration annotations were not _inherited_ from
-enclosing classes like they are from superclasses.
+_Spring TestContext Framework_는 Spring Framework 5.0 이후 JUnit Jupiter의 `@Nested` test class에서 test 관련 annotation 사용을 지원했습니다.
+그러나 Spring Framework 5.3 class-level test configuration annotation이 superclass와 같이 enclosing class에서 _상속_되지 않았습니다.
 
-Spring Framework 5.3 introduces first-class support for inheriting test class
-configuration from enclosing classes, and such configuration will be inherited by
-default. To change from the default `INHERIT` mode to `OVERRIDE` mode, you may annotate
-an individual `@Nested` test class with
-`@NestedTestConfiguration(EnclosingConfiguration.OVERRIDE)`. An explicit
-`@NestedTestConfiguration` declaration will apply to the annotated test class as well as
-any of its subclasses and nested classes. Thus, you may annotate a top-level test class
-with `@NestedTestConfiguration`, and that will apply to all of its nested test classes
-recursively.
+Spring Framework 5.3은 enclosing class에서 test class configuration을 상속하는 first-class 지원을 도입했으며 이러한 구성은 기본적으로 상속됩니다.
+기본 `INHERIT` mode에서 `OVERRIDE` mode로 변경하려면 `@NestedTestConfiguration(EnclosingConfiguration.OVERRIDE)` 을 사용하여 개별 `@Nested` test class에 annotation을 달 수 있습니다.
+명시적인 `@NestedTestConfiguration` 선언은 annotation이 달린 test class와 subclass 및 nested class에 적용됩니다.
+따라서 `@NestedTestConfiguration` 으로 top-level test class에 annotation을 달 수 있으며 이는 모든 nested test class에 재귀적으로 적용됩니다.
 
-In order to allow development teams to change the default to `OVERRIDE` – for example,
-for compatibility with Spring Framework 5.0 through 5.2 – the default mode can be changed
-globally via a JVM system property or a `spring.properties` file in the root of the
-classpath. See the <<integration-testing-annotations-nestedtestconfiguration, "Changing
-the default enclosing configuration inheritance mode">> note for details.
+개발팀이 기본값을 'OVERRIDE'로 변경하도록 허용하기 위해(예를 들어 Spring Framework 5.0 ~ 5.2와의 호환성을 위해) JVM system property 또는 classpath의 root에 있는  `spring.properties` file을 통해 default mode를 전역적으로 변경할 수 있습니다.
+자세한 내용은 <<integration-testing-annotations-nestedtestconfiguration, "Changing
+the default enclosing configuration inheritance mode">> 참고를 참조하세요.
 
-Although the following "Hello World" example is very simplistic, it shows how to declare
-common configuration on a top-level class that is inherited by its `@Nested` test
-classes. In this particular example, only the `TestConfig` configuration class is
-inherited. Each nested test class provides its own set of active profiles, resulting in a
-distinct `ApplicationContext` for each nested test class (see
-<<testcontext-ctx-management-caching>> for details). Consult the list of
-<<integration-testing-annotations-nestedtestconfiguration, supported annotations>> to see
-which annotations can be inherited in `@Nested` test classes.
+다음 "Hello World" 예제는 매우 단순하지만 `@Nested` test class가 상속하는 top-level class에서 공통 구성을 선언하는 방법을 보여줍니다
+이 특정 예에서는 `TestConfig` configuration class만 상속됩니다.
+각 중첩된 test class는 고유한 active profile set을 제공하므로 각 중첩된 test class에 대해 고유한 `ApplicationContext` 가 생성됩니다 (자세한 내용은 <<testcontext-ctx-management-caching>> 참조).
+<<integration-testing-annotations-nestedtestconfiguration,지원되는 annotation>> 목록을 참조하여 `@Nested` test class에서 상속할 수 있는 annotation을 확인하십시오.
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -5972,108 +5819,79 @@ which annotations can be inherited in `@Nested` test classes.
 [[testcontext-support-classes-testng]]
 ===== TestNG Support Classes
 
-The `org.springframework.test.context.testng` package provides the following support
-classes for TestNG based test cases:
+`org.springframework.test.context.testng` package는 TestNG 기반 테스트 케이스에 대해 다음 지원 클래스를 제공합니다:
 
 * `AbstractTestNGSpringContextTests`
 * `AbstractTransactionalTestNGSpringContextTests`
 
-`AbstractTestNGSpringContextTests` is an abstract base test class that integrates the
-Spring TestContext Framework with explicit `ApplicationContext` testing support in a
-TestNG environment. When you extend `AbstractTestNGSpringContextTests`, you can access a
-`protected` `applicationContext` instance variable that you can use to perform explicit
-bean lookups or to test the state of the context as a whole.
+`AbstractTestNGSpringContextTests` 는 Spring TestContext framework를 TestNG 환경에서 명시적인 `ApplicationContext` 테스트 지원과 통합하는 abstract base test class입니다.
+`AbstractTestNGSpringContextTests` 를 확장할 때 명시적인 bean lookup을 수행하거나 전체 context의 상태를 테스트하는 데 사용할 수 있는 `protected` `applicationContext` instance variable에 액세스 할 수 있습니다.
 
-`AbstractTransactionalTestNGSpringContextTests` is an abstract transactional extension of
-`AbstractTestNGSpringContextTests` that adds some convenience functionality for JDBC
-access. This class expects a `javax.sql.DataSource` bean and a
-`PlatformTransactionManager` bean to be defined in the `ApplicationContext`. When you
-extend `AbstractTransactionalTestNGSpringContextTests`, you can access a `protected`
-`jdbcTemplate` instance variable that you can use to run SQL statements to query the
-database. You can use such queries to confirm database state both before and after
-running database-related application code, and Spring ensures that such queries run in
-the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <<testcontext-tx-false-positives, false positives>>.
-As mentioned in <<integration-testing-support-jdbc>>,
-`AbstractTransactionalTestNGSpringContextTests` also provides convenience methods that
-delegate to methods in `JdbcTestUtils` by using the aforementioned `jdbcTemplate`.
-Furthermore, `AbstractTransactionalTestNGSpringContextTests` provides an
-`executeSqlScript(..)` method for running SQL scripts against the configured `DataSource`.
+`AbstractTransactionalTestNGSpringContextTests` 는 JDBC 액세스를 위한 몇 가지 편리한 기능을 추가하는 `AbstractTestNGSpringContextTests` 의 abstract transactional extension입니다.
+이 class는 `javax.sql.DataSource` bean과 `PlatformTransactionManager` bean이 `ApplicationContext` 에 정의될 것으로 예상합니다.
+`AbstractTransactionalTestNGSpringContextTests` 를 확장하면 데이터베이스를 쿼리하기 위해 SQL statement를 실행하는데 사용할 수 있는 `protected` `jdbcTemplate` instance variable에 액세스 할 수 있습니다.
+이러한 쿼리를 사용하여 데이터베이스 관련 애플리케이션 코드를 실행하기 전후에 데이터베이스 상태를 확인할 수 있으며 Spring은 이러한 쿼리가 애플리케이션 코드와 동일한 transaction 범위에서 실행되도록 합니다.
+ORM tool과 함께 사용하는 경우 <<testcontext-tx-false-positives, false positives>>를 피하십시오.
+<<integration-testing-support-jdbc>>에서 언급했듯이 `AbstractTransactionalTestNGSpringContextTests` 는 앞서 언급한 `jdbcTemplate` 을 사용하여 `JdbcTestUtils` 의 method에 위임하는 편리한 method도 제공합니다.
+또한 `AbstractTransactionalTestNGSpringContextTests` 는 구성된 `DataSource` 에 대해 SQL script를 실행하기 위한 `executeSqlScript(..)` method를 제공합니다.
 
-TIP: These classes are a convenience for extension. If you do not want your test classes
-to be tied to a Spring-specific class hierarchy, you can configure your own custom test
-classes by using `@ContextConfiguration`, `@TestExecutionListeners`, and so on and by
-manually instrumenting your test class with a `TestContextManager`. See the source code
-of `AbstractTestNGSpringContextTests` for an example of how to instrument your test class.
+TIP: 이 class는 확장에 편리합니다.
+test class가 Spring 관련 class hierarchy에 연결되는 것을 원하지 않는 경우 `@ContextConfiguration`, `@TestExecutionListeners` 등을 사용하고 `TestContextManager` 로 test class를 수동으로 계측하여 custom test class를 구성 할 수 있습니다.
+테스트 클래스를 계측하는 방법에 대한 예제는 `AbstractTestNGSpringContextTests` 의 소스 코드를 참조하십시오.
+See the source code of `AbstractTestNGSpringContextTests` for an example of how to instrument your test class.
 
 
-
-include::testing/testing-webtestclient.adoc[leveloffset=+2]
-
+include::spring/framework/testing/testing-webtestclient.adoc[leveloffset=+2]
 
 
 [[spring-mvc-test-framework]]
 === MockMvc
 
-The Spring MVC Test framework, also known as MockMvc, provides support for testing Spring
-MVC applications. It performs full Spring MVC request handling but via mock request and
-response objects instead of a running server.
+MockMvc라고도 하는 Spring MVC Test framework는 Spring MVC application 테스트를 지원합니다.
+전체 Spring MVC 요청 처리를 수행하지만 실행 중인 서버 대신 mock request 및 response object를 통해 수행합니다.
 
-MockMvc can be used on its own to perform requests and verify responses. It can also be
-used through the <<webtestclient>> where MockMvc is plugged in as the server to handle
-requests with. The advantage of `WebTestClient` is the option to work with higher level
-objects instead of raw data as well as the ability to switch to full, end-to-end HTTP
-tests against a live server and use the same test API.
-
+MockMvc는 자체적으로 요청을 수행하고 응답을 확인하는데 사용할 수 있습니다.
+MockMvc가 요청을 처리할 서버로 연결되는 <<webtestclient>> 를 통해 사용할수도 있습니다
+`WebTestClient` 의 장점은 raw data 대신 higher level objects로 작업할 수 있는 옵션과 live server에 대해 완전한 end-to-end HTTP 테스트로 전환하고 동일한 테스트 API를 사용하는 기능입니다.
 
 [[spring-mvc-test-server]]
 ==== Overview
 
-You can write plain unit tests for Spring MVC by instantiating a controller, injecting it
-with dependencies, and calling its methods. However such tests do not verify request
-mappings, data binding, message conversion, type conversion, validation, and nor
-do they involve any of the supporting `@InitBinder`, `@ModelAttribute`, or
-`@ExceptionHandler` methods.
+controller를 instance화하고 dependency를 inject하고 method를 호출하여 Spring MVC에 대한 일반 단위 테스트를 작성할 수 있습니다.
+그러나 이러한 테스트는 request mapping, data binding, message conversion, type conversion, validation을 확인하지 않으며 지원하는 `@InitBinder`, `@ModelAttribute` 또는 `@ExceptionHandler` method를 포함하지도 않습니다.
 
-The Spring MVC Test framework, also known as `MockMvc`, aims to provide more complete
-testing for Spring MVC controllers without a running server. It does that by invoking
-the `DispacherServlet` and passing
-<<mock-objects-servlet, "`mock`" implementations of the Servlet API>> from the
-`spring-test` module which replicates the full Spring MVC request handling without
-a running server.
+`MockMvc` 라고도 하는 Spring MVC Test framework는 running server없이 Spring MVC controller에 대한 보다 완전한 테스트를 제공하는 것을 목표로합니다.
+`DispacherServlet` 을 호출하고 running server 없이 전체 Spring MVC request 처리를 복제하는 `spring-test` module에서 <<mock-objects-servlet, the Servlet API의 "`mock`" 구현>>을 전달하여 이를 수행합니다.
 
-MockMvc is a server side test framework that lets you verify most of the functionality
-of a Spring MVC application using lightweight and targeted tests. You can use it on
-its own to perform requests and to verify responses, or you can also use it through
-the <<webtestclient>> API with MockMvc plugged in as the server to handle requests
-with.
+`MockMvc` 는 lightweight 및 targeted test를 사용하여 Spring MVC application의 기능 대부분을 검증할 수 있는 서버 측 test framework입니다.
+요청을 수행하고 응답을 확인하기위해 자체적으로 사용하거나 요청을 처리할 서버로 연결된 MockMvc와 함께 <<webtestclient>> API를 통해 사용할 수도 있습니다.
 
 
 [[spring-mvc-test-server-static-imports]]
 ===== Static Imports
 
-When using MockMvc directly to perform requests, you'll need static imports for:
+MockMvc를 직접 사용하여 요청을 수행하는 경우 다음에 대한 static import가 필요합니다:
 
 - `MockMvcBuilders.{asterisk}`
 - `MockMvcRequestBuilders.{asterisk}`
 - `MockMvcResultMatchers.{asterisk}`
 - `MockMvcResultHandlers.{asterisk}`
 
-An easy way to remember that is search for `MockMvc*`. If using Eclipse be sure to also
-add the above as "`favorite static members`" in the Eclipse preferences.
+이를 기억하는 쉬운 방법은 `MockMvc*` 를 검색하는 것입니다.
+Eclipse를 사용하는 경우 Eclipse 환경 설정에서 위의 "`favorite static members`" 도 추가해야합니다.
 
-When using MockMvc through the <<webtestclient>> you do not need static imports.
-The `WebTestClient` provides a fluent API without static imports.
+<<webtestclient>> 를 통해 MockMvc를 사용할 때 static import가 필요하지 않습니다.
+`WebTestClient` 는 static import없이 유창한 API를 제공합니다.
 
 
 [[spring-mvc-test-server-setup-options]]
 ===== Setup Choices
 
-MockMvc can be setup in one of two ways. One is to point directly to the controllers you
-want to test and programmatically configure Spring MVC infrastructure. The second is to
-point to Spring configuration with Spring MVC and controller infrastructure in it.
+MockMvc는 2가지 방법 중 하나로 설정할 수 있습니다.
+하나는 테스트하려는 컨트롤러를 직접 가리키고 Spring MVC infrastructure를 프로그래밍 방식으로 구성하는 것입니다.
+두 번째는 Spring MVC 및 controller infrastructure가 포함된 Spring configuration을 가리키는 것입니다.
 
-To set up MockMvc for testing a specific controller, use the following:
+특정 controller를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용하십시오:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6109,11 +5927,9 @@ To set up MockMvc for testing a specific controller, use the following:
 	}
 ----
 
-Or you can also use this setup when testing through the
-<<webtestclient-controller-config, WebTestClient>> which delegates to the same builder
-as shown above.
+또는 위에 표시된 것과 동일한 build에 위임하는 <<webtestclient-controller-config, WebTestClient>>를 통해 테스트 할때도 이 설정을 사용할 수 있습니다.
 
-To set up MockMvc through Spring configuration, use the following:
+Spring configuration을 통해 MockMvc를 설정하려면 다음을 사용하십시오:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java
@@ -6151,20 +5967,15 @@ To set up MockMvc through Spring configuration, use the following:
 	}
 ----
 
-Or you can also use this setup when testing through the
-<<webtestclient-context-config, WebTestClient>> which delegates to the same builder
-as shown above.
+또는 위에 표시된 것과 동일한 builder에 위임하는 <<webtestclient-context-config, WebTestClient>>를 통해 테스트 할때도 이 설정을 사용할 수 있습니다.
 
 
+어떤 setup option을 사용해야합니까?
 
-Which setup option should you use?
-
-The `webAppContextSetup` loads your actual Spring MVC configuration, resulting in a more
-complete integration test. Since the TestContext framework caches the loaded Spring
-configuration, it helps keep tests running fast, even as you introduce more tests in your
-test suite. Furthermore, you can inject mock services into controllers through Spring
-configuration to remain focused on testing the web layer. The following example declares
-a mock service with Mockito:
+`webAppContextSetup` 은 실제 Spring MVC configuration을 로드하여 보다 완전한 통합 테스트를 수행합니다.
+TestContext framework는 로드된 Spring configuration을 cache하기 때문에 test suite에 더 많은 테스트를 도입하더라도 테스트를 빠르게 실행하는데 도움이됩니다.
+또한 Spring 구성을 통해 controller에 mock service를 inject하여 web layer test에 계속 집중할 수 있습니다.
+다음 예제는 Mockito로 mock service를 선언합니다:
 
 [source,xml,indent=0,subs="verbatim,quotes"]
 ----
@@ -6173,8 +5984,7 @@ a mock service with Mockito:
 	</bean>
 ----
 
-You can then inject the mock service into the test to set up and verify your
-expectations, as the following example shows:
+그런 다음 mock service를 테스트에 inject하여 다음 예제와 같이 기대치를 설정하고 확인할 수 있습니다:
 
 [source,java,indent=0,subs="verbatim,quotes",role="primary"]
 .Java

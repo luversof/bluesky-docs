@@ -319,6 +319,27 @@ window.onload = function() {
 </li>
 </ul>
 </li>
+<li><a href="#webtestclient">WebTestClient</a>
+<ul class="sectlevel3">
+<li><a href="#webtestclient-setup">Setup</a>
+<ul class="sectlevel4">
+<li><a href="#webtestclient-controller-config">Bind to Controller</a></li>
+<li><a href="#webtestclient-context-config">Bind to <code>ApplicationContext</code></a></li>
+<li><a href="#webtestclient-fn-config">Bind to Router Function</a></li>
+<li><a href="#webtestclient-server-config">Bind to Server</a></li>
+<li><a href="#webtestclient-client-config">Client Config</a></li>
+</ul>
+</li>
+<li><a href="#webtestclient-tests">Writing Tests</a>
+<ul class="sectlevel4">
+<li><a href="#webtestclient-no-content">No Content</a></li>
+<li><a href="#webtestclient-json">JSON Content</a></li>
+<li><a href="#webtestclient-stream">Streaming Responses</a></li>
+<li><a href="#webtestclient-mockmvc">MockMvc Assertions</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#spring-mvc-test-framework">MockMvc</a>
 <ul class="sectlevel3">
 <li><a href="#spring-mvc-test-server">Overview</a>
@@ -480,7 +501,7 @@ Spring Framework 5.0부터 <code>org.springframework.mock.web</code> 의 mock ob
 application은 custom write function을 설정할 수 있습니다. (예를 들면 infinite stream 테스트)</p>
 </div>
 <div class="paragraph">
-<p><a href="#webtestclient">[webtestclient]</a> 는 HTTP server없이 WebFlux application을 테스트하기 위한 지원을 제공하기 위해 mock request 및 response를 기반으로 합니다.
+<p><a href="#webtestclient">WebTestClient</a> 는 HTTP server없이 WebFlux application을 테스트하기 위한 지원을 제공하기 위해 mock request 및 response를 기반으로 합니다.
 client는 또한 실행중인 server와 end-to-end 테스트에도 사용할 수 있습니다.</p>
 </div>
 </div>
@@ -7136,14 +7157,11 @@ class FictitiousTransactionalTest {
 <td class="content">
 <div class="title">Avoid false positives when testing ORM code</div>
 <div class="paragraph">
-<p>When you test application code that manipulates the state of a Hibernate session or JPA
-persistence context, make sure to flush the underlying unit of work within test methods
-that run that code. Failing to flush the underlying unit of work can produce false
-positives: Your test passes, but the same code throws an exception in a live, production
-environment. Note that this applies to any ORM framework that maintains an in-memory unit
-of work. In the following Hibernate-based example test case, one method demonstrates a
-false positive, and the other method correctly exposes the results of flushing the
-session:</p>
+<p>Hibernate session 또는 JPA persistence context의 상태를 조작하는 애플리케이션 코드를 테스트 할 때 해당 코드를 실행하는 test method 내에서 기본 작업 단위를 flush 해야합니다.
+기본 작업 단위를 flush하지 못하면 오 탐지가 발생할 수 있습니다.
+테스트는 통과했지만 동일한 코드가 실제 프로덕션 환경에서 예외를 발생시킵니다.
+이는 in-memory 작업 단위를 유지하는 모든 ORM framework에 적용됩니다.
+다음 Hibernate 기반 예제 test case에서 한 method는 오 탐지를 보여주고 다른 method는 session을 flush 한 결과를 올바르게 노출합니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7200,7 +7218,7 @@ fun updateWithSessionFlush() {
 </div>
 </div>
 <div class="paragraph">
-<p>The following example shows matching methods for JPA:</p>
+<p>다음 예는 JPA에 대한 matching methods를 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7265,25 +7283,18 @@ void updateWithEntityManagerFlush() {
 <div class="sect3">
 <h4 id="testcontext-executing-sql">Executing SQL Scripts</h4>
 <div class="paragraph">
-<p>When writing integration tests against a relational database, it is often beneficial to
-run SQL scripts to modify the database schema or insert test data into tables. The
-<code>spring-jdbc</code> module provides support for <em>initializing</em> an embedded or existing database
-by executing SQL scripts when the Spring <code>ApplicationContext</code> is loaded. See
-<a href="data-access.html#jdbc-embedded-database-support">Embedded database support</a> and
-<a href="data-access.html#jdbc-embedded-database-dao-testing">Testing data access logic with an
-embedded database</a> for details.</p>
+<p>관계형 데이터베이스에 대한 통합 테스트를 작성할 때 SQL script를 실행하여 데이터베이스 스키마를 수정하거나 테스트 데이터를 테이블에 삽입하는 것이 유용한 경우가 많습니다.
+<code>spring-jdbc</code> module은 Spring <code>ApplicationContext</code> 가 로드될 때 SQL script를 실행하여 embedded 또는 기존 데이터베이스를 <em>초기화</em> 하는 지원을 제공합니다.
+자세한 내용은 <a href="data-access.html#jdbc-embedded-database-support">Embedded database support</a> 및 <a href="data-access.html#jdbc-embedded-database-dao-testing">Testing data access logic with an embedded database</a>를 참조하십시오.</p>
 </div>
 <div class="paragraph">
-<p>Although it is very useful to initialize a database for testing <em>once</em> when the
-<code>ApplicationContext</code> is loaded, sometimes it is essential to be able to modify the
-database <em>during</em> integration tests. The following sections explain how to run SQL
-scripts programmatically and declaratively during integration tests.</p>
+<p><code>ApplicationContext</code> 가 로드될 때 한 번 테스트하기 위해 데이터베이스를 초기화하는 것은 매우 유용하지만 때로는 통합 테스트 <em>중에</em> 데이터베이스를 수정할 수 있어야합니다.
+다음 section에서는 통합 테스트 중에 SQL script를 프로그래밍 방식으로 선언적으로 실행하는 방법을 설명합니다.</p>
 </div>
 <div class="sect4">
 <h5 id="testcontext-executing-sql-programmatically">Executing SQL scripts programmatically</h5>
 <div class="paragraph">
-<p>Spring provides the following options for executing SQL scripts programmatically within
-integration test methods.</p>
+<p>Spring은 통합 test method 내에서 프로그래밍 방식으로 SQL script를 실행하기 위해 다음과 같은 옵션을 제공합니다.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -7302,27 +7313,17 @@ integration test methods.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><code>ScriptUtils</code> provides a collection of static utility methods for working with SQL
-scripts and is mainly intended for internal use within the framework. However, if you
-require full control over how SQL scripts are parsed and run, <code>ScriptUtils</code> may suit
-your needs better than some of the other alternatives described later. See the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/jdbc/datasource/init/ScriptUtils.html">javadoc</a> for individual
-methods in <code>ScriptUtils</code> for further details.</p>
+<p><code>ScriptUtils</code> 는 SQL script 작업을 위한 static utility method 모음을 제공하며 주로 framework 내에서 내부용으로 사용됩니다
+그러나 SQL script를 구문 분석하고 실행하는 방법을 완전히 제어해야하는 경우 <code>ScriptUtils</code> 가 나중에 설명하는 다른 대안보다 더 잘 맞을 수 있습니다.
+자세한 내용은 <code>ScriptUtils</code> 의 개별 method에 대한 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/jdbc/datasource/init/ScriptUtils.html">javadoc</a>을 참조하십시오.</p>
 </div>
 <div class="paragraph">
-<p><code>ResourceDatabasePopulator</code> provides an object-based API for programmatically populating,
-initializing, or cleaning up a database by using SQL scripts defined in external
-resources. <code>ResourceDatabasePopulator</code> provides options for configuring the character
-encoding, statement separator, comment delimiters, and error handling flags used when
-parsing and running the scripts. Each of the configuration options has a reasonable
-default value. See the
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/jdbc/datasource/init/ResourceDatabasePopulator.html">javadoc</a> for
-details on default values. To run the scripts configured in a
-<code>ResourceDatabasePopulator</code>, you can invoke either the <code>populate(Connection)</code> method to
-run the populator against a <code>java.sql.Connection</code> or the <code>execute(DataSource)</code> method
-to run the populator against a <code>javax.sql.DataSource</code>. The following example
-specifies SQL scripts for a test schema and test data, sets the statement separator to
-<code>@@</code>, and run the scripts against a <code>DataSource</code>:</p>
+<p><code>ResourceDatabasePopulator</code> 는 외부 resources에 정의된 SQL script를 사용하여 프로그래밍 방식으로 데이터베이스를 채우거나 초기화하거나 정리하기위한 object-based API를 제공합니다.
+<code>ResourceDatabasePopulator</code> 는 script를 구문 분석하고 실행할 때 사용되는 character encoding, statement separator, comment delimiters, 및 error handling flag를 구성하기 위한 옵션을 제공합니다.
+각 구성 옵션에는 적절한 기본값이 있습니다.
+기본값에 대한 자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/jdbc/datasource/init/ResourceDatabasePopulator.html">javadoc</a>을 참조하십시오.
+<code>ResourceDatabasePopulator</code> 에 구성된 script를 실행하려면 <code>populate(Connection)</code> method를 호출하여 <code>java.sql.Connection</code> 에 대해 populator를 실행하거나 <code>execute(DataSource)</code> method를 호출하여 <code>javax.sql.DataSource</code> 에 대해 populator를 실행할 수 있습니다.
+다음 예제에서는 test schema 및 test data에 대한 SQL script를 지정하고 statement separator를 <code>@@</code> 로 설정하고 <code>DataSource</code> 에 대해 script를 실행합니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7355,23 +7356,17 @@ fun databaseTest() {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <code>ResourceDatabasePopulator</code> internally delegates to <code>ScriptUtils</code> for parsing
-and running SQL scripts. Similarly, the <code>executeSqlScript(..)</code> methods in
-<a href="#testcontext-support-classes-junit4"><code>AbstractTransactionalJUnit4SpringContextTests</code></a>
-and <a href="#testcontext-support-classes-testng"><code>AbstractTransactionalTestNGSpringContextTests</code></a>
-internally use a <code>ResourceDatabasePopulator</code> to run SQL scripts. See the Javadoc for the
-various <code>executeSqlScript(..)</code> methods for further details.</p>
+<p><code>ResourceDatabasePopulator`는 SQL script를 구문 분석하고 실행하기 위해 내부적으로 `ScriptUtils</code> 에 위임합니다.
+마찬가지로 <a href="#testcontext-support-classes-junit4"><code>AbstractTransactionalJUnit4SpringContextTests</code></a> 및 <a href="#testcontext-support-classes-testng"><code>AbstractTransactionalTestNGSpringContextTests</code></a> 의 <code>executeSqlScript(..)</code> method는 내부적으로 <code>ResourceDatabasePopulator</code> 를 사용하여 SQL script를 실행합니다.
+자세한 내용은 다양한 <code>executeSqlScript(..)</code> method에 대한 Javadoc을 참조하십시오.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-executing-sql-declaratively">Executing SQL scripts declaratively with @Sql</h5>
 <div class="paragraph">
-<p>In addition to the aforementioned mechanisms for running SQL scripts programmatically,
-you can declaratively configure SQL scripts in the Spring TestContext Framework.
-Specifically, you can declare the <code>@Sql</code> annotation on a test class or test method to
-configure individual SQL statements or the resource paths to SQL scripts that should be
-run against a given database before or after an integration test method. Support for
-<code>@Sql</code> is provided by the <code>SqlScriptsTestExecutionListener</code>, which is enabled by default.</p>
+<p>SQL script를 프로그래밍 방식으로 실행하기 위한 앞서 언급한 메커니즘 외에도 Spring TestContext Framework에서 SQL script를 선언적으로 구성할 수 있습니다.
+특히 test class 또는 test method에서 <code>@Sql</code> annotation을 선언하여 통합 테스트 method 전후에 주어진 데이터베이스에 대해 실행해야하는 SQL script에 대한 개별 SQL statement 또는 resource path를 구성 할 수 있습니다.
+<code>@Sql</code> 에 대한 지원은 기본적으로 활성화되어있는 <code>SqlScriptsTestExecutionListener</code> 에서 제공합니다.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -7380,10 +7375,9 @@ run against a given database before or after an integration test method. Support
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Method-level <code>@Sql</code> declarations override class-level declarations by default. As
-of Spring Framework 5.2, however, this behavior may be configured per test class or per
-test method via <code>@SqlMergeMode</code>. See
-<a href="#testcontext-executing-sql-declaratively-script-merging">Merging and Overriding Configuration with <code>@SqlMergeMode</code></a> for further details.
+method-level <code>@Sql</code> 선언은 기본적으로 class-level 선언을 재정의합니다.
+그러나 Spring Framework 5.2부터 이 동작은 <code>@SqlMergeMode</code> 를 통해 test class 또는 test method 별로 구성할 수 있습니다.
+자세한 내용은 <a href="#testcontext-executing-sql-declaratively-script-merging">Merging and Overriding Configuration with <code>@SqlMergeMode</code></a>를 참조하세요.
 </td>
 </tr>
 </table>
@@ -7391,16 +7385,13 @@ test method via <code>@SqlMergeMode</code>. See
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-script-resources">Path Resource Semantics</h6>
 <div class="paragraph">
-<p>Each path is interpreted as a Spring <code>Resource</code>. A plain path (for example,
-<code>"schema.sql"</code>) is treated as a classpath resource that is relative to the package in
-which the test class is defined. A path starting with a slash is treated as an absolute
-classpath resource (for example, <code>"/org/example/schema.sql"</code>). A path that references a
-URL (for example, a path prefixed with <code>classpath:</code>, <code>file:</code>, <code>http:</code>) is loaded by using
-the specified resource protocol.</p>
+<p>각 path는 Spring <code>Resource</code> 로 해석됩니다.
+일반 path(예: <code>"schema.sql"</code>)는 test class가 정의된 package에 상대적인 classpath resource로 처리됩니다.
+slash로 시작하는 path는 absolute classpath resource로 처리됩니다 (예 : <code>"/org/example/schema.sql"</code>).
+URL을 참조하는 path (예: <code>classpath:</code>, <code>file:</code>, <code>http:</code> prefix가 붙은 path)는 지정된 resource protocol을 사용하여 로드됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use <code>@Sql</code> at the class level and at the method level
-within a JUnit Jupiter based integration test class:</p>
+<p>다음 예제는 JUnit Jupiter 기반 통합 테스트 클래스 내에서 class level 및 method level에서 <code>@Sql</code> 을 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7446,20 +7437,16 @@ class DatabaseTests {
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-script-detection">Default Script Detection</h6>
 <div class="paragraph">
-<p>If no SQL scripts or statements are specified, an attempt is made to detect a <code>default</code>
-script, depending on where <code>@Sql</code> is declared. If a default cannot be detected, an
-<code>IllegalStateException</code> is thrown.</p>
+<p>SQL script 나 statement가 지정되지 않은 경우 <code>@Sql</code> 이 선언된 위치에 따라 <code>default</code> script를 검색하려고 시도합니다.
+기본값을 감지할 수 없는 경우 <code>IllegalStateException</code> 이 발생합니다.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Class-level declaration: If the annotated test class is <code>com.example.MyTest</code>, the
-corresponding default script is <code>classpath:com/example/MyTest.sql</code>.</p>
+<p>class-level 선언 : annotation이 달린 test class가 <code>com.example.MyTest</code> 인 경우 해당 default script는 <code>classpath:com/example/MyTest.sql</code> 입니다.</p>
 </li>
 <li>
-<p>Method-level declaration: If the annotated test method is named <code>testMethod()</code> and is
-defined in the class <code>com.example.MyTest</code>, the corresponding default script is
-<code>classpath:com/example/MyTest.testMethod.sql</code>.</p>
+<p>method-level 선언: annotation이 달린 test method의 이름이 <code>testMethod()</code> 이고 <code>com.example.MyTest</code> class에 정의된 경우 해당 default script는 <code>classpath:com/example/MyTest.testMethod.sql</code> 입니다.</p>
 </li>
 </ul>
 </div>
@@ -7467,15 +7454,12 @@ defined in the class <code>com.example.MyTest</code>, the corresponding default 
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-multiple-annotations">Declaring Multiple <code>@Sql</code> Sets</h6>
 <div class="paragraph">
-<p>If you need to configure multiple sets of SQL scripts for a given test class or test
-method but with different syntax configuration, different error handling rules, or
-different execution phases per set, you can declare multiple instances of <code>@Sql</code>. With
-Java 8, you can use <code>@Sql</code> as a repeatable annotation. Otherwise, you can use the
-<code>@SqlGroup</code> annotation as an explicit container for declaring multiple instances of
-<code>@Sql</code>.</p>
+<p>주어진 test class 또는 test method에 대해 여러 SQL script set을 구성해야 하지만 다른 syntax configuration, 다른 error handling rule 또는 다른 execution phases per set를 사용하는 경우 <code>@Sql</code> 의 여러 instance를 선언 할 수 있습니다.
+Java 8에서는 <code>@Sql</code> 을 repeatable annotation으로 사용할 수 있습니다.
+그렇지 않으면 <code>@Sql</code> 의 여러 instance를 선언하기 위한 명시적 container로 <code>@SqlGroup</code> annotation을 사용할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to use <code>@Sql</code> as a repeatable annotation with Java 8:</p>
+<p>다음 예제는 Java 8에서 <code>@Sql</code> 을 repeatable annotation으로 사용하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7495,14 +7479,11 @@ void userTest() {
 </div>
 </div>
 <div class="paragraph">
-<p>In the scenario presented in the preceding example, the <code>test-schema.sql</code> script uses a
-different syntax for single-line comments.</p>
+<p>앞의 예제에 제시된 시나리오에서 <code>test-schema.sql</code> script는 single-line comments에 대해 다른 구문을 사용합니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example is identical to the preceding example, except that the <code>@Sql</code>
-declarations are grouped together within <code>@SqlGroup</code>. With Java 8 and above, the use of
-<code>@SqlGroup</code> is optional, but you may need to use <code>@SqlGroup</code> for compatibility with
-other JVM languages such as Kotlin.</p>
+<p>다음 예제는 <code>@Sql</code> 선언이 <code>@SqlGroup</code> 내에서 함께 그룹화된다는 점을 제외하면 앞의 예제와 동일합니다.
+Java 8 이상에서 <code>@SqlGroup</code> 사용은 선택 사항이지만 Kotlin과 같은 다른 JVM 언어와의 호환성을 위해 <code>@SqlGroup</code> 을 사용해야할 수도 있습니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7533,10 +7514,8 @@ fun userTest() {
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-script-execution-phases">Script Execution Phases</h6>
 <div class="paragraph">
-<p>By default, SQL scripts are run before the corresponding test method. However, if
-you need to run a particular set of scripts after the test method (for example, to clean
-up database state), you can use the <code>executionPhase</code> attribute in <code>@Sql</code>, as the
-following example shows:</p>
+<p>기본적으로 SQL script는 해당 test method 전에 실행됩니다.
+그러나 test method 후에 특정 script set을 실행해야하는 경우(예: 데이터베이스 상태 정리) 다음 예제와 같이 <code>@Sql</code> 에서 <code>executionPhase</code> attribute를 사용할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7574,63 +7553,38 @@ fun userTest() {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <code>ISOLATED</code> and <code>AFTER_TEST_METHOD</code> are statically imported from
-<code>Sql.TransactionMode</code> and <code>Sql.ExecutionPhase</code>, respectively.</p>
+<p><code>ISOLATED</code> 및 <code>AFTER_TEST_METHOD</code> 는 각각 <code>Sql.TransactionMode</code> 및 <code>Sql.ExecutionPhase</code> 에서 정적으로 가져옵니다.</p>
 </div>
 </div>
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-script-configuration">Script Configuration with <code>@SqlConfig</code></h6>
 <div class="paragraph">
-<p>You can configure script parsing and error handling by using the <code>@SqlConfig</code> annotation.
-When declared as a class-level annotation on an integration test class, <code>@SqlConfig</code>
-serves as global configuration for all SQL scripts within the test class hierarchy. When
-declared directly by using the <code>config</code> attribute of the <code>@Sql</code> annotation, <code>@SqlConfig</code>
-serves as local configuration for the SQL scripts declared within the enclosing <code>@Sql</code>
-annotation. Every attribute in <code>@SqlConfig</code> has an implicit default value, which is
-documented in the javadoc of the corresponding attribute. Due to the rules defined for
-annotation attributes in the Java Language Specification, it is, unfortunately, not
-possible to assign a value of <code>null</code> to an annotation attribute. Thus, in order to
-support overrides of inherited global configuration, <code>@SqlConfig</code> attributes have an
-explicit default value of either <code>""</code> (for Strings), <code>{}</code> (for arrays), or <code>DEFAULT</code> (for
-enumerations). This approach lets local declarations of <code>@SqlConfig</code> selectively override
-individual attributes from global declarations of <code>@SqlConfig</code> by providing a value other
-than <code>""</code>, <code>{}</code>, or <code>DEFAULT</code>. Global <code>@SqlConfig</code> attributes are inherited whenever
-local <code>@SqlConfig</code> attributes do not supply an explicit value other than <code>""</code>, <code>{}</code>, or
-<code>DEFAULT</code>. Explicit local configuration, therefore, overrides global configuration.</p>
+<p><code>@SqlConfig</code> annotation을 사용하여 script parsing 및 error handling을 구성할 수 있습니다.
+통합 테스트 클래스에서 class-level annotation으로 선언 된 경우 <code>@SqlConfig</code> 는 test class hierarchy 내의 모든 SQL script에 대한 global configuration 역할을 합니다.
+<code>@Sql</code> annotation의 <code>config</code> attribute을 사용하여 직접 선언할 때 <code>@SqlConfig</code> 는 둘러싸는 <code>@Sql</code> annotation 내에서 선언된 SQL script에 대한 local configuration 역할을 합니다.
+<code>@SqlConfig</code> 의 모든 attribute에는 해당 attribute의 javadoc에 문서화 된 암시적 기본값이 있습니다
+Java Language Specification의 annotation attribute에 대해 정의된 rule로 인해 안타깝게도 annotation attribute에 <code>null</code> 값을 할당할 수 없습니다.
+따라서 상속된 global configuration의 override를 지원하기 위해 <code>@SqlConfig</code> attribute에는 <code>""</code> (문자열의 경우), <code>{}</code> (배열의 경우) 또는 <code>DEFAULT</code> (열거형의 경우)의 명시적 기본값이 있습니다.
+이 접근 방식을 사용하면 <code>@SqlConfig</code> 의 로컬 선언이 <code>""</code>, <code>{}</code> 또는 <code>DEFAULT</code> 이외의 값을 제공하여 <code>@SqlConfig</code> 의 전역 선언에서 개별 attribute을 선택적으로 override 할 수 있습니다.
+global <code>@SqlConfig</code> attribute은 로컬 <code>@SqlConfig</code> attribute가 <code>""</code>, <code>{}</code> 또는 <code>DEFAULT</code> 이외의 명시적 값을 제공하지 않을 때마다 상속됩니다.
+따라서 명시적 local configuration이 global configuration보다 우선합니다.</p>
 </div>
 <div class="paragraph">
-<p>The configuration options provided by <code>@Sql</code> and <code>@SqlConfig</code> are equivalent to those
-supported by <code>ScriptUtils</code> and <code>ResourceDatabasePopulator</code> but are a superset of those
-provided by the <code>&lt;jdbc:initialize-database/&gt;</code> XML namespace element. See the javadoc of
-individual attributes in <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/Sql.html"><code>@Sql</code></a> and
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlConfig.html"><code>@SqlConfig</code></a> for details.</p>
+<p><code>@Sql</code> 및 <code>@SqlConfig</code> 에서 제공하는 configuration option은 <code>ScriptUtils</code> 및 <code>ResourceDatabasePopulator</code> 에서 지원하는 option과 동일하지만 <code>&lt;jdbc:initialize-database/&gt;</code> XML namespace element에서 제공하는 option의 superset입니다.
+자세한 내용은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/Sql.html"><code>@Sql</code></a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlConfig.html"><code>@SqlConfig</code></a>의 individual attributes에 대한 javadoc을 참조하십시오.</p>
 </div>
 <div id="testcontext-executing-sql-declaratively-tx" class="paragraph">
 <p><strong>Transaction management for <code>@Sql</code></strong></p>
 </div>
 <div class="paragraph">
-<p>By default, the <code>SqlScriptsTestExecutionListener</code> infers the desired transaction
-semantics for scripts configured by using <code>@Sql</code>. Specifically, SQL scripts are run
-without a transaction, within an existing Spring-managed transaction (for example, a
-transaction managed by the <code>TransactionalTestExecutionListener</code> for a test annotated with
-<code>@Transactional</code>), or within an isolated transaction, depending on the configured value
-of the <code>transactionMode</code> attribute in <code>@SqlConfig</code> and the presence of a
-<code>PlatformTransactionManager</code> in the test&#8217;s <code>ApplicationContext</code>. As a bare minimum,
-however, a <code>javax.sql.DataSource</code> must be present in the test&#8217;s <code>ApplicationContext</code>.</p>
+<p>기본적으로 <code>SqlScriptsTestExecutionListener</code> 는 <code>@Sql</code> 을 사용하여 구성된 script에 대해 원하는 transaction semantic을 유추합니다.
+특히 SQL script는 <code>@SqlConfig</code> 의 <code>transactionMode</code> attribute에 구성된 값과 test의 <code>ApplicationContext</code> 의 <code>PlatformTransactionManager</code> 존재 여부에 따라 transaction 없이 기존 Spring-managed transaction (예: <code>@Transactional</code> 로 annotation이 달린 테스트를 위해 <code>TransactionalTestExecutionListener</code> 가 관리하는 transaction) 내에서 또는 isolated transaction 내에서 실행됩니다.
+그러나 최소한 <code>javax.sql.DataSource</code> 는 테스트의 <code>ApplicationContext</code> 에 있어야합니다.</p>
 </div>
 <div class="paragraph">
-<p>If the algorithms used by <code>SqlScriptsTestExecutionListener</code> to detect a <code>DataSource</code> and
-<code>PlatformTransactionManager</code> and infer the transaction semantics do not suit your needs,
-you can specify explicit names by setting the <code>dataSource</code> and <code>transactionManager</code>
-attributes of <code>@SqlConfig</code>. Furthermore, you can control the transaction propagation
-behavior by setting the <code>transactionMode</code> attribute of <code>@SqlConfig</code> (for example, whether
-scripts should be run in an isolated transaction). Although a thorough discussion of all
-supported options for transaction management with <code>@Sql</code> is beyond the scope of this
-reference manual, the javadoc for
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlConfig.html"><code>@SqlConfig</code></a> and
-<a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlScriptsTestExecutionListener.html"><code>SqlScriptsTestExecutionListener</code></a>
-provide detailed information, and the following example shows a typical testing scenario
-that uses JUnit Jupiter and transactional tests with <code>@Sql</code>:</p>
+<p><code>SqlScriptsTestExecutionListener</code> 에서 <code>DataSource</code> 및 <code>PlatformTransactionManager</code> 를 감지하고 transaction semantic을 유추하는데 사용하는 알고리즘이 사용자의 요구에 맞지않는 경우 <code>@SqlConfig</code> 의 <code>dataSource</code> 및 <code>transactionManager</code> attribute를 설정하여 명시적인 name을 지정할 수 있습니다.
+또한 <code>@SqlConfig</code> 의 <code>transactionMode</code> attribute를 설정하여 transaction propagation 동작을 제어할 수 있습니다 (예: script가 isolated transaction에서 실행되어야 하는지 여부).
+<code>@Sql</code> 을 사용하여 transaction management를 위해 지원되는 모든 option에 대한 철저한 논의는 이 참조 매뉴얼의 범위를 벗어나지만 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlConfig.html"><code>@SqlConfig</code></a> 및 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/jdbc/SqlScriptsTestExecutionListener.html"><code>SqlScriptsTestExecutionListener</code></a> 에 대한 javadoc은 자세한 정보를 제공하며 다음 예제는 <code>@sql</code> 을 사용하여 JUnit Jupiter 및 transactional test를 사용하는 일반적인 테스트 시나리오를 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7694,23 +7648,19 @@ class TransactionalSqlScriptsTests @Autowired constructor(dataSource: DataSource
 </div>
 </div>
 <div class="paragraph">
-<p>Note that there is no need to clean up the database after the <code>usersTest()</code> method is
-run, since any changes made to the database (either within the test method or within the
-<code>/test-data.sql</code> script) are automatically rolled back by the
-<code>TransactionalTestExecutionListener</code> (see <a href="#testcontext-tx">transaction management</a> for
-details).</p>
+<p><code>usersTest()</code> method가 실행된 후 데이터베이스를 정리할 필요가 없습니다.
+(test method 내에서 또는 <code>/test-data.sql</code> script 내에서) 데이터베이스에 대한 변경 사항은 <code>TransactionalTestExecutionListener</code> 에 의해 자동으로 롤백되기 때문입니다.
+(자세한 내용은 <a href="#testcontext-tx">transaction management</a> 참조).</p>
 </div>
 </div>
 <div class="sect5">
 <h6 id="testcontext-executing-sql-declaratively-script-merging">Merging and Overriding Configuration with <code>@SqlMergeMode</code></h6>
 <div class="paragraph">
-<p>As of Spring Framework 5.2, it is possible to merge method-level <code>@Sql</code> declarations with
-class-level declarations. For example, this allows you to provide the configuration for a
-database schema or some common test data once per test class and then provide additional,
-use case specific test data per test method. To enable <code>@Sql</code> merging, annotate either
-your test class or test method with <code>@SqlMergeMode(MERGE)</code>. To disable merging for a
-specific test method (or specific test subclass), you can switch back to the default mode
-via <code>@SqlMergeMode(OVERRIDE)</code>. Consult the <a href="#spring-testing-annotation-sqlmergemode"><code>@SqlMergeMode</code> annotation documentation section</a> for examples and further details.</p>
+<p>Spring Framework 5.2부터는 method-level의 <code>@Sql</code> 선언을 class-level 선언과 merge 할 수 있습니다.
+예를 들어 이를 통해 test class 당 한 번씩 database schema 또는 일부 common test data에 대한 구성을 제공한 다음 test method 별로 추가 use case별 test data를 제공할 수 있습니다.
+<code>@Sql</code> merging을 활성화하려면 <code>@SqlMergeMode(MERGE)</code> 를 사용하여 test class 또는 test method에 annotation을 추가합니다.
+특정 test method (또는 특정 tes subclass)에 대한 merging을 비활성화하려면 <code>@SqlMergeMode(OVERRIDE)</code> 를 통해 default mode로 다시 전환할 수 있습니다.
+예제 및 추가 세부 사항은 <a href="#spring-testing-annotation-sqlmergemode"><code>@SqlMergeMode</code> annotation documentation section</a>을 참조하세요.</p>
 </div>
 </div>
 </div>
@@ -7718,10 +7668,8 @@ via <code>@SqlMergeMode(OVERRIDE)</code>. Consult the <a href="#spring-testing-a
 <div class="sect3">
 <h4 id="testcontext-parallel-test-execution">Parallel Test Execution</h4>
 <div class="paragraph">
-<p>Spring Framework 5.0 introduced basic support for executing tests in parallel within a
-single JVM when using the Spring TestContext Framework. In general, this means that most
-test classes or test methods can be run in parallel without any changes to test code
-or configuration.</p>
+<p>Spring Framework 5.0은 Spring TestContext Framework를 사용할 때 단일 JVM 내에서 병렬로 테스트를 실행하기위한 기본 지원을 도입했습니다.
+일반적으로 이는 테스트 코드나 구성을 변경하지 않고도 대부분의 test class 또는 test method를 병렬로 실행할 수 있음을 의미합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -7730,37 +7678,33 @@ or configuration.</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-For details on how to set up parallel test execution, see the documentation for your
-testing framework, build tool, or IDE.
+병렬 테스트 실행을 설정하는 방법에 대한 자세한 내용은 test framework, build tool 또는 IDE에 대한 설명서를 참조하세요.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Keep in mind that the introduction of concurrency into your test suite can result in
-unexpected side effects, strange runtime behavior, and tests that fail intermittently or
-seemingly randomly. The Spring Team therefore provides the following general guidelines
-for when not to run tests in parallel.</p>
+<p>test suite에 동시성을 도입하면 예기치 않은 부작용, 이상한 런타임 동작 및 간헐적으로 또는 겉보기에 무작위로 실패하는 테스트가 발생할 수 있습니다.
+따라서 Spring 팀은 테스트를 병렬로 실행하지 않을 때 다음과 같은 일반적인 지침을 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p>Do not run tests in parallel if the tests:</p>
+<p>다음과 같은 경우 테스트를 병렬로 실행하지 마십시오.:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Use Spring Framework&#8217;s <code>@DirtiesContext</code> support.</p>
+<p>Spring Framework의 <code>@DirtiesContext</code> 지원을 사용할 때.</p>
 </li>
 <li>
-<p>Use Spring Boot&#8217;s <code>@MockBean</code> or <code>@SpyBean</code> support.</p>
+<p>Spring Boot의 <code>@MockBean</code> 또는 <code>@SpyBean</code> 지원을 사용할 때.</p>
 </li>
 <li>
-<p>Use JUnit 4&#8217;s <code>@FixMethodOrder</code> support or any testing framework feature
-that is designed to ensure that test methods run in a particular order. Note,
-however, that this does not apply if entire test classes are run in parallel.</p>
+<p>JUnit 4의 <code>@FixMethodOrder</code> 지원 또는 test method가 특정 순서로 실행되도록 설계된 test framework 기능을 사용할 때.
+그러나 전체 test class가 병렬로 실행되는 경우에는 적용되지 않습니다.</p>
 </li>
 <li>
-<p>Change the state of shared services or systems such as a database, message broker,
-filesystem, and others. This applies to both embedded and external systems.</p>
+<p>database, message broker, filesystem 등과 같은 공유 서비스 또는 시스템의 상태를 변경할 때.
+이는 embbed 및 external system 모두에 적용됩니다.</p>
 </li>
 </ul>
 </div>
@@ -7772,17 +7716,13 @@ filesystem, and others. This applies to both embedded and external systems.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>If parallel test execution fails with an exception stating that the <code>ApplicationContext</code>
-for the current test is no longer active, this typically means that the
-<code>ApplicationContext</code> was removed from the <code>ContextCache</code> in a different thread.</p>
+<p>현재 테스트에 대한 <code>ApplicationContext</code> 가 더이상 활성 상태가 아니라는 예외와 함께 병렬 테스트 실행이 실패하면 일반적으로 <code>ApplicationContext</code> 가 다른 thread의 <code>ContextCache</code> 에서 제거되었음을 의미합니다.</p>
 </div>
 <div class="paragraph">
-<p>This may be due to the use of <code>@DirtiesContext</code> or due to automatic eviction from the
-<code>ContextCache</code>. If <code>@DirtiesContext</code> is the culprit, you either need to find a way to
-avoid using <code>@DirtiesContext</code> or exclude such tests from parallel execution. If the
-maximum size of the <code>ContextCache</code> has been exceeded, you can increase the maximum size
-of the cache. See the discussion on <a href="#testcontext-ctx-management-caching">context caching</a>
-for details.</p>
+<p>이는 <code>@DirtiesContext</code> 의 사용 또는 <code>ContextCache</code> 의 자동 제거 때문일 수 있습니다.
+<code>@DirtiesContext</code> 가 범인인 경우 <code>@DirtiesContext</code> 사용을 피하는 방법을 찾거나 이러한 테스트를 병렬 실행에서 제외해야 합니다.
+<code>ContextCache</code> 의 최대 크기를 초과한 경우 cache의 최대 크기를 늘릴 수 있습니다.
+자세한 내용은 <a href="#testcontext-ctx-management-caching">context caching</a>에 대한 토론을 참조하십시오.</p>
 </div>
 </td>
 </tr>
@@ -7795,12 +7735,9 @@ for details.</p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Parallel test execution in the Spring TestContext Framework is only possible if
-the underlying <code>TestContext</code> implementation provides a copy constructor, as explained in
-the javadoc for <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/TestContext.html"><code>TestContext</code></a>. The
-<code>DefaultTestContext</code> used in Spring provides such a constructor. However, if you use a
-third-party library that provides a custom <code>TestContext</code> implementation, you need to
-verify that it is suitable for parallel test execution.
+Spring TestContext Framework의 병렬 테스트 실행은 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/context/TestContext.html"><code>TestContext</code></a> 에 대한 javadoc에 설명된대로 기본 <code>TestContext</code> 구현이 copy constructor를 제공하는 경우에만 가능합니다.
+Spring에서 사용되는 <code>DefaultTestContext</code> 는 이러한 constructor를 제공합니다.
+그러나 custom <code>TestContext</code> 구현을 제공하는 third-party library를 사용하는 경우 병렬 테스트 실행에 적합한지 확인해야합니다.
 </td>
 </tr>
 </table>
@@ -7809,25 +7746,17 @@ verify that it is suitable for parallel test execution.
 <div class="sect3">
 <h4 id="testcontext-support-classes">TestContext Framework Support Classes</h4>
 <div class="paragraph">
-<p>This section describes the various classes that support the Spring TestContext Framework.</p>
+<p>이 section에서는 Spring TestContext Framework를 지원하는 다양한 class를 설명합니다.</p>
 </div>
 <div class="sect4">
 <h5 id="testcontext-junit4-runner">Spring JUnit 4 Runner</h5>
 <div class="paragraph">
-<p>The Spring TestContext Framework offers full integration with JUnit 4 through a custom
-runner (supported on JUnit 4.12 or higher). By annotating test classes with
-<code>@RunWith(SpringJUnit4ClassRunner.class)</code> or the shorter <code>@RunWith(SpringRunner.class)</code>
-variant, developers can implement standard JUnit 4-based unit and integration tests and
-simultaneously reap the benefits of the TestContext framework, such as support for
-loading application contexts, dependency injection of test instances, transactional test
-method execution, and so on. If you want to use the Spring TestContext Framework with an
-alternative runner (such as JUnit 4&#8217;s <code>Parameterized</code> runner) or third-party runners
-(such as the <code>MockitoJUnitRunner</code>), you can, optionally, use
-<a href="#testcontext-junit4-rules">Spring&#8217;s support for JUnit rules</a> instead.</p>
+<p>Spring TestContext Framework는 custom runner를 통해 JUnit 4와의 완전한 통합을 제공합니다 (JUnit 4.12 이상에서 지원됨).
+<code>@RunWith(SpringJUnit4ClassRunner.class)</code> 또는 더 짧은 <code>@RunWith(SpringRunner.class)</code> 변형으로 test class에 annotation을 달면 개발자는 표준 JUnit4 기반 단위 및 통합 테스트를 구현하는 동시에 application context 로드 지원, test instance의 dependency injection, transactional test method 실행 등 TestContext framework의 이점을 얻을 수 있습니다.
+Spring TestContext Framework를 대체 runner(예: JUnit 4의 <code>Parameterized</code> runner) 또는 third-party runners(예: <code>MockitoJUnitRunner</code>)와 함께 사용하려는 경우 선택적으로 <a href="#testcontext-junit4-rules">JUnit rule에 대한 Spring의 지원</a>을 대신 사용할 수 있습니다</p>
 </div>
 <div class="paragraph">
-<p>The following code listing shows the minimal requirements for configuring a test class to
-run with the custom Spring <code>Runner</code>:</p>
+<p>다음 코드 목록은 custom Spring <code>Runner</code> 로 실행할 test class를 구성하기위한 최소 요구 사항을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7858,16 +7787,14 @@ class SimpleTest {
 </div>
 </div>
 <div class="paragraph">
-<p>In the preceding example, <code>@TestExecutionListeners</code> is configured with an empty list, to
-disable the default listeners, which otherwise would require an <code>ApplicationContext</code> to
-be configured through <code>@ContextConfiguration</code>.</p>
+<p>앞의 예제에서 <code>@TestExecutionListeners</code> 는 empty list로 구성되어 default listener를 비활성화합니다.
+그렇지 않으면 <code>@ContextConfiguration</code> 을 통해 <code>ApplicationContext</code> 를 구성해야합니다.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-junit4-rules">Spring JUnit 4 Rules</h5>
 <div class="paragraph">
-<p>The <code>org.springframework.test.context.junit4.rules</code> package provides the following JUnit
-4 rules (supported on JUnit 4.12 or higher):</p>
+<p><code>org.springframework.test.context.junit4.rules</code> package는 다음 JUnit 4 rule을 제공합니다 (JUnit 4.12 이상에서 지원됨):</p>
 </div>
 <div class="ulist">
 <ul>
@@ -7880,20 +7807,14 @@ be configured through <code>@ContextConfiguration</code>.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><code>SpringClassRule</code> is a JUnit <code>TestRule</code> that supports class-level features of the Spring
-TestContext Framework, whereas <code>SpringMethodRule</code> is a JUnit <code>MethodRule</code> that supports
-instance-level and method-level features of the Spring TestContext Framework.</p>
+<p><code>SpringClassRule</code> 은 Spring TestContext Framework의 class-level 기능을 지원하는 JUnit <code>TestRule</code> 이고 <code>SpringMethodRule</code> 은 Spring TestContext Framework의 instalce-level 및 method-level 기능을 지원하는 JUnit <code>MethodRule</code> 입니다.</p>
 </div>
 <div class="paragraph">
-<p>In contrast to the <code>SpringRunner</code>, Spring&#8217;s rule-based JUnit support has the advantage of
-being independent of any <code>org.junit.runner.Runner</code> implementation and can, therefore, be
-combined with existing alternative runners (such as JUnit 4&#8217;s <code>Parameterized</code>) or
-third-party runners (such as the <code>MockitoJUnitRunner</code>).</p>
+<p><code>SpringRunner</code> 와 달리 Spring의 rule-based JUnit 지원은 <code>org.junit.runner.Runner</code> 구현과 독립적이라는 장점이 있으므로 기존 대체 runner(예: JUnit 4의 <code>Parameterized</code>) 또는 third-party runner(예: <code>MockitoJUnitRunner</code>)와 결합할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>To support the full functionality of the TestContext framework, you must combine a
-<code>SpringClassRule</code> with a <code>SpringMethodRule</code>. The following example shows the proper way
-to declare these rules in an integration test:</p>
+<p>TestContext framework의 전체 기능을 지원하려면 <code>SpringClassRule</code> 을 <code>SpringMethodRule</code> 과 결합해야합니다.
+다음 예는 통합 테스트에서 이러한 규칙을 선언하는 적절한 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -7941,8 +7862,7 @@ class IntegrationTest {
 <div class="sect4">
 <h5 id="testcontext-support-classes-junit4">JUnit 4 Support Classes</h5>
 <div class="paragraph">
-<p>The <code>org.springframework.test.context.junit4</code> package provides the following support
-classes for JUnit 4-based test cases (supported on JUnit 4.12 or higher):</p>
+<p><code>org.springframework.test.context.junit4</code> package는 JUnit 4 기반 테스트 케이스에 대해 다음 지원 클래스를 제공합니다 (JUnit 4.12 이상에서 지원됨).</p>
 </div>
 <div class="ulist">
 <ul>
@@ -7955,28 +7875,16 @@ classes for JUnit 4-based test cases (supported on JUnit 4.12 or higher):</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><code>AbstractJUnit4SpringContextTests</code> is an abstract base test class that integrates the
-Spring TestContext Framework with explicit <code>ApplicationContext</code> testing support in a
-JUnit 4 environment. When you extend <code>AbstractJUnit4SpringContextTests</code>, you can access a
-<code>protected</code> <code>applicationContext</code> instance variable that you can use to perform explicit
-bean lookups or to test the state of the context as a whole.</p>
+<p><code>AbstractJUnit4SpringContextTests</code> 는 JUnit 4 환경에서 명시적인 <code>ApplicationContext</code> 테스트 지원과 Spring TestContext Framework를 통합하는 추상 기본 테스트 클래스입니다. <code>AbstractJUnit4SpringContextTests</code> 를 확장할 때 명시적인 bean lookup을 수행하거나 전체 context의 상태를 테스트하는데 사용할 수 있는 <code>protected</code> <code>applicationContext</code> instance variable에 액세스 할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p><code>AbstractTransactionalJUnit4SpringContextTests</code> is an abstract transactional extension of
-<code>AbstractJUnit4SpringContextTests</code> that adds some convenience functionality for JDBC
-access. This class expects a <code>javax.sql.DataSource</code> bean and a
-<code>PlatformTransactionManager</code> bean to be defined in the <code>ApplicationContext</code>. When you
-extend <code>AbstractTransactionalJUnit4SpringContextTests</code>, you can access a <code>protected</code>
-<code>jdbcTemplate</code> instance variable that you can use to run SQL statements to query the
-database. You can use such queries to confirm database state both before and after
-running database-related application code, and Spring ensures that such queries run in
-the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <a href="#testcontext-tx-false-positives">false positives</a>.
-As mentioned in <a href="#integration-testing-support-jdbc">JDBC Testing Support</a>,
-<code>AbstractTransactionalJUnit4SpringContextTests</code> also provides convenience methods that
-delegate to methods in <code>JdbcTestUtils</code> by using the aforementioned <code>jdbcTemplate</code>.
-Furthermore, <code>AbstractTransactionalJUnit4SpringContextTests</code> provides an
-<code>executeSqlScript(..)</code> method for running SQL scripts against the configured <code>DataSource</code>.</p>
+<p><code>AbstractTransactionalJUnit4SpringContextTests</code> 는 JDBC 액세스를 위한 몇 가지 편리한 기능을 추가하는 <code>AbstractJUnit4SpringContextTests</code> 의 abstract transactional extension입니다.
+이 class는 <code>javax.sql.DataSource</code> bean과 <code>PlatformTransactionManager</code> bean이 <code>ApplicationContext</code> 에 정의될 것으로 예상합니다
+<code>AbstractTransactionalJUnit4SpringContextTests</code> 를 확장하면 데이터베이스를 쿼리하기 위해 SQL 문을 실행하는 데 사용할 수 있는 <code>protected</code> <code>jdbcTemplate</code> instance variable에 액세스할 수 있습니다.
+이러한 쿼리를 사용하여 데이터베이스 관련 애플리케이션 코드를 실행하기 전후에 데이터베이스 상태를 확인할 수 있으며 Spring은 이러한 쿼리가 애플리케이션 코드와 동일한 transaction 범위에서 실행되도록합니다.
+ORM 도구와 함께 사용하는 경우 <a href="#testcontext-tx-false-positives">false positives</a>를 피하십시오.
+<a href="#integration-testing-support-jdbc">JDBC Testing Support</a>에서 언급했듯이 <code>AbstractTransactionalJUnit4SpringContextTests`는 앞서 언급한 `jdbcTemplate</code> 을 사용하여 <code>JdbcTestUtils</code> 의 method에 위임하는 편리한 method도 제공합니다.
+또한 <code>AbstractTransactionalJUnit4SpringContextTests</code> 는 구성된 <code>DataSource</code> 에 대해 SQL script를 실행하기위한 <code>executeSqlScript(..)</code> method를 제공합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -7985,10 +7893,8 @@ Furthermore, <code>AbstractTransactionalJUnit4SpringContextTests</code> provides
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-These classes are a convenience for extension. If you do not want your test classes
-to be tied to a Spring-specific class hierarchy, you can configure your own custom test
-classes by using <code>@RunWith(SpringRunner.class)</code> or <a href="#testcontext-junit4-rules">Spring&#8217;s
-JUnit rules</a>.
+이 class는 확장에 편리합니다.
+test class가 Spring 특정 class hierarchy에 연결되는 것을 원하지 않는 경우 <code>@RunWith(SpringRunner.class)</code> 또는 <a href="#testcontext-junit4-rules">Spring&#8217;s JUnit rules</a>을 사용하여 custom test class를 구성 할 수 있습니다.
 </td>
 </tr>
 </table>
@@ -7997,40 +7903,30 @@ JUnit rules</a>.
 <div class="sect4">
 <h5 id="testcontext-junit-jupiter-extension">SpringExtension for JUnit Jupiter</h5>
 <div class="paragraph">
-<p>The Spring TestContext Framework offers full integration with the JUnit Jupiter testing
-framework, introduced in JUnit 5. By annotating test classes with
-<code>@ExtendWith(SpringExtension.class)</code>, you can implement standard JUnit Jupiter-based unit
-and integration tests and simultaneously reap the benefits of the TestContext framework,
-such as support for loading application contexts, dependency injection of test instances,
-transactional test method execution, and so on.</p>
+<p>Spring TestContext Framework는 JUnit 5에 도입된 JUnit Jupiter test framework와의 완전한 통합을 제공합니다.
+<code>@ExtendWith(SpringExtension.class)</code> 로 test class에 annotation을 달면 표준 JUnit Jupiter 기반 단위 및 통합 테스트를 구현하고 동시에 application context 로드 지원, test inatance의 dependency injection, transactional test method 실행 등 TestContext framework의 이점을 얻을수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>Furthermore, thanks to the rich extension API in JUnit Jupiter, Spring provides the
-following features above and beyond the feature set that Spring supports for JUnit 4 and
-TestNG:</p>
+<p>또한 JUnit Jupiter의 풍부한 확장 API 덕분에 Spring은 JUnit 4 및 TestNG에 대해 Spring이 지원하는 기능 set 이상의 다음 기능을 제공합니다:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Dependency injection for test constructors, test methods, and test lifecycle callback
-methods. See <a href="#testcontext-junit-jupiter-di">Dependency Injection with <code>SpringExtension</code></a> for further details.</p>
+<p>test constructors, test methods 및 test lifecycle callback method에 대한 Dependency injection.
+자세한 내용은 <a href="#testcontext-junit-jupiter-di">Dependency Injection with <code>SpringExtension</code></a>을 참조하십시오.</p>
 </li>
 <li>
-<p>Powerful support for <a href="https://junit.org/junit5/docs/current/user-guide/#extensions-conditions">conditional
-test execution</a> based on SpEL expressions, environment variables, system properties,
-and so on. See the documentation for <code>@EnabledIf</code> and <code>@DisabledIf</code> in
-<a href="#integration-testing-annotations-junit-jupiter">Spring JUnit Jupiter Testing Annotations</a> for further details and examples.</p>
+<p>SpEL expressions, environment variables, system properties 등을 기반으로 하는 <a href="https://junit.org/junit5/docs/current/user-guide/#extensions-conditions">conditional test execution</a>을 강력하게 지원합니다.
+자세한 내용과 예제는 <a href="#integration-testing-annotations-junit-jupiter">Spring JUnit Jupiter Testing Annotations</a>의 <code>@EnabledIf</code> 및 <code>@DisabledIf</code> 에 대한 문서를 참조하십시오.</p>
 </li>
 <li>
-<p>Custom composed annotations that combine annotations from Spring and JUnit Jupiter. See
-the <code>@TransactionalDevTestConfig</code> and <code>@TransactionalIntegrationTest</code> examples in
-<a href="#integration-testing-annotations-meta">Meta-Annotation Support for Testing</a> for further details.</p>
+<p>Spring 및 JUnit Jupiter의 주석을 결합하는 custom composed annotations.
+자세한 내용은 <a href="#integration-testing-annotations-meta">Meta-Annotation Support for Testing</a>의 <code>@TransactionalDevTestConfig</code> 및 <code>@TransactionalIntegrationTest</code> 예제를 참조하십시오.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The following code listing shows how to configure a test class to use the
-<code>SpringExtension</code> in conjunction with <code>@ContextConfiguration</code>:</p>
+<p>다음 코드 목록은 <code>@ContextConfiguration</code> 과 함께 <code>SpringExtension</code> 을 사용하도록 test class를 구성하는 방법을 보여줍니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8065,13 +7961,10 @@ class SimpleTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Since you can also use annotations in JUnit 5 as meta-annotations, Spring provides the
-<code>@SpringJUnitConfig</code> and <code>@SpringJUnitWebConfig</code> composed annotations to simplify the
-configuration of the test <code>ApplicationContext</code> and JUnit Jupiter.</p>
+<p>JUnit 5의 annotation도 meta-annotation으로 사용할 수 있으므로 Spring은 test <code>ApplicationContext</code> 및 JUnit Jupiter의 configuration을 단순화하기 위해 <code>@SpringJUnitConfig</code> 및 <code>@SpringJUnitWebConfig</code> 로 구성된 annotation을 제공합니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example uses <code>@SpringJUnitConfig</code> to reduce the amount of configuration
-used in the previous example:</p>
+<p>다음 예제는 <code>@SpringJUnitConfig</code> 를 사용하여 이전 예제에서 사용된 구성의 양을 줄입니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8104,8 +7997,7 @@ class SimpleTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Similarly, the following example uses <code>@SpringJUnitWebConfig</code> to create a
-<code>WebApplicationContext</code> for use with JUnit Jupiter:</p>
+<p>마찬가지로 다음 예제에서는 <code>@SpringJUnitWebConfig</code> 를 사용하여 JUnit Jupiter와 함께 사용할 <code>WebApplicationContext</code> 를 만듭니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8138,54 +8030,41 @@ class SimpleWebTests {
 </div>
 </div>
 <div class="paragraph">
-<p>See the documentation for <code>@SpringJUnitConfig</code> and <code>@SpringJUnitWebConfig</code> in
-<a href="#integration-testing-annotations-junit-jupiter">Spring JUnit Jupiter Testing Annotations</a> for further details.</p>
+<p>자세한 내용은 <a href="#integration-testing-annotations-junit-jupiter">Spring JUnit Jupiter Testing Annotations</a>의 <code>@SpringJUnitConfig</code> 및 <code>@SpringJUnitWebConfig</code> 에 대한 문서를 참조하세요.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-junit-jupiter-di">Dependency Injection with <code>SpringExtension</code></h5>
 <div class="paragraph">
-<p><code>SpringExtension</code> implements the
-<a href="https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution"><code>ParameterResolver</code></a>
-extension API from JUnit Jupiter, which lets Spring provide dependency injection for test
-constructors, test methods, and test lifecycle callback methods.</p>
+<p><code>SpringExtension</code> 은 JUnit Jupiter의 <a href="https://junit.org/junit5/docs/current/user-guide/#extensions-parameter-resolution"><code>ParameterResolver</code></a> extension API를 구현하여 Spring이 test constructors, test methods 및 test lifecycle callback method에 대한 dependency injection을 제공할 수 있도록 합니다.</p>
 </div>
 <div class="paragraph">
-<p>Specifically, <code>SpringExtension</code> can inject dependencies from the test&#8217;s
-<code>ApplicationContext</code> into test constructors and methods that are annotated with
-<code>@BeforeAll</code>, <code>@AfterAll</code>, <code>@BeforeEach</code>, <code>@AfterEach</code>, <code>@Test</code>, <code>@RepeatedTest</code>,
-<code>@ParameterizedTest</code>, and others.</p>
+<p>특히 <code>SpringExtension</code> 은 테스트의 <code>ApplicationContext</code> 에서 <code>@BeforeAll</code>, <code>@AfterAll</code>, <code>@BeforeEach</code>, <code>@AfterEach</code>, <code>@Test</code>, <code>@RepeatedTest</code>, <code>@ParameterizedTest</code> 등으로 annotation이 달린 test constructor 및 method dependency를 inject 할 수 있습니다.</p>
 </div>
 <div class="sect5">
 <h6 id="testcontext-junit-jupiter-di-constructor">Constructor Injection</h6>
 <div class="paragraph">
-<p>If a specific parameter in a constructor for a JUnit Jupiter test class is of type
-<code>ApplicationContext</code> (or a sub-type thereof) or is annotated or meta-annotated with
-<code>@Autowired</code>, <code>@Qualifier</code>, or <code>@Value</code>, Spring injects the value for that specific
-parameter with the corresponding bean or value from the test&#8217;s <code>ApplicationContext</code>.</p>
+<p>JUnit Jupiter test class에 대한 constructor의 특정 parameter가 <code>ApplicationContext</code> (또는 그 sub-type) type이거나 <code>@Autowired</code>, <code>@Qualifier</code> 또는 <code>@Value`로 annotation 또는 meta-annotation이 추가 된 경우 Spring은 test의 `ApplicationContext</code> 로부터 해당 bean 또는 value를 가진 특정 parameter를 value로 inject합니다.</p>
 </div>
 <div class="paragraph">
-<p>Spring can also be configured to autowire all arguments for a test class constructor if
-the constructor is considered to be <em>autowirable</em>. A constructor is considered to be
-autowirable if one of the following conditions is met (in order of precedence).</p>
+<p>constructor가 _autowired 가능_한 것으로 간주되는 경우 test class constructor에 대한 모든 argument를 autowire 하도록 Spring을 구성할 수도 있습니다.
+다음 조건 중 하나가 충족되면 constructor는 _autowire 가능_한 것으로 간주됩니다 (우선 순위에 따라).</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The constructor is annotated with <code>@Autowired</code>.</p>
+<p>constructor가 <code>@Autowired</code> 로 annotation 처리 되었을 경우</p>
 </li>
 <li>
-<p><code>@TestConstructor</code> is present or meta-present on the test class with the <code>autowireMode</code>
-attribute set to <code>ALL</code>.</p>
+<p><code>@TestConstructor</code> 가 <code>autowireMode</code> attribute가 <code>ALL</code> 로 설정된 test class에 존재하거나 메타 존재할 경우</p>
 </li>
 <li>
-<p>The default <em>test constructor autowire mode</em> has been changed to <code>ALL</code>.</p>
+<p>default _test constructor autowire mode_가 <code>ALL</code> 로 변경되었을 경우</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>See <a href="#integration-testing-annotations-testconstructor"><code>@TestConstructor</code></a> for details on the use of
-<code>@TestConstructor</code> and how to change the global <em>test constructor autowire mode</em>.</p>
+<p><code>@TestConstructor</code> 사용 및 global _test constructor autowire mode_를 변경하는 방법에 대한 자세한 내용은 <a href="#integration-testing-annotations-testconstructor"><code>@TestConstructor</code></a>를 참조하십시오.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -8194,10 +8073,8 @@ attribute set to <code>ALL</code>.</p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-If the constructor for a test class is considered to be <em>autowirable</em>, Spring
-assumes the responsibility for resolving arguments for all parameters in the constructor.
-Consequently, no other <code>ParameterResolver</code> registered with JUnit Jupiter can resolve
-parameters for such a constructor.
+test class의 constructor가 _autowire 가능_한 것으로 간주되면 Spring은 constructor의 모든 parameter에 대한 argument를 해결하는 책임을 맡습니다.
+따라서 JUnit Jupiter에 등록된 다른 <code>ParameterResolver</code> 는 이러한 constructor에 대한 parameter를 확인할 수 없습니다.
 </td>
 </tr>
 </table>
@@ -8210,32 +8087,22 @@ parameters for such a constructor.
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Constructor injection for test classes must not be used in conjunction with JUnit
-Jupiter&#8217;s <code>@TestInstance(PER_CLASS)</code> support if <code>@DirtiesContext</code> is used to close the
-test&#8217;s <code>ApplicationContext</code> before or after test methods.</p>
+<p><code>@DirtiesContext</code> 가 test method 전후에 테스트의 <code>ApplicationContext</code> 를 닫는데 사용되는 경우 test class에 대한 constructor injection을 JUnit Jupiter의 <code>@TestInstance(PER_CLASS)</code> 지원과 함께 사용해서는 안됩니다.</p>
 </div>
 <div class="paragraph">
-<p>The reason is that <code>@TestInstance(PER_CLASS)</code> instructs JUnit Jupiter to cache the test
-instance between test method invocations. Consequently, the test instance will retain
-references to beans that were originally injected from an <code>ApplicationContext</code> that has
-been subsequently closed. Since the constructor for the test class will only be invoked
-once in such scenarios, dependency injection will not occur again, and subsequent tests
-will interact with beans from the closed <code>ApplicationContext</code> which may result in errors.</p>
+<p>그 이유는 <code>@TestInstance(PER_CLASS)</code> 가 test method 호출 사이에 test instance를 cache하도록 JUnit Jupiter에 지시하기 때문입니다
+결과적으로 test instance는 이후에 닫힌 <code>ApplicationContext</code> 에서 원래 주입된 bean에 대한 참조를 유지합니다.
+test class의 constructor는 이러한 시나리오에서 한 번만 호출되므로 dependency injection이 다시 발생하지 않으며 후속 테스트는 닫힌 <code>ApplicationContext</code> 의 bean과 상호 작용하여 오류가 발생할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>To use <code>@DirtiesContext</code> with "before test method" or "after test method" modes in
-conjunction with <code>@TestInstance(PER_CLASS)</code>, one must configure dependencies from Spring
-to be supplied via field or setter injection so that they can be re-injected between test
-method invocations.</p>
+<p><code>@TestInstance(PER_CLASS)</code> 와 함께 "before test method" 또는 "after test method" mode와 함께 <code>@DirtiesContext</code> 를 사용하려면 field 또는 setter injection을 통해 제공되는 Spring의 종속성을 구성하여 test method invocation 간에 re-inejct 될 수 있도록 해야 합니다.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In the following example, Spring injects the <code>OrderService</code> bean from the
-<code>ApplicationContext</code> loaded from <code>TestConfig.class</code> into the
-<code>OrderServiceIntegrationTests</code> constructor.</p>
+<p>다음 예제에서 Spring은 <code>TestConfig.class</code> 에서 로드된 <code>ApplicationContext</code> 의 <code>OrderService</code> bean을 <code>OrderServiceIntegrationTests</code> constructor로 inject합니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8264,12 +8131,10 @@ class OrderServiceIntegrationTests @Autowired constructor(private val orderServi
 </div>
 </div>
 <div class="paragraph">
-<p>Note that this feature lets test dependencies be <code>final</code> and therefore immutable.</p>
+<p>이 기능을 사용하면 test dependency는 <code>final</code> 이며 변경할 수 없습니다.</p>
 </div>
 <div class="paragraph">
-<p>If the <code>spring.test.constructor.autowire.mode</code> property is to <code>all</code> (see
-<a href="#integration-testing-annotations-testconstructor"><code>@TestConstructor</code></a>), we can omit the declaration of
-<code>@Autowired</code> on the constructor in the previous example, resulting in the following.</p>
+<p><code>spring.test.constructor.autowire.mode</code> property가 <code>all</code> (<a href="#integration-testing-annotations-testconstructor"><code>@TestConstructor</code></a> 참조)이면 이전 예제의 constructor에서 <code>@Autowired</code> 선언을 생략하여 다음과 같은 결과를 얻을 수 있습니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8300,14 +8165,10 @@ class OrderServiceIntegrationTests(val orderService:OrderService) {
 <div class="sect5">
 <h6 id="testcontext-junit-jupiter-di-method">Method Injection</h6>
 <div class="paragraph">
-<p>If a parameter in a JUnit Jupiter test method or test lifecycle callback method is of
-type <code>ApplicationContext</code> (or a sub-type thereof) or is annotated or meta-annotated with
-<code>@Autowired</code>, <code>@Qualifier</code>, or <code>@Value</code>, Spring injects the value for that specific
-parameter with the corresponding bean from the test&#8217;s <code>ApplicationContext</code>.</p>
+<p>JUnit Jupiter test method 또는 test lifecycle callback method의 parameter가 <code>ApplicationContext</code> (또는 그 sub-type) type이거나 <code>@Autowired</code>, <code>@Qualifier</code> 또는 <code>@Value</code> 로 annotation 또는 meta-annotation이 달린 경우, Spring은 해당 특정 parameter의 값을 테스트의 <code>ApplicationContext</code> 에서 해당 bean으로 inject합니다.</p>
 </div>
 <div class="paragraph">
-<p>In the following example, Spring injects the <code>OrderService</code> from the <code>ApplicationContext</code>
-loaded from <code>TestConfig.class</code> into the <code>deleteOrder()</code> test method:</p>
+<p>다음 예제에서 Spring은 <code>TestConfig.class</code> 에서 로드된 <code>ApplicationContext</code> 의 <code>OrderService</code> 를 <code>deleteOrder()</code> test method에 inject합니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8336,13 +8197,10 @@ class OrderServiceIntegrationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Due to the robustness of the <code>ParameterResolver</code> support in JUnit Jupiter, you can also
-have multiple dependencies injected into a single method, not only from Spring but also
-from JUnit Jupiter itself or other third-party extensions.</p>
+<p>JUnit Jupiter의 <code>ParameterResolver</code> 지원의 견고성으로 인해 Spring뿐만 아니라 JUnit Jupiter 자체 또는 third-party extension에서 단일 method에 여러 종속성을 주입 할 수도 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>The following example shows how to have both Spring and JUnit Jupiter inject dependencies
-into the <code>placeOrderRepeatedly()</code> test method simultaneously.</p>
+<p>다음 예제는 Spring과 JUnit Jupiter가 동시에 <code>placeOrderRepeatedly()</code> test method에 종속성을 주입하는 방법을 보여줍니다.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8376,46 +8234,32 @@ class OrderServiceIntegrationTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the use of <code>@RepeatedTest</code> from JUnit Jupiter lets the test method gain access
-to the <code>RepetitionInfo</code>.</p>
+<p>JUnit Jupiter에서 <code>@RepeatedTest</code> 를 사용하면 test method가 <code>RepetitionInfo</code> 에 액세스 할 수 있습니다.</p>
 </div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="testcontext-junit-jupiter-nested-test-configuration"><code>@Nested</code> test class configuration</h5>
 <div class="paragraph">
-<p>The <em>Spring TestContext Framework</em> has supported the use of test-related annotations on
-<code>@Nested</code> test classes in JUnit Jupiter since Spring Framework 5.0; however, until Spring
-Framework 5.3 class-level test configuration annotations were not <em>inherited</em> from
-enclosing classes like they are from superclasses.</p>
+<p>_Spring TestContext Framework_는 Spring Framework 5.0 이후 JUnit Jupiter의 <code>@Nested</code> test class에서 test 관련 annotation 사용을 지원했습니다.
+그러나 Spring Framework 5.3 class-level test configuration annotation이 superclass와 같이 enclosing class에서 _상속_되지 않았습니다.</p>
 </div>
 <div class="paragraph">
-<p>Spring Framework 5.3 introduces first-class support for inheriting test class
-configuration from enclosing classes, and such configuration will be inherited by
-default. To change from the default <code>INHERIT</code> mode to <code>OVERRIDE</code> mode, you may annotate
-an individual <code>@Nested</code> test class with
-<code>@NestedTestConfiguration(EnclosingConfiguration.OVERRIDE)</code>. An explicit
-<code>@NestedTestConfiguration</code> declaration will apply to the annotated test class as well as
-any of its subclasses and nested classes. Thus, you may annotate a top-level test class
-with <code>@NestedTestConfiguration</code>, and that will apply to all of its nested test classes
-recursively.</p>
+<p>Spring Framework 5.3은 enclosing class에서 test class configuration을 상속하는 first-class 지원을 도입했으며 이러한 구성은 기본적으로 상속됩니다.
+기본 <code>INHERIT</code> mode에서 <code>OVERRIDE</code> mode로 변경하려면 <code>@NestedTestConfiguration(EnclosingConfiguration.OVERRIDE)</code> 을 사용하여 개별 <code>@Nested</code> test class에 annotation을 달 수 있습니다.
+명시적인 <code>@NestedTestConfiguration</code> 선언은 annotation이 달린 test class와 subclass 및 nested class에 적용됩니다.
+따라서 <code>@NestedTestConfiguration</code> 으로 top-level test class에 annotation을 달 수 있으며 이는 모든 nested test class에 재귀적으로 적용됩니다.</p>
 </div>
 <div class="paragraph">
-<p>In order to allow development teams to change the default to <code>OVERRIDE</code> – for example,
-for compatibility with Spring Framework 5.0 through 5.2 – the default mode can be changed
-globally via a JVM system property or a <code>spring.properties</code> file in the root of the
-classpath. See the <a href="#integration-testing-annotations-nestedtestconfiguration">"Changing
-the default enclosing configuration inheritance mode"</a> note for details.</p>
+<p>개발팀이 기본값을 'OVERRIDE&#8217;로 변경하도록 허용하기 위해(예를 들어 Spring Framework 5.0 ~ 5.2와의 호환성을 위해) JVM system property 또는 classpath의 root에 있는  <code>spring.properties</code> file을 통해 default mode를 전역적으로 변경할 수 있습니다.
+자세한 내용은 <a href="#integration-testing-annotations-nestedtestconfiguration">"Changing
+the default enclosing configuration inheritance mode"</a> 참고를 참조하세요.</p>
 </div>
 <div class="paragraph">
-<p>Although the following "Hello World" example is very simplistic, it shows how to declare
-common configuration on a top-level class that is inherited by its <code>@Nested</code> test
-classes. In this particular example, only the <code>TestConfig</code> configuration class is
-inherited. Each nested test class provides its own set of active profiles, resulting in a
-distinct <code>ApplicationContext</code> for each nested test class (see
-<a href="#testcontext-ctx-management-caching">Context Caching</a> for details). Consult the list of
-<a href="#integration-testing-annotations-nestedtestconfiguration">supported annotations</a> to see
-which annotations can be inherited in <code>@Nested</code> test classes.</p>
+<p>다음 "Hello World" 예제는 매우 단순하지만 <code>@Nested</code> test class가 상속하는 top-level class에서 공통 구성을 선언하는 방법을 보여줍니다
+이 특정 예에서는 <code>TestConfig</code> configuration class만 상속됩니다.
+각 중첩된 test class는 고유한 active profile set을 제공하므로 각 중첩된 test class에 대해 고유한 <code>ApplicationContext</code> 가 생성됩니다 (자세한 내용은 <a href="#testcontext-ctx-management-caching">Context Caching</a> 참조).
+<a href="#integration-testing-annotations-nestedtestconfiguration">지원되는 annotation</a> 목록을 참조하여 <code>@Nested</code> test class에서 상속할 수 있는 annotation을 확인하십시오.</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8477,8 +8321,7 @@ class GreetingServiceTests {
 <div class="sect4">
 <h5 id="testcontext-support-classes-testng">TestNG Support Classes</h5>
 <div class="paragraph">
-<p>The <code>org.springframework.test.context.testng</code> package provides the following support
-classes for TestNG based test cases:</p>
+<p><code>org.springframework.test.context.testng</code> package는 TestNG 기반 테스트 케이스에 대해 다음 지원 클래스를 제공합니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -8491,28 +8334,17 @@ classes for TestNG based test cases:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><code>AbstractTestNGSpringContextTests</code> is an abstract base test class that integrates the
-Spring TestContext Framework with explicit <code>ApplicationContext</code> testing support in a
-TestNG environment. When you extend <code>AbstractTestNGSpringContextTests</code>, you can access a
-<code>protected</code> <code>applicationContext</code> instance variable that you can use to perform explicit
-bean lookups or to test the state of the context as a whole.</p>
+<p><code>AbstractTestNGSpringContextTests</code> 는 Spring TestContext framework를 TestNG 환경에서 명시적인 <code>ApplicationContext</code> 테스트 지원과 통합하는 abstract base test class입니다.
+<code>AbstractTestNGSpringContextTests</code> 를 확장할 때 명시적인 bean lookup을 수행하거나 전체 context의 상태를 테스트하는 데 사용할 수 있는 <code>protected</code> <code>applicationContext</code> instance variable에 액세스 할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p><code>AbstractTransactionalTestNGSpringContextTests</code> is an abstract transactional extension of
-<code>AbstractTestNGSpringContextTests</code> that adds some convenience functionality for JDBC
-access. This class expects a <code>javax.sql.DataSource</code> bean and a
-<code>PlatformTransactionManager</code> bean to be defined in the <code>ApplicationContext</code>. When you
-extend <code>AbstractTransactionalTestNGSpringContextTests</code>, you can access a <code>protected</code>
-<code>jdbcTemplate</code> instance variable that you can use to run SQL statements to query the
-database. You can use such queries to confirm database state both before and after
-running database-related application code, and Spring ensures that such queries run in
-the scope of the same transaction as the application code. When used in conjunction with
-an ORM tool, be sure to avoid <a href="#testcontext-tx-false-positives">false positives</a>.
-As mentioned in <a href="#integration-testing-support-jdbc">JDBC Testing Support</a>,
-<code>AbstractTransactionalTestNGSpringContextTests</code> also provides convenience methods that
-delegate to methods in <code>JdbcTestUtils</code> by using the aforementioned <code>jdbcTemplate</code>.
-Furthermore, <code>AbstractTransactionalTestNGSpringContextTests</code> provides an
-<code>executeSqlScript(..)</code> method for running SQL scripts against the configured <code>DataSource</code>.</p>
+<p><code>AbstractTransactionalTestNGSpringContextTests</code> 는 JDBC 액세스를 위한 몇 가지 편리한 기능을 추가하는 <code>AbstractTestNGSpringContextTests</code> 의 abstract transactional extension입니다.
+이 class는 <code>javax.sql.DataSource</code> bean과 <code>PlatformTransactionManager</code> bean이 <code>ApplicationContext</code> 에 정의될 것으로 예상합니다.
+<code>AbstractTransactionalTestNGSpringContextTests</code> 를 확장하면 데이터베이스를 쿼리하기 위해 SQL statement를 실행하는데 사용할 수 있는 <code>protected</code> <code>jdbcTemplate</code> instance variable에 액세스 할 수 있습니다.
+이러한 쿼리를 사용하여 데이터베이스 관련 애플리케이션 코드를 실행하기 전후에 데이터베이스 상태를 확인할 수 있으며 Spring은 이러한 쿼리가 애플리케이션 코드와 동일한 transaction 범위에서 실행되도록 합니다.
+ORM tool과 함께 사용하는 경우 <a href="#testcontext-tx-false-positives">false positives</a>를 피하십시오.
+<a href="#integration-testing-support-jdbc">JDBC Testing Support</a>에서 언급했듯이 <code>AbstractTransactionalTestNGSpringContextTests</code> 는 앞서 언급한 <code>jdbcTemplate</code> 을 사용하여 <code>JdbcTestUtils</code> 의 method에 위임하는 편리한 method도 제공합니다.
+또한 <code>AbstractTransactionalTestNGSpringContextTests</code> 는 구성된 <code>DataSource</code> 에 대해 SQL script를 실행하기 위한 <code>executeSqlScript(..)</code> method를 제공합니다.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -8521,17 +8353,658 @@ Furthermore, <code>AbstractTransactionalTestNGSpringContextTests</code> provides
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-These classes are a convenience for extension. If you do not want your test classes
-to be tied to a Spring-specific class hierarchy, you can configure your own custom test
-classes by using <code>@ContextConfiguration</code>, <code>@TestExecutionListeners</code>, and so on and by
-manually instrumenting your test class with a <code>TestContextManager</code>. See the source code
-of <code>AbstractTestNGSpringContextTests</code> for an example of how to instrument your test class.
+이 class는 확장에 편리합니다.
+test class가 Spring 관련 class hierarchy에 연결되는 것을 원하지 않는 경우 <code>@ContextConfiguration</code>, <code>@TestExecutionListeners</code> 등을 사용하고 <code>TestContextManager</code> 로 test class를 수동으로 계측하여 custom test class를 구성 할 수 있습니다.
+테스트 클래스를 계측하는 방법에 대한 예제는 <code>AbstractTestNGSpringContextTests</code> 의 소스 코드를 참조하십시오.
+See the source code of <code>AbstractTestNGSpringContextTests</code> for an example of how to instrument your test class.
 </td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webtestclient">WebTestClient</h3>
 <div class="paragraph">
-<p>Unresolved directive in testing.adoc - include::testing/testing-webtestclient.adoc[leveloffset=+2]</p>
+<p><code>WebTestClient</code> 는 server application 테스트를 위해 설계된 HTTP client입니다.
+Spring의 <a href="web-reactive.html#webflux-client">WebClient</a>를 wrapping하고 이를 사용하여 요청을 수행하지만 응답 확인을 위한 testing facade를 노출합니다.
+<code>WebTestClient</code> 를 사용하여 end-to-end HTTP 테스트를 수행 할 수 있습니다.
+또한 mock server request 및 response object를 통해 running server없이 Spring MVC 및 Spring WebFlux application을 테스트 하는데 사용할 수도 있습니다.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="languages.html#kotlin-webtestclient-issue">이 section</a>을 참조하세요.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="webtestclient-setup">Setup</h4>
+<div class="paragraph">
+<p><code>WebTestClient</code> 를 설정하려면 binding 할 서버 설정을 선택해야합니다.
+이것은 여러 mock server 설정 중 하나이거나 live server에 대한 연결일 수 있습니다.</p>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-controller-config">Bind to Controller</h5>
+<div class="paragraph">
+<p>이 설정을 사용하면 running server없이 mock request 및  response object를 통해 특정 controller를 테스트 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux application의 경우 <a href="web-reactive.html#webflux-config">WebFlux Java config</a>에 해당하는 infrastructure를 로드하고 지정된 controller를 등록하고 요청을 처리하기위한 <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a>을 만드는 다음을 사용합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+        WebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = WebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 다음을 사용하여 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/web/servlet/setup/StandaloneMockMvcBuilder.html">StandaloneMockMvcBuilder</a>에 위임하여 <a href="web.html#mvc-config">WebMvc Java config</a>에 해당하는 infrastructure를 로드하고 주어진 controller를 등록하고 요청을 처리할 <a href="#spring-mvc-test-framework">MockMvc</a> instance를 만듭니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">WebTestClient client =
+        MockMvcWebTestClient.bindToController(new TestController()).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val client = MockMvcWebTestClient.bindToController(TestController()).build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-context-config">Bind to <code>ApplicationContext</code></h5>
+<div class="paragraph">
+<p>이 설정을 통해 Spring MVC 또는 Spring WebFlux infrastructure 및 controller 선언으로 Spring 구성을 로드하고 이를 사용하여 running server없이 mock request 및 response object를 통해 요청을 처리할 수 ​​있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux의 경우 다음을 사용하여 Spring <code>ApplicationContext</code> 가 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/web/server/adapter/WebHttpHandlerBuilder.html#applicationContext-org.springframework.context.ApplicationContext-">WebHttpHandlerBuilder</a>에 전달되어 요청을 처리할 <a href="web-reactive.html#webflux-web-handler-api">WebHandler chain</a>을 생성합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringJUnitConfig(WebConfig.class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+    WebTestClient client;
+
+    @BeforeEach
+    void setUp(ApplicationContext context) {  <i class="conum" data-value="2"></i><b>(2)</b>
+        client = WebTestClient.bindToApplicationContext(context).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@SpringJUnitConfig(WebConfig::class) <i class="conum" data-value="1"></i><b>(1)</b>
+class MyTests {
+
+    lateinit var client: WebTestClient
+
+    @BeforeEach
+    fun setUp(context: ApplicationContext) { <i class="conum" data-value="2"></i><b>(2)</b>
+        client = WebTestClient.bindToApplicationContext(context).build() <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 다음을 사용하여 Spring <code>ApplicationContext</code> 가 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/test/web/servlet/setup/MockMvcBuilders.html#webAppContextSetup-org.springframework.web.context.WebApplicationContext-">MockMvcBuilders.webAppContextSetup</a>에 전달되어 요청을 처리할 <a href="#spring-mvc-test-framework">MockMvc</a> 인스턴스를 생성합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+    @ContextConfiguration(classes = RootConfig.class),
+    @ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+    @Autowired
+    WebApplicationContext wac; <i class="conum" data-value="2"></i><b>(2)</b>
+
+    WebTestClient client;
+
+    @BeforeEach
+    void setUp() {
+        client = MockMvcWebTestClient.bindToApplicationContext(this.wac).build(); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">@ExtendWith(SpringExtension.class)
+@WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
+@ContextHierarchy({
+    @ContextConfiguration(classes = RootConfig.class),
+    @ContextConfiguration(classes = WebConfig.class)
+})
+class MyTests {
+
+    @Autowired
+    lateinit var wac: WebApplicationContext; <i class="conum" data-value="2"></i><b>(2)</b>
+
+    lateinit var client: WebTestClient
+
+    @BeforeEach
+    fun setUp() { <i class="conum" data-value="2"></i><b>(2)</b>
+        client = MockMvcWebTestClient.bindToApplicationContext(wac).build() <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Specify the configuration to load</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Inject the configuration</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create the <code>WebTestClient</code></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-fn-config">Bind to Router Function</h5>
+<div class="paragraph">
+<p>이 설정을 사용하면 running server없이 mock request 및 response object를 통해 <a href="web-reactive.html#webflux-fn">functional endpoints</a>를 테스트 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>WebFlux의 경우 <code>RouterFunctions.toWebHandler</code> 에 위임하는 다음을 사용하여 요청을 처리할 서버 설정을 만듭니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">RouterFunction&lt;?&gt; route = ...
+client = WebTestClient.bindToRouterFunction(route).build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val route: RouterFunction&lt;*&gt; = ...
+val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Spring MVC의 경우 현재 <a href="web.html#webmvc-fn">WebMvc functional endpoints</a>를 테스트하는 옵션이 없습니다.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-server-config">Bind to Server</h5>
+<div class="paragraph">
+<p>이 설정은 running server에 연결하여 전체 end-to-end HTTP 테스트를 수행합니다;</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-client-config">Client Config</h5>
+<div class="paragraph">
+<p>앞에서 설명한 서버 설정 옵션 외에도 base URL, default headers, client filter 등을 포함한 client option을 구성 할 수 있습니다
+이러한 옵션은 <code>bindToServer()</code> 다음에 쉽게 사용할 수 있습니다.
+다른 모든 configuration option의 경우 다음과 같이 <code>configureClient()</code> 를 사용하여 server에서 client configuration으로 전환해야합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client = WebTestClient.bindToController(new TestController())
+        .configureClient()
+        .baseUrl("/test")
+        .build();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client = WebTestClient.bindToController(TestController())
+        .configureClient()
+        .baseUrl("/test")
+        .build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="webtestclient-tests">Writing Tests</h4>
+<div class="paragraph">
+<p><code>WebTestClient</code> 는 <code>exchange()</code> 를 사용하여 요청을 수행하는 시점까지 <a href="web-reactive.html#webflux-client">WebClient</a>와 동일한 API를 제공합니다.
+form data, multipart data 등을 포함한 모든 콘텐츠로 요청을 준비하는 방법에 대한 예제는 <a href="web-reactive.html#webflux-client-body">WebClient</a> 설명서를 참조하십시오.</p>
+</div>
+<div class="paragraph">
+<p><code>exchange()</code> 호출 후 <code>WebTestClient</code> 는 <code>WebClient</code> 에서 분기되고 대신 응답을 확인하는 workflow를 계속합니다.</p>
+</div>
+<div class="paragraph">
+<p>response status 및 header를 assert하려면 다음을 사용하십시오:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange()
+        .expectStatus().isOk()
+        .expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>그런 다음 다음 중 하나를 통해 response body을 decoding 하도록 선택할 수 있습니다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>expectBody(Class&lt;T&gt;)</code>: Decode to single object.</p>
+</li>
+<li>
+<p><code>expectBodyList(Class&lt;T&gt;)</code>: Decode and collect objects to <code>List&lt;T&gt;</code>.</p>
+</li>
+<li>
+<p><code>expectBody()</code>: Decode to <code>byte[]</code> for <a href="#webtestclient-json">JSON Content</a> or an empty body.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>그리고 결과로 생성되는 higher level Object에 대해 assertion을 수행합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBodyList(Person.class).hasSize(3).contains(person);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBodyList
+
+client.get().uri("/persons")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBodyList&lt;Person&gt;().hasSize(3).contains(person)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>기본 제공 assertion이 충분하지 않으면 대신 object를 사용하고 다른 assertion을 수행할 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.test.web.reactive.server.expectBody
+
+client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody(Person.class)
+        .consumeWith(result -&gt; {
+            // custom assertions (e.g. AssertJ)...
+        });</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody&lt;Person&gt;()
+        .consumeWith {
+            // custom assertions (e.g. AssertJ)...
+        }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>또는 workflow를 종료하고 <code>EntityExchangeResult</code> 를 얻을 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody(Person.class)
+        .returnResult();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.expectBody
+
+val result = client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk
+        .expectBody&lt;Person&gt;()
+        .returnResult()</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Class&lt;T&gt;</code> 대신 <a href="https://docs.spring.io/spring-framework/docs/{spring-version}/javadoc-api/org/springframework/core/ParameterizedTypeReference.html"><code>ParameterizedTypeReference</code></a>를 허용하는 overload 된 method를 찾습니다.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-no-content">No Content</h5>
+<div class="paragraph">
+<p>응답에 내용이 없을 것으로 예상되는 경우 다음과 같이 assert 할 수 있습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.post().uri("/persons")
+        .body(personMono, Person.class)
+        .exchange()
+        .expectStatus().isCreated()
+        .expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.post().uri("/persons")
+        .bodyValue(person)
+        .exchange()
+        .expectStatus().isCreated()
+        .expectBody().isEmpty()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>응답 콘텐츠를 무시하려는 경우 다음은 assertion없이 콘텐츠를 해제합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/123")
+        .exchange()
+        .expectStatus().isNotFound()
+        .expectBody(Void.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/123")
+        .exchange()
+        .expectStatus().isNotFound
+        .expectBody&lt;Unit&gt;()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-json">JSON Content</h5>
+<div class="paragraph">
+<p>대상 type없이 <code>expectBody()</code> 를 사용하여 higher level Object를 통하지 않고 raw content에 대한 assertion을 수행할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://jsonassert.skyscreamer.org">JSONAssert</a>를 사용하여 전체 JSON content를 확인하려면:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .json("{\"name\":\"Jane\"}")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/jayway/JsonPath">JSONPath</a>로 JSON content를 확인하려면:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">client.get().uri("/persons")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$[0].name").isEqualTo("Jane")
+        .jsonPath("$[1].name").isEqualTo("Jason");</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">client.get().uri("/persons")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody()
+        .jsonPath("$[0].name").isEqualTo("Jane")
+        .jsonPath("$[1].name").isEqualTo("Jason")</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-stream">Streaming Responses</h5>
+<div class="paragraph">
+<p><code>"text/event-stream"</code> 또는 <code>"application/x-ndjson"</code> 과 같이 잠재적으로 무한한 스트림을 테스트하려면 먼저 response status 및 header를 확인한 다음 <code>FluxExchangeResult</code> 를 가져옵니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">FluxExchangeResult&lt;MyEvent&gt; result = client.get().uri("/events")
+        .accept(TEXT_EVENT_STREAM)
+        .exchange()
+        .expectStatus().isOk()
+        .returnResult(MyEvent.class);</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">import org.springframework.test.web.reactive.server.returnResult
+
+val result = client.get().uri("/events")
+        .accept(TEXT_EVENT_STREAM)
+        .exchange()
+        .expectStatus().isOk()
+        .returnResult&lt;MyEvent&gt;()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>이제 <code>reactor-test</code> 에서 <code>StepVerifier</code> 로 response stream을 사용할 준비가 되었습니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">Flux&lt;Event&gt; eventFlux = result.getResponseBody();
+
+StepVerifier.create(eventFlux)
+        .expectNext(person)
+        .expectNextCount(4)
+        .consumeNextWith(p -&gt; ...)
+        .thenCancel()
+        .verify();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">val eventFlux = result.getResponseBody()
+
+StepVerifier.create(eventFlux)
+        .expectNext(person)
+        .expectNextCount(4)
+        .consumeNextWith { p -&gt; ... }
+        .thenCancel()
+        .verify()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webtestclient-mockmvc">MockMvc Assertions</h5>
+<div class="paragraph">
+<p><code>WebTestClient</code> 는 HTTP client이므로 status, header 및 body를 포함하여 client response에 있는 내용만 확인할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>MockMvc server 설정으로 Spring MVC application을 테스트 할 때 server response에 대한 extra choice를 수행할 수 있습니다.
+body를 assert 한 후 <code>ExchangeResult</code> 를 가져오는 것으로 시작하려면 다음을 수행하십시오:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">// For a response with a body
+EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody(Person.class)
+        .returnResult();
+
+// For a response without a body
+EntityExchangeResult&lt;Void&gt; result = client.get().uri("/path")
+        .exchange()
+        .expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">// For a response with a body
+val result = client.get().uri("/persons/1")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody(Person.class)
+        .returnResult();
+
+// For a response without a body
+val result = client.get().uri("/path")
+        .exchange()
+        .expectBody().isEmpty();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>그런 다음 MockMvc server response assertion으로 전환합니다:</p>
+</div>
+<div class="listingblock primary">
+<div class="title">Java</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">MockMvcWebTestClient.resultActionsFor(result)
+        .andExpect(model().attribute("integer", 3))
+        .andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
+</div>
+<div class="listingblock secondary">
+<div class="title">Kotlin</div>
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="kotlin" class="language-kotlin hljs">MockMvcWebTestClient.resultActionsFor(result)
+        .andExpect(model().attribute("integer", 3))
+        .andExpect(model().attribute("string", "a string value"));</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -8539,45 +9012,32 @@ of <code>AbstractTestNGSpringContextTests</code> for an example of how to instru
 <div class="sect2">
 <h3 id="spring-mvc-test-framework">MockMvc</h3>
 <div class="paragraph">
-<p>The Spring MVC Test framework, also known as MockMvc, provides support for testing Spring
-MVC applications. It performs full Spring MVC request handling but via mock request and
-response objects instead of a running server.</p>
+<p>MockMvc라고도 하는 Spring MVC Test framework는 Spring MVC application 테스트를 지원합니다.
+전체 Spring MVC 요청 처리를 수행하지만 실행 중인 서버 대신 mock request 및 response object를 통해 수행합니다.</p>
 </div>
 <div class="paragraph">
-<p>MockMvc can be used on its own to perform requests and verify responses. It can also be
-used through the <a href="#webtestclient">[webtestclient]</a> where MockMvc is plugged in as the server to handle
-requests with. The advantage of <code>WebTestClient</code> is the option to work with higher level
-objects instead of raw data as well as the ability to switch to full, end-to-end HTTP
-tests against a live server and use the same test API.</p>
+<p>MockMvc는 자체적으로 요청을 수행하고 응답을 확인하는데 사용할 수 있습니다.
+MockMvc가 요청을 처리할 서버로 연결되는 <a href="#webtestclient">WebTestClient</a> 를 통해 사용할수도 있습니다
+<code>WebTestClient</code> 의 장점은 raw data 대신 higher level objects로 작업할 수 있는 옵션과 live server에 대해 완전한 end-to-end HTTP 테스트로 전환하고 동일한 테스트 API를 사용하는 기능입니다.</p>
 </div>
 <div class="sect3">
 <h4 id="spring-mvc-test-server">Overview</h4>
 <div class="paragraph">
-<p>You can write plain unit tests for Spring MVC by instantiating a controller, injecting it
-with dependencies, and calling its methods. However such tests do not verify request
-mappings, data binding, message conversion, type conversion, validation, and nor
-do they involve any of the supporting <code>@InitBinder</code>, <code>@ModelAttribute</code>, or
-<code>@ExceptionHandler</code> methods.</p>
+<p>controller를 instance화하고 dependency를 inject하고 method를 호출하여 Spring MVC에 대한 일반 단위 테스트를 작성할 수 있습니다.
+그러나 이러한 테스트는 request mapping, data binding, message conversion, type conversion, validation을 확인하지 않으며 지원하는 <code>@InitBinder</code>, <code>@ModelAttribute</code> 또는 <code>@ExceptionHandler</code> method를 포함하지도 않습니다.</p>
 </div>
 <div class="paragraph">
-<p>The Spring MVC Test framework, also known as <code>MockMvc</code>, aims to provide more complete
-testing for Spring MVC controllers without a running server. It does that by invoking
-the <code>DispacherServlet</code> and passing
-<a href="#mock-objects-servlet">&#8220;mock&#8221; implementations of the Servlet API</a> from the
-<code>spring-test</code> module which replicates the full Spring MVC request handling without
-a running server.</p>
+<p><code>MockMvc</code> 라고도 하는 Spring MVC Test framework는 running server없이 Spring MVC controller에 대한 보다 완전한 테스트를 제공하는 것을 목표로합니다.
+<code>DispacherServlet</code> 을 호출하고 running server 없이 전체 Spring MVC request 처리를 복제하는 <code>spring-test</code> module에서 <a href="#mock-objects-servlet">the Servlet API의 &#8220;mock&#8221; 구현</a>을 전달하여 이를 수행합니다.</p>
 </div>
 <div class="paragraph">
-<p>MockMvc is a server side test framework that lets you verify most of the functionality
-of a Spring MVC application using lightweight and targeted tests. You can use it on
-its own to perform requests and to verify responses, or you can also use it through
-the <a href="#webtestclient">[webtestclient]</a> API with MockMvc plugged in as the server to handle requests
-with.</p>
+<p><code>MockMvc</code> 는 lightweight 및 targeted test를 사용하여 Spring MVC application의 기능 대부분을 검증할 수 있는 서버 측 test framework입니다.
+요청을 수행하고 응답을 확인하기위해 자체적으로 사용하거나 요청을 처리할 서버로 연결된 MockMvc와 함께 <a href="#webtestclient">WebTestClient</a> API를 통해 사용할 수도 있습니다.</p>
 </div>
 <div class="sect4">
 <h5 id="spring-mvc-test-server-static-imports">Static Imports</h5>
 <div class="paragraph">
-<p>When using MockMvc directly to perform requests, you&#8217;ll need static imports for:</p>
+<p>MockMvc를 직접 사용하여 요청을 수행하는 경우 다음에 대한 static import가 필요합니다:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -8596,23 +9056,23 @@ with.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>An easy way to remember that is search for <code>MockMvc*</code>. If using Eclipse be sure to also
-add the above as &#8220;favorite static members&#8221; in the Eclipse preferences.</p>
+<p>이를 기억하는 쉬운 방법은 <code>MockMvc*</code> 를 검색하는 것입니다.
+Eclipse를 사용하는 경우 Eclipse 환경 설정에서 위의 &#8220;favorite static members&#8221; 도 추가해야합니다.</p>
 </div>
 <div class="paragraph">
-<p>When using MockMvc through the <a href="#webtestclient">[webtestclient]</a> you do not need static imports.
-The <code>WebTestClient</code> provides a fluent API without static imports.</p>
+<p><a href="#webtestclient">WebTestClient</a> 를 통해 MockMvc를 사용할 때 static import가 필요하지 않습니다.
+<code>WebTestClient</code> 는 static import없이 유창한 API를 제공합니다.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="spring-mvc-test-server-setup-options">Setup Choices</h5>
 <div class="paragraph">
-<p>MockMvc can be setup in one of two ways. One is to point directly to the controllers you
-want to test and programmatically configure Spring MVC infrastructure. The second is to
-point to Spring configuration with Spring MVC and controller infrastructure in it.</p>
+<p>MockMvc는 2가지 방법 중 하나로 설정할 수 있습니다.
+하나는 테스트하려는 컨트롤러를 직접 가리키고 Spring MVC infrastructure를 프로그래밍 방식으로 구성하는 것입니다.
+두 번째는 Spring MVC 및 controller infrastructure가 포함된 Spring configuration을 가리키는 것입니다.</p>
 </div>
 <div class="paragraph">
-<p>To set up MockMvc for testing a specific controller, use the following:</p>
+<p>특정 controller를 테스트하기 위해 MockMvc를 설정하려면 다음을 사용하십시오:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8649,12 +9109,10 @@ point to Spring configuration with Spring MVC and controller infrastructure in i
 </div>
 </div>
 <div class="paragraph">
-<p>Or you can also use this setup when testing through the
-<a href="#webtestclient-controller-config">WebTestClient</a> which delegates to the same builder
-as shown above.</p>
+<p>또는 위에 표시된 것과 동일한 build에 위임하는 <a href="#webtestclient-controller-config">WebTestClient</a>를 통해 테스트 할때도 이 설정을 사용할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>To set up MockMvc through Spring configuration, use the following:</p>
+<p>Spring configuration을 통해 MockMvc를 설정하려면 다음을 사용하십시오:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8693,20 +9151,16 @@ class MyWebTests {
 </div>
 </div>
 <div class="paragraph">
-<p>Or you can also use this setup when testing through the
-<a href="#webtestclient-context-config">WebTestClient</a> which delegates to the same builder
-as shown above.</p>
+<p>또는 위에 표시된 것과 동일한 builder에 위임하는 <a href="#webtestclient-context-config">WebTestClient</a>를 통해 테스트 할때도 이 설정을 사용할 수 있습니다.</p>
 </div>
 <div class="paragraph">
-<p>Which setup option should you use?</p>
+<p>어떤 setup option을 사용해야합니까?</p>
 </div>
 <div class="paragraph">
-<p>The <code>webAppContextSetup</code> loads your actual Spring MVC configuration, resulting in a more
-complete integration test. Since the TestContext framework caches the loaded Spring
-configuration, it helps keep tests running fast, even as you introduce more tests in your
-test suite. Furthermore, you can inject mock services into controllers through Spring
-configuration to remain focused on testing the web layer. The following example declares
-a mock service with Mockito:</p>
+<p><code>webAppContextSetup</code> 은 실제 Spring MVC configuration을 로드하여 보다 완전한 통합 테스트를 수행합니다.
+TestContext framework는 로드된 Spring configuration을 cache하기 때문에 test suite에 더 많은 테스트를 도입하더라도 테스트를 빠르게 실행하는데 도움이됩니다.
+또한 Spring 구성을 통해 controller에 mock service를 inject하여 web layer test에 계속 집중할 수 있습니다.
+다음 예제는 Mockito로 mock service를 선언합니다:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -8716,8 +9170,7 @@ a mock service with Mockito:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You can then inject the mock service into the test to set up and verify your
-expectations, as the following example shows:</p>
+<p>그런 다음 mock service를 테스트에 inject하여 다음 예제와 같이 기대치를 설정하고 확인할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
@@ -8838,7 +9291,7 @@ for a list of all MockMvc builder features or use the IDE to explore the availab
 <div class="paragraph">
 <p>This section shows how to use MockMvc on its own to perform requests and verify responses.
 If using MockMvc through the <code>WebTestClient</code> please see the corresponding section on
-<a href="#webtestclient-tests">[webtestclient-tests]</a> instead.</p>
+<a href="#webtestclient-tests">Writing Tests</a> instead.</p>
 </div>
 <div class="paragraph">
 <p>To perform requests that use any HTTP method, as the following example shows:</p>
@@ -9182,7 +9635,7 @@ mockMvc.get("/handle") {
 <h5 id="spring-mvc-test-async-requests">Async Requests</h5>
 <div class="paragraph">
 <p>This section shows how to use MockMvc on its own to test asynchronous request handling.
-If using MockMvc through the <a href="#webtestclient">[webtestclient]</a>, there is nothing special to do to make
+If using MockMvc through the <a href="#webtestclient">WebTestClient</a>, there is nothing special to do to make
 asynchronous requests work as the <code>WebTestClient</code> automatically does what is described
 in this section.</p>
 </div>
@@ -9291,7 +9744,7 @@ fun test() {
 <h5 id="spring-mvc-test-vs-streaming-response">Streaming Responses</h5>
 <div class="paragraph">
 <p>The best way to test streaming responses such as Server-Sent Events is through the
-<a href="#WebTestClient">[WebTestClient]</a> which can be used as a test client to connect to a <code>MockMvc</code> instance
+<a href="#webtestclient">WebTestClient</a> which can be used as a test client to connect to a <code>MockMvc</code> instance
 to perform tests on Spring MVC controllers without a running server. For example:</p>
 </div>
 <div class="listingblock primary">
@@ -10934,7 +11387,7 @@ integration tests written in Kotlin using <a href="https://mockk.io/">MockK</a> 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-15 05:32:54 +0900
+Last updated 2021-04-15 13:21:28 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

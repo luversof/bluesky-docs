@@ -249,9 +249,9 @@ window.onload = function() {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section dives into the details of Spring Boot.
-Here you can learn about the key features that you may want to use and customize.
-If you have not already done so, you might want to read the "<a href="getting-started.html#getting-started">getting-started.html</a>" and "<a href="using-spring-boot.html#using-boot">using-spring-boot.html</a>" sections, so that you have a good grounding of the basics.</p>
+<p>이 section에서는 Spring Boot에 대해 자세히 설명합니다.
+여기에서 사용하고 customize 할 수 있는 주요 기능에 대해 알아볼 수 있습니다.
+아직 시작하지 않은 경우 "<a href="getting-started.html#getting-started">getting-started.html</a>" 및  "<a href="using-spring-boot.html#using-boot">using-spring-boot.html</a>" section을 통해 기본 지식을 잘 이해할 수 있습니다.</p>
 </div>
 </div>
 </div>
@@ -386,7 +386,7 @@ debug mode를 활성화해도 <code>DEBUG</code> level로 모든 message를 기�
 <h4 id="boot-features-logging-color-coded-output"><a class="anchor" href="#boot-features-logging-color-coded-output"></a>1.2.1. Color-coded Output</h4>
 <div class="paragraph">
 <p>termintal이 ANSI를 지원하는 경우 가독성을 높이기 위해 색상 출력이 사용됩니다.
-<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
+<code>spring.output.ansi.enabled</code> 를 <a href="https://docs.spring.io/spring-boot/docs/2.4.5/api/org/springframework/boot/ansi/AnsiOutput.Enabled.html">supported value</a> 으로 설정하여 auto-detection을 override 할 수 있습니다..</p>
 </div>
 <div class="paragraph">
 <p>색 구분은 <code>%clr</code> conversion word를 사용하여 구성됩니다.
@@ -1356,7 +1356,7 @@ class MyTests {
 </td>
 <td class="content">
 만약 <code>@ComponentScan</code> 를 직접 사용한다면 (즉 <code>@SpringBootApplication</code> 을 통하지 않은 경우) <code>TypeExcludeFilter</code> 를 등록해야 합니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a>을 참조하세요.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.5/api/org/springframework/boot/context/TypeExcludeFilter.html">the Javadoc</a>을 참조하세요.
 </td>
 </tr>
 </table>
@@ -1780,7 +1780,7 @@ test가 실행될 때 application context refresh가 완료되어 mock behavior�
 </div>
 <div class="paragraph">
 <p>또한 <code>@SpyBean</code> 을 사용하여 Mockito <code>spy</code> 로 기존 beand을 wrapping 할 수 있습니다.
-자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.4/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a>을 참조하세요</p>
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/2.4.5/api/org/springframework/boot/test/mock/mockito/SpyBean.html">Javadoc</a>을 참조하세요</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2345,7 +2345,11 @@ class ExampleDataCassandraTests {
 <p><code>@DataJpaTest</code> annotation을 사용하여 JPA application을 테스트할 수 있습니다.
 기본적으로 <code>@Entity</code> class를 scan 하고 Spring Data repository를 구성합니다.
 classpath에 embedded database가 사용 가능한 경우 하나의 database도 구성됩니다.
-<code>@DataJpaTest</code> annotation 이 사용될 때 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
+SQL query는 기본적으로 <code>spring.jpa.show-sql</code> property를 <code>true</code> 로 설정하여 기록됩니다.
+annotation의 <code>showSql()</code> attribute를 사용하여 비활성화 할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p><code>@DataJpaTest</code> annotation 이 사용될 때 일반 <code>@Component</code> 와 <code>@ConfigurationProperties</code> bean은 scan되지 않습니다.
 <code>@EnableConfigurationProperties</code> 는 <code>@ConfigurationProperties</code> bean을 포함하는데 사용될 수 있습니다.</p>
 </div>
 <div class="admonitionblock tip">
@@ -3530,7 +3534,7 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-16 07:33:15 +0900
+Last updated 2021-04-16 09:04:42 +0900
 </div>
 </div>
 <link rel="stylesheet" href="js/highlight/styles/github.min.css">

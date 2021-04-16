@@ -2,9 +2,9 @@
 = Spring Boot Features
 include::spring/boot/_attributes.adoc[]
 
-This section dives into the details of Spring Boot.
-Here you can learn about the key features that you may want to use and customize.
-If you have not already done so, you might want to read the "<<getting-started.adoc#getting-started>>" and "<<using-spring-boot.adoc#using-boot>>" sections, so that you have a good grounding of the basics.
+이 section에서는 Spring Boot에 대해 자세히 설명합니다.
+여기에서 사용하고 customize 할 수 있는 주요 기능에 대해 알아볼 수 있습니다.
+아직 시작하지 않은 경우 "<<getting-started.adoc#getting-started>>" 및  "<<using-spring-boot.adoc#using-boot>>" section을 통해 기본 지식을 잘 이해할 수 있습니다.
 
 [[boot-features-logging]]
 == Logging
@@ -1114,6 +1114,9 @@ TIP: `@DataCassandraTest` 로 활성화한 auto-configuration 설정 목록은 <
 `@DataJpaTest` annotation을 사용하여 JPA application을 테스트할 수 있습니다.
 기본적으로 `@Entity` class를 scan 하고 Spring Data repository를 구성합니다.
 classpath에 embedded database가 사용 가능한 경우 하나의 database도 구성됩니다.
+SQL query는 기본적으로 `spring.jpa.show-sql` property를 `true` 로 설정하여 기록됩니다.
+annotation의 `showSql()` attribute를 사용하여 비활성화 할 수 있습니다.
+
 `@DataJpaTest` annotation 이 사용될 때 일반 `@Component` 와 `@ConfigurationProperties` bean은 scan되지 않습니다.
 `@EnableConfigurationProperties` 는 `@ConfigurationProperties` bean을 포함하는데 사용될 수 있습니다.
 

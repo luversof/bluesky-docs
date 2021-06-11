@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Spring Framework Overview</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LG0R87MZJ');
+</script>
+</head>
+<body id="overview" class="book toc2 toc-left">
+<div id="header">
+<h1>Spring Framework Overview</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#overview-spring">What We Mean by "Spring"</a></li>
+<li><a href="#overview-history">History of Spring and the Spring Framework</a></li>
+<li><a href="#overview-philosophy">Design Philosophy</a></li>
+<li><a href="#overview-feedback">Feedback and Contributions</a></li>
+<li><a href="#overview-getting-started">Getting Started</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring을 사용하면 Java enterprise application을 쉽게 만들 수 있습니다.
+JVM에서 대체 language로 Groovy 및 Kotlin을 지원하고 application의 요구 사항에 따라 다양한 종류의 아키텍처를 생성할 수 있는 유연성을 통해 enterprise environment에서 Java language를 수용하는데 필요한 모든 것을 제공합니다.
+Spring Framework 5.1부터 Spring에는 JDK 8+ (Java SE 8+)가 필요하며 JDK 11 LTS에 대한 기본 지원을 제공합니다.
+Java SE 8 update 60은 Java 8의 minimum patch release로 제안되지만 일반적으로 최신 patch release를 사용하는 것이 좋습니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring은 광범위한 application 시나리오를 지원합니다.
+대기업에서 application은 종종 오랫동안 존재하며 upgrade 주기가 개발자의 통제를 벗어난 JDK 및 application server에서 실행되어야합니다.
+어떤 경우 cloud environment에서 서버가 내장된 단일 jar로 실행될 수 있습니다.
+또 어떤 경우 server가 필요없는 standalone application(예: batch 또는 통합 workload) 일 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring은 open source입니다.
+다양한 실제 사용 사례를 기반으로 지속적인 feedback을 제공하는 크고 활동적인 커뮤니티가 있습니다.
+이것은 Spring이 매우 오랜 시간동안 성공적으로 발전하도록 도왔습니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview-spring">What We Mean by "Spring"</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>용어 "Spring"은 다른 맥락에서 다른 것을 의미합니다.
+모든 것이 시작된 Spring Framework project 자체를 참조하는 데 사용할 수 있습니다.
+시간이 지남에 따라 다른 Spring project가 Spring Framework 위에 빌드되었습니다.
+대부분의 경우 사람들이 "Spring" 이라고 하면 project 전체를 의미합니다.
+이 참조 문서는 기초인 Spring Framework 자체에 중점을 둡니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring Framework는 module로 나뉩니다.
+application은 필요한 module을 선택할 수 있습니다.
+핵심은 configuration model 및 dependency injection mechanism을 포함한 core container의 module입니다.
+그 외에도 Spring Framework는 messaging, transactional data 및 persistence, web을 포함한 다양한 application architectures에 대한 기본 지원을 제공합니다.
+또한 Servlet 기반 Spring MVC web framework와 병렬로 Spring WebFlux reactive web framework도 포함합니다.</p>
+</div>
+<div class="paragraph">
+<p>모듈에 대한 참고 사항 : Spring의 framework jar는 JDK 9의 module path ("Jigsaw")에 배포할 수 있습니다.
+Jigsaw 지원 application에서 사용하기 위해 Spring Framework 5 jar에는 jar artifact name와 독립적인 stable language-level module name ("spring.core", "spring.context" 등)을 정의하는 "Automatic-Module-Name" manifest 항목이 함께 제공됩니다. (jar는 "."대신 "-"로 동일한 naming pattern을 따릅니다 (예: "spring-core" 및 "spring-context")
+물론 Spring의 framework jar는 JDK 8 및 9+의 classpath에서 계속 잘 작동합니다.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview-history">History of Spring and the Spring Framework</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring은 초기 <a href="https://en.wikipedia.org/wiki/Java_Platform,_Enterprise_Edition">J2EE</a> 사양의 복잡성에 대한 대응으로 2003년에 시작되었습니다.
+일부 사람들은 Java EE와 Spring이 경쟁에 있다고 생각하지만 실제로 Spring은 Java EE를 보완합니다.
+Spring programming model은 Java EE platform 사양을 수용하지 않습니다.
+오히려 EE 산하에서 엄선된 개별 사양과 통합됩니다.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Servlet API (<a href="https://jcp.org/en/jsr/detail?id=340">JSR 340</a>)</p>
+</li>
+<li>
+<p>WebSocket API (<a href="https://www.jcp.org/en/jsr/detail?id=356">JSR 356</a>)</p>
+</li>
+<li>
+<p>Concurrency Utilities (<a href="https://www.jcp.org/en/jsr/detail?id=236">JSR 236</a>)</p>
+</li>
+<li>
+<p>JSON Binding API (<a href="https://jcp.org/en/jsr/detail?id=367">JSR 367</a>)</p>
+</li>
+<li>
+<p>Bean Validation (<a href="https://jcp.org/en/jsr/detail?id=303">JSR 303</a>)</p>
+</li>
+<li>
+<p>JPA (<a href="https://jcp.org/en/jsr/detail?id=338">JSR 338</a>)</p>
+</li>
+<li>
+<p>JMS (<a href="https://jcp.org/en/jsr/detail?id=914">JSR 914</a>)</p>
+</li>
+<li>
+<p>뿐만 아니라 필요한 경우 transaction 조정을 위한 JTA/JCA 설정</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Spring Framework는 또한 Dependency Injection(<a href="https://www.jcp.org/en/jsr/detail?id=330">JSR 330</a>) 및 Common Annotations(<a href="https://jcp.org/en/jsr/detail?id=250">JSR 250</a>) 사양을 지원하는데, 이는 application 개발자가 Spring Framework에서 제공하는 Spring 특정 mechanism 대신 사용할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring Framework 5.0의 경우 Spring은 Java EE 7 level(예: Servlet 3.1+, JPA 2.1+)을 최소 필요로 하며 동시에 Java EE 8 level에서 최신 API와의 즉각적인 통합을 제공합니다.(예: Servlet 4.0, JSON Binding API)
+이를 통해 Spring은 Tomcat 8 및 9, WebSphere 9 및 JBoss EAP 7과 완벽하게 호환됩니다.</p>
+</div>
+<div class="paragraph">
+<p>시간이 지남에 따라 application 개발에서 Java EE의 역할이 발전했습니다.
+Java EE 및 Spring 초기에는 application server에 배포할 application이 만들어졌습니다.
+오늘날 Spring Boot의 도움으로 application은 DevOps 및 cloud 친화적인 방식으로 생성되며 Servlet container가 내장되고 변경하기 쉽습니다.
+Spring Framework 5부터 WebFlux application은 Servlet API를 직접 사용하지 않으며 Servlet container가 아닌 서버(예: Netty)에서 실행할 수 있습니다.</p>
+</div>
+<div class="paragraph">
+<p>Spring은 계속해서 혁신하고 진화합니다.
+Spring Framework 외에도 Spring Boot, Spring Security, SpringData, Spring Cloud, Spring Batch 등과 같은 다른 project가 있습니다.
+각 프로젝트에는 자체 source code repository, issue tracker 및 release cadence가 있다는 점을 기억하는 것이 중요합니다.
+Spring project의 전체 목록은 <a href="https://spring.io/projects">spring.io/projects</a>를 참조하십시오 .</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview-philosophy">Design Philosophy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>framework에 대해 배울때 그것이 무엇을 하는지뿐만 아니라 어떤 원칙을 따르는지 아는 것이 중요합니다.
+다음은 Spring Framework의 기본 원칙입니다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>모든 수준에서 선택권을 제공하십시오.
+Spring을 사용하면 가능한 한 늦게 설계 결정을 연기할 수 있습니다.
+예를들어 코드를 변경하지 않고 구성을 통해 persistence providers를 전환할 수 있습니다.
+다른 많은 infrastructure 관련 문제와 third-party API와의 통합도 마찬가지입니다.</p>
+</li>
+<li>
+<p>다양한 관점을 수용합니다.
+Spring은 유연성을 포용하며 일을 수행하는 방법에 대해 의견이 없습니다.
+다양한 관점에서 다양한 application 요구 사항을 지원합니다.</p>
+</li>
+<li>
+<p>강력한 이전 버전과의 호환성을 유지합니다.
+Spring의 진화는 버전 간에 몇 가지 주요 변경 사항을 강제하도록 신중하게 관리되었습니다.
+Spring은 Spring에 의존하는 application 및 library 유지 보수를 용이하게하기 위해 신중하게 선택된 범위의 JDK version 및 third-party library를 지원합니다.</p>
+</li>
+<li>
+<p>API 디자인에 관심이 있습니다.
+Spring 팀은 직관적이고 여러 버전과 수년에 걸쳐 유지되는 API를 만드는데 많은 생각과 시간을 투자합니다.</p>
+</li>
+<li>
+<p>code quality에 대한 높은 표준을 설정합니다.
+Spring Framework는 의미있고 최신이며 정확한 javadoc에 중점을 둡니다.
+package간에 순환 종속성이 없는 깨끗한 코드 구조를 주장할 수 있는 몇 안되는 project 중 하나입니다.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview-feedback">Feedback and Contributions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>방법 질문이나 문제 진단 또는 디버깅의 경우 Stack Overflow를 사용하는 것이 좋습니다.
+Stack Overflow에서 사용할 추천 태그 목록을 보려면 <a href="https://stackoverflow.com/questions/tagged/spring+or+spring-mvc+or+spring-aop+or+spring-jdbc+or+spring-r2dbc+or+spring-transactions+or+spring-annotations+or+spring-jms+or+spring-el+or+spring-test+or+spring+or+spring-remoting+or+spring-orm+or+spring-jmx+or+spring-cache+or+spring-webflux+or+spring-rsocket?tab=Newest">여기</a>를 클릭하십시오 .
+Spring Framework에 문제가 있다고 확신하거나 기능을 제안하고 싶다면 the <a href="https://github.com/spring-projects/spring-framework/issues">GitHub Issues</a>를 사용하세요.</p>
+</div>
+<div class="paragraph">
+<p>염두에 두고있는 solution이나 제안된 수정 사항이 있는 경우 <a href="https://github.com/spring-projects/spring-framework">Github</a>에서 pull request를 제출할 수 있습니다.
+그러나 가장 사소한 문제를 제외한 모든 문제에 대해 논의가 진행되고 향후 참조를 위해 기록을 남겨두는 issue tracker에 ticket이 제출될 것으로 기대합니다.</p>
+</div>
+<div class="paragraph">
+<p>자세한 내용은 <a href="https://github.com/spring-projects/spring-framework/blob/master/CONTRIBUTING.md">CONTRIBUTING</a>, 최상위 프로젝트 페이지의 지침을 참조하세요.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview-getting-started">Getting Started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring을 막 시작했다면 <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> 기반 application을 생성하여 Spring Framework 사용을 시작할 수 있습니다.
+Spring Boot는 production 준비가 된 Spring 기반 application을 만드는 빠른(그리고 독단적인) 방법을 제공합니다.
+Spring Framework를 기반으로 하며 configuration보다 convention를 선호하며 최대한 신속하게 실행하도록 설계되었습니다</p>
+</div>
+<div class="paragraph">
+<p><a href="https://start.spring.io/">start.spring.io</a>를 사용하여 basic project를 생성하거나 <a href="https://spring.io/guides/gs/rest-service/">Getting Started Building a RESTful Web Service</a>와 같은 <a href="https://spring.io/guides">"Getting Started" guide</a> 중 하나를 따를 수 있습니다.
+이 guide는 이해하기 쉬울 뿐만 아니라 작업에 중점을 두고있으며 대부분은 Spring Boot를 기반으로 합니다.
+또한 특정 문제를 해결할 때 고려할 수있는 Spring portfolio의 다른 project도 다룹니다.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-06-11 09:55:56 +0900
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>

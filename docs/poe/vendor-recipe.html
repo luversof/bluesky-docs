@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>poe vendor recipe</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LG0R87MZJ');
+</script>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>poe vendor recipe</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#equipment">1. Equipment</a>
+<ul class="sectlevel2">
+<li><a href="#crafting">1.1. Crafting</a></li>
+</ul>
+</li>
+<li><a href="#sockets">2. Sockets</a></li>
+<li><a href="#direct-purchases-from-vendors">3. Direct Purchases from Vendors</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>영문 버전 vendor recipe를 한글 버전 poe에서 확인할 때 용어가 한눈에 들어오지 않아서 정리해보았습니다.</p>
+</div>
+<div class="paragraph">
+<p>아래 내용은 <a href="https://pathofexile.fandom.com/wiki/Vendor_recipe_system" target="_blank" rel="noopener">PathOfExile Wiki Vendor recipe system</a>의 내용입니다.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollRare.png" alt="CurrencyRerollRare">
+</div>
+</div>
+<div class="paragraph">
+<p>해결해야 할 것들.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>희귀도 별 처리</p>
+</li>
+<li>
+<p>직관적으로 확인가능하던 아이템 레이어들..</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. 용어 일람</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">종류</th>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">영문</th>
+<th class="tableblock halign-left valign-top">한글</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="4"><p class="tableblock">아이템 희귀도(rarity)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Normal</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">일반</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Magic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마법</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rare</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">레어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unique</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유니크?</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" rowspan="30"><p class="tableblock">통화(currency)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blacksmith&#8217;s Whetstone</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">대장장이의 숫돌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Armourer&#8217;s Scrap</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">방어구 장인의 고철</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Glassblower&#8217;s Bauble</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유리직공의 방울</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyGemQuality.png" alt="CurrencyGemQuality" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gemcutter&#8217;s Prism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">세공사의 프리즘</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyMapQuality.png" alt="CurrencyMapQuality" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cartographer&#8217;s Chisel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지도제작자의 끌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Transmutation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">진화의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollMagic.png" alt="CurrencyRerollMagic" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Alteration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">변화의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/AnnullOrb.png" alt="AnnullOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Annulment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">소멸의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyUpgradeRandomly.png" alt="CurrencyUpgradeRandomly" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Chance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기회의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyAddModToRare.png" alt="CurrencyAddModToRare" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exalted Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">엑잘티드 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyUpgradeMagicToRare.png" alt="CurrencyUpgradeMagicToRare" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Regal Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제왕의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyUpgradeToRare.png" alt="CurrencyUpgradeToRare" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Alchemy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">연금술의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollRare.png" alt="CurrencyRerollRare" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chaos Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카오스 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyImplicitMod.png" alt="CurrencyImplicitMod" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blessed Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">축복의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Augmentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">확장의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyModValues.png" alt="CurrencyModValues" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Divine Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신성한 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollSocketNumbers.png" alt="CurrencyRerollSocketNumbers" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jeweller&#8217;s Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쥬얼러 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollSocketLinks.png" alt="CurrencyRerollSocketLinks" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Fusing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">연결의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyRerollSocketColours.png" alt="CurrencyRerollSocketColours" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Chromatic Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">색채의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/HarbingerOrb.png" alt="HarbingerOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Harbinger&#8217;s Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">선구자의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/HorizonOrb.png" alt="HorizonOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Horizons</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지평의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyConvertToNormal.png" alt="CurrencyConvertToNormal" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Scouring</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정제의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyVaal.png" alt="CurrencyVaal" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Vaal Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">바알 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/EngineersOrb.png" alt="EngineersOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Engineer&#8217;s Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기술자의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/InfusedEngineersOrb.png" alt="InfusedEngineersOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Infused Engineer&#8217;s Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주입된 기술자의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/AncientOrb.png" alt="AncientOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ancient Orb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">고대의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/BindingOrb.png" alt="BindingOrb" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Binding</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">속박의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/CurrencyPassiveSkillRefund.png" alt="CurrencyPassiveSkillRefund" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Orb of Regret</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">후회의 오브</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이건 어디 종류?</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">socket</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="equipment"><a class="anchor" href="#equipment"></a>1. Equipment</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="crafting"><a class="anchor" href="#crafting"></a>1.1. Crafting</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Table Title</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">결과</th>
+<th class="tableblock halign-left valign-top">레시피</th>
+<th class="tableblock halign-left valign-top">설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Magic Boots with 10% increased Movement Speed</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p>White Boots</p>
+</li>
+<li>
+<p>아무 희귀도의 수은 플라스크</p>
+</li>
+<li>
+<p>Orb of Augmentation</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">홈은 변경될 수 있지만 base boot type은 변경되지 않습니다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sockets"><a class="anchor" href="#sockets"></a>2. Sockets</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="direct-purchases-from-vendors"><a class="anchor" href="#direct-purchases-from-vendors"></a>3. Direct Purchases from Vendors</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-06-11 09:55:56 +0900
+</div>
+</div>
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<script src="js/highlight/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>

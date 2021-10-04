@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.15">
 <title>Architecture</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -505,7 +506,7 @@ Spring Cloud Stream은 다음과 같은 common message exchange 계약에 해당
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;app register --name http --type source --uri maven://org.springframework.cloud.stream.app:http-source-rabbit:1.2.0.RELEASE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;app register --name http --type source --uri maven://org.springframework.cloud.stream.app:http-source-rabbit:1.2.0.RELEASE
 Successfully registered application 'source:http'
 
 dataflow:&gt;app register --name log --type sink --uri maven://org.springframework.cloud.stream.app:log-sink-rabbit:1.1.0.RELEASE
@@ -517,7 +518,7 @@ Successfully registered application 'sink:log'</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;stream create --name httpStream --definition "http | log"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;stream create --name httpStream --definition "http | log"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -543,7 +544,7 @@ stream 정의는 single pipe 기호(|)를 대신 double pipe 기호(||)를 사�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;stream create --definition "orderGeneratorApp || baristarApp || hotDrinkDeliveryApp || coldDrinkDeliveryApp" -- name orderStream</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;stream create --definition "orderGeneratorApp || baristarApp || hotDrinkDeliveryApp || coldDrinkDeliveryApp" -- name orderStream</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -588,7 +589,7 @@ Stream ApplicationDSL을 사용하고 messaging middleware를 사용하지 않�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;app register --name timestamp --type task --uri maven://org.springframework.cloud.task.app:timestamp-task:1.3.0.RELEASE</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;app register --name timestamp --type task --uri maven://org.springframework.cloud.task.app:timestamp-task:1.3.0.RELEASE</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -596,7 +597,7 @@ Stream ApplicationDSL을 사용하고 messaging middleware를 사용하지 않�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;task create tsTask --definition "timestamp"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;task create tsTask --definition "timestamp"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -633,7 +634,7 @@ Composed Task DSL에는 전체 흐름을 결정하는 여러 기호가 있습니
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">dataflow:&gt;task create simpleComposedTask --definition "task1 &amp;&amp; task2"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dataflow:&gt;task create simpleComposedTask --definition "task1 &amp;&amp; task2"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -814,12 +815,16 @@ Strem 배포를 위해  production에서 로컬 서버가 지원되지 않습니
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0.RELEASE<br>
-Last updated 2021-06-11 13:44:13 +0900
+Last updated 2021-10-05 04:41:59 +0900
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

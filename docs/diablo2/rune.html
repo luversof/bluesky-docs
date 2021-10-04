@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.15">
+<title>diablo 2 rune</title>
+<link rel="stylesheet" href="css/spring.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<style type="text/css">
+body {
+	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
+}
+</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LG0R87MZJ');
+</script>
+<style>
+.hidden {
+	display: none;
+}
+
+.switch {
+	border-width: 1px 1px 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+	display: inline-block;
+}
+
+.switch--item {
+	padding: 10px;
+	background-color: #ffffff;
+	color: #7a2518;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.switch--item:not(:first-child) {
+	border-width: 0 0 0 1px;
+	border-style: solid;
+	border-color: #7a2518;
+}
+
+.switch--item.selected {
+	background-color: #7a2519;
+	color: #ffffff;
+}
+
+</style>
+<script type="text/javascript">
+function addBlockSwitches() {
+	for (var primary of document.querySelectorAll('.primary')) {
+		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
+		switchItem.item.classList.add("selected");
+		var title = primary.querySelector('.title')
+		title.remove();
+	}
+	for (var secondary of document.querySelectorAll('.secondary')) {
+		var primary = findPrimary(secondary);
+		if (primary === null) {
+			console.error("Found secondary block with no primary sibling");
+		}
+		else {
+			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
+			switchItem.content.classList.add("hidden");
+			primary.append(switchItem.content);
+			secondary.remove();
+		}
+	}
+}
+
+function createElementFromHtml(html) {
+	var template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function createBlockSwitch(primary) {
+    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
+    primary.prepend(blockSwitch)
+	return blockSwitch;
+}
+
+function findPrimary(secondary) {
+	var candidate = secondary.previousElementSibling;
+	while (candidate != null && !candidate.classList.contains('primary')) {
+		candidate = candidate.previousElementSibling;
+	}
+	return candidate;
+}
+
+function createSwitchItem(block, blockSwitch) {
+	var blockName = block.querySelector('.title').textContent;
+	var content = block.querySelectorAll('.content').item(0);
+	var colist = nextSibling(block, '.colist');
+	if (colist != null) {
+		content.append(colist);
+	}
+	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
+	item.dataset.blockName = blockName;
+	content.dataset.blockName = blockName;
+	blockSwitch.append(item);
+	return {'item': item, 'content': content};
+}
+
+function nextSibling(element, selector) {
+	var sibling = element.nextElementSibling;
+	while (sibling) {
+		if (sibling.matches(selector)) {
+			return sibling;
+		}
+		sibling = sibling.nextElementSibling;
+	}
+}
+
+function globalSwitch() {
+	document.querySelectorAll(".switch--item").forEach(function(item) {
+		var blockId = blockIdForSwitchItem(item);
+		var handler = function(event) {
+			selectedText = event.target.textContent;
+			window.localStorage.setItem(blockId, selectedText);
+			for (var switchItem of document.querySelectorAll(".switch--item")) {
+				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
+					select(switchItem);
+				}
+			}
+		}
+		item.addEventListener("click", handler);
+		if (item.textContent === window.localStorage.getItem(blockId)) {
+			select(item);
+		}
+	});
+}
+
+function select(selected) {
+	for (var child of selected.parentNode.children) {
+		child.classList.remove("selected");
+	}
+	selected.classList.add("selected");
+	for (var child of selected.parentNode.parentNode.children) {
+		if (child.classList.contains("content")) {
+			if (selected.dataset.blockName === child.dataset.blockName) {
+				child.classList.remove("hidden");
+			}
+			else {
+				child.classList.add("hidden");
+			}
+		}
+	}	
+}
+
+function blockIdForSwitchItem(item) {
+	idComponents = []
+	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
+		idComponents.push(switchItem.textContent.toLowerCase());
+	}
+	return idComponents.sort().join("-")
+}
+
+window.onload = function() {
+	addBlockSwitches();
+	globalSwitch();
+};
+
+</script>
+
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>diablo 2 rune</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#룬-종류">1. 룬 종류</a></li>
+<li><a href="#룬-조합">2. 룬 조합</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="룬-종류"><a class="anchor" href="#룬-종류"></a>1. 룬 종류</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 1. 룬 목록</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">No</th>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">이름</th>
+<th class="tableblock halign-left valign-top">요구 레벨</th>
+<th class="tableblock halign-left valign-top">보스</th>
+<th class="tableblock halign-left valign-top">옵션</th>
+<th class="tableblock halign-left valign-top">업그레이드 재료</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/El_Rune.png" alt="El Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">엘(El)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">노말 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 명중률 +50, 시야 +1<br>
+방어구: 방어력 + 15, 시야 +1<br>
+투구: 방어력 + 15, 시야 +1<br>
+방패: 방어력 + 15, 시야 +1</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Eld_Rune.png" alt="Eld Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">엘드(Eld)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">노말 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 언데드에게 주는 피해 + 75%, 언데드에 대한 명중률 +50<br>
+방어구: 지구력 고갈 속도 15% 감소<br>
+투구: 지구력 고갈 속도 15% 감소<br>
+방패: 막기 확률 7% 증가</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Tir_Rune.png" alt="Tir Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">티르(Tir)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 적 처치 시 마나 +2<br>
+방어구: 적 처치 시 마나 +2<br>
+투구: 적 처치 시 마나 +2<br>
+방패: 적 처치 시 마나 +2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Nef_Rune.png" alt="Nef Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">네프(Nef)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 밀쳐내기<br>
+방어구: 원거리 공격 방어력 +30<br>
+투구: 원거리 공격 방어력 +30<br>
+방패: 원거리 공격 방어력 +30</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Eth_Rune.png" alt="Eth Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">에드(Eth)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 대상의 방어력 -25%<br>
+방어구: 마나 재생 15%<br>
+투구: 마나 재생 15%<br>
+방패: 마나 재생 15%</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ith_Rune.png" alt="Ith Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이드(Ith)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 최대 피해 +9<br>
+방어구: 받는 피해의 15%만큼 마나 회복<br>
+투구: 받는 피해의 15%만큼 마나 회복<br>
+방패: 받는 피해의 15%만큼 마나 회복</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Tal_Rune.png" alt="Tal Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">탈(Tal)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 독 피해 +75 (5초에 걸쳐)<br>
+방어구: 독 저항 +30%<br>
+투구: 독 저항 +30%<br>
+방패: 독 저항 +30%</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ral_Rune.png" alt="Ral Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">랄(Ral)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 화염 피해 5 - 30 추가<br>
+방어구: 화염 저항 + 30%<br>
+투구: 화염 저항 + 30%<br>
+방패: 화염 저항 + 35%</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ort_Rune.png" alt="Ort Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">오르트(Ort)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 번개 피해 1 - 50 추가<br>
+방어구: 번개 저항 +30%<br>
+투구: 번개 저항 +30%<br>
+방패: 번개 저항 +35%</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Thul_Rune.png" alt="Thul Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주울(Thul)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 냉기 피해 3 - 14 추가<br>
+방어구: 냉기 저항 +30%<br>
+투구: 냉기 저항 +30%<br>
+방패: 냉기 저항 +35%</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Amn_Rune.png" alt="Amn Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">앰(Amn)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 적중당 생명력 7% 훔침<br>
+방어구: 공격자가 피해를 14 받음<br>
+투구: 공격자가 피해를 14 받음<br>
+방패: 공격자가 피해를 14 받음</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3주울 + 최하급 토파즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Sol_Rune.png" alt="Sol Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">솔(Sol)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 최소 피해 +9<br>
+방어구: 피해 7 감소<br>
+투구: 피해 7 감소<br>
+방패: 피해 7 감소</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3앰 + 최하급 자수정</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Shael_Rune.png" alt="Shael Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">샤엘(Shael)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 공격 속도 +20%<br>
+방어구: 타격 회복 속도 +20%<br>
+투구: 타격 회복 속도 +20%<br>
+방패: 타격 회복 속도 +20%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3솔 + 최하급 사파이어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Dol_Rune.png" alt="Dol Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">돌(Dol)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 적중 시 괴물 도주 25%<br>
+방어구: 생명력 회복 +7<br>
+투구: 생명력 회복 +7<br>
+방패: 생명력 회복 +7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3샤엘 + 최하급 루비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Hel_Rune.png" alt="Hel Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">헬(Hel)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3돌 + 최하급 에메랄드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Io_Rune.png" alt="Io Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이오(Io)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악몽 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 활력 +10<br>
+방어구: 활력 +10<br>
+투구: 활력 +10<br>
+방패: 활력 +10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3헬 + 최하급 다이아몬드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Lum_Rune.png" alt="Lum Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">룸(Lum)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 마력 +10<br>
+방어구: 마력 +10<br>
+투구: 마력 +10<br>
+방패: 마력 +10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3이오 + 하급 토파즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ko_Rune.png" alt="Ko Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코(Ko)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3룸 + 하급 자수정</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Fal_Rune.png" alt="Fal Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">팔(Fal)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">41</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3코 + 하급 사파이어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Lem_Rune.png" alt="Lem Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">렘(Lem)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">43</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3팔 + 하급 루비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Pul_Rune.png" alt="Pul Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">풀(Pul)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">45</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3렘 + 하급 에메랄드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Um_Rune.png" alt="Um Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">움(Um)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2풀 + 하급 다이아몬드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">23</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Mal_Rune.png" alt="Mal Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">말(Mal)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 괴물 회복 저지<br>
+방어구: 마법 피해 7 감소<br>
+투구: 마법 피해 7 감소<br>
+방패: 마법 피해 7 감소</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2움 + 토파즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">24</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ist_Rune.png" alt="Ist Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이스트(Ist)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">51</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 카운테스</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2말+ 자수정</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Gul_Rune.png" alt="Gul Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">굴(Gul)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 안다리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 명중률 보너스 20%<br>
+방어구: 최대 독 저항 +5%<br>
+투구: 최대 독 저항 +5%<br>
+방패: 최대 독 저항 +5%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2아이스트 + 사파이어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Vex_Rune.png" alt="Vex Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">벡스(Vex)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">55</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 안다리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2굴 + 루비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ohm_Rune.png" alt="Ohm Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">오움(Ohm)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">57</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 안다리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2벡스 + 에메랄드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Lo_Rune.png" alt="Lo Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로(Lo)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 안다리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2오움 + 다이아몬드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">29</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Sur_Rune.png" alt="Sur Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수르(Sur)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">61</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 듀리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2 로 + 상급 토파즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Ber_Rune.png" alt="Ber Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">베르(Ber)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">63</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 듀리엘</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2수르 + 상급 자수정</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Jah_Rune.png" alt="Jah Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">자(Jah)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 메피스토</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기: 대상의 방어력 무시<br>
+방어구: 최대 생명력 5% 증가<br>
+투구: 최대 생명력 5% 증가<br>
+방패: 생명력 +50</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2베르 + 상급 사파이어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Cham_Rune.png" alt="Cham Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">참(Cham)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">67</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 메피스토</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2자 + 상급 루비</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">33</p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="./images/Zod_Rune.png" alt="Zod Rune" width="40" height="40">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">조드(Zod)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">69</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지옥 바알</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">무기:<br>
+방어구:<br>
+투구:<br>
+방패:</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2참 + 상급 에메랄드</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="룬-조합"><a class="anchor" href="#룬-조합"></a>2. 룬 조합</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-10-05 04:41:59 +0900
+</div>
+</div>
+<script src="js/highlight/highlight.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
+<script type="text/javascript" src="js/toc.js"></script>
+</body>
+</html>

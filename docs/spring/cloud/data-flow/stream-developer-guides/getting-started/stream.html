@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.15">
 <title>Getting Started with Stream Processing</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -359,7 +360,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -382,7 +383,7 @@ UI가 definition page로 이동합니다.<br>
 <p>다른 콘솔 창에서 다음을 입력하세요.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">docker exec -it skipper tail -f [경로]</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker exec -it skipper tail -f [경로]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -390,7 +391,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">log-sink                                 : Happy streaming</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">log-sink                                 : Happy streaming</code></pre>
 </div>
 </div>
 </li>
@@ -411,7 +412,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -422,7 +423,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
 Getting apps in org ORG / space SPACE as email@pivotal.io...
 
 name                         requested state   instances   memory   disk   urls
@@ -437,7 +438,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">cf logs http-ingest-314-log-v1
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cf logs http-ingest-314-log-v1
 ...
 ...
 2017-11-20T15:39:43.76-0800 [APP/PROC/WEB/0] OUT 2017-11-20 23:39:43.761  INFO 12 --- [ http-ingest-314.ingest-314-1] log-sink                                 : Happy streaming</code></pre>
@@ -458,7 +459,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -466,7 +467,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 <h4 id="results-3"><a class="anchor" href="#results-3"></a>4.4.2. Results</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">kubectl get pods
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
 http-ingest-log-v1-0-2k4r8          1/1       Running   0          2m
 http-ingest-http-v1-qhdqq           1/1       Running   0          2m
@@ -481,7 +482,7 @@ skipper-2408247821-50z31            1/1       Running   0          15m</code></p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">kubectl logs -f http-ingest-log-v1-0-2k4r8
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl logs -f http-ingest-log-v1-0-2k4r8
 ...
 ...
 2017-10-30 22:59:04.966  INFO 1 --- [ http-ingest.http.http-ingest-1] log-sink                                 : Happy streaming</code></pre>
@@ -517,12 +518,16 @@ skipper-2408247821-50z31            1/1       Running   0          15m</code></p
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0.RELEASE<br>
-Last updated 2021-06-11 13:44:13 +0900
+Last updated 2021-10-05 04:41:59 +0900
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

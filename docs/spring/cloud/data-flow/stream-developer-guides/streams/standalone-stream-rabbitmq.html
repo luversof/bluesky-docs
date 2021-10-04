@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.15">
 <title>Stream Processing with RabbitMQ</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -246,7 +247,7 @@ application을 수동으로 배포하면 Data Flow에서 자동으로 수행하�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/stream-developer-guides/streams/standalone-stream-rabbitmq/dist/usage-cost-stream-rabbit.zip?raw=true -O usage-cost-stream-rabbit.zip</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/stream-developer-guides/streams/standalone-stream-rabbitmq/dist/usage-cost-stream-rabbit.zip?raw=true -O usage-cost-stream-rabbit.zip</code></pre>
 </div>
 </div>
 </div>
@@ -330,7 +331,7 @@ artifact: <code>usage-detail-sender-rabbit</code></p>
 다음과 같은 형태입니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagedetailsender;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagedetailsender;
 
 import java.util.Random;
 
@@ -444,7 +445,7 @@ spring.cloud.stream.bindings.output.producer.requiredGroups=usage-cost-consumer<
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -460,7 +461,7 @@ RabbitMQ binder 대신 <code>Test</code> binder를 사용하여 application의 o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagedetailsender;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagedetailsender;
 
 import java.util.concurrent.TimeUnit;
 
@@ -570,7 +571,7 @@ UserDetail 클래스는 userId, data, duration 속성을 가집니다.</p>
 소스코드는 다음과 같습니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostprocessor;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostprocessor;
 
 import io.spring.dataflow.sample.UsageCostDetail;
 import io.spring.dataflow.sample.UsageDetail;
@@ -670,7 +671,7 @@ spring.cloud.stream.bindings.output.producer.requiredGroups=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -686,7 +687,7 @@ RabbitMQ binder 대신 <code>Test</code> binder를 사용하여 application의 o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostprocessor;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostprocessor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -787,7 +788,7 @@ artifact: <code>usage-detail-logger-rabbit</code></p>
 다음과 같은 형태입니다.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostlogger;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostlogger;
 
 import io.spring.dataflow.sample.UsageCostDetail;
 import org.slf4j.Logger;
@@ -859,7 +860,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">./mvnw clean package</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw clean package</code></pre>
 </div>
 </div>
 </div>
@@ -870,7 +871,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">package io.spring.dataflow.sample.usagecostlogger;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.spring.dataflow.sample.usagecostlogger;
 
  import io.spring.dataflow.sample.UsageCostDetail;
  import org.junit.Test;
@@ -971,7 +972,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3.7.14-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3.7.14-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -984,7 +985,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-detail-sender-rabbit-0.0.1-SNAPSHOT.jar --server.port=9001 &amp;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-detail-sender-rabbit-0.0.1-SNAPSHOT.jar --server.port=9001 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1026,7 +1027,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-cost-processor-rabbit-0.0.1-SNAPSHOT.jar --server.port=9002 &amp;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-cost-processor-rabbit-0.0.1-SNAPSHOT.jar --server.port=9002 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1069,7 +1070,7 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">java -jar target/usage-cost-logger-rabbit-0.0.1-SNAPSHOT.jar --server.port=9003 &amp;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar target/usage-cost-logger-rabbit-0.0.1-SNAPSHOT.jar --server.port=9003 &amp;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1095,12 +1096,16 @@ spring.cloud.stream.bindings.input.group=logger</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0.RELEASE<br>
-Last updated 2021-06-11 13:44:13 +0900
+Last updated 2021-10-05 04:41:59 +0900
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

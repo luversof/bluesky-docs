@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.15">
 <title>Spring Cloud Task Documentation</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -591,7 +592,7 @@ Spring Cloud Data Flow 는 이에 대한 예 입니다. (task 정의 이름으�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public class MyBean {
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyBean {
     @BeforeTask
     public void methodA(TaskExecution taskExecution) {
     }
@@ -645,7 +646,7 @@ Spring Cloud Data Flow 는 이에 대한 예 입니다. (task 정의 이름으�
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@AfterTask
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@AfterTask
 public void afterMe(TaskExecution taskExecution) {
     taskExecution.setExitMessage("AFTER EXIT MESSAGE");
 }</code></pre>
@@ -759,7 +760,7 @@ listener는 해당 조건을 만족하는 모든 job에 주입됩니다.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public TaskBatchExecutionListenerBeanPostProcessor batchTaskExecutionListenerBeanPostProcessor() {
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public TaskBatchExecutionListenerBeanPostProcessor batchTaskExecutionListenerBeanPostProcessor() {
     TaskBatchExecutionListenerBeanPostProcessor postProcessor = new TashBatchExecutionListenerBeanPostProcessor();
     postProcessor.setJobNames(Arrays.asList(new String[] {"job1", "job2"}));
     return postProcessor;
@@ -793,7 +794,7 @@ Spring Cloud Task Project의 <a href="https://github.com/spring-cloud/spring-clo
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Bean
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 public PartitionHandler partitionHandler(TaskLauncher taskLauncher, JobExplorer jobExplorer) throws Exception {
     MavenProperties mavenProperties = new MavenProperties();
     mavenProperties.setRemoteRepositories(new HashMap&lt;&gt;(Collections.singleMap("springRepo", new MavenRepositoris.RemoteRepository(repository))));
@@ -837,7 +838,7 @@ master와 slave는 모두 task repository 와 job repository로 사용되는 동
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Bean
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 public DeployerStepExecutionHandler stepExecutionHander(JobExplorer jobExplorer) {
     DeployerStepExecutionHandler handler = new DeployerStepExecutionHandler(this.context, jobExplorer, this.jobRepository);
     return handler;
@@ -990,12 +991,16 @@ task 는 boot application이고 task에서 반환되는 exit code는 boot applic
 <div id="footer">
 <div id="footer-text">
 Version 2.1.1.RELEASE<br>
-Last updated 2021-06-11 13:44:13 +0900
+Last updated 2021-10-05 04:41:59 +0900
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

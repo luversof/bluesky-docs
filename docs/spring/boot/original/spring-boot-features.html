@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="generator" content="Asciidoctor 2.0.15">
 <title>Spring Boot Features</title>
 <link rel="stylesheet" href="css/spring.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -600,7 +601,7 @@ The <code>root</code> logger can be configured by using <code>logging.level.root
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs">logging.level.root=warn
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.root=warn
 logging.level.org.springframework.web=debug
 logging.level.org.hibernate=error</code></pre>
 </div>
@@ -608,7 +609,7 @@ logging.level.org.hibernate=error</code></pre>
 <div class="listingblock secondary">
 <div class="title">Yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs">logging:
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging:
   level:
     root: "warn"
     org.springframework.web: "debug"
@@ -647,13 +648,13 @@ For example, here&#8217;s how you could define a &#8220;tomcat&#8221; group by a
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs">logging.group.tomcat=org.apache.catalina,org.apache.coyote,org.apache.tomcat</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.group.tomcat=org.apache.catalina,org.apache.coyote,org.apache.tomcat</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">logging:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
   group:
     tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"</code></pre>
 </div>
@@ -664,13 +665,13 @@ For example, here&#8217;s how you could define a &#8220;tomcat&#8221; group by a
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs">logging.level.tomcat=trace</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.tomcat=trace</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">logging:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
   level:
     tomcat: "trace"</code></pre>
 </div>
@@ -716,13 +717,13 @@ You can set the property in your <code>application.properties</code> or <code>ap
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="properties" class="language-properties hljs">logging.register-shutdown-hook=false</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.register-shutdown-hook=false</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="yaml" class="language-yaml hljs">logging:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
   register-shutdown-hook: false</code></pre>
 </div>
 </div>
@@ -1023,7 +1024,7 @@ The following listing shows three sample profiles:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;springProfile name="staging"&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProfile name="staging"&gt;
     &lt;!-- configuration to be enabled when the "staging" profile is active --&gt;
 &lt;/springProfile&gt;
 
@@ -1050,7 +1051,7 @@ The following example shows how to expose properties for use within Logback:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
         defaultValue="localhost"/&gt;
 &lt;appender name="FLUENT" class="ch.qos.logback.more.appenders.DataFluentAppender"&gt;
     &lt;remoteHost&gt;${fluentHost}&lt;/remoteHost&gt;
@@ -1098,7 +1099,7 @@ To use the vintage engine, add a dependency on <code>junit-vintage-engine</code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="xml" class="language-xml hljs">&lt;dependency&gt;
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.junit.vintage&lt;/groupId&gt;
     &lt;artifactId&gt;junit-vintage-engine&lt;/artifactId&gt;
     &lt;scope&gt;test&lt;/scope&gt;
@@ -1270,7 +1271,7 @@ If you want to test a reactive web application in this scenario, you must set th
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringBootTest(properties = "spring.main.web-application-type=reactive")
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest(properties = "spring.main.web-application-type=reactive")
 class MyWebFluxTests { ... }</code></pre>
 </div>
 </div>
@@ -1338,7 +1339,7 @@ You can then import that class explicitly where it is required, as shown in the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringBootTest
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest
 @Import(MyTestsConfiguration.class)
 class MyTests {
 
@@ -1372,7 +1373,7 @@ have <code>@SpringBootTest</code> inject them using the <code>args</code> attrib
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1419,7 +1420,7 @@ If you have web endpoints that you want to test against this mock environment, y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1477,7 +1478,7 @@ If you want to focus only on the web layer and not start a complete <code>Applic
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1547,7 +1548,7 @@ For convenience, tests that need to make REST calls to the started server can ad
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1589,7 +1590,7 @@ If you can&#8217;t or won&#8217;t add webflux, Spring Boot also provides a <code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1644,7 +1645,7 @@ If such test needs access to an <code>MBeanServer</code>, consider marking it di
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1729,7 +1730,7 @@ To use this feature with a different arrangement, listeners must be explicitly a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@TestExecutionListeners({ MockitoTestExecutionListener.class, ResetMocksTestExecutionListener.class })</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestExecutionListeners({ MockitoTestExecutionListener.class, ResetMocksTestExecutionListener.class })</code></pre>
 </div>
 </div>
 </td>
@@ -1741,7 +1742,7 @@ To use this feature with a different arrangement, listeners must be explicitly a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.boot.test.mock.mockito.*;
@@ -1935,7 +1936,7 @@ The following example shows a test class for Jackson:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.json.*;
 import org.springframework.boot.test.context.*;
@@ -1991,7 +1992,7 @@ For instance, the following example asserts that the actual number is a float va
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">assertThat(json.write(message))
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">assertThat(json.write(message))
     .extractingJsonPathNumberValue("@.test.numberValue")
     .satisfies((number) -&gt; assertThat(number.floatValue()).isCloseTo(0.15f, within(0.01f)));</code></pre>
 </div>
@@ -2051,7 +2052,7 @@ The following example uses <code>MockMvc</code>:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.*;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.mock.mockito.*;
@@ -2099,7 +2100,7 @@ The following example uses HtmlUnit:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import com.gargoylesoftware.htmlunit.*;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.gargoylesoftware.htmlunit.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -2225,7 +2226,7 @@ The following example shows a class that uses both <code>@WebFluxTest</code> and
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -2331,7 +2332,7 @@ A list of the auto-configuration settings that are enabled by <code>@DataCassand
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
 
 @DataCassandraTest
@@ -2377,7 +2378,7 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -2397,7 +2398,7 @@ The following example shows the <code>@DataJpaTest</code> annotation in use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 
 import static org.assertj.core.api.Assertions.*;
@@ -2428,7 +2429,7 @@ If, however, you prefer to run tests against a real database you can use the <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@DataJpaTest
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 class ExampleRepositoryTests {
 
@@ -2465,7 +2466,7 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -2540,7 +2541,7 @@ The following example shows the <code>@JooqTest</code> annotation in use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.jooq.DSLContext;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 
@@ -2583,7 +2584,7 @@ A list of the auto-configuration settings that are enabled by <code>@DataMongoTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -2603,7 +2604,7 @@ If, however, you prefer to run tests against a real MongoDB server, you should e
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
@@ -2639,7 +2640,7 @@ A list of the auto-configuration settings that are enabled by <code>@DataNeo4jTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 
 @DataNeo4jTest
@@ -2659,7 +2660,7 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -2710,7 +2711,7 @@ A list of the auto-configuration settings that are enabled by <code>@DataRedisTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
 
 @DataRedisTest
@@ -2750,7 +2751,7 @@ A list of the auto-configuration settings that are enabled by <code>@DataLdapTes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 import org.springframework.ldap.core.LdapTemplate;
 
@@ -2770,7 +2771,7 @@ If, however, you prefer to run tests against a real LDAP server, you should excl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapAutoConfiguration;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 
 @DataLdapTest(excludeAutoConfiguration = EmbeddedLdapAutoConfiguration.class)
@@ -2805,7 +2806,7 @@ A list of the auto-configuration settings that are enabled by <code>@RestClientT
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@RestClientTest(RemoteVehicleDetailsService.class)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestClientTest(RemoteVehicleDetailsService.class)
 class ExampleRestClientTest {
 
     @Autowired
@@ -2845,7 +2846,7 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">import org.junit.jupiter.api.Test;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -2878,7 +2879,7 @@ class UserDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@TestConfiguration
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestConfiguration
 static class CustomizationConfiguration
         implements RestDocsMockMvcConfigurationCustomizer {
 
@@ -2897,7 +2898,7 @@ The following example shows a <code>RestDocumentationResultHandler</code> being 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@TestConfiguration(proxyBeanMethods = false)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestConfiguration(proxyBeanMethods = false)
 static class ResultHandlerConfiguration {
 
     @Bean
@@ -2917,7 +2918,7 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2972,7 +2973,7 @@ class UsersDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3014,7 +3015,7 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3070,7 +3071,7 @@ class UserDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3130,7 +3131,7 @@ A list of the auto-configuration settings that are enabled by <code>@WebServiceC
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@WebServiceClientTest(ExampleWebServiceClient.class)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@WebServiceClientTest(ExampleWebServiceClient.class)
 class WebServiceClientIntegrationTests {
 
     @Autowired
@@ -3158,7 +3159,7 @@ Additional auto-configurations can be added on a test-by-test basis by creating 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@JdbcTest
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@JdbcTest
 @ImportAutoConfiguration(IntegrationAutoConfiguration.class)
 class ExampleJdbcTests {
 
@@ -3212,7 +3213,7 @@ You could define your <code>@SpringBootApplication</code> as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringBootApplication
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
 @EnableBatchProcessing
 public class SampleApplication { ... }</code></pre>
 </div>
@@ -3223,7 +3224,7 @@ A recommended approach is to move that area-specific configuration to a separate
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration(proxyBeanMethods = false)
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration(proxyBeanMethods = false)
 @EnableBatchProcessing
 public class BatchConfiguration { ... }</code></pre>
 </div>
@@ -3247,7 +3248,7 @@ For example, for a <code>@WebMvcTest</code>, the following configuration will no
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Configuration
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
 public class WebConfiguration {
     @Bean
     public WebMvcConfigurer testConfigurer() {
@@ -3263,7 +3264,7 @@ public class WebConfiguration {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Component
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
 public class TestWebMvcConfigurer implements WebMvcConfigurer {
     ...
 }</code></pre>
@@ -3276,7 +3277,7 @@ Your application may resemble the following code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@SpringBootApplication
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
 @ComponentScan({ "com.example.app", "org.acme.another" })
 public class SampleApplication { ... }</code></pre>
 </div>
@@ -3335,7 +3336,7 @@ You can use it when you do not need the full set of features provided by <code>@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@ContextConfiguration(classes = Config.class,
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ContextConfiguration(classes = Config.class,
     initializers = ConfigFileApplicationContextInitializer.class)</code></pre>
 </div>
 </div>
@@ -3362,7 +3363,7 @@ You can call it with <code>key=value</code> strings, as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">TestPropertyValues.of("org=Spring", "name=Boot").applyTo(env);</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">TestPropertyValues.of("org=Spring", "name=Boot").applyTo(env);</code></pre>
 </div>
 </div>
 </div>
@@ -3374,7 +3375,7 @@ To use add <code>@ExtendWith(OutputCaptureExtension.class)</code> and inject <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3453,7 +3454,7 @@ If you do use Apache&#8217;s HTTP client, some additional test-friendly features
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">public class MyTest {
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyTest {
 
     private TestRestTemplate template = new TestRestTemplate();
 
@@ -3474,7 +3475,7 @@ Any URLs that do not specify a host and port automatically connect to the embedd
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">/*
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
  * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3540,12 +3541,16 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-11 13:44:13 +0900
+Last updated 2021-10-05 04:41:59 +0900
 </div>
 </div>
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
 <script src="js/highlight/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
 <script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
 <script type="text/javascript" src="js/toc.js"></script>
 </body>

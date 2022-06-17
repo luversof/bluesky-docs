@@ -12,6 +12,7 @@
 	</parent>
 	<properties>
 		<asciidocs.output.directory>docs</asciidocs.output.directory>
+		<skipSpecGenerator>true</skipSpecGenerator>
 	</properties>
 
 	<dependencies>

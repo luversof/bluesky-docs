@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>
-		<asciidocs.output.directory>docs</asciidocs.output.directory>
+		<asciidoctor.outputDirectory>docs</asciidoctor.outputDirectory>
 		<skipSpecGenerator>true</skipSpecGenerator>
 	</properties>
 
@@ -93,6 +93,17 @@
 		<repository>
 			<id>spring-milestones</id>
 			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>bluesky-localhost-snapshots</id>
+			<url>http://nexus.bluesky.local/repository/maven-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
 		</repository>
 		<repository>
 			<id>github-bluesky-maven-repo</id>

@@ -5,7 +5,7 @@
 	<artifactId>bluesky-docs</artifactId>
 	<parent>
 		<groupId>io.github.luversof</groupId>
-		<artifactId>bluesky-boot-starter-parent</artifactId>
+		<artifactId>bluesky-boot-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<properties>

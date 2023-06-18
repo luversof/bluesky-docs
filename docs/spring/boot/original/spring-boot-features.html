@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>Spring Boot Features</title>
-<link rel="stylesheet" href="css/spring.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<link rel="stylesheet" href="css/site.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -23,162 +21,30 @@ body {
 
   gtag('config', 'G-3LG0R87MZJ');
 </script>
-<style>
-.hidden {
-	display: none;
-}
-
-.switch {
-	border-width: 1px 1px 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-	display: inline-block;
-}
-
-.switch--item {
-	padding: 10px;
-	background-color: #ffffff;
-	color: #7a2518;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.switch--item:not(:first-child) {
-	border-width: 0 0 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-}
-
-.switch--item.selected {
-	background-color: #7a2519;
-	color: #ffffff;
-}
-
-</style>
-<script type="text/javascript">
-function addBlockSwitches() {
-	for (var primary of document.querySelectorAll('.primary')) {
-		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
-		switchItem.item.classList.add("selected");
-		var title = primary.querySelector('.title')
-		title.remove();
-	}
-	for (var secondary of document.querySelectorAll('.secondary')) {
-		var primary = findPrimary(secondary);
-		if (primary === null) {
-			console.error("Found secondary block with no primary sibling");
-		}
-		else {
-			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
-			switchItem.content.classList.add("hidden");
-			primary.append(switchItem.content);
-			secondary.remove();
-		}
-	}
-}
-
-function createElementFromHtml(html) {
-	var template = document.createElement('template');
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
-function createBlockSwitch(primary) {
-    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
-    primary.prepend(blockSwitch)
-	return blockSwitch;
-}
-
-function findPrimary(secondary) {
-	var candidate = secondary.previousElementSibling;
-	while (candidate != null && !candidate.classList.contains('primary')) {
-		candidate = candidate.previousElementSibling;
-	}
-	return candidate;
-}
-
-function createSwitchItem(block, blockSwitch) {
-	var blockName = block.querySelector('.title').textContent;
-	var content = block.querySelectorAll('.content').item(0);
-	var colist = nextSibling(block, '.colist');
-	if (colist != null) {
-		content.append(colist);
-	}
-	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
-	item.dataset.blockName = blockName;
-	content.dataset.blockName = blockName;
-	blockSwitch.append(item);
-	return {'item': item, 'content': content};
-}
-
-function nextSibling(element, selector) {
-	var sibling = element.nextElementSibling;
-	while (sibling) {
-		if (sibling.matches(selector)) {
-			return sibling;
-		}
-		sibling = sibling.nextElementSibling;
-	}
-}
-
-function globalSwitch() {
-	document.querySelectorAll(".switch--item").forEach(function(item) {
-		var blockId = blockIdForSwitchItem(item);
-		var handler = function(event) {
-			selectedText = event.target.textContent;
-			window.localStorage.setItem(blockId, selectedText);
-			for (var switchItem of document.querySelectorAll(".switch--item")) {
-				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
-					select(switchItem);
-				}
-			}
-		}
-		item.addEventListener("click", handler);
-		if (item.textContent === window.localStorage.getItem(blockId)) {
-			select(item);
-		}
-	});
-}
-
-function select(selected) {
-	for (var child of selected.parentNode.children) {
-		child.classList.remove("selected");
-	}
-	selected.classList.add("selected");
-	for (var child of selected.parentNode.parentNode.children) {
-		if (child.classList.contains("content")) {
-			if (selected.dataset.blockName === child.dataset.blockName) {
-				child.classList.remove("hidden");
-			}
-			else {
-				child.classList.add("hidden");
-			}
-		}
-	}	
-}
-
-function blockIdForSwitchItem(item) {
-	idComponents = []
-	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
-		idComponents.push(switchItem.textContent.toLowerCase());
-	}
-	return idComponents.sort().join("-")
-}
-
-window.onload = function() {
-	addBlockSwitches();
-	globalSwitch();
-};
-
-</script>
+<script src="js/setup.js"></script><script defer src="js/site.js"></script>
 
 </head>
-<body id="boot-features" class="book toc2 toc-left">
+<body id="boot-features" class="book toc2 toc-left"><div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
 <div id="header">
 <h1>Spring Boot Features</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
+<span id="back-to-index"><a href="index.html">Back to index</a></span><ul class="sectlevel1">
 <li><a href="#boot-features-logging">1. Logging</a>
 <ul class="sectlevel2">
 <li><a href="#boot-features-logging-format">1.1. Log Format</a></li>
@@ -397,7 +263,7 @@ In its simplest form, the converter colors the output according to the log level
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">%clr(%5p)</code></pre>
+<pre class="highlight"><code>%clr(%5p)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -447,7 +313,7 @@ For example, to make the text yellow, use the following setting:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow}</code></pre>
+<pre class="highlight"><code>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -484,7 +350,7 @@ For example, to make the text yellow, use the following setting:</p>
 <h3 id="boot-features-logging-file-output"><a class="anchor" href="#boot-features-logging-file-output"></a>1.3. File Output</h3>
 <div class="paragraph">
 <p>By default, Spring Boot logs only to the console and does not write log files.
-If you want to write log files in addition to the console output, you need to set a <code>logging.file.name</code> or <code>logging.file.path</code> property (for example, in your <code>application.properties</code>).</p>
+If you want to write log files in addition to the console output, you need to set a configprop:logging.file.name[] or configprop:logging.file.path[] property (for example, in your <code>application.properties</code>).</p>
 </div>
 <div class="paragraph">
 <p>The following table shows how the <code>logging.*</code> properties can be used together:</p>
@@ -499,8 +365,8 @@ If you want to write log files in addition to the console output, you need to se
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top"><code>logging.file.name</code></th>
-<th class="tableblock halign-left valign-top"><code>logging.file.path</code></th>
+<th class="tableblock halign-left valign-top">configprop:logging.file.name[]</th>
+<th class="tableblock halign-left valign-top">configprop:logging.file.path[]</th>
 <th class="tableblock halign-left valign-top">Example</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
@@ -567,23 +433,23 @@ For all other logging system, you&#8217;ll need to configure rotation settings d
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.file-name-pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.file-name-pattern[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The filename pattern used to create log archives.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.clean-history-on-start</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.clean-history-on-start[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">If log archive cleanup should occur when the application starts.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-file-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.max-file-size[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The maximum size of log file before it&#8217;s archived.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.total-size-cap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.total-size-cap[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The maximum amount of size log archives can take before being deleted.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-history</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.max-history[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The number of days to keep log archives (defaults to 7)</p></td>
 </tr>
 </tbody>
@@ -601,7 +467,7 @@ The <code>root</code> logger can be configured by using <code>logging.level.root
 <div class="listingblock primary">
 <div class="title">Properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.root=warn
+<pre class="highlight"><code class="language-properties" data-lang="properties">logging.level.root=warn
 logging.level.org.springframework.web=debug
 logging.level.org.hibernate=error</code></pre>
 </div>
@@ -609,7 +475,7 @@ logging.level.org.hibernate=error</code></pre>
 <div class="listingblock secondary">
 <div class="title">Yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging:
+<pre class="highlight"><code class="language-properties" data-lang="properties">logging:
   level:
     root: "warn"
     org.springframework.web: "debug"
@@ -645,16 +511,9 @@ For example, you might commonly change the logging levels for <em>all</em> Tomca
 <p>To help with this, Spring Boot allows you to define logging groups in your Spring <code>Environment</code>.
 For example, here&#8217;s how you could define a &#8220;tomcat&#8221; group by adding it to your <code>application.properties</code>:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.group.tomcat=org.apache.catalina,org.apache.coyote,org.apache.tomcat</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">logging:
   group:
     tomcat: "org.apache.catalina,org.apache.coyote,org.apache.tomcat"</code></pre>
 </div>
@@ -662,16 +521,9 @@ For example, here&#8217;s how you could define a &#8220;tomcat&#8221; group by a
 <div class="paragraph">
 <p>Once defined, you can change the level for all the loggers in the group with a single line:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.level.tomcat=trace</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">logging:
   level:
     tomcat: "trace"</code></pre>
 </div>
@@ -710,20 +562,13 @@ This shutdown hook is registered automatically unless your application is deploy
 If your application has complex context hierarchies the shutdown hook may not meet your needs.
 If it does not, disable the shutdown hook and investigate the options provided directly by the underlying logging system.
 For example, Logback offers <a href="http://logback.qos.ch/manual/loggingSeparation.html">context selectors</a> which allow each Logger to be created in its own context.
-You can use the <code>logging.register-shutdown-hook</code> property to disable the shutdown hook.
+You can use the configprop:logging.register-shutdown-hook[] property to disable the shutdown hook.
 Setting it to <code>false</code> will disable the registration.
 You can set the property in your <code>application.properties</code> or <code>application.yaml</code> file:</p>
 </div>
-<div class="listingblock primary">
-<div class="title">Properties</div>
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">logging.register-shutdown-hook=false</code></pre>
-</div>
-</div>
-<div class="listingblock secondary">
-<div class="title">Yaml</div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">logging:
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">logging:
   register-shutdown-hook: false</code></pre>
 </div>
 </div>
@@ -731,7 +576,7 @@ You can set the property in your <code>application.properties</code> or <code>ap
 <div class="sect2">
 <h3 id="boot-features-custom-log-configuration"><a class="anchor" href="#boot-features-custom-log-configuration"></a>1.8. Custom Log Configuration</h3>
 <div class="paragraph">
-<p>The various logging systems can be activated by including the appropriate libraries on the classpath and can be further customized by providing a suitable configuration file in the root of the classpath or in a location specified by the following Spring <code>Environment</code> property: <code>logging.config</code>.</p>
+<p>The various logging systems can be activated by including the appropriate libraries on the classpath and can be further customized by providing a suitable configuration file in the root of the classpath or in a location specified by the following Spring <code>Environment</code> property: configprop:logging.config[].</p>
 </div>
 <div class="paragraph">
 <p>You can force Spring Boot to use a particular logging system by using the <code>org.springframework.boot.logging.LoggingSystem</code> system property.
@@ -824,47 +669,47 @@ We recommend that you avoid it when running from an 'executable jar' if at all p
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.exception-conversion-word</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.exception-conversion-word[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_EXCEPTION_CONVERSION_WORD</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The conversion word used when logging exceptions.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.file.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.file.name[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_FILE</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">If defined, it is used in the default log configuration.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.file.path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.file.path[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_PATH</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">If defined, it is used in the default log configuration.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.console</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.pattern.console[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CONSOLE_LOG_PATTERN</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The log pattern to use on the console (stdout).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.dateformat</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.pattern.dateformat[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_DATEFORMAT_PATTERN</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Appender pattern for log date format.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.charset.console</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.charset.console[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>CONSOLE_LOG_CHARSET</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The charset to use for console logging.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.pattern.file[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>FILE_LOG_PATTERN</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The log pattern to use in a file (if <code>LOG_FILE</code> is enabled).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.charset.file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.charset.file[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>FILE_LOG_CHARSET</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The charset to use for file logging (if <code>LOG_FILE</code> is enabled).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.pattern.level</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.pattern.level[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOG_LEVEL_PATTERN</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The format to use when rendering the log level (default <code>%5p</code>).</p></td>
 </tr>
@@ -893,27 +738,27 @@ We recommend that you avoid it when running from an 'executable jar' if at all p
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.file-name-pattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.file-name-pattern[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_FILE_NAME_PATTERN</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Pattern for rolled-over log file names (default <code>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</code>).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.clean-history-on-start</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.clean-history-on-start[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Whether to clean the archive log files on startup.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-file-size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.max-file-size[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_MAX_FILE_SIZE</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Maximum log file size.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.total-size-cap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.total-size-cap[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_TOTAL_SIZE_CAP</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Total size of log backups to be kept.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.logback.rollingpolicy.max-history</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">configprop:logging.logback.rollingpolicy.max-history[]</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>LOGBACK_ROLLINGPOLICY_MAX_HISTORY</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of archive log files to keep.</p></td>
 </tr>
@@ -987,7 +832,7 @@ You can use these extensions in your <code>logback-spring.xml</code> configurati
 </td>
 <td class="content">
 Because the standard <code>logback.xml</code> configuration file is loaded too early, you cannot use extensions in it.
-You need to either use <code>logback-spring.xml</code> or define a <code>logging.config</code> property.
+You need to either use <code>logback-spring.xml</code> or define a configprop:logging.config[] property.
 </td>
 </tr>
 </table>
@@ -1024,7 +869,7 @@ The following listing shows three sample profiles:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProfile name="staging"&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;springProfile name="staging"&gt;
     &lt;!-- configuration to be enabled when the "staging" profile is active --&gt;
 &lt;/springProfile&gt;
 
@@ -1051,7 +896,7 @@ The following example shows how to expose properties for use within Logback:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;springProperty scope="context" name="fluentHost" source="myapp.fluentd.host"
         defaultValue="localhost"/&gt;
 &lt;appender name="FLUENT" class="ch.qos.logback.more.appenders.DataFluentAppender"&gt;
     &lt;remoteHost&gt;${fluentHost}&lt;/remoteHost&gt;
@@ -1099,7 +944,7 @@ To use the vintage engine, add a dependency on <code>junit-vintage-engine</code>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.junit.vintage&lt;/groupId&gt;
     &lt;artifactId&gt;junit-vintage-engine&lt;/artifactId&gt;
     &lt;scope&gt;test&lt;/scope&gt;
@@ -1267,11 +1112,11 @@ If you have only Spring WebFlux, we&#8217;ll detect that and configure a WebFlux
 </div>
 <div class="paragraph">
 <p>If both are present, Spring MVC takes precedence.
-If you want to test a reactive web application in this scenario, you must set the <code>spring.main.web-application-type</code> property:</p>
+If you want to test a reactive web application in this scenario, you must set the configprop:spring.main.web-application-type[] property:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest(properties = "spring.main.web-application-type=reactive")
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootTest(properties = "spring.main.web-application-type=reactive")
 class MyWebFluxTests { ... }</code></pre>
 </div>
 </div>
@@ -1339,7 +1184,7 @@ You can then import that class explicitly where it is required, as shown in the 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootTest
 @Import(MyTestsConfiguration.class)
 class MyTests {
 
@@ -1373,25 +1218,7 @@ have <code>@SpringBootTest</code> inject them using the <code>args</code> attrib
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -1399,7 +1226,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(args = "--app.test=one")
+</span><span class="fold-block">@SpringBootTest(args = "--app.test=one")
 class ApplicationArgumentTests {
 
     @Test
@@ -1408,7 +1235,8 @@ class ApplicationArgumentTests {
         assertThat(args.getOptionValues("app.test")).containsOnly("one");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -1420,25 +1248,7 @@ If you have web endpoints that you want to test against this mock environment, y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -1449,7 +1259,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+</span><span class="fold-block">@SpringBootTest
 @AutoConfigureMockMvc
 class MockMvcTests {
 
@@ -1458,7 +1268,8 @@ class MockMvcTests {
         mvc.perform(get("/")).andExpect(status().isOk()).andExpect(content().string("Hello World"));
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -1478,32 +1289,14 @@ If you want to focus only on the web layer and not start a complete <code>Applic
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest
+</span><span class="fold-block">@SpringBootTest
 @AutoConfigureWebTestClient
 class MockWebTestClientTests {
 
@@ -1512,7 +1305,8 @@ class MockWebTestClientTests {
         webClient.get().uri("/").exchange().expectStatus().isOk().expectBody(String.class).isEqualTo("Hello World");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -1548,32 +1342,14 @@ For convenience, tests that need to make REST calls to the started server can ad
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+</span><span class="fold-block">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class RandomPortWebTestClientTests {
 
     @Test
@@ -1581,7 +1357,8 @@ class RandomPortWebTestClientTests {
         webClient.get().uri("/").exchange().expectStatus().isOk().expectBody(String.class).isEqualTo("Hello World");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1590,25 +1367,7 @@ If you can&#8217;t or won&#8217;t add webflux, Spring Boot also provides a <code
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -1617,7 +1376,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+</span><span class="fold-block">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class RandomPortTestRestTemplateTests {
 
     @Test
@@ -1626,7 +1385,8 @@ class RandomPortTestRestTemplateTests {
         assertThat(body).isEqualTo("Hello World");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -1645,39 +1405,17 @@ If such test needs access to an <code>MBeanServer</code>, consider marking it di
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.jmx;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(properties = "spring.jmx.enabled=true")
+</span><span class="fold-block">@SpringBootTest(properties = "spring.jmx.enabled=true")
 @DirtiesContext
 class SampleJmxTests {
 
@@ -1690,7 +1428,8 @@ class SampleJmxTests {
         // ...
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -1730,7 +1469,7 @@ To use this feature with a different arrangement, listeners must be explicitly a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestExecutionListeners({ MockitoTestExecutionListener.class, ResetMocksTestExecutionListener.class })</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@TestExecutionListeners({ MockitoTestExecutionListener.class, ResetMocksTestExecutionListener.class })</code></pre>
 </div>
 </div>
 </td>
@@ -1742,7 +1481,7 @@ To use this feature with a different arrangement, listeners must be explicitly a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.boot.test.mock.mockito.*;
@@ -1750,7 +1489,7 @@ import org.springframework.boot.test.mock.mockito.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@SpringBootTest
+</span><span class="fold-block">@SpringBootTest
 class MyTests {
 
     @MockBean
@@ -1767,7 +1506,8 @@ class MyTests {
         assertThat(reverse).isEqualTo("kcom");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1936,7 +1676,7 @@ The following example shows a test class for Jackson:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.json.*;
 import org.springframework.boot.test.context.*;
@@ -1944,7 +1684,7 @@ import org.springframework.boot.test.json.*;
 
 import static org.assertj.core.api.Assertions.*;
 
-@JsonTest
+</span><span class="fold-block">@JsonTest
 class MyJsonTests {
 
     @Autowired
@@ -1969,7 +1709,8 @@ class MyJsonTests {
         assertThat(this.json.parseObject(content).getMake()).isEqualTo("Ford");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1992,7 +1733,7 @@ For instance, the following example asserts that the actual number is a float va
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">assertThat(json.write(message))
+<pre class="highlight"><code class="language-java" data-lang="java">assertThat(json.write(message))
     .extractingJsonPathNumberValue("@.test.numberValue")
     .satisfies((number) -&gt; assertThat(number.floatValue()).isCloseTo(0.15f, within(0.01f)));</code></pre>
 </div>
@@ -2052,7 +1793,7 @@ The following example uses <code>MockMvc</code>:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.*;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
 import org.springframework.boot.test.mock.mockito.*;
@@ -2062,7 +1803,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserVehicleController.class)
+</span><span class="fold-block">@WebMvcTest(UserVehicleController.class)
 class MyControllerTests {
 
     @Autowired
@@ -2079,7 +1820,8 @@ class MyControllerTests {
                 .andExpect(status().isOk()).andExpect(content().string("Honda Civic"));
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -2100,7 +1842,7 @@ The following example uses HtmlUnit:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.gargoylesoftware.htmlunit.*;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import com.gargoylesoftware.htmlunit.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -2109,7 +1851,7 @@ import org.springframework.boot.test.mock.mockito.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-@WebMvcTest(UserVehicleController.class)
+</span><span class="fold-block">@WebMvcTest(UserVehicleController.class)
 class MyHtmlUnitTests {
 
     @Autowired
@@ -2126,7 +1868,8 @@ class MyHtmlUnitTests {
         assertThat(page.getBody().getTextContent()).isEqualTo("Honda Civic");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2226,14 +1969,14 @@ The following example shows a class that uses both <code>@WebFluxTest</code> and
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@WebFluxTest(UserVehicleController.class)
+</span><span class="fold-block">@WebFluxTest(UserVehicleController.class)
 class MyControllerTests {
 
     @Autowired
@@ -2252,7 +1995,8 @@ class MyControllerTests {
                 .expectBody(String.class).isEqualTo("Honda Civic");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -2332,17 +2076,18 @@ A list of the auto-configuration settings that are enabled by <code>@DataCassand
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
 
-@DataCassandraTest
+</span><span class="fold-block">@DataCassandraTest
 class ExampleDataCassandraTests {
 
     @Autowired
     private YourRepository repository;
 
     //
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -2378,16 +2123,17 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
+</span><span class="fold-block">@DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ExampleNonTransactionalTests {
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2398,12 +2144,12 @@ The following example shows the <code>@DataJpaTest</code> annotation in use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+</span><span class="fold-block">@DataJpaTest
 class ExampleRepositoryTests {
 
     @Autowired
@@ -2420,7 +2166,8 @@ class ExampleRepositoryTests {
         assertThat(user.getVin()).isEqualTo("1234");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2429,7 +2176,7 @@ If, however, you prefer to run tests against a real database you can use the <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@DataJpaTest
+<pre class="highlight"><code class="language-java" data-lang="java">@DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 class ExampleRepositoryTests {
 
@@ -2466,16 +2213,17 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@JdbcTest
+</span><span class="fold-block">@JdbcTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ExampleNonTransactionalTests {
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2541,16 +2289,17 @@ The following example shows the <code>@JooqTest</code> annotation in use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.jooq.DSLContext;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 
-@JooqTest
+</span><span class="fold-block">@JooqTest
 class ExampleJooqTests {
 
     @Autowired
     private DSLContext dslContext;
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2584,18 +2333,19 @@ A list of the auto-configuration settings that are enabled by <code>@DataMongoTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-@DataMongoTest
+</span><span class="fold-block">@DataMongoTest
 class ExampleDataMongoTests {
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
     //
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2604,13 +2354,14 @@ If, however, you prefer to run tests against a real MongoDB server, you should e
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
-@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
+</span><span class="fold-block">@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
 class ExampleDataMongoNonEmbeddedTests {
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -2640,17 +2391,18 @@ A list of the auto-configuration settings that are enabled by <code>@DataNeo4jTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 
-@DataNeo4jTest
+</span><span class="fold-block">@DataNeo4jTest
 class ExampleDataNeo4jTests {
 
     @Autowired
     private YourRepository repository;
 
     //
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2660,15 +2412,16 @@ If that is not what you want, you can disable transaction management for a test 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@DataNeo4jTest
+</span><span class="fold-block">@DataNeo4jTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class ExampleNonTransactionalTests {
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -2711,17 +2464,18 @@ A list of the auto-configuration settings that are enabled by <code>@DataRedisTe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest;
 
-@DataRedisTest
+</span><span class="fold-block">@DataRedisTest
 class ExampleDataRedisTests {
 
     @Autowired
     private YourRepository repository;
 
     //
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -2751,18 +2505,19 @@ A list of the auto-configuration settings that are enabled by <code>@DataLdapTes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.beans.factory.annotation.Autowired;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 import org.springframework.ldap.core.LdapTemplate;
 
-@DataLdapTest
+</span><span class="fold-block">@DataLdapTest
 class ExampleDataLdapTests {
 
     @Autowired
     private LdapTemplate ldapTemplate;
 
     //
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2771,13 +2526,14 @@ If, however, you prefer to run tests against a real LDAP server, you should excl
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapAutoConfiguration;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.ldap.DataLdapTest;
 
-@DataLdapTest(excludeAutoConfiguration = EmbeddedLdapAutoConfiguration.class)
+</span><span class="fold-block">@DataLdapTest(excludeAutoConfiguration = EmbeddedLdapAutoConfiguration.class)
 class ExampleDataLdapNonEmbeddedTests {
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -2806,7 +2562,7 @@ A list of the auto-configuration settings that are enabled by <code>@RestClientT
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@RestClientTest(RemoteVehicleDetailsService.class)
+<pre class="highlight"><code class="language-java" data-lang="java">@RestClientTest(RemoteVehicleDetailsService.class)
 class ExampleRestClientTest {
 
     @Autowired
@@ -2846,7 +2602,7 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -2857,7 +2613,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
+</span><span class="fold-block">@WebMvcTest(UserController.class)
 @AutoConfigureRestDocs
 class UserDocumentationTests {
 
@@ -2871,7 +2627,8 @@ class UserDocumentationTests {
                 .andDo(document("list-users"));
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2879,7 +2636,7 @@ class UserDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestConfiguration
+<pre class="highlight"><code class="language-java" data-lang="java">@TestConfiguration
 static class CustomizationConfiguration
         implements RestDocsMockMvcConfigurationCustomizer {
 
@@ -2898,7 +2655,7 @@ The following example shows a <code>RestDocumentationResultHandler</code> being 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@TestConfiguration(proxyBeanMethods = false)
+<pre class="highlight"><code class="language-java" data-lang="java">@TestConfiguration(proxyBeanMethods = false)
 static class ResultHandlerConfiguration {
 
     @Bean
@@ -2918,25 +2675,7 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.restdocs.webclient;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -2945,7 +2684,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 
-@WebFluxTest
+</span><span class="fold-block">@WebFluxTest
 @AutoConfigureRestDocs
 class UsersDocumentationTests {
 
@@ -2954,7 +2693,6 @@ class UsersDocumentationTests {
 
     @Test
     void listUsers() {
-        // @formatter:off
         this.webTestClient
             .get().uri("/")
         .exchange()
@@ -2962,10 +2700,10 @@ class UsersDocumentationTests {
             .isOk()
         .expectBody()
             .consumeWith(document("list-users"));
-        // @formatter:on
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2973,29 +2711,11 @@ class UsersDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.restdocs.webclient;
-
-import org.springframework.boot.test.autoconfigure.restdocs.RestDocsWebTestClientConfigurationCustomizer;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.boot.test.autoconfigure.restdocs.RestDocsWebTestClientConfigurationCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.restdocs.webtestclient.WebTestClientRestDocumentationConfigurer;
 
-@TestConfiguration(proxyBeanMethods = false)
+</span><span class="fold-block">@TestConfiguration(proxyBeanMethods = false)
 public class AdvancedRestDocsConfiguration implements RestDocsWebTestClientConfigurationCustomizer {
 
     @Override
@@ -3003,7 +2723,8 @@ public class AdvancedRestDocsConfiguration implements RestDocsWebTestClientConfi
         configurer.snippets().withEncoding("UTF-8");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -3015,44 +2736,25 @@ You can inject it by using <code>@Autowired</code> and use it in your tests as y
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.restdocs.restassured;
-
-import io.restassured.specification.RequestSpecification;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+</span><span class="fold-block">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestDocs
 class UserDocumentationTests {
 
     @Test
     void listUsers(@Autowired RequestSpecification documentationSpec, @LocalServerPort int port) {
-        // @formatter:off
         given(documentationSpec)
             .filter(document("list-users"))
         .when()
@@ -3060,10 +2762,10 @@ class UserDocumentationTests {
             .get("/")
         .then().assertThat()
             .statusCode(is(200));
-        // @formatter:on
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3071,30 +2773,12 @@ class UserDocumentationTests {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.restdocs.restassured;
-
-import org.springframework.boot.test.autoconfigure.restdocs.RestDocsRestAssuredConfigurationCustomizer;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.springframework.boot.test.autoconfigure.restdocs.RestDocsRestAssuredConfigurationCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.restdocs.restassured3.RestAssuredRestDocumentationConfigurer;
+import org.springframework.restdocs.restassured.RestAssuredRestDocumentationConfigurer;
 import org.springframework.restdocs.templates.TemplateFormats;
 
-@TestConfiguration(proxyBeanMethods = false)
+</span><span class="fold-block">@TestConfiguration(proxyBeanMethods = false)
 public class AdvancedRestDocsConfiguration implements RestDocsRestAssuredConfigurationCustomizer {
 
     @Override
@@ -3102,7 +2786,8 @@ public class AdvancedRestDocsConfiguration implements RestDocsRestAssuredConfigu
         configurer.snippets().withTemplateFormat(TemplateFormats.markdown());
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -3131,7 +2816,7 @@ A list of the auto-configuration settings that are enabled by <code>@WebServiceC
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@WebServiceClientTest(ExampleWebServiceClient.class)
+<pre class="highlight"><code class="language-java" data-lang="java">@WebServiceClientTest(ExampleWebServiceClient.class)
 class WebServiceClientIntegrationTests {
 
     @Autowired
@@ -3159,7 +2844,7 @@ Additional auto-configurations can be added on a test-by-test basis by creating 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@JdbcTest
+<pre class="highlight"><code class="language-java" data-lang="java">@JdbcTest
 @ImportAutoConfiguration(IntegrationAutoConfiguration.class)
 class ExampleJdbcTests {
 
@@ -3213,7 +2898,7 @@ You could define your <code>@SpringBootApplication</code> as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
 @EnableBatchProcessing
 public class SampleApplication { ... }</code></pre>
 </div>
@@ -3224,7 +2909,7 @@ A recommended approach is to move that area-specific configuration to a separate
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration(proxyBeanMethods = false)
+<pre class="highlight"><code class="language-java" data-lang="java">@Configuration(proxyBeanMethods = false)
 @EnableBatchProcessing
 public class BatchConfiguration { ... }</code></pre>
 </div>
@@ -3248,7 +2933,7 @@ For example, for a <code>@WebMvcTest</code>, the following configuration will no
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+<pre class="highlight"><code class="language-java" data-lang="java">@Configuration
 public class WebConfiguration {
     @Bean
     public WebMvcConfigurer testConfigurer() {
@@ -3264,7 +2949,7 @@ public class WebConfiguration {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+<pre class="highlight"><code class="language-java" data-lang="java">@Component
 public class TestWebMvcConfigurer implements WebMvcConfigurer {
     ...
 }</code></pre>
@@ -3277,7 +2962,7 @@ Your application may resemble the following code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootApplication
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
 @ComponentScan({ "com.example.app", "org.acme.another" })
 public class SampleApplication { ... }</code></pre>
 </div>
@@ -3336,7 +3021,7 @@ You can use it when you do not need the full set of features provided by <code>@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ContextConfiguration(classes = Config.class,
+<pre class="highlight"><code class="language-java" data-lang="java">@ContextConfiguration(classes = Config.class,
     initializers = ConfigFileApplicationContextInitializer.class)</code></pre>
 </div>
 </div>
@@ -3363,7 +3048,7 @@ You can call it with <code>key=value</code> strings, as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">TestPropertyValues.of("org=Spring", "name=Boot").applyTo(env);</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">TestPropertyValues.of("org=Spring", "name=Boot").applyTo(env);</code></pre>
 </div>
 </div>
 </div>
@@ -3375,25 +3060,7 @@ To use add <code>@ExtendWith(OutputCaptureExtension.class)</code> and inject <co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing;
-
-import org.junit.jupiter.api.Test;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.boot.test.system.CapturedOutput;
@@ -3401,7 +3068,7 @@ import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(OutputCaptureExtension.class)
+</span><span class="fold-block">@ExtendWith(OutputCaptureExtension.class)
 class OutputCaptureTests {
 
     @Test
@@ -3410,7 +3077,8 @@ class OutputCaptureTests {
         assertThat(output).contains("World");
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -3454,7 +3122,7 @@ If you do use Apache&#8217;s HTTP client, some additional test-friendly features
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyTest {
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyTest {
 
     private TestRestTemplate template = new TestRestTemplate();
 
@@ -3475,25 +3143,7 @@ Any URLs that do not specify a host and port automatically connect to the embedd
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">/*
- * Copyright 2012-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.springframework.boot.docs.springbootfeatures.testing.webclient;
-
-import java.time.Duration;
+<pre class="highlight"><code class="language-java" data-lang="java"><span class="fold-block hide-when-folded">import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 
@@ -3508,7 +3158,7 @@ import org.springframework.http.HttpHeaders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+</span><span class="fold-block">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class SampleWebClientTests {
 
     @Autowired
@@ -3531,7 +3181,8 @@ class SampleWebClientTests {
 
     }
 
-}</code></pre>
+}
+</span></code></pre>
 </div>
 </div>
 </div>
@@ -3541,17 +3192,11 @@ class SampleWebClientTests {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-17 19:59:14 +0900
+Last updated 2021-04-17 09:54:21 +0900
 </div>
 </div>
-<script src="js/highlight/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
+</div>
+  </div>
+</div>
 </body>
 </html>

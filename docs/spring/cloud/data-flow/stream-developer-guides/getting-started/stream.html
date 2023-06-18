@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>Getting Started with Stream Processing</title>
-<link rel="stylesheet" href="css/spring.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<link rel="stylesheet" href="css/site.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -23,157 +21,25 @@ body {
 
   gtag('config', 'G-3LG0R87MZJ');
 </script>
-<style>
-.hidden {
-	display: none;
-}
-
-.switch {
-	border-width: 1px 1px 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-	display: inline-block;
-}
-
-.switch--item {
-	padding: 10px;
-	background-color: #ffffff;
-	color: #7a2518;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.switch--item:not(:first-child) {
-	border-width: 0 0 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-}
-
-.switch--item.selected {
-	background-color: #7a2519;
-	color: #ffffff;
-}
-
-</style>
-<script type="text/javascript">
-function addBlockSwitches() {
-	for (var primary of document.querySelectorAll('.primary')) {
-		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
-		switchItem.item.classList.add("selected");
-		var title = primary.querySelector('.title')
-		title.remove();
-	}
-	for (var secondary of document.querySelectorAll('.secondary')) {
-		var primary = findPrimary(secondary);
-		if (primary === null) {
-			console.error("Found secondary block with no primary sibling");
-		}
-		else {
-			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
-			switchItem.content.classList.add("hidden");
-			primary.append(switchItem.content);
-			secondary.remove();
-		}
-	}
-}
-
-function createElementFromHtml(html) {
-	var template = document.createElement('template');
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
-function createBlockSwitch(primary) {
-    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
-    primary.prepend(blockSwitch)
-	return blockSwitch;
-}
-
-function findPrimary(secondary) {
-	var candidate = secondary.previousElementSibling;
-	while (candidate != null && !candidate.classList.contains('primary')) {
-		candidate = candidate.previousElementSibling;
-	}
-	return candidate;
-}
-
-function createSwitchItem(block, blockSwitch) {
-	var blockName = block.querySelector('.title').textContent;
-	var content = block.querySelectorAll('.content').item(0);
-	var colist = nextSibling(block, '.colist');
-	if (colist != null) {
-		content.append(colist);
-	}
-	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
-	item.dataset.blockName = blockName;
-	content.dataset.blockName = blockName;
-	blockSwitch.append(item);
-	return {'item': item, 'content': content};
-}
-
-function nextSibling(element, selector) {
-	var sibling = element.nextElementSibling;
-	while (sibling) {
-		if (sibling.matches(selector)) {
-			return sibling;
-		}
-		sibling = sibling.nextElementSibling;
-	}
-}
-
-function globalSwitch() {
-	document.querySelectorAll(".switch--item").forEach(function(item) {
-		var blockId = blockIdForSwitchItem(item);
-		var handler = function(event) {
-			selectedText = event.target.textContent;
-			window.localStorage.setItem(blockId, selectedText);
-			for (var switchItem of document.querySelectorAll(".switch--item")) {
-				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
-					select(switchItem);
-				}
-			}
-		}
-		item.addEventListener("click", handler);
-		if (item.textContent === window.localStorage.getItem(blockId)) {
-			select(item);
-		}
-	});
-}
-
-function select(selected) {
-	for (var child of selected.parentNode.children) {
-		child.classList.remove("selected");
-	}
-	selected.classList.add("selected");
-	for (var child of selected.parentNode.parentNode.children) {
-		if (child.classList.contains("content")) {
-			if (selected.dataset.blockName === child.dataset.blockName) {
-				child.classList.remove("hidden");
-			}
-			else {
-				child.classList.add("hidden");
-			}
-		}
-	}	
-}
-
-function blockIdForSwitchItem(item) {
-	idComponents = []
-	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
-		idComponents.push(switchItem.textContent.toLowerCase());
-	}
-	return idComponents.sort().join("-")
-}
-
-window.onload = function() {
-	addBlockSwitches();
-	globalSwitch();
-};
-
-</script>
+<script src="js/setup.js"></script><script defer src="js/site.js"></script>
 
 </head>
-<body class="book toc2 toc-left">
+<body class="book toc2 toc-left"><div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
 <div id="header">
 <h1>Getting Started with Stream Processing</h1>
 <div class="details">
@@ -181,7 +47,7 @@ window.onload = function() {
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
+<span id="back-to-index"><a href="index.html">Back to index</a></span><ul class="sectlevel1">
 <li><a href="#stream-dsl-overview">1. Stream DSL overview</a></li>
 <li><a href="#creating-the-stream">2. Creating the Stream</a></li>
 <li><a href="#deploying-a-stream">3. Deploying a Stream</a></li>
@@ -360,7 +226,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:9000 -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -383,7 +249,7 @@ UI가 definition page로 이동합니다.<br>
 <p>다른 콘솔 창에서 다음을 입력하세요.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker exec -it skipper tail -f [경로]</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">docker exec -it skipper tail -f [경로]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -391,7 +257,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">log-sink                                 : Happy streaming</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">log-sink                                 : Happy streaming</code></pre>
 </div>
 </div>
 </li>
@@ -412,7 +278,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://http-ingest-314-log-v1.cfapps.io -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -423,7 +289,7 @@ UI가 definition page로 이동합니다.<br>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ cf apps                                                                                                                                                                                                                                         [1h] ✭
 Getting apps in org ORG / space SPACE as email@pivotal.io...
 
 name                         requested state   instances   memory   disk   urls
@@ -438,7 +304,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cf logs http-ingest-314-log-v1
+<pre class="highlight"><code class="language-bash" data-lang="bash">cf logs http-ingest-314-log-v1
 ...
 ...
 2017-11-20T15:39:43.76-0800 [APP/PROC/WEB/0] OUT 2017-11-20 23:39:43.761  INFO 12 --- [ http-ingest-314.ingest-314-1] log-sink                                 : Happy streaming</code></pre>
@@ -459,7 +325,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://&lt;EXTERNAL_IP_OF_http-ingest-log-v1-0-2k4r8_SERVICE&gt; -H "Content-type: text/plain" -d "Happy streaming"</code></pre>
 </div>
 </div>
 </div>
@@ -467,7 +333,7 @@ dataflow-server              started           1/1         1G       1G     dataf
 <h4 id="results-3"><a class="anchor" href="#results-3"></a>4.4.2. Results</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods
+<pre class="highlight"><code class="language-bash" data-lang="bash">kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
 http-ingest-log-v1-0-2k4r8          1/1       Running   0          2m
 http-ingest-http-v1-qhdqq           1/1       Running   0          2m
@@ -482,7 +348,7 @@ skipper-2408247821-50z31            1/1       Running   0          15m</code></p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl logs -f http-ingest-log-v1-0-2k4r8
+<pre class="highlight"><code class="language-bash" data-lang="bash">kubectl logs -f http-ingest-log-v1-0-2k4r8
 ...
 ...
 2017-10-30 22:59:04.966  INFO 1 --- [ http-ingest.http.http-ingest-1] log-sink                                 : Happy streaming</code></pre>
@@ -518,17 +384,11 @@ skipper-2408247821-50z31            1/1       Running   0          15m</code></p
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0.RELEASE<br>
-Last updated 2022-06-17 19:59:14 +0900
+Last updated 2021-03-18 11:43:44 +0900
 </div>
 </div>
-<script src="js/highlight/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
+</div>
+  </div>
+</div>
 </body>
 </html>

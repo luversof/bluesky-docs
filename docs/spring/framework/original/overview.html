@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>Spring Framework Overview</title>
-<link rel="stylesheet" href="css/spring.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
+<link rel="stylesheet" href="css/site.css">
 <style type="text/css">
 body {
 	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
@@ -23,162 +21,30 @@ body {
 
   gtag('config', 'G-3LG0R87MZJ');
 </script>
-<style>
-.hidden {
-	display: none;
-}
-
-.switch {
-	border-width: 1px 1px 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-	display: inline-block;
-}
-
-.switch--item {
-	padding: 10px;
-	background-color: #ffffff;
-	color: #7a2518;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.switch--item:not(:first-child) {
-	border-width: 0 0 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-}
-
-.switch--item.selected {
-	background-color: #7a2519;
-	color: #ffffff;
-}
-
-</style>
-<script type="text/javascript">
-function addBlockSwitches() {
-	for (var primary of document.querySelectorAll('.primary')) {
-		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
-		switchItem.item.classList.add("selected");
-		var title = primary.querySelector('.title')
-		title.remove();
-	}
-	for (var secondary of document.querySelectorAll('.secondary')) {
-		var primary = findPrimary(secondary);
-		if (primary === null) {
-			console.error("Found secondary block with no primary sibling");
-		}
-		else {
-			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
-			switchItem.content.classList.add("hidden");
-			primary.append(switchItem.content);
-			secondary.remove();
-		}
-	}
-}
-
-function createElementFromHtml(html) {
-	var template = document.createElement('template');
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
-function createBlockSwitch(primary) {
-    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
-    primary.prepend(blockSwitch)
-	return blockSwitch;
-}
-
-function findPrimary(secondary) {
-	var candidate = secondary.previousElementSibling;
-	while (candidate != null && !candidate.classList.contains('primary')) {
-		candidate = candidate.previousElementSibling;
-	}
-	return candidate;
-}
-
-function createSwitchItem(block, blockSwitch) {
-	var blockName = block.querySelector('.title').textContent;
-	var content = block.querySelectorAll('.content').item(0);
-	var colist = nextSibling(block, '.colist');
-	if (colist != null) {
-		content.append(colist);
-	}
-	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
-	item.dataset.blockName = blockName;
-	content.dataset.blockName = blockName;
-	blockSwitch.append(item);
-	return {'item': item, 'content': content};
-}
-
-function nextSibling(element, selector) {
-	var sibling = element.nextElementSibling;
-	while (sibling) {
-		if (sibling.matches(selector)) {
-			return sibling;
-		}
-		sibling = sibling.nextElementSibling;
-	}
-}
-
-function globalSwitch() {
-	document.querySelectorAll(".switch--item").forEach(function(item) {
-		var blockId = blockIdForSwitchItem(item);
-		var handler = function(event) {
-			selectedText = event.target.textContent;
-			window.localStorage.setItem(blockId, selectedText);
-			for (var switchItem of document.querySelectorAll(".switch--item")) {
-				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
-					select(switchItem);
-				}
-			}
-		}
-		item.addEventListener("click", handler);
-		if (item.textContent === window.localStorage.getItem(blockId)) {
-			select(item);
-		}
-	});
-}
-
-function select(selected) {
-	for (var child of selected.parentNode.children) {
-		child.classList.remove("selected");
-	}
-	selected.classList.add("selected");
-	for (var child of selected.parentNode.parentNode.children) {
-		if (child.classList.contains("content")) {
-			if (selected.dataset.blockName === child.dataset.blockName) {
-				child.classList.remove("hidden");
-			}
-			else {
-				child.classList.add("hidden");
-			}
-		}
-	}	
-}
-
-function blockIdForSwitchItem(item) {
-	idComponents = []
-	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
-		idComponents.push(switchItem.textContent.toLowerCase());
-	}
-	return idComponents.sort().join("-")
-}
-
-window.onload = function() {
-	addBlockSwitches();
-	globalSwitch();
-};
-
-</script>
+<script src="js/setup.js"></script><script defer src="js/site.js"></script>
 
 </head>
-<body id="overview" class="book toc2 toc-left">
+<body id="overview" class="book toc2 toc-left"><div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
 <div id="header">
 <h1>Spring Framework Overview</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
+<span id="back-to-index"><a href="index.html">Back to index</a></span><ul class="sectlevel1">
 <li><a href="#overview-spring">What We Mean by "Spring"</a></li>
 <li><a href="#overview-history">History of Spring and the Spring Framework</a></li>
 <li><a href="#overview-philosophy">Design Philosophy</a></li>
@@ -214,7 +80,7 @@ evolve over a very long time.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview-spring">What We Mean by "Spring"</h2>
+<h2 id="overview-spring"><a class="anchor" href="#overview-spring"></a>What We Mean by "Spring"</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The term "Spring" means different things in different contexts. It can be used to refer to
@@ -242,7 +108,7 @@ Of course, Spring&#8217;s framework jars keep working fine on the classpath on b
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview-history">History of Spring and the Spring Framework</h2>
+<h2 id="overview-history"><a class="anchor" href="#overview-history"></a>History of Spring and the Spring Framework</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring came into being in 2003 as a response to the complexity of the early
@@ -309,7 +175,7 @@ the complete list of Spring projects.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview-philosophy">Design Philosophy</h2>
+<h2 id="overview-philosophy"><a class="anchor" href="#overview-philosophy"></a>Design Philosophy</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When you learn about a framework, it’s important to know not only what it does but what
@@ -348,7 +214,7 @@ clean code structure with  no circular dependencies between packages.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview-feedback">Feedback and Contributions</h2>
+<h2 id="overview-feedback"><a class="anchor" href="#overview-feedback"></a>Feedback and Contributions</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For how-to questions or diagnosing or debugging issues, we suggest using Stack Overflow. Click
@@ -371,7 +237,7 @@ top-level project page.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview-getting-started">Getting Started</h2>
+<h2 id="overview-getting-started"><a class="anchor" href="#overview-getting-started"></a>Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you are just getting started with Spring, you may want to begin using the Spring
@@ -394,17 +260,11 @@ you might want to consider when solving a particular problem.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-17 19:59:14 +0900
+Last updated 2021-04-17 09:54:21 +0900
 </div>
 </div>
-<script src="js/highlight/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
+</div>
+  </div>
+</div>
 </body>
 </html>

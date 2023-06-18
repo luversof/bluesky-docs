@@ -4,176 +4,28 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>WebTestClient</title>
-<link rel="stylesheet" href="css/spring.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="js/highlight/styles/github.min.css">
-<style type="text/css">
-body {
-	font-family: 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif
-}
-</style>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LG0R87MZJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3LG0R87MZJ');
-</script>
-<style>
-.hidden {
-	display: none;
-}
-
-.switch {
-	border-width: 1px 1px 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-	display: inline-block;
-}
-
-.switch--item {
-	padding: 10px;
-	background-color: #ffffff;
-	color: #7a2518;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.switch--item:not(:first-child) {
-	border-width: 0 0 0 1px;
-	border-style: solid;
-	border-color: #7a2518;
-}
-
-.switch--item.selected {
-	background-color: #7a2519;
-	color: #ffffff;
-}
-
-</style>
-<script type="text/javascript">
-function addBlockSwitches() {
-	for (var primary of document.querySelectorAll('.primary')) {
-		var switchItem = createSwitchItem(primary, createBlockSwitch(primary));
-		switchItem.item.classList.add("selected");
-		var title = primary.querySelector('.title')
-		title.remove();
-	}
-	for (var secondary of document.querySelectorAll('.secondary')) {
-		var primary = findPrimary(secondary);
-		if (primary === null) {
-			console.error("Found secondary block with no primary sibling");
-		}
-		else {
-			var switchItem = createSwitchItem(secondary, primary.querySelector('.switch'));
-			switchItem.content.classList.add("hidden");
-			primary.append(switchItem.content);
-			secondary.remove();
-		}
-	}
-}
-
-function createElementFromHtml(html) {
-	var template = document.createElement('template');
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
-function createBlockSwitch(primary) {
-    var blockSwitch = createElementFromHtml('<div class="switch"></div>');
-    primary.prepend(blockSwitch)
-	return blockSwitch;
-}
-
-function findPrimary(secondary) {
-	var candidate = secondary.previousElementSibling;
-	while (candidate != null && !candidate.classList.contains('primary')) {
-		candidate = candidate.previousElementSibling;
-	}
-	return candidate;
-}
-
-function createSwitchItem(block, blockSwitch) {
-	var blockName = block.querySelector('.title').textContent;
-	var content = block.querySelectorAll('.content').item(0);
-	var colist = nextSibling(block, '.colist');
-	if (colist != null) {
-		content.append(colist);
-	}
-	var item = createElementFromHtml('<div class="switch--item">' + blockName + '</div>');
-	item.dataset.blockName = blockName;
-	content.dataset.blockName = blockName;
-	blockSwitch.append(item);
-	return {'item': item, 'content': content};
-}
-
-function nextSibling(element, selector) {
-	var sibling = element.nextElementSibling;
-	while (sibling) {
-		if (sibling.matches(selector)) {
-			return sibling;
-		}
-		sibling = sibling.nextElementSibling;
-	}
-}
-
-function globalSwitch() {
-	document.querySelectorAll(".switch--item").forEach(function(item) {
-		var blockId = blockIdForSwitchItem(item);
-		var handler = function(event) {
-			selectedText = event.target.textContent;
-			window.localStorage.setItem(blockId, selectedText);
-			for (var switchItem of document.querySelectorAll(".switch--item")) {
-				if (blockIdForSwitchItem(switchItem) === blockId && switchItem.textContent === selectedText) {
-					select(switchItem);
-				}
-			}
-		}
-		item.addEventListener("click", handler);
-		if (item.textContent === window.localStorage.getItem(blockId)) {
-			select(item);
-		}
-	});
-}
-
-function select(selected) {
-	for (var child of selected.parentNode.children) {
-		child.classList.remove("selected");
-	}
-	selected.classList.add("selected");
-	for (var child of selected.parentNode.parentNode.children) {
-		if (child.classList.contains("content")) {
-			if (selected.dataset.blockName === child.dataset.blockName) {
-				child.classList.remove("hidden");
-			}
-			else {
-				child.classList.add("hidden");
-			}
-		}
-	}	
-}
-
-function blockIdForSwitchItem(item) {
-	idComponents = []
-	for (var switchItem of item.parentNode.querySelectorAll(".switch--item")) {
-		idComponents.push(switchItem.textContent.toLowerCase());
-	}
-	return idComponents.sort().join("-")
-}
-
-window.onload = function() {
-	addBlockSwitches();
-	globalSwitch();
-};
-
-</script>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/setup.js"></script><script defer src="js/site.js"></script>
 
 </head>
-<body id="webtestclient" class="book">
+<body id="webtestclient" class="book"><div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
 <div id="header">
 <h1>WebTestClient</h1>
 </div>
@@ -201,14 +53,14 @@ Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="langu
 </div>
 </div>
 <div class="sect1">
-<h2 id="webtestclient-setup">Setup</h2>
+<h2 id="webtestclient-setup"><a class="anchor" href="#webtestclient-setup"></a>Setup</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><code>WebTestClient</code> 를 설정하려면 binding 할 서버 설정을 선택해야합니다.
 이것은 여러 mock server 설정 중 하나이거나 live server에 대한 연결일 수 있습니다.</p>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-controller-config">Bind to Controller</h3>
+<h3 id="webtestclient-controller-config"><a class="anchor" href="#webtestclient-controller-config"></a>Bind to Controller</h3>
 <div class="paragraph">
 <p>이 설정을 사용하면 running server없이 mock request 및  response object를 통해 특정 controller를 테스트 할 수 있습니다.</p>
 </div>
@@ -218,14 +70,16 @@ Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="langu
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">WebTestClient client =
-		WebTestClient.bindToController(new TestController()).build();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">WebTestClient client =
+		WebTestClient.bindToController(new TestController()).build();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val client = WebTestClient.bindToController(TestController()).build()</code></pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val client = WebTestClient.bindToController(TestController()).build()
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -234,19 +88,21 @@ Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="langu
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">WebTestClient client =
-		MockMvcWebTestClient.bindToController(new TestController()).build();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">WebTestClient client =
+		MockMvcWebTestClient.bindToController(new TestController()).build();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val client = MockMvcWebTestClient.bindToController(TestController()).build()</code></pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val client = MockMvcWebTestClient.bindToController(TestController()).build()
+</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-context-config">Bind to <code>ApplicationContext</code></h3>
+<h3 id="webtestclient-context-config"><a class="anchor" href="#webtestclient-context-config"></a>Bind to <code>ApplicationContext</code></h3>
 <div class="paragraph">
 <p>이 설정을 통해 Spring MVC 또는 Spring WebFlux infrastructure 및 controller 선언으로 Spring 구성을 로드하고 이를 사용하여 running server없이 mock request 및 response object를 통해 요청을 처리할 수 ​​있습니다.</p>
 </div>
@@ -256,7 +112,7 @@ Kotlin 사용자 : <code>WebTestClient</code> 사용과 관련된 <a href="langu
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringJUnitConfig(WebConfig.class) <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringJUnitConfig(WebConfig.class) <i class="conum" data-value="1"></i><b>(1)</b>
 class MyTests {
 
 	WebTestClient client;
@@ -265,7 +121,8 @@ class MyTests {
 	void setUp(ApplicationContext context) {  <i class="conum" data-value="2"></i><b>(2)</b>
 		client = WebTestClient.bindToApplicationContext(context).build(); <i class="conum" data-value="3"></i><b>(3)</b>
 	}
-}</code></pre>
+}
+</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -287,7 +144,7 @@ class MyTests {
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@SpringJUnitConfig(WebConfig::class) <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">@SpringJUnitConfig(WebConfig::class) <i class="conum" data-value="1"></i><b>(1)</b>
 class MyTests {
 
 	lateinit var client: WebTestClient
@@ -296,7 +153,8 @@ class MyTests {
 	fun setUp(context: ApplicationContext) { <i class="conum" data-value="2"></i><b>(2)</b>
 		client = WebTestClient.bindToApplicationContext(context).build() <i class="conum" data-value="3"></i><b>(3)</b>
 	}
-}</code></pre>
+}
+</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -321,7 +179,7 @@ class MyTests {
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ExtendWith(SpringExtension.class)
+<pre class="highlight"><code class="language-java" data-lang="java">@ExtendWith(SpringExtension.class)
 @WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
 @ContextHierarchy({
 	@ContextConfiguration(classes = RootConfig.class),
@@ -338,7 +196,8 @@ class MyTests {
 	void setUp() {
 		client = MockMvcWebTestClient.bindToApplicationContext(this.wac).build(); <i class="conum" data-value="3"></i><b>(3)</b>
 	}
-}</code></pre>
+}
+</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -360,7 +219,7 @@ class MyTests {
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@ExtendWith(SpringExtension.class)
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">@ExtendWith(SpringExtension.class)
 @WebAppConfiguration("classpath:META-INF/web-resources") <i class="conum" data-value="1"></i><b>(1)</b>
 @ContextHierarchy({
 	@ContextConfiguration(classes = RootConfig.class),
@@ -377,7 +236,8 @@ class MyTests {
 	fun setUp() { <i class="conum" data-value="2"></i><b>(2)</b>
 		client = MockMvcWebTestClient.bindToApplicationContext(wac).build() <i class="conum" data-value="3"></i><b>(3)</b>
 	}
-}</code></pre>
+}
+</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -398,7 +258,7 @@ class MyTests {
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-fn-config">Bind to Router Function</h3>
+<h3 id="webtestclient-fn-config"><a class="anchor" href="#webtestclient-fn-config"></a>Bind to Router Function</h3>
 <div class="paragraph">
 <p>이 설정을 사용하면 running server없이 mock request 및 response object를 통해 <a href="web-reactive.html#webflux-fn">functional endpoints</a>를 테스트 할 수 있습니다.</p>
 </div>
@@ -408,15 +268,17 @@ class MyTests {
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RouterFunction&lt;?&gt; route = ...
-client = WebTestClient.bindToRouterFunction(route).build();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">RouterFunction&lt;?&gt; route = ...
+client = WebTestClient.bindToRouterFunction(route).build();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val route: RouterFunction&lt;*&gt; = ...
-val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val route: RouterFunction&lt;*&gt; = ...
+val client = WebTestClient.bindToRouterFunction(route).build()
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -424,25 +286,27 @@ val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-server-config">Bind to Server</h3>
+<h3 id="webtestclient-server-config"><a class="anchor" href="#webtestclient-server-config"></a>Bind to Server</h3>
 <div class="paragraph">
 <p>이 설정은 running server에 연결하여 전체 end-to-end HTTP 테스트를 수행합니다;</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()</code></pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()
+</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-client-config">Client Config</h3>
+<h3 id="webtestclient-client-config"><a class="anchor" href="#webtestclient-client-config"></a>Client Config</h3>
 <div class="paragraph">
 <p>앞에서 설명한 서버 설정 옵션 외에도 base URL, default headers, client filter 등을 포함한 client option을 구성 할 수 있습니다
 이러한 옵션은 <code>bindToServer()</code> 다음에 쉽게 사용할 수 있습니다.
@@ -451,26 +315,28 @@ val client = WebTestClient.bindToRouterFunction(route).build()</code></pre>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client = WebTestClient.bindToController(new TestController())
+<pre class="highlight"><code class="language-java" data-lang="java">client = WebTestClient.bindToController(new TestController())
 		.configureClient()
 		.baseUrl("/test")
-		.build();</code></pre>
+		.build();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client = WebTestClient.bindToController(TestController())
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client = WebTestClient.bindToController(TestController())
 		.configureClient()
 		.baseUrl("/test")
-		.build()</code></pre>
+		.build()
+</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="webtestclient-tests">Writing Tests</h2>
+<h2 id="webtestclient-tests"><a class="anchor" href="#webtestclient-tests"></a>Writing Tests</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><code>WebTestClient</code> 는 <code>exchange()</code> 를 사용하여 요청을 수행하는 시점까지 <a href="web-reactive.html#webflux-client">WebClient</a>와 동일한 API를 제공합니다.
@@ -485,21 +351,23 @@ form data, multipart data 등을 포함한 모든 콘텐츠로 요청을 준비�
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-java" data-lang="java">client.get().uri("/persons/1")
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
 			.expectStatus().isOk()
-			.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+			.expectHeader().contentType(MediaType.APPLICATION_JSON)
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.get().uri("/persons/1")
 		.accept(MediaType.APPLICATION_JSON)
 		.exchange()
 		.expectStatus().isOk()
-		.expectHeader().contentType(MediaType.APPLICATION_JSON)</code></pre>
+		.expectHeader().contentType(MediaType.APPLICATION_JSON)
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -524,21 +392,23 @@ form data, multipart data 등을 포함한 모든 콘텐츠로 요청을 준비�
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.get().uri("/persons")
+<pre class="highlight"><code class="language-java" data-lang="java">client.get().uri("/persons")
 		.exchange()
 		.expectStatus().isOk()
-		.expectBodyList(Person.class).hasSize(3).contains(person);</code></pre>
+		.expectBodyList(Person.class).hasSize(3).contains(person);
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import org.springframework.test.web.reactive.server.expectBodyList
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"><span class="fold-block hide-when-folded">import org.springframework.test.web.reactive.server.expectBodyList
 
-client.get().uri("/persons")
+</span><span class="fold-block">client.get().uri("/persons")
 		.exchange()
 		.expectStatus().isOk()
-		.expectBodyList&lt;Person&gt;().hasSize(3).contains(person)</code></pre>
+		.expectBodyList&lt;Person&gt;().hasSize(3).contains(person)
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -547,7 +417,7 @@ client.get().uri("/persons")
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">   import org.springframework.test.web.reactive.server.expectBody
+<pre class="highlight"><code class="language-java" data-lang="java">   import org.springframework.test.web.reactive.server.expectBody
 
 client.get().uri("/persons/1")
 		.exchange()
@@ -555,19 +425,21 @@ client.get().uri("/persons/1")
 		.expectBody(Person.class)
 		.consumeWith(result -&gt; {
 			// custom assertions (e.g. AssertJ)...
-		});</code></pre>
+		});
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody&lt;Person&gt;()
 		.consumeWith {
 			// custom assertions (e.g. AssertJ)...
-		}</code></pre>
+		}
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -576,23 +448,25 @@ client.get().uri("/persons/1")
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-java" data-lang="java">EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody(Person.class)
-		.returnResult();</code></pre>
+		.returnResult();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import org.springframework.test.web.reactive.server.expectBody
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"><span class="fold-block hide-when-folded">import org.springframework.test.web.reactive.server.expectBody
 
-val result = client.get().uri("/persons/1")
+</span><span class="fold-block">val result = client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk
 		.expectBody&lt;Person&gt;()
-		.returnResult()</code></pre>
+		.returnResult()
+</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -608,28 +482,30 @@ generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Cla
 </table>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-no-content">No Content</h3>
+<h3 id="webtestclient-no-content"><a class="anchor" href="#webtestclient-no-content"></a>No Content</h3>
 <div class="paragraph">
 <p>응답에 내용이 없을 것으로 예상되는 경우 다음과 같이 assert 할 수 있습니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.post().uri("/persons")
+<pre class="highlight"><code class="language-java" data-lang="java">client.post().uri("/persons")
 		.body(personMono, Person.class)
 		.exchange()
 		.expectStatus().isCreated()
-		.expectBody().isEmpty();</code></pre>
+		.expectBody().isEmpty();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.post().uri("/persons")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.post().uri("/persons")
 		.bodyValue(person)
 		.exchange()
 		.expectStatus().isCreated()
-		.expectBody().isEmpty()</code></pre>
+		.expectBody().isEmpty()
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -638,24 +514,26 @@ generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Cla
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.get().uri("/persons/123")
+<pre class="highlight"><code class="language-java" data-lang="java">client.get().uri("/persons/123")
 		.exchange()
 		.expectStatus().isNotFound()
-		.expectBody(Void.class);</code></pre>
+		.expectBody(Void.class);
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.get().uri("/persons/123")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.get().uri("/persons/123")
 		.exchange()
 		.expectStatus().isNotFound
-		.expectBody&lt;Unit&gt;()</code></pre>
+		.expectBody&lt;Unit&gt;()
+</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-json">JSON Content</h3>
+<h3 id="webtestclient-json"><a class="anchor" href="#webtestclient-json"></a>JSON Content</h3>
 <div class="paragraph">
 <p>대상 type없이 <code>expectBody()</code> 를 사용하여 higher level Object를 통하지 않고 raw content에 대한 assertion을 수행할 수 있습니다.</p>
 </div>
@@ -665,21 +543,23 @@ generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Cla
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-java" data-lang="java">client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody()
-		.json("{\"name\":\"Jane\"}")</code></pre>
+		.json("{\"name\":\"Jane\"}")
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.get().uri("/persons/1")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody()
-		.json("{\"name\":\"Jane\"}")</code></pre>
+		.json("{\"name\":\"Jane\"}")
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -688,51 +568,55 @@ generic을 사용하여 대상 type으로 디코딩해야하는 경우 <code>Cla
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.get().uri("/persons")
+<pre class="highlight"><code class="language-java" data-lang="java">client.get().uri("/persons")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody()
 		.jsonPath("$[0].name").isEqualTo("Jane")
-		.jsonPath("$[1].name").isEqualTo("Jason");</code></pre>
+		.jsonPath("$[1].name").isEqualTo("Jason");
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">client.get().uri("/persons")
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">client.get().uri("/persons")
 		.exchange()
 		.expectStatus().isOk()
 		.expectBody()
 		.jsonPath("$[0].name").isEqualTo("Jane")
-		.jsonPath("$[1].name").isEqualTo("Jason")</code></pre>
+		.jsonPath("$[1].name").isEqualTo("Jason")
+</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-stream">Streaming Responses</h3>
+<h3 id="webtestclient-stream"><a class="anchor" href="#webtestclient-stream"></a>Streaming Responses</h3>
 <div class="paragraph">
 <p><code>"text/event-stream"</code> 또는 <code>"application/x-ndjson"</code> 과 같이 잠재적으로 무한한 스트림을 테스트하려면 먼저 response status 및 header를 확인한 다음 <code>FluxExchangeResult</code> 를 가져옵니다:</p>
 </div>
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">FluxExchangeResult&lt;MyEvent&gt; result = client.get().uri("/events")
+<pre class="highlight"><code class="language-java" data-lang="java">FluxExchangeResult&lt;MyEvent&gt; result = client.get().uri("/events")
 		.accept(TEXT_EVENT_STREAM)
 		.exchange()
 		.expectStatus().isOk()
-		.returnResult(MyEvent.class);</code></pre>
+		.returnResult(MyEvent.class);
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import org.springframework.test.web.reactive.server.returnResult
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"><span class="fold-block hide-when-folded">import org.springframework.test.web.reactive.server.returnResult
 
-val result = client.get().uri("/events")
+</span><span class="fold-block">val result = client.get().uri("/events")
 		.accept(TEXT_EVENT_STREAM)
 		.exchange()
 		.expectStatus().isOk()
-		.returnResult&lt;MyEvent&gt;()</code></pre>
+		.returnResult&lt;MyEvent&gt;()
+</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -741,32 +625,34 @@ val result = client.get().uri("/events")
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Flux&lt;Event&gt; eventFlux = result.getResponseBody();
+<pre class="highlight"><code class="language-java" data-lang="java">Flux&lt;Event&gt; eventFlux = result.getResponseBody();
 
 StepVerifier.create(eventFlux)
 		.expectNext(person)
 		.expectNextCount(4)
 		.consumeNextWith(p -&gt; ...)
 		.thenCancel()
-		.verify();</code></pre>
+		.verify();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val eventFlux = result.getResponseBody()
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val eventFlux = result.getResponseBody()
 
 StepVerifier.create(eventFlux)
 		.expectNext(person)
 		.expectNextCount(4)
 		.consumeNextWith { p -&gt; ... }
 		.thenCancel()
-		.verify()</code></pre>
+		.verify()
+</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="webtestclient-mockmvc">MockMvc Assertions</h3>
+<h3 id="webtestclient-mockmvc"><a class="anchor" href="#webtestclient-mockmvc"></a>MockMvc Assertions</h3>
 <div class="paragraph">
 <p><code>WebTestClient</code> 는 HTTP client이므로 status, header 및 body를 포함하여 client response에 있는 내용만 확인할 수 있습니다.</p>
 </div>
@@ -777,7 +663,7 @@ body를 assert 한 후 <code>ExchangeResult</code> 를 가져오는 것으로 �
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">// For a response with a body
+<pre class="highlight"><code class="language-java" data-lang="java">// For a response with a body
 EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
@@ -787,13 +673,14 @@ EntityExchangeResult&lt;Person&gt; result = client.get().uri("/persons/1")
 // For a response without a body
 EntityExchangeResult&lt;Void&gt; result = client.get().uri("/path")
 		.exchange()
-		.expectBody().isEmpty();</code></pre>
+		.expectBody().isEmpty();
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">// For a response with a body
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">// For a response with a body
 val result = client.get().uri("/persons/1")
 		.exchange()
 		.expectStatus().isOk()
@@ -803,7 +690,8 @@ val result = client.get().uri("/persons/1")
 // For a response without a body
 val result = client.get().uri("/path")
 		.exchange()
-		.expectBody().isEmpty();</code></pre>
+		.expectBody().isEmpty();
+</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -812,17 +700,19 @@ val result = client.get().uri("/path")
 <div class="listingblock primary">
 <div class="title">Java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MockMvcWebTestClient.resultActionsFor(result)
+<pre class="highlight"><code class="language-java" data-lang="java">MockMvcWebTestClient.resultActionsFor(result)
 		.andExpect(model().attribute("integer", 3))
-		.andExpect(model().attribute("string", "a string value"));</code></pre>
+		.andExpect(model().attribute("string", "a string value"));
+</code></pre>
 </div>
 </div>
 <div class="listingblock secondary">
 <div class="title">Kotlin</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">MockMvcWebTestClient.resultActionsFor(result)
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">MockMvcWebTestClient.resultActionsFor(result)
 		.andExpect(model().attribute("integer", 3))
-		.andExpect(model().attribute("string", "a string value"));</code></pre>
+		.andExpect(model().attribute("string", "a string value"));
+</code></pre>
 </div>
 </div>
 </div>
@@ -831,17 +721,11 @@ val result = client.get().uri("/path")
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-17 19:59:14 +0900
+Last updated 2021-04-15 16:53:23 +0900
 </div>
 </div>
-<script src="js/highlight/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
-<script type="text/javascript" src="js/tocbot/tocbot.min.js"></script>
-<script type="text/javascript" src="js/toc.js"></script>
+</div>
+  </div>
+</div>
 </body>
 </html>

@@ -2,7 +2,7 @@ _이 page 에서는 Spring Framework 6.x.로 upgrade 하는 방법에 대한 안
 
 ## Upgrading to Version 6.1
 
-69 revisions 기준으로 작성됨
+70 revisions 기준으로 작성됨
 
 ### Baseline upgrades
 
@@ -19,6 +19,9 @@ Spring Framework 6.1은 다음 library를 통해 최소 요구 사항을 높였�
 
 몇 년 동안 공식적으로 또는 사실상 더 이상 사용되지 않는 RPC-style remote가 제거되었다.
 이는 Hessian, HTTP Invoker, JMS Invoker 및 JAX-WS 지원에 영향을 미친다. [27422](https://github.com/spring-projects/spring-framework/issues/27422) 참조.
+
+이러한 노력의 일환으로 EJB access도 제거되었다.
+EJB를 lookup 해야 하는 경우, `JndiObjectFactoryBean` 또는 `<jee:jndi-lookup>` 을 통해 직접 JNDI를 사용함.
 
 ### Core Container
 

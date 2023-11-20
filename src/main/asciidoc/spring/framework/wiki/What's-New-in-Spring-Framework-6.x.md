@@ -1,13 +1,15 @@
-106 revisions
-
 ## What's New in Version 6.1
+
+110 revisions 기준으로 작성됨
 
 ### Core Container
 
 -   [virtual threads](https://github.com/spring-projects/spring-framework/issues/23443) 및 JDK 21와 전반적으로 호환됨.
 -   virtual thread에 대한 Configuration option: 전용 [VirtualThreadTaskExecutor](https://docs.spring.io/spring-framework/docs/6.1.0-SNAPSHOT/javadoc-api/org/springframework/core/task/VirtualThreadTaskExecutor.html) 와 [SimpleAsyncTaskExecutor의 virtual threads mode](https://docs.spring.io/spring-framework/docs/6.1.0-SNAPSHOT/javadoc-api/org/springframework/core/task/SimpleAsyncTaskExecutor.html#setVirtualThreads(boolean)), 그리고 new-thread-per-task strategy 와 virtual threads mode가 있는 유사한 [SimpleAsyncTaskScheduler](https://docs.spring.io/spring-framework/docs/6.1.0-SNAPSHOT/javadoc-api/org/springframework/scheduling/concurrent/SimpleAsyncTaskScheduler.html)가 있음.
--   JVM checkpoint restore을 위한 Project CRaC와의 Lifecycle 통합([관련 문서](https://docs.spring.io/spring-framework/reference/6.1/integration/checkpoint-restore.html) 참조).
+-   JVM checkpoint restore을 위한 Project CRaC와의 Lifecycle 통합([관련 문서](https://docs.spring.io/spring-framework/reference/6.1/integration/checkpoint-restore.html) 참조), `-Dspring.context.checkpoint=onRefresh` option 포함.
 -   Lifecycle 통합 [pause/resume 기능](https://github.com/spring-projects/spring-framework/issues/30831) 및 `ThreadPoolTaskExecutor` 와 `ThreadPoolTaskScheduler` , `SimpleAsyncTaskScheduler` 에 대한 [parallel graceful shutdown](https://github.com/spring-projects/spring-framework/issues/27090) for .
+* 주요 사용 사례로 AppCDS training 실행에서 `-Dspring.context.exit=onRefresh` option을 사용할 수 있음; [31595](https://github.com/spring-projects/spring-framework/issues/31595) 참조.
+* Reachability metadata contribution 개선, 다가오는 GraalVM  변경에 대비: 더 나은 개발자 경험을 위해 누락된 reachability metadata가 곧 runtime exceptions으로 report 될 예정. [31213](https://github.com/spring-projects/spring-framework/issues/31213) 참조
 -   Async/reactive destroy method (예: R2DBC에서 `ConnectionFactory`); [26691](https://github.com/spring-projects/spring-framework/issues/26991) 참조.
 -   Async/reactive cacheable method, `Cache` interface 및 `CaffeineCacheManager` 의 해당 지원 포함; [17559](https://github.com/spring-projects/spring-framework/issues/17559) and [17920](https://github.com/spring-projects/spring-framework/issues/17920) 참조.
 -   Reactive `@Scheduled` methods (Kotlin coroutines 포함); [22924](https://github.com/spring-projects/spring-framework/pull/29924) 참조.

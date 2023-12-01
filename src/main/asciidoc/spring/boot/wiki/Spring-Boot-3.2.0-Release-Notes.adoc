@@ -1,6 +1,7 @@
+
 = Spring Boot 3.2 Release Notes
 
-21 revisions 기준으로 작성함
+21 revisions 기준으로 작성됨
 
 == Upgrading from Spring Boot 3.1
 

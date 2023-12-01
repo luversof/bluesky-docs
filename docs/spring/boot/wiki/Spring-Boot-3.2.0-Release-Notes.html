@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Spring Boot 3.2 Release Notes</title>
+<link rel="stylesheet" href="css/site.css">
+<script src="js/setup.js"></script><script defer src="js/site.js"></script>
+
+</head>
+<body class="book"><div id="banner-container" class="container" role="banner">
+  <div id="banner" class="contained" role="banner">
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </div>
+</div>
+<div id="tocbar-container" class="container" role="navigation">
+  <div id="tocbar" class="contained" role="navigation">
+    <button id="toggle-toc"></button>
+  </div>
+</div>
+<div id="main-container" class="container">
+  <div id="main" class="contained">
+    <div id="doc" class="doc">
+<div id="header">
+<h1>Spring Boot 3.2 Release Notes</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>21 revisions 기준으로 작성됨</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_upgrading_from_spring_boot_3_1"><a class="anchor" href="#_upgrading_from_spring_boot_3_1"></a>Upgrading from Spring Boot 3.1</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_parameter_name_discovery"><a class="anchor" href="#_parameter_name_discovery"></a>Parameter Name Discovery</h3>
+<div class="paragraph">
+<p>Spring Boot 3.2에서 사용하는 Spring Framework version은 더 이상 bytecode를 파싱하여 parameter name을 추론하지 않는다.
+dependency injection 또는 property binding 관련된 issue가 발생하면 <code>-parameters</code> option을 사용하여 compile 하고 있는지 다시 한번 확인해야 한다.
+자세한 내용은 <a href="https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention">"Upgrading to Spring Framework 6.x" wiki의 해당 section</a>을 잠조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logged_application_name"><a class="anchor" href="#_logged_application_name"></a>Logged Application Name</h3>
+<div class="paragraph">
+<p>이제 <code>spring.application.name</code> property를 설정할 때마다 기본 log 출력에 application name이 포함된다.
+이전 형식을 선호하는 경우 <code>logging.include-application-name</code> 를 <code>false</code> 로 설정하면 된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_auto_configured_user_details_service"><a class="anchor" href="#_auto_configured_user_details_service"></a>Auto-configured User Details Service</h3>
+<div class="paragraph">
+<p>auto-configure 된 <code>InMemoryUserDetailsManager</code>  는 <code>spring-security-oauth2-client</code>, <code>spring-security-oauth2-resource-server</code>, 및 <code>spring-security-saml2-service-provider</code> 중 하나 이상이 classpath에 있을 때 back off 된다.
+마찬가지로 reactive application에서 이제 auto-configure 된 <code>MapReactiveUserDetailsService</code> 는 <code>spring-security-oauth2-client</code> 및 <code>spring-security-oauth2-resource-server</code> 중 하나 이상이 classpath에 있는 경우 back off 된다.</p>
+</div>
+<div class="paragraph">
+<p>위의 dependency 중 하나를 사용중이지만 application에 여전히 <code>InMemoryUserDetailsManager</code> 또는 <code>MapReactiveUserDetailsService</code> 가 필요한 경우, application에서 필요한 bean을 정의해야 한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_otlp_tracing_endpoint"><a class="anchor" href="#_otlp_tracing_endpoint"></a>OTLP Tracing Endpoint</h3>
+<div class="paragraph">
+<p><code>management.otlp.tracing.endpoint</code> 의 default value가 제거되었다.
+이제 <code>management.otlp.tracing.endpoint</code> 가 값이 있는 경우에만  <code>OtlpHttpSpanExporter</code> bean이 auto-configure 된다.
+이전 동작을 복원하려면 <code>management.otlp.tracing.endpoint=http://localhost:4318/v1/traces</code> 를 설정하면 된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_h2_version_2_2"><a class="anchor" href="#_h2_version_2_2"></a>H2 Version 2.2</h3>
+<div class="paragraph">
+<p>이제 Spring Boot는 기본적으로 H2 version 2.2를 사용한다.
+이전 버전의 H2에서 database를 계쏙 사용하려면 data migration을 수행해야 할 수 있다.
+upgrade 하기 전에 <code>SCRIPT</code> command를 사용하여 database를 export한다.
+새 version의 H2로 빈 database를 생성한 다음 <code>RUNSCRIPT</code> command를 사용하여 data를 가져온다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_oracle_ucp_datasource"><a class="anchor" href="#_oracle_ucp_datasource"></a>Oracle UCP DataSource</h3>
+<div class="paragraph">
+<p>Oracle UCP DataSource는 더 이상 기본적으로 <code>validateConnectionOnBorrow</code> 룰 <code>true</code> 로 설정하지 않는다.
+이전 동작을 복원해야 하는 경우 <code>spring.datasource.oracleucp.validate-connection-on-borrow</code> application property 를 <code>true</code> 로 설정하면 된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jetty_12"><a class="anchor" href="#_jetty_12"></a>Jetty 12</h3>
+<div class="paragraph">
+<p>Spring Boot는 이제 Jetty 12를 지원한다.
+Jetty 12는 Servlet 6.0 API를 지원하여 Tomcat 및 Undertow에 모두 부합한다.
+이전에는 Spring Boot 3.x와 함께 Jetty를 사용하는 경우 Servlet API를 5.0으로 downgrade 해야 했다.
+이제 더 이상 그럴 필요가 없다.
+upgrade 할 때 Servlet API version에 대한 override를 제거한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kotlin_1_9_0_and_gradle"><a class="anchor" href="#_kotlin_1_9_0_and_gradle"></a>Kotlin 1.9.0 and Gradle</h3>
+<div class="paragraph">
+<p>1.9.0 version에는 additional resource directory가 손실될 수 있는 <a href="https://youtrack.jetbrains.com/issue/KT-60459/Gradle-Plugin-overwrites-resource-directories">a bug</a>가 있다.
+이로 인해 AOT 처리에 의해 생성된 resource가 native image의 classpath에 포함되지 않으므로 native image compile이 중단된다.
+이 문제를 해결하려면 Kotlin의 Gradle plugin을 적용한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nested_jar_support"><a class="anchor" href="#_nested_jar_support"></a>Nested Jar Support</h3>
+<div class="paragraph">
+<p>이제 더 이상 Java 8을 지원할 필요가 없으므로 Spring Boot의 "Uber Jar" loading을 지원하는 기본 코드가 다시 작성되었다.
+update 된 코드는 JDK 기대치에 더 부합하는 새로운 URL format을 사용한다.
+<code>jar:file:/dir/myjar.jar:BOOT-INF/lib/nested.jar!/com/example/MyClass.class</code> 의 이전 URL format은 <code>jar:nested:/dir/myjar.jar/!BOOT-INF/lib/nested.jar!/com/example/MyClass.class</code> 로 대체되었다.
+또한 update 된 코드는 resource 관리를 위해 <code>java.lang.ref.Cleaner</code> (JDK 9의 일부)를 사용한다.</p>
+</div>
+<div class="paragraph">
+<p>우리는 가능한 한 새 코드가 이전 구현을 투명하게 대체할 수 있도록 최선을 다했다.
+대부분의 사용자가 변경 사항을 눈치채지 못할 것으로 예상된다.
+새로운 default launcher에서 새로운 name을 갖게 된 launcher class 중 하나를 직접 참조하는 경우 변경 사항을 알아차릴 수 있는 한 가지 영역이 있다:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">New</th>
+<th class="tableblock halign-left valign-top">Classic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.launch.JarLauncher</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.JarLauncher</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.launch.PropertiesLauncher</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.PropertiesLauncher</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.launch.WarLauncher</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>org.springframework.boot.loader.WarLauncher</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>그러나 새 구현에서 문제를 발견하는 경우 이전 코드를 사용할 수 있는 대체 option을 제공했다.</p>
+</div>
+<div class="paragraph">
+<p>Gradle 사용자의 경우 <code>bootJar.loaderImplementation</code> 를 <code>org.springframework.boot.loader.tools.LoaderImplementation.CLASSIC</code> 으로 설정할 수 있다.
+예를 들면 다음과 같다:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">bootJar {
+  loaderImplementation = org.springframework.boot.loader.tools.LoaderImplementation.CLASSIC
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Maven 사용자의 경우 <code>spring-boot-plugin</code> configuration에서 <code>&lt;loaderImplementation&gt;</code> tag를 <code>CLASSIC</code> 으로 설정할 수 있다.
+예를 들면 다음과 같다:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+      &lt;executions&gt;
+        &lt;execution&gt;
+          &lt;goals&gt;
+            &lt;goal&gt;repackage&lt;/goal&gt;
+          &lt;/goals&gt;
+          &lt;configuration&gt;
+            &lt;loaderImplementation&gt;CLASSIC&lt;/loaderImplementation&gt;
+          &lt;/configuration&gt;
+        &lt;/execution&gt;
+      &lt;/executions&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>새 구현에서 예기치 않은 동작이 발견되면 Github issue를 제기해주면 된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_deprecations_from_spring_boot_3_0"><a class="anchor" href="#_deprecations_from_spring_boot_3_0"></a>Deprecations from Spring Boot 3.0</h3>
+<div class="paragraph">
+<p>Spring Boot 3.0에서 더 이상 사용되지 않는 class, method 및 property가 이번 release에서 제거되었다.
+upgrade 하기 전에 더 이상 사용되지 않는 method를 호출하고 있지 않은지 확인해야 한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_minimum_requirements_changes"><a class="anchor" href="#_minimum_requirements_changes"></a>Minimum Requirements Changes</h3>
+<div class="paragraph">
+<p>None.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_and_noteworthy"><a class="anchor" href="#_new_and_noteworthy"></a>New and Noteworthy</h2>
+<div class="sectionbody">
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+configuration의 변경 사항에 대한 overview는 <a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.2.0-Configuration-Changelog">configuration changelog</a> 를 확인
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_spring_for_apache_pulsar_support"><a class="anchor" href="#_spring_for_apache_pulsar_support"></a>Spring for Apache Pulsar Support</h3>
+<div class="paragraph">
+<p>이제 Spring Boot에는 auto-configuration 지원과 <a href="https://github.com/spring-projects/spring-pulsar">Spring for Apache Pulsar project</a>를 위한 starter POM이 포함되어 있다.
+자세한 내용은  <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/messaging.html#messaging.pulsar">update된 reference documentation</a>을 참조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logging_correlation_ids"><a class="anchor" href="#_logging_correlation_ids"></a>Logging Correlation IDs</h3>
+<div class="paragraph">
+<p>이제 Spring Boot는 Micrometer tracing을 사용할 때마다 correlation ID를 자동으로 log한다.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html//actuator.html#actuator.micrometer-tracing.logging">update된 documenation</a>을 참조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_restclient_support"><a class="anchor" href="#_restclient_support"></a>RestClient Support</h3>
+<div class="paragraph">
+<p>Spring Boot 3.2에는 Spring Framework 6.1에 도입된 새로운 <code>RestClient</code> interface에 대한 지원이 포함되어 있다.
+이 interface는 <code>WebClient</code> 와 유사한 디자인으로 functional style blocking HTTP API를 제공한다.</p>
+</div>
+<div class="paragraph">
+<p>기존 application에서 신규 application은 <code>RestTemplate</code> 대신 <code>RestClient</code> 를 사용하는 것을 고려할 수 있다.</p>
+</div>
+<div class="paragraph">
+<p>자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html//io.html#io.rest-client.restclient">update된 reference documentation</a> 참조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resttemplate_http_clients"><a class="anchor" href="#_resttemplate_http_clients"></a>RestTemplate HTTP Clients</h3>
+<div class="paragraph">
+<p>Jetty의 <code>HttpClient</code> 가 classpath에 있는 경우, Spring Boot의 HTTP client auto-detection은 이제 Spring Framework 6.1에 도입된 새로운 <code>JettyClientHttpRequestFactory</code> 를 사용하도록 <code>RestTemplateBuilder</code> 를 구성한다.</p>
+</div>
+<div class="paragraph">
+<p><code>ClientHttpRequestFactories</code> 에 <code>JdkClientHttpRequestFactory</code> 에 대한 지원이 추가되었다.
+<code>JettyClientHttpRequestFactory</code> 와 달리 auto-detection에 추가되지 않았다.
+<code>JdkClientHttpRequestFactory</code> 을 사용하려면 opt in 해야 한다:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Bean
+RestTemplateBuilder restTemplateBuilder(RestTemplateBuilderConfigurer configurer) {
+    return configurer.configure(new RestTemplateBuilder())
+        .requestFactory(
+                (settings) -&gt; ClientHttpRequestFactories.get(JdkClientHttpRequestFactory.class, settings));
+}
+</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_for_jdbcclient"><a class="anchor" href="#_support_for_jdbcclient"></a>Support for <code>JdbcClient</code></h3>
+<div class="paragraph">
+<p><code>NamedParameterJdbcTemplate</code> 의 존재 여부에 따라 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html//data.html#data.sql.jdbc-client"><code>JdbcClient</code></a>에 대한 auto-configuration이 추가되었다.
+후자가 auto-configure 된 경우 <code>spring.jdbc.template.*</code> 의 property가 고려된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_for_virtual_threads"><a class="anchor" href="#_support_for_virtual_threads"></a>Support for Virtual Threads</h3>
+<div class="paragraph">
+<p>Spring Boot 3.2는 <a href="https://openjdk.org/jeps/444">virtual threads</a>를 지원한다.
+virtual thread를 사용하려면 Java 21에서 실행하고, <code>spring.threads.virtual.enabled</code> property를 <code>true</code> 로 설정해야 한다.</p>
+</div>
+<div class="sect3">
+<h4 id="_servlet_web_servers"><a class="anchor" href="#_servlet_web_servers"></a>Servlet Web Servers</h4>
+<div class="paragraph">
+<p>virtual thread가 활성화 되면 Tomcat과 Jetty는 request 처리를 위해 virtual thread를 사용한다.
+즉, controller의 method와 같이 web request를 처리하는 application code가 virtual thread에서 실행된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_blocking_execution_with_spring_webflux"><a class="anchor" href="#_blocking_execution_with_spring_webflux"></a>Blocking Execution with Spring WebFlux</h4>
+<div class="paragraph">
+<p>Spring WebFlux의 block execution에 대한 지원은 <code>AsyncTaskExecutor</code> 인 경우 <code>applicationTaskExecutor</code> bean을 사용하도록 auto-configure 된다.
+<code>applicationTaskExecutor</code> 는 default 및 virtual thread가 활성화 된 경우 모두 <code>AsyncTaskExecutor</code> 이다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_task_execution"><a class="anchor" href="#_task_execution"></a>Task Execution</h4>
+<div class="paragraph">
+<p>virtual thread가 활성화 된 경우  <code>applicationTaskExecutor</code> bean은 virtual thread를 사용하도록 구성된 <code>SimpleAsyncTaskExecutor</code> 가 된다.
+이제 <code>@Async</code> method 호출 시 <code>@EnableAsync</code> 와 같은 application task executor, Spring MVC의 asynchronous request processing, Spring WebFlux의 blocking execution 지원 등 application task executor를 사용하는 모든 곳에서 virtual thread를 활용하게 된다.
+이전과 마찬가지로 auto-configure된 executor 에 <code>TaskDecorator</code> bean이 적용되고 <code>spring.task.execution.thread-name-prefix</code> property가 적용된다.
+다른 <code>spring.task.execution.*</code> property 들은 pool-based executor에만 해당되므로 무시된다.</p>
+</div>
+<div class="paragraph">
+<p>이제 application context에서 <code>SimpleAsyncTaskExecutorBuilder</code> 를 사용할 수 있으며, 이를 사용하여 <code>SimpleAsyncTaskExecutor</code> 를 빌드할 수 있다.
+<code>SimpleAsyncTaskExecutorCustomizer</code> bean을 사용하여 빌드된 <code>SimpleAsyncTaskExecutor</code> 를 customize 할 수 있다.
+virtual thread가 활성화된 경우 builder는 virtual thread를 사용하도록 auto-configure 된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_task_scheduling"><a class="anchor" href="#_task_scheduling"></a>Task Scheduling</h4>
+<div class="paragraph">
+<p>virtual thread를 사용하도록 설정하면 <code>taskScheduler</code> bean은 virtual thread를 사용하도록 구성된 <code>SimpleAsyncTaskScheduler</code> 가 된다.
+<code>spring.task.scheduling.thread-name-prefix</code> property 및 <code>spring.task.scheduling.simple.<strong></code> property 들이 적용된다.
+다른 <code>spring.task.scheduling.</strong></code> property 들은 pool-based scheduler에만 해당되므로 무시된다.</p>
+</div>
+<div class="paragraph">
+<p>이제 application context에서 <code>SimpleAsyncTaskSchedulerBuilder</code> 를 사용할 수 있으며, 이를 사용하여 <code>SimpleAsyncTaskScheduler</code> 를 빌드할 수 있다.
+<code>SimpleAsyncTaskSchedulerCustomizer</code> bean을 사용하여 빌드된 <code>SimpleAsyncTaskScheduler</code> 를 customize 할 수 있다.
+virtual thread가 활성화된 경우 builder는 virtual thread를 사용하도록 auto-configure 된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_keeping_the_jvm_alive"><a class="anchor" href="#_keeping_the_jvm_alive"></a>Keeping the JVM Alive</h4>
+<div class="paragraph">
+<p><code>spring.main.keep-alive</code> 라는 새로운 property가 있다.
+<code>true</code> 로 설정하면 다른 모든 thread가 virtual (또는 daemon) thread인 경우에도 JVM이 계속 활성화된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_technology_specific_integrations"><a class="anchor" href="#_technology_specific_integrations"></a>Technology Specific Integrations</h4>
+<div class="paragraph">
+<p>virtual thread가 활성화되면 다음과 같은 기술별 통합이 적용된다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>virtual thread executor는 RabbitMQ listener에 대해 auto-configure 된다.</p>
+</li>
+<li>
+<p>virtual thread executor는 Kafka listener에 대해 auto-configure 된다.</p>
+</li>
+<li>
+<p>Spring Data Redis의 <code>ClusterCommandExecutor</code> 는 virtual thread를 사용한다.</p>
+</li>
+<li>
+<p>Apache Pulsar 용 Spring은 auto-configure된 <code>ConcurrentPulsarListenerContainerFactory</code> 및 <code>DefaultPulsarReaderContainerFactory</code> 에 <code>VirtualThreadTaskExector</code> 를 사용한다.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initial_support_for_jvm_checkpoint_restore"><a class="anchor" href="#_initial_support_for_jvm_checkpoint_restore"></a>Initial support for JVM Checkpoint Restore</h3>
+<div class="paragraph">
+<p>Spring Boot 3.2는 JVM Checkpoint 복원 (<a href="https://openjdk.org/projects/crac/">Project CRaC</a>)에 대한 초기 지원을 제공한다.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#deployment.efficient.checkpoint-restore">관련 documentation</a> 참조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ssl_bundle_reloading"><a class="anchor" href="#_ssl_bundle_reloading"></a>SSL Bundle Reloading</h3>
+<div class="paragraph">
+<p>이제 trust material이 변경되면 SSL bundle을 자동으로 reload 할 수 있다.
+bundle은 <code>reload-on-update</code> property 를 <code>true</code> 로 설정하여 이 기능을 사용하도록 선택해야 한다.
+bundle의 consumer도 reloading을 지원해야 한다.</p>
+</div>
+<div class="paragraph">
+<p>reloading을 지원하는 consumer는 다음과 같다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Netty web server</p>
+</li>
+<li>
+<p>Tomcat web server</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>SSL bundle reloading에 대한 자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/features.html#features.ssl.reloading">reference documentation</a> 참조.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_observability_improvements"><a class="anchor" href="#_observability_improvements"></a>Observability Improvements</h3>
+<div class="paragraph">
+<p>이제 Micrometer의 <a href="https://micrometer.io/docs/concepts#_the_timed_annotation"><code>@Timed</code></a>, <code>@Counted</code>, <code>@NewSpan</code>, <code>@ContinueSpan</code> 및  <a href="https://micrometer.io/docs/observation#_using_annotations_with_observed"><code>@Observed</code></a> annotation을 사용할 수 있다.
+이제 classpath에 AspectJ가 있는 경우 이들에 대한 aspect가 auto-configure 된다.</p>
+</div>
+<div class="paragraph">
+<p>Micrometer Tracing의 <code>ObservationHandler</code> bean은 <code>ObservationConfig</code> 에 자동으로 등록된다.
+Spring Boot 3.2.0 이전에는 uncategorized handler가 categorized handler 보다 먼저 등록되었다.
+이제 categorized handler가 uncategorized handler보다 먼저 등록된다.
+자세한 내용은 <a href="https://github.com/spring-projects/spring-boot/issues/34399">#34399</a> 참조.</p>
+</div>
+<div class="paragraph">
+<p>B3 trace propagation의 default format이 single-no-parent에서 <a href="https://github.com/openzipkin/b3-propagation#single-header">single</a>로 변경되었다.</p>
+</div>
+<div class="paragraph">
+<p><code>@Scheduled</code> method는 이제 observability를 위해 계측된다.</p>
+</div>
+<div class="paragraph">
+<p>R2DBC에 대한 Observability가 추가되었다.
+이 기능을 사용하려면 프로젝트에 <code>io.r2dbc:r2dbc-proxy</code> dependency를 포함한다.</p>
+</div>
+<div class="sect3">
+<h4 id="_properties"><a class="anchor" href="#_properties"></a>Properties</h4>
+<div class="paragraph">
+<p>reactive pipeline에서 context propagation을 제어하는 <code>spring.reactor.context-propagation</code> 라는 새로운 configuration property가 있다.
+reactive pipeline에서 observations, trace ids 및 span ids를 자동으로 전파하려면 이 property를 <code>auto</code> 로 설정하면 된다.</p>
+</div>
+<div class="paragraph">
+<p>이제 property 들을 통해 prefix로 시작하는 Observation을 비활성화 할 수 있다.
+예를 들어 Spring Security가 observation을 report하지 못하도록 하려면 <code>management.observations.enable.spring.security=false</code> 로 설정하면 된다.</p>
+</div>
+<div class="paragraph">
+<p><code>management.observations.key-values.*</code> property를 사용하여 모든 observation에 low-cardinality key-value들을 자동으로 적용할 수 있다.
+예를 들어 <code>management.observations.key-values.region=us-west</code> 를 설정하면 모든 관측값에 <code>us-west</code> 라는 값을 가진 key <code>region</code> 이 추가된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_opentelemetry"><a class="anchor" href="#_opentelemetry"></a>OpenTelemetry</h4>
+<div class="paragraph">
+<p>OpenTelemetry <code>MeterProvider</code> bean이 발견되면 이 bean은 자동으로 <code>BatchSpanProcessor</code> 에 등록된다.</p>
+</div>
+<div class="paragraph">
+<p>OpenTelemetry의 auto-configuration이 개선되엇다.
+context에 <code>SdkLoggerProvider</code> 또는 <code>SdkMeterProvider</code> type의 bean이 있는 경우 해당 bean이 <code>OpenTelemetry</code> bean에 자동으로 등록된다.
+또한 OpenTelemetry의 <code>Resource</code> 가 이제 bean으로 노출되며, resource attribute를 구성하는 새로운 configuration property <code>management.opentelemetry.resource-attributes</code>  가 있다.</p>
+</div>
+<div class="paragraph">
+<p>OpenTelemetry를 사용 중이고 적용된 <code>SpanProcessor</code> 를 보다 세밀하게 제어하고 싶다면 이제 <code>SpanProcessors</code> type의 bean을 정의할 수 있다.
+default로 사용 가능한 모든 <code>SpanProcessor</code> bean이 적용된다.
+default르 override 하려면 <code>SpanExporters</code> bean을 사용하여 OpenTelemetry의 <code>SpanExporter</code> 와 동일하게 동작한다.
+default로 사용 가능한 모든 <code>SpanExporter</code> bean이 적용된다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_broader_exemplar_support_in_micrometer_1_12"><a class="anchor" href="#_broader_exemplar_support_in_micrometer_1_12"></a>Broader Exemplar Support in Micrometer 1.12</h4>
+<div class="paragraph">
+<p>Micrometer 1.12에는 <a href="https://github.com/prometheus/prometheus/pull/11984">requires Prometheus 2.43 이상</a>이상이 필요한 <a href="https://github.com/micrometer-metrics/micrometer/pull/3996">exemplar support를 확대하는</a> 기능이 포함되어 있다.
+2.43.0 이전 버전을 사용 중이고 Micrometer Tracing을 사용 중인 경우, Prometheus &gt;= 2.43.0으로 upgrade 하지 않으면 metric이 더 이상 표시되지 않는다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_observability_in_tests"><a class="anchor" href="#_observability_in_tests"></a>Observability in Tests</h4>
+<div class="paragraph">
+<p>Spring Boot 3.2 이전에는 integration test를 실행할 때 전체 Micrometer Tracing. Brave 및 OpenTelemetry infrastructure가 비활성화되었다.
+이제 최소한의 bean만 비활성화되어 backend로 span이 전송되지 않도록 개선되었다.
+(비활성화 되는 bean 목록은 <a href="https://github.com/spring-projects/spring-boot/issues/35354">#35354</a> 참조)
+custom Brave <code>SpanHandler</code> 또는 OpenTelemetry <code>SpanExporter</code> bean이 있는 경우, observability이 꺼진 상태에서 integration test를 실행할 때 생성되지 않도록 <code>@ConditionalOnEnabledTracing</code> 으로 annotation을 달아야 한다.</p>
+</div>
+<div class="paragraph">
+<p>integration test를 observability를 활성화한 상태로 실행하려면 test class에서 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html//features.html#features.testing.spring-boot-applications.tracing"><code>@AutoConfigureObservability</code> annotation을 사용</a>하면 된다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_docker_image_building"><a class="anchor" href="#_docker_image_building"></a>Docker Image Building</h3>
+<div class="sect3">
+<h4 id="_default_cnb_builders_upgraded"><a class="anchor" href="#_default_cnb_builders_upgraded"></a>Default CNB Builders Upgraded</h4>
+<div class="paragraph">
+<p>Maven 및 Gradle plugin으로 image를 빌드할 때 사용되는 기본 CNB builder가 변경되었다.
+빌드에 GraalVM plugin을 적용하면 새로운 default builder는 <code>paketobuildpacks:builder-jammy-tiny</code> 이다.
+그렇지 않으면 새로운 default builder는 <code>paketobuildpacks:builder-jammy-base</code> 이다.
+이러한 builder에 대한 자세한 내용은 <a href="https://paketo.io/docs/reference/builders-reference/">Paketo documentation</a> 을 참조.</p>
+</div>
+<div class="paragraph">
+<p>이전 default builder에는 Ubuntu 18.04 기반 run image가 포함되어 있었지만, 새로운 default builder에는 Ubuntu 22.04 기반 run image가 포함되어 있다.
+즉, 새로운 default builder로 빌드된 모든 image는 Ubuntu 22.04를 기반으로 한다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_docker_host_configuration"><a class="anchor" href="#_docker_host_configuration"></a>Docker Host Configuration</h4>
+<div class="paragraph">
+<p><code>spring-boot:build-image</code> Maven goal 및 <code>bootBuildImage</code> Gradle task는 이제 default로 사용해야 하는 Docker daemon의 host address 및 기타 connection details를 결정하기 위해 Docker CLI configuration file을 사용한다.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/gradle-plugin/reference/htmlsingle/#build-image.docker-daemon">Gradle</a> 및 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/maven-plugin/reference/htmlsingle/#build-image.docker-daemon">Maven</a> plugin documentation을 참조.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bind_mounts_for_caches"><a class="anchor" href="#_bind_mounts_for_caches"></a>Bind Mounts for Caches</h4>
+<div class="paragraph">
+<p>이제 CNB builder 및 buildpack에서 사용하는 build 및 launch cache를 named volume 대신 bind moount를 사용하도록 구성할 수 있다.
+이 기능은 CI pipeline에서 volume access를 허용하지 않는 BitBucket CI 사용자들이 요청해온 기능이다.
+자세한 정보 및 예제는 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/maven-plugin/reference/htmlsingle/#build-image.examples.caches">Maven</a> 및 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/gradle-plugin/reference/htmlsingle/#build-image.examples.caches">Gradle</a> documentation 참조.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_build_workspace_configuration"><a class="anchor" href="#_build_workspace_configuration"></a>Build Workspace Configuration</h4>
+<div class="paragraph">
+<p>이제 CNB builder 및 buildpack에서 temporary build workspace는 bind mount 또는 custom named volume을 사용하도록 구성할 수 있다.
+자세한 내용과 예제는 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/maven-plugin/reference/htmlsingle/#build-image.examples.caches">Maven</a> 및 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/gradle-plugin/reference/htmlsingle/#build-image.examples.caches">Gradle</a> documentation 참조.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_security_options_configuration"><a class="anchor" href="#_security_options_configuration"></a>Security Options Configuration</h4>
+<div class="paragraph">
+<p>이제 CNB builder container에 적용되는 security option을 customize 하여 default Linux security option <code>label=disable</code> 을 사용할 수 있는 Docker 환경을 지원할 수 있다.
+자세한 내용은 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/maven-plugin/reference/htmlsingle/#build-image.customization">Maven</a> 및 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/gradle-plugin/reference/htmlsingle/#build-image.customization">Gradle</a> documentation 참조.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spring_for_graphqls_callable_support"><a class="anchor" href="#_spring_for_graphqls_callable_support"></a>Spring for GraphQL&#8217;s Callable Support</h3>
+<div class="paragraph">
+<p>이제 GraphQL 용 Spring은 <code>applicationTaskExecutor</code> 를 사용하도록 auto-configure된다.
+따라서 <code>Callable</code> 을 반환하는 controller method를 즉시 지원할 수 있다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_additional_oauth2_token_validators"><a class="anchor" href="#_additional_oauth2_token_validators"></a>Additional OAuth2 Token Validators</h3>
+<div class="paragraph">
+<p>이제 auto-configure된 <code>JwtDecoder</code> 또는 <code>ReactiveJwtDecoder</code> 는 token validation을 위해 <code>OAuth2TokenValidator&lt;Jwt&gt;</code> bean을 사용한다.
+이 bean은 decoder의 validator로 구성된 <code>DelegatingOAuth2TokenValidator</code> 에 포함되어 있다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_service_connection_support_for_activemq"><a class="anchor" href="#_service_connection_support_for_activemq"></a>Service Connection Support for ActiveMQ</h3>
+<div class="paragraph">
+<p>Testcontainers 와 Docker Compose 모두에 대한 통합과 함께 <code>ServiceConnection</code> 에 대한 지원이 ActiveMQ에 추가되었다.
+통합은 <code>symptoma/activemq</code> image를 사용한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_docker_compose_support_for_neo4j"><a class="anchor" href="#_docker_compose_support_for_neo4j"></a>Docker Compose Support for Neo4j</h3>
+<div class="paragraph">
+<p>Spring Boot의 Docker Compose 통합은 이제 Neo4j를 지원한다.
+인증을 비활성화(<code>none</code> value)하거나 <code>neo4j</code> 사용자에 대한 password를 설정(<code>neo4j/your-password</code> value)하려면 YAML에서 <code>NEO4J_AUTH</code> environment variable을 구성해야 한다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_websocketserverspec_configuration"><a class="anchor" href="#_websocketserverspec_configuration"></a>WebSocketServerSpec Configuration</h3>
+<div class="paragraph">
+<p>auto-configuration에 사용되는 <code>WebSocketServerSpec</code> 은 <code>spring.rsocket.server.spec</code> namespace의 property들을 사용하여 customize 할 수 있다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_neo4j_authtokenmanager"><a class="anchor" href="#_neo4j_authtokenmanager"></a>Neo4j <code>AuthTokenManager</code></h3>
+<div class="paragraph">
+<p><code>AuthTokenManager</code> bean이 정의된 경우, 이 bean은 Neo4j를 사용한 인증에 사용된다.
+이러한 bean은 <code>spring.neo4j.authentication.*</code> property들 보다 우선한다.
+예를 들어 Testcontainers 또는 Docker Compose managed database에 대한 service connection에 대해 custom <code>Neo4jConnectionDetails</code> 가 정의되어 있는 경우 <code>AuthTokenManager</code> bean은 무시된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rabbitmq"><a class="anchor" href="#_rabbitmq"></a>RabbitMQ</h3>
+<div class="sect3">
+<h4 id="_ssl_bundle_support"><a class="anchor" href="#_ssl_bundle_support"></a>SSL Bundle Support</h4>
+<div class="paragraph">
+<p>이제 <code>spring.rabbitmq.ssl.bundle</code> property를 사용하여 SSL bundle의 SSL trust material를 사용하도록 RabbitMQ connection을 구성할 수 있다.
+이는 기존 <code>spring.rabbitmq.ssl</code> property를 사용하여 trust material를 Java keystore file로 제공하는 대신 사용할 수 있는 대안이다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_limited_message_body_size"><a class="anchor" href="#_limited_message_body_size"></a>Limited Message Body Size</h4>
+<div class="paragraph">
+<p>최신 버전의 RabbitMQ용 Java client는 default로 inbound message의 최대 크기를 64MB로 제한한다.
+이 제한을 customize 하기 위해 <code>spring.rabbitmq.max-inbound-message-body-size</code> configuration property가 도입되었다.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_virtual_host_support_for_rabbitmq_stream"><a class="anchor" href="#_virtual_host_support_for_rabbitmq_stream"></a>Virtual Host Support for RabbitMQ Stream</h4>
+<div class="paragraph">
+<p>RabbitMQ Stream에 대한 virtual host 지원이 추가되었다.
+명시적으로 설정하지 않으면 RabbitMQ Stream의 virtual host는 자동으로 RabbitMQ에 대해 구성된 virtual host를 사용한다.
+특정 virtual host를 RabbitMQ Stream에서 사용하려면 <code>spring.rabbitmq.stream.virtual-host</code> 를 설정하면 된다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kafka"><a class="anchor" href="#_kafka"></a>Kafka</h3>
+<div class="sect3">
+<h4 id="_ssl_bundle_support_2"><a class="anchor" href="#_ssl_bundle_support_2"></a>SSL Bundle Support</h4>
+<div class="paragraph">
+<p>이제 <code>spring.kafka.ssl.bundle</code> property를 사용하여 SSL bundle의 SSL trust material을 사용하도록 Kafka connection을 구성할 수 있다.
+이는 기존 <code>spring.kafka.ssl</code> property를 사용하여 trust material을 Java keystore file로 제공하는 대신 사용할 수 있는 대안이 된다.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jms_sessions"><a class="anchor" href="#_jms_sessions"></a>Jms Sessions</h3>
+<div class="paragraph">
+<p>auto-configure된 <code>JmsTemplate</code> 에 의해 생성된 session을 구성하기 위한 새로운 property들이 도입되었다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>spring.jms.template.session.acknowledge-mode</code></p>
+</li>
+<li>
+<p><code>spring.jms.template.session.transacted</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>마찬가지로, auto-configure된 <code>JmsMessageListenerContainer</code> 에 대해 <code>spring.jms.listener.session.transacted</code> property 가 도입되었다.</p>
+</div>
+<div class="paragraph">
+<p>이러한 새로운 property에 맞춰 기존 <code>spring.jms.listener.acknowledge-mode</code> property는 더 이상 사용되지 않으며 <code>spring.jms.listener.session.acknowledge-mode</code> 가 대체 property로 도입되었다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_connection_validation_on_oracle_ucp_datasources"><a class="anchor" href="#_connection_validation_on_oracle_ucp_datasources"></a>Connection validation on Oracle UCP datasources</h3>
+<div class="paragraph">
+<p>Oracle UCP datasource의 connection validation에 대한 기본값이 제거되었다.
+3.2.1-RC1 이전에는 connection validation이 기본적으로 활성화되었지만 더 이상 그렇지 않다.
+connection validation이 피룡한 경우 configuration property <code>spring.datasource.oracleucp.validate-connection-on-borrow</code> 를 <code>true</code> 로 설정하면 된다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testanddevelopmentonly_gradle_configuration"><a class="anchor" href="#_testanddevelopmentonly_gradle_configuration"></a>testAndDevelopmentOnly Gradle Configuration</h3>
+<div class="paragraph">
+<p>Spring Boot의 Gradle plugin은 이제 <code>developmentOnly</code> 외에도 <code>testAndDevelopmentOnly</code> configuration도 생성한다.
+<code>developmentOnly</code> 와 달리 이 새로운 configuration의 dependency들은 test compile 및 runtime classpath에 포함된다.
+이 configuration은 주로 <a href="https://docs.spring.io/spring-boot/docs/3.2.0/reference/html/features.html#features.testing.testcontainers.at-development-time">development 시 Testcontainers</a>를 사용하는 application을 위한 것이다.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_miscellaneous"><a class="anchor" href="#_miscellaneous"></a>Miscellaneous</h3>
+<div class="paragraph">
+<p>위에 나열된 변경 사항 외에도 다음과 같은 많은 사소한 조정과 개선이 이루어졌다:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Jackson의 <code>EnumFeature</code> 및 <code>JsonNodeFeature</code> 에 선언된 기능은 이제 각각 <code>spring.jackson.datatype.enum.<strong></code> 및 <code>spring.jackson.datatype.jsonnode.</strong></code> configuration property 들을 사용하여 활성화 및 비활성화 할 수 있다.</p>
+</li>
+<li>
+<p>이제 additional build info property 들은 <code>Provider</code> 를 사용하여 lazy value 들을 가질 수 있다.</p>
+</li>
+<li>
+<p>Transaction manager customization은 이제 <code>PlatformTransactionManager</code> 뿐만 아니라 모든 type의 <code>TransactionManager</code> 에 적용된다.</p>
+</li>
+<li>
+<p>이제 모든 <code>TransactionExecutionListener</code> bean이 auto-configure 된 transaction manager에 추가된다.</p>
+</li>
+<li>
+<p>embedded WebServer가 시작될 때 기록되는 모든 port information이 개선되어 더욱 일관성이 높아졌다.</p>
+</li>
+<li>
+<p>새로운 property <code>spring.servlet.multipart.strict-servlet-compliance</code> 는 multipart handing이 <code>multipart/form-data</code> request에만 사용되는지 여부를 설정한다.</p>
+</li>
+<li>
+<p>welcome page의 handler가 잘못된 <code>Accept</code> header를 수신할 때 logging이 줄어들어 모든 MIME types을 허용하는 것으로 되돌아갔다.</p>
+</li>
+<li>
+<p>Spring Boot의 기본값을 <code>RestClient.Builder</code> 에 적용하는데 사용할 수 있는 <code>RestClientBuilderConfigurer</code> 가 추가되었다.</p>
+</li>
+<li>
+<p><code>restTemplateBuilderConfigurer</code> bean은 더 이상 사용자 정의 bean에 대해 back off 하지 않는다. 자체 <code>restTemplateBuilderConfigurer</code> bean이 있는 경우 해당 bean을 제거해야 한다.</p>
+</li>
+<li>
+<p>Jetty server의 connection maximum amount를 구성하는 property가 추가되었다.</p>
+</li>
+<li>
+<p>PEM SSL bundle을 사용할 때 key를 확인하는데 사용할 수 있는 새로운 porperty가 추가되었다.</p>
+</li>
+<li>
+<p>이제 프로그래밍 방식으로  <code>PemSslStoreBundle</code> 을 만들 때 key store password를 제공할 수 있다.</p>
+</li>
+<li>
+<p>이제 <code>service.name</code> 이 명시적으로 설정되지 않은 경우 <code>spring.application.name</code> 이 OpenTelemetry의 <code>service.name</code> 에 사용된다.</p>
+</li>
+<li>
+<p>exported metric의 base <code>TimeUnit</code> OTLP registry에서 구성할 수 있는 새로운 property가 추가되었다.</p>
+</li>
+<li>
+<p>이제 OTLP metric 및 trace에 대한 connection details가 지원된다. connection details bean은 Testcontainer 또는 Docker Compose를 <code>otel/opentelemetry-collector-contrib</code> image와 함께 사용하는 경우 자동으로 생성된다.</p>
+</li>
+<li>
+<p>Wavefront 사용 시 CSP 인증에 대한 지원이 추가되었다.</p>
+</li>
+<li>
+<p>새로운 property 인 <code>flyway.postgresql.transactional-lock</code> 를 사용하여 Flyway의 transaction lock 사용을 PostgreSQL로 구성할 수 있다.</p>
+</li>
+<li>
+<p>Kafka MessageListenerContainer <code>changeConsumerThreadName</code> property에 대한 지원이 추가되었다.</p>
+</li>
+<li>
+<p><code>Function&lt;MessageListenerContainer, String&gt;</code> bean을 Kafka MessageListenerContainer&#8217;s <code>threadNameSupplier</code> 로 auto-configure 한다.</p>
+</li>
+<li>
+<p>virtual thread 문제를 auto-configure 하는데 도움이 되는 새로운 <code>@ConditionalOnThreading</code> annotation이 도입되었다.</p>
+</li>
+<li>
+<p>RabbitMQ container <code>forceStop</code> property에 대한 지원이 추가되었다.</p>
+</li>
+<li>
+<p><code>WebClient</code> based Zipkin sender는 이제 configuration property들을 통해 설정된 timeout을 준수한다. 자세한 내용은 <a href="https://github.com/spring-projects/spring-boot/issues/36264">#36264</a> 참조.</p>
+</li>
+<li>
+<p>AOT 모드가 활성화 된 상태에서 application을 시작했지만 빌드에서 AOT 처리가 완료되지 않은 경우, 이제 error message가 더 명확해졌다.</p>
+</li>
+<li>
+<p>이제 GraalVM을 사용할 때 <code>messages.properties</code> 및 <code>messages_*.properties</code> 에 대한 resource hint가 자동으로 제공된다.</p>
+</li>
+<li>
+<p>이제 Kotlin Serialization을 위한 dependency management가 제공된다.</p>
+</li>
+<li>
+<p><a href="https://github.com/awaitility/awaitility">Awaitility</a> (<code>org.awaitility:awaitility</code>) 가 이제 <code>spring-boot-starter-test</code> 의 일부가 되었다.</p>
+</li>
+<li>
+<p>이제 <code>@JdbcTest</code> 및 <code>@DataJpaTest</code> 를 사용하여 테스트에서 auto-configure 된 <code>JdbcClient</code> bean을 사용할 수 있다.</p>
+</li>
+<li>
+<p><code>MockMvc</code> 을 auto-configure 할 때 이제 filter는 등록 bean의 dispatcher type 및 init parameter를 사용하여 등록된다.</p>
+</li>
+<li>
+<p>이제 Testcontainers를 병렬로 초기화할 수 있다. 이를 위해 <code>spring.testcontainers.beans.startup</code> 를 <code>parallel</code> 로 설정하면 된다.</p>
+</li>
+<li>
+<p>Micrometer observation을 지원하기 위한 <code>spring.kafka.template.observation-enabled</code> property 지원</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependency_upgrades"><a class="anchor" href="#_dependency_upgrades"></a>Dependency Upgrades</h3>
+<div class="paragraph">
+<p>Spring Boot 3.2.0 moves to new versions of the following Spring projects:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring AMQP 3.1</p>
+</li>
+<li>
+<p>Spring Authorization Server 1.2</p>
+</li>
+<li>
+<p>Spring Batch 5.1</p>
+</li>
+<li>
+<p>Spring Data 2023.1</p>
+</li>
+<li>
+<p>Spring Framework 6.1</p>
+</li>
+<li>
+<p>Spring HATEOAS 2.2</p>
+</li>
+<li>
+<p>Spring Integration 6.2</p>
+</li>
+<li>
+<p>Spring Kafka 3.1</p>
+</li>
+<li>
+<p>Spring LDAP 3.2</p>
+</li>
+<li>
+<p>Spring Pulsar 1.0</p>
+</li>
+<li>
+<p>Spring Retry 2.0</p>
+</li>
+<li>
+<p>Spring Security 6.2</p>
+</li>
+<li>
+<p>Spring Session 3.2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Third-party dependencies have also been updated, the more noteworthy of which are the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Artemis 2.29</p>
+</li>
+<li>
+<p>Brave 5.16</p>
+</li>
+<li>
+<p>Elasticsearch Client 8.10</p>
+</li>
+<li>
+<p>Flyway 9.22</p>
+</li>
+<li>
+<p>GraphQL Java 21.1</p>
+</li>
+<li>
+<p>Hibernate 6.3</p>
+</li>
+<li>
+<p>JUnit 5.10</p>
+</li>
+<li>
+<p>Jedis 5.0</p>
+</li>
+<li>
+<p>Kafka 3.6</p>
+</li>
+<li>
+<p>Kotlin 1.9</p>
+</li>
+<li>
+<p>Liquibase 4.24</p>
+</li>
+<li>
+<p>Log4j 2.21</p>
+</li>
+<li>
+<p>MariaDB 3.2</p>
+</li>
+<li>
+<p>Micrometer 1.12</p>
+</li>
+<li>
+<p>Micrometer Tracing 1.2</p>
+</li>
+<li>
+<p>Mockito 5.4</p>
+</li>
+<li>
+<p>Mongo Java Driver 4.11</p>
+</li>
+<li>
+<p>MySQL 8.1</p>
+</li>
+<li>
+<p>Neo4j Java Driver 5.10</p>
+</li>
+<li>
+<p>OkHttp 4.12</p>
+</li>
+<li>
+<p>OpenTelemetry 1.28</p>
+</li>
+<li>
+<p>Oracle UCP 23.3</p>
+</li>
+<li>
+<p>Rabbit AMQP Client 5.18.0</p>
+</li>
+<li>
+<p>Rabbit Stream Client 0.11</p>
+</li>
+<li>
+<p>Reactor 2023.0</p>
+</li>
+<li>
+<p>Selenium 4.14</p>
+</li>
+<li>
+<p>SnakeYAML 2.2</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deprecations_in_spring_boot_3_2_0"><a class="anchor" href="#_deprecations_in_spring_boot_3_2_0"></a>Deprecations in Spring Boot 3.2.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>OkHttp 3 지원은 더 이상 사용되지 않고 OkHttp 4로 대체되었다.</p>
+</li>
+<li>
+<p><code>spring-boot:run</code>, <code>spring-boot:start</code> 및 <code>spring-boot:test-run</code> Maven goal의 <code>directories</code> property는 <code>additionalClasspathElements</code> 를 위해 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p>더 이상 사용되지 않는  <code>management.metrics.tags.<strong></code> 대신 <code>management.observations.key-values.</strong></code> 를 사용해야 한다.</p>
+</li>
+<li>
+<p><code>LoggingSystemProperties</code> 및 <code>LogbackLoggingSystemProperties</code> 에 정의된 대부분의 constant는 enum value를 위해 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p><code>ClientHttpRequestFactorySettings</code> 및 <code>RestTemplateBuilder</code> 에서 활성화된 request buffering에 대한 지원은 더 이상 사용되지 않는다. 이 API는 더 이상 사용되지 않는 형태로 유지되지만 Spring Framework 6.1의 유사한 변경 사항에 따라 구성해도 아무런 영향을 미치지 않는다.</p>
+</li>
+<li>
+<p>각 deletage를 프로그래밍 방식으로 spring.factories에 등록하는 것을 선호하기 때문에 <code>context.initializer.classes</code> environment property를 사용하여 추가 <code>ApplicationContextInitializer</code> 를 등록하는 것은 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p>각 delegate를 프로그래밍 방식으로 spring.factories에 등록하는 것을 선호하기 때문에 <code>context.listener.classes</code> environment property를 사용하여 추가 <code>ApplicationListener</code> 를 등록하는 것은 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p>확장 프로그램에서 관리되는 Flyway property들이 전용 namespace로 이동했다. 그 결과 <code>flyway.oracle*</code> property 들이 <code>flyway.oracle.*</code> 로 이동했다. 마찬가지로 <code>spring.flyway.sql-server-kerberos-login-file</code> 은 <code>spring.flyway.sqlserver.kerberos-login-file</code> 로 이동했다.</p>
+</li>
+<li>
+<p><a href="https://github.com/influxdata/influxdb-client-java">새로운 InfluxDB Java client</a> 와 <a href="https://github.com/influxdata/influxdb-client-java/tree/master/spring">자체 Spring Boot 통합</a>을 위해 InfluxDB에 대한 지원은 더 이상 제공되지 않는다.</p>
+</li>
+<li>
+<p><code>management.otlp.metrics.export.resource-attributes</code> configuration property가 더 이상 사용되지 않고 새로운 <code>management.opentelemetry.resource-attributes</code> 가 사용된다.</p>
+</li>
+<li>
+<p><code>TaskExecutorBuilder</code> 가 <code>ThreadPoolTaskExecutorBuilder</code> 를 위해 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p><code>TaskSchedulerBuilder</code> 가 <code>ThreadPoolTaskSchedulerBuilder</code> 를 위해 더 이상 사용되지 않는다.</p>
+</li>
+<li>
+<p>Configuration property <code>spring.jms.listener.concurrency</code> 를 <code>spring.jms.listener.min-concurrency</code> 로 대체한다.</p>
+</li>
+<li>
+<p>Configuration property <code>spring.jms.listener.acknowledge-mode</code> 를 <code>spring.jms.listener.session.acknowledge-mode</code> 로 대체한다.</p>
+</li>
+<li>
+<p><code>PlatformTransactionManagerCustomizer</code> 를 <code>TransactionManagerCustomizer</code> 로 대체한다.</p>
+</li>
+<li>
+<p><code>TransactionManagerCustomizers(Collection&lt;? extends PlatformTransactionManagerCustomizer&lt;?&gt;&gt;)</code> 를 <code>TransactionManagerCustomizers#of(Collection&lt;? extends TransactionManagerCustomizer&lt;?&gt;&gt;)</code> 로 대체한다.</p>
+</li>
+<li>
+<p>propery 기반 initialization으로 <code>DelegatingApplicationContextInitializer</code> 및 <code>DelegatingApplicationListener</code> 를 사용하는 것은 더 이상 권장되지 않는다.</p>
+</li>
+<li>
+<p><code>PemSslStoreBundle</code> 의 일부 오래된 생성자 및 <code>PemSslStoreDetails</code> 의 <code>certificate</code> accessor
+*</p>
+</li>
+<li>
+<p><code>TaskExecutorCustomizer</code> 를 <code>ThreadPoolTaskExecutorCustomizer</code> 로 대체한다.</p>
+</li>
+<li>
+<p><code>TaskSchedulerBuilder</code> 를 <code>ThreadPoolTaskSchedulerBuilder</code> 로 대체한다.</p>
+</li>
+<li>
+<p><code>TaskSchedulerCustomizer</code> 를 <code>ThreadPoolTaskSchedulerCustomizer</code> 로 대체한다.</p>
+</li>
+<li>
+<p><code>NettyWebServer</code> 의 일부 오래된 생성자</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2023-12-01 10:25:39 +0900
+</div>
+</div>
+</div>
+  </div>
+</div>
+</body>
+</html>

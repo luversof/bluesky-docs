@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.github.luversof</groupId>
 		<artifactId>bluesky-boot-parent</artifactId>
-		<version>3.2.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<properties>
 		<asciidoctor.outputDirectory>docs</asciidoctor.outputDirectory>
@@ -19,39 +19,14 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-
 		<!-- (s) spring-boot-docs impl -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test-autoconfigure</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-restassured</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-webtestclient</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
 		</dependency>
 		<!-- (e) spring-boot-docs impl -->
 	</dependencies>
@@ -66,7 +41,8 @@
 						<artifactId>asciidoctor-maven-plugin</artifactId>
 						<configuration>
 							<attributes>
-								<!-- <java-version>${java.version}</java-version> -->
+								<!--
+								<java-version>${java.version}</java-version> -->
 								<spring-restdocs-version>${spring-restdocs.version}</spring-restdocs-version>
 								<spring-framework-version>${spring-framework.version}</spring-framework-version>
 								<spring-boot-version>3.2.5</spring-boot-version>
@@ -75,6 +51,12 @@
 								<!-- <basedir>${project.basedir}</basedir> -->
 							</attributes>
 						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.springframework.restdocs</groupId>
+								<artifactId>spring-restdocs-asciidoctor</artifactId>
+							</dependency>
+						</dependencies>
 					</plugin>
 				</plugins>
 			</build>
@@ -115,7 +97,8 @@
 		</repository>
 		<repository>
 			<id>github-bluesky-maven-repo</id>
-			<url>https://raw.githubusercontent.com/luversof/bluesky-maven-repo/master/snapshots</url>
+			<url>
+				https://raw.githubusercontent.com/luversof/bluesky-maven-repo/master/snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
